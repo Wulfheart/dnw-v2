@@ -18,7 +18,7 @@ return [
 	|
 	*/
 
-	'modules_namespace' => 'Dnw\\Modules',
+	'modules_namespace' => 'Dnw',
 
 	/*
 	|--------------------------------------------------------------------------
