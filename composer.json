@@ -10,7 +10,8 @@
     "require": {
         "php": "^8.3",
         "dnw/foundation": "*",
-        "internachi/modular": "^2.1",
+        "dnw/game": "*",
+        "internachi/modular": "dev-fix/config-for-event-autodiscovery as 2.1.0",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9"
     },
@@ -75,6 +76,10 @@
             "options": {
                 "symlink": true
             }
+        },
+        {
+            "type": "git",
+            "url": "git@github.com:Wulfheart/internachi-modular.git"
         }
     ]
 }

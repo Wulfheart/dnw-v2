@@ -78,4 +78,7 @@ return [
 	*/
 
 	'stubs' => null,
+
+    'should_discover_events' => true,
+
 ];
