@@ -7,7 +7,6 @@ use Dnw\Foundation\Event\EventDispatcherInterface;
 use Dnw\Foundation\Event\LaravelEventDispatcher;
 use Illuminate\Contracts\Queue\Queue;
 use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -31,7 +30,7 @@ class FoundationEventServiceProvider extends ServiceProvider
 
         $this->app->bind(
             DomainEventProvider::class,
-            function(Application $app) {
+            function (Application $app) {
                 return new DomainEventProvider(
                     $app->bootstrapPath('cache/dnw_events.php'),
                     $app->make(Filesystem::class)

@@ -6,11 +6,11 @@ use Illuminate\Support\ServiceProvider;
 
 class GameServiceProvider extends ServiceProvider
 {
-	public function register()
-	{
-	}
-	
-	public function boot()
-	{
-	}
+    public function register()
+    {
+    }
+
+    public function boot()
+    {
+    }
 }

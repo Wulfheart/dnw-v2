@@ -11,7 +11,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withEvents([
-        __DIR__ . '/../modules/game/src/Some/Other/',
+        __DIR__.'/../modules/game/src/Some/Other/',
     ])
     ->withMiddleware(function (Middleware $middleware) {
         //

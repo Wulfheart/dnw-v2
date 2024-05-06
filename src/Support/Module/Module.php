@@ -14,7 +14,8 @@ abstract class Module
      */
     protected array $domainListeners = [];
 
-    public function make(): static {
+    public function make(): static
+    {
         return new static();
     }
 }

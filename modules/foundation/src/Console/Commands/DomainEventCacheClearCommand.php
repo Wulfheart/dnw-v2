@@ -19,15 +19,14 @@ class DomainEventCacheClearCommand extends Command
      *
      * @var string
      */
-    protected $description = "Clear all cached domain events and listeners";
+    protected $description = 'Clear all cached domain events and listeners';
 
     /**
      * Execute the console command.
      */
     public function handle(
         DomainEventProvider $domainEventProvider
-    ): void
-    {
+    ): void {
         $domainEventProvider->deleteCachedEvents();
         $this->components->info('Cached domain events cleared successfully.');
     }

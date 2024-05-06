@@ -9,8 +9,7 @@ final class ListenerJob
     public function __construct(
         private ListenerInfo $listenerInfo,
         private object $payload
-    )
-    {
+    ) {
 
     }
 

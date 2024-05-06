@@ -9,8 +9,7 @@ final class ListenerInfo
         public string $class,
         public string $method,
         public bool $isAsync,
-    )
-    {
+    ) {
     }
 
     public static function __set_state(array $arr): self

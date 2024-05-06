@@ -27,10 +27,8 @@ class DomainEventListCommand extends Command
      */
     public function handle(
         DomainEventProvider $domainEventProvider
-    ): void
-    {
+    ): void {
         $events = collect($domainEventProvider->getEvents())->sortKeys();
-
 
         if ($events->isEmpty()) {
             $this->components->info("Your application doesn't have any events matching the given criteria.");
@@ -40,7 +38,6 @@ class DomainEventListCommand extends Command
 
         $this->newLine();
 
-
         $events->each(function (array $listenerInfos, string $event) {
             /** @var array<ListenerInfo> $listenerInfos */
             $listenerInfos = collect($listenerInfos)->sortBy('class')->toArray();
@@ -48,8 +45,8 @@ class DomainEventListCommand extends Command
             $this->components->twoColumnDetail($event);
             $listeners = [];
             foreach ($listenerInfos as $listenerInfo) {
-                $listenerString = $listenerInfo->class . '@' . $listenerInfo->method;
-                if($listenerInfo->isAsync){
+                $listenerString = $listenerInfo->class.'@'.$listenerInfo->method;
+                if ($listenerInfo->isAsync) {
                     $listenerString .= ' <fg=bright-blue>(Async)</>';
                 }
                 $listeners[] = $listenerString;

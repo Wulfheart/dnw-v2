@@ -128,8 +128,8 @@ final readonly class DomainEventProvider
     }
 
     /**
-     * @param class-string $event
-     * @param class-string $listener
+     * @param  class-string  $event
+     * @param  class-string  $listener
      */
     private function shouldBeQueued(string $event, string $listener): bool
     {

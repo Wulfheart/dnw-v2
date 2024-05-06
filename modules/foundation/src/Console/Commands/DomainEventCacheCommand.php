@@ -26,8 +26,7 @@ class DomainEventCacheCommand extends Command
      */
     public function handle(
         DomainEventProvider $domainEventProvider
-    ): void
-    {
+    ): void {
         $domainEventProvider->cacheEvents();
         $this->components->info('Domain events cached successfully.');
     }
