@@ -8,7 +8,7 @@ return new class() extends Migration {
 	public function up(): void
 	{
 		Schema::create('foundation_event_store', function(Blueprint $table) {
-            $table->ulid('id');
+            $table->ulid('id')->primary();
             $table->string('fqdn');
             $table->text('payload');
             $table->dateTime('recorded_at');

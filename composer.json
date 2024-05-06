@@ -11,9 +11,11 @@
         "php": "^8.3",
         "dnw/foundation": "*",
         "dnw/game": "*",
-        "internachi/modular": "dev-fix/config-for-event-autodiscovery as 2.1.0",
+        "haydenpierce/class-finder": "^0.5.3",
+        "internachi/modular": "^2.2",
         "laravel/framework": "^11.0",
-        "laravel/tinker": "^2.9"
+        "laravel/tinker": "^2.9",
+        "symfony/property-access": "^7.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -76,10 +78,6 @@
             "options": {
                 "symlink": true
             }
-        },
-        {
-            "type": "git",
-            "url": "git@github.com:Wulfheart/internachi-modular.git"
         }
     ]
 }
