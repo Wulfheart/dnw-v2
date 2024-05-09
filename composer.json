@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.9",
         "league/tactician": "^1.1",
         "livewire/livewire": "^3.4",
+        "phpoption/phpoption": "^1.9",
         "symfony/property-access": "^7.0"
     },
     "require-dev": {

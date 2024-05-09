@@ -9,16 +9,16 @@ final readonly class LaravelHandlerLocator implements HandlerLocator
 {
     public function __construct(
         private Application $application,
-    )
-    {
+    ) {
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function getHandlerForCommand($commandName)
     {
-        $commandHandler = $commandName . 'Handler';
+        $commandHandler = $commandName.'Handler';
+
         return $this->application->make($commandHandler);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Dnw\Foundation\Bus;
 
-interface BusInterface {
+interface BusInterface
+{
     public function handle(mixed $command): mixed;
 }

@@ -8,8 +8,7 @@ final readonly class TacticianBus implements BusInterface
 {
     public function __construct(
         private CommandBus $commandBus,
-    )
-    {
+    ) {
 
     }
 
