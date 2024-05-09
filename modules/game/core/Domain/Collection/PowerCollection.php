@@ -1,10 +1,10 @@
 <?php
 
-namespace Collection;
+namespace Dnw\Game\Core\Domain\Collection;
 
-use ValueObjects\PlayerId;
+use Dnw\Game\Core\Domain\ValueObject\PlayerId;
 
-final class PowerCollection
+class PowerCollection
 {
     public static function createFromVariantPowerCollection(
         VariantPowerCollection $variantPowerCollection,

@@ -1,7 +1,7 @@
 <?php
 
-namespace ValueObjects\AdjudicationTiming;
+namespace Dnw\Game\Core\Domain\ValueObject\AdjudicationTiming;
 
-final class PhaseLength
+class PhaseLength
 {
 }

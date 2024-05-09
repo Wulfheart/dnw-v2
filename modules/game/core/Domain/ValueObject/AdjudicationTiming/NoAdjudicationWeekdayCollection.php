@@ -1,10 +1,10 @@
 <?php
 
-namespace ValueObjects\AdjudicationTiming;
+namespace Dnw\Game\Core\Domain\ValueObject\AdjudicationTiming;
 
-use ValueObjects\WeekdayEnum;
+use Dnw\Game\Core\Domain\ValueObject\WeekdayEnum;
 
-final readonly class NoAdjudicationWeekdayCollection
+readonly class NoAdjudicationWeekdayCollection
 {
     public function __construct(
         /** @var array<int> */

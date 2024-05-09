@@ -5,7 +5,7 @@ namespace Dnw\Foundation\Event;
 use Illuminate\Contracts\Queue\Queue;
 use Illuminate\Foundation\Application;
 
-final readonly class LaravelEventDispatcher implements EventDispatcherInterface
+readonly class LaravelEventDispatcher implements EventDispatcherInterface
 {
     public function __construct(
         private Queue $queue,

@@ -4,7 +4,7 @@ namespace Dnw\Foundation\Event;
 
 use Illuminate\Foundation\Application;
 
-final class ListenerJob
+class ListenerJob
 {
     public function __construct(
         private ListenerInfo $listenerInfo,

@@ -1,7 +1,7 @@
 <?php
 
-namespace ValueObjects\EndConditions;
+namespace Dnw\Game\Core\Domain\ValueObject\EndConditions;
 
-final class MaximumNumberOfRounds
+class MaximumNumberOfRounds
 {
 }

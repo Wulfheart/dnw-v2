@@ -1,7 +1,7 @@
 <?php
 
-namespace Collection;
+namespace Dnw\Game\Core\Domain\Collection;
 
-final class VariantPowerCollection
+class VariantPowerCollection
 {
 }

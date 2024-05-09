@@ -1,6 +1,6 @@
 <?php
 
-namespace ValueObjects\Phase;
+namespace Dnw\Game\Core\Domain\ValueObject\Phase;
 
 enum PhaseTypeEnum: string
 {

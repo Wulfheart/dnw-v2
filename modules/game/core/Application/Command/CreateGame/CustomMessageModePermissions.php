@@ -2,7 +2,7 @@
 
 namespace Dnw\Game\Core\Application\Command\CreateGame;
 
-final class CustomMessageModePermissions
+class CustomMessageModePermissions
 {
     public function __construct(
         public string $description,

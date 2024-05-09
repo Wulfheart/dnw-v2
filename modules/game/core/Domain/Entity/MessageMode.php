@@ -1,12 +1,12 @@
 <?php
 
-namespace Entity;
+namespace Dnw\Game\Core\Domain\Entity;
 
+use Dnw\Game\Core\Domain\ValueObject\MessageMode\MessageModeId;
+use Dnw\Game\Core\Domain\ValueObject\MessageMode\MessageModeName;
 use PhpOption\Option;
-use ValueObjects\MessageMode\MessageModeId;
-use ValueObjects\MessageMode\MessageModeName;
 
-final readonly class MessageMode
+readonly class MessageMode
 {
     public function __construct(
         /** @var Option<MessageModeName> $messageModeId */

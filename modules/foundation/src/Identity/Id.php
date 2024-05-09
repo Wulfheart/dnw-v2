@@ -4,7 +4,7 @@ namespace Dnw\Foundation\Identity;
 
 use Symfony\Component\Uid\Ulid;
 
-final readonly class Id
+readonly class Id
 {
     private function __construct(
         private string $value

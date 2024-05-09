@@ -1,7 +1,7 @@
 <?php
 
-namespace ValueObjects;
+namespace Dnw\Game\Core\Domain\ValueObject;
 
-final class GameName
+class GameName
 {
 }

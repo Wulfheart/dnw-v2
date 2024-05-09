@@ -1,6 +1,6 @@
 <?php
 
-namespace Dnw\Game\Tests;
+namespace Dnw\Game\Tests\Unit;
 
 class FooClass
 {

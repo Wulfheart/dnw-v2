@@ -2,7 +2,7 @@
 
 namespace Dnw\Foundation\Event;
 
-final class ListenerInfo
+class ListenerInfo
 {
     public function __construct(
         /** @var class-string $class */

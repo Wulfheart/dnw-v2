@@ -1,10 +1,10 @@
 <?php
 
-namespace ValueObjects\EndConditions;
+namespace Dnw\Game\Core\Domain\ValueObject\EndConditions;
 
 use PhpOption\Option;
 
-final class EndConditions
+class EndConditions
 {
     public function __construct(
         /** @var Option<MaximumNumberOfRounds> $maximumNumberOfRounds */

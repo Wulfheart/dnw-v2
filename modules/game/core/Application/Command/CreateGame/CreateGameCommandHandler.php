@@ -2,7 +2,7 @@
 
 namespace Dnw\Game\Core\Application\Command\CreateGame;
 
-final class CreateGameCommandHandler
+class CreateGameCommandHandler
 {
     public function handle(
         CreateGameCommand $command

@@ -1,7 +1,7 @@
 <?php
 
-namespace ValueObjects\MessageMode;
+namespace Dnw\Game\Core\Domain\ValueObject\MessageMode;
 
-final class MessageModeName
+class MessageModeName
 {
 }

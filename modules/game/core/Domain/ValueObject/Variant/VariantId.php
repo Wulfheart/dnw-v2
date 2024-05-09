@@ -1,7 +1,7 @@
 <?php
 
-namespace ValueObjects\Variant;
+namespace Dnw\Game\Core\Domain\ValueObject\Variant;
 
-final class VariantId
+class VariantId
 {
 }

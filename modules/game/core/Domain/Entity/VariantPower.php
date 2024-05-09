@@ -1,13 +1,13 @@
 <?php
 
-namespace Entity;
+namespace Dnw\Game\Core\Domain\Entity;
 
-use ValueObjects\Color;
-use ValueObjects\Count;
-use ValueObjects\Variant\VariantPower\VariantPowerId;
-use ValueObjects\Variant\VariantPower\VariantPowerName;
+use Dnw\Game\Core\Domain\ValueObject\Color;
+use Dnw\Game\Core\Domain\ValueObject\Count;
+use Dnw\Game\Core\Domain\ValueObject\Variant\VariantPower\VariantPowerId;
+use Dnw\Game\Core\Domain\ValueObject\Variant\VariantPower\VariantPowerName;
 
-final class VariantPower
+class VariantPower
 {
     public function __construct(
         public VariantPowerId $id,

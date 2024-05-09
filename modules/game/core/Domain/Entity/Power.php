@@ -1,13 +1,13 @@
 <?php
 
-namespace Entity;
+namespace Dnw\Game\Core\Domain\Entity;
 
+use Dnw\Game\Core\Domain\ValueObject\PlayerId;
+use Dnw\Game\Core\Domain\ValueObject\Power\PowerId;
+use Dnw\Game\Core\Domain\ValueObject\Variant\VariantPower\VariantPowerId;
 use PhpOption\Option;
-use ValueObjects\PlayerId;
-use ValueObjects\Power\PowerId;
-use ValueObjects\Variant\VariantPower\VariantPowerId;
 
-final class Power
+class Power
 {
     public function __construct(
         public PowerId $powerId,

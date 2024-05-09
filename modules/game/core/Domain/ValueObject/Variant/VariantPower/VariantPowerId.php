@@ -1,7 +1,7 @@
 <?php
 
-namespace ValueObjects\Variant\VariantPower;
+namespace Dnw\Game\Core\Domain\ValueObject\Variant\VariantPower;
 
-final class VariantPowerId
+class VariantPowerId
 {
 }

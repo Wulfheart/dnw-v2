@@ -12,7 +12,7 @@ use League\Tactician\Handler\CommandHandlerMiddleware;
 use League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor;
 use League\Tactician\Handler\MethodNameInflector\HandleInflector;
 
-final class FoundationBusServiceProvider extends ServiceProvider
+class FoundationBusServiceProvider extends ServiceProvider
 {
     public function register(): void
     {

@@ -1,7 +1,7 @@
 <?php
 
-namespace ValueObjects\Phase;
+namespace Dnw\Game\Core\Domain\ValueObject\Phase;
 
-final class PhaseId
+class PhaseId
 {
 }

@@ -1,13 +1,13 @@
 <?php
 
-namespace ValueObjects\Phases;
+namespace Dnw\Game\Core\Domain\ValueObject\Phases;
 
-use Entity\Phase;
+use Dnw\Game\Core\Domain\Entity\Phase;
+use Dnw\Game\Core\Domain\ValueObject\Count;
 use PhpOption\None;
 use PhpOption\Option;
-use ValueObjects\Count;
 
-final class PhasesInfo
+class PhasesInfo
 {
     private bool $hasNewPhase = false;
 

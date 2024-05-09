@@ -1,8 +1,8 @@
 <?php
 
-namespace ValueObjects\AdjudicationTiming;
+namespace Dnw\Game\Core\Domain\ValueObject\AdjudicationTiming;
 
-final class AdjudicationTiming
+class AdjudicationTiming
 {
     public function __construct(
         public PhaseLength $phaseLength,

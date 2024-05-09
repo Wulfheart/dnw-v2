@@ -1,8 +1,8 @@
 <?php
 
-namespace ValueObjects\GameStartTiming;
+namespace Dnw\Game\Core\Domain\ValueObject\GameStartTiming;
 
-final class GameStartTiming
+class GameStartTiming
 {
     public function __construct(
         public JoinLength $joinLength,

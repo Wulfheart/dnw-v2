@@ -1,10 +1,10 @@
 <?php
 
-namespace ValueObjects\Phase;
+namespace Dnw\Game\Core\Domain\ValueObject\Phase;
 
-use ValueObjects\Power\PowerId;
+use Dnw\Game\Core\Domain\ValueObject\Power\PowerId;
 
-final class PhasePowerData
+class PhasePowerData
 {
     public function __construct(
         public PowerId $powerId,

@@ -1,7 +1,7 @@
 <?php
 
-namespace Event;
+namespace Dnw\Game\Core\Domain\Event;
 
-final class GameCreatedEvent
+class GameCreatedEvent
 {
 }

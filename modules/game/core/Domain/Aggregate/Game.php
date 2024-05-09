@@ -1,17 +1,19 @@
 <?php
 
-use Collection\PowerCollection;
-use Entity\MessageMode;
-use Entity\Variant;
+namespace Dnw\Game\Core\Domain\Aggregate;
+
+use Dnw\Game\Core\Domain\Collection\PowerCollection;
+use Dnw\Game\Core\Domain\Entity\MessageMode;
+use Dnw\Game\Core\Domain\Entity\Variant;
+use Dnw\Game\Core\Domain\ValueObject\AdjudicationTiming\AdjudicationTiming;
+use Dnw\Game\Core\Domain\ValueObject\GameName;
+use Dnw\Game\Core\Domain\ValueObject\GameStartTiming\GameStartTiming;
+use Dnw\Game\Core\Domain\ValueObject\Phases\PhasesInfo;
+use Dnw\Game\Core\Domain\ValueObject\PlayerId;
 use PhpOption\None;
 use PhpOption\Option;
-use ValueObjects\AdjudicationTiming\AdjudicationTiming;
-use ValueObjects\GameName;
-use ValueObjects\GameStartTiming\GameStartTiming;
-use ValueObjects\Phases\PhasesInfo;
-use ValueObjects\PlayerId;
 
-final class Game
+class Game
 {
     public function __construct(
         public GameName $name,
@@ -23,6 +25,7 @@ final class Game
         public PowerCollection $powers,
         public DateTimeImmutable $startTime,
         public PhasesInfo $phasesInfo,
+        /** @var Option<DateTimeImmutable> $lockedAt */
         public Option $lockedAt,
     ) {
 

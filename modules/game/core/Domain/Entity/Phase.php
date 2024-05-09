@@ -1,13 +1,13 @@
 <?php
 
-namespace Entity;
+namespace Dnw\Game\Core\Domain\Entity;
 
-use Collection\PhasePowerCollection;
 use DateTimeImmutable;
-use ValueObjects\Phase\PhaseId;
-use ValueObjects\Phase\PhaseTypeEnum;
+use Dnw\Game\Core\Domain\Collection\PhasePowerCollection;
+use Dnw\Game\Core\Domain\ValueObject\Phase\PhaseId;
+use Dnw\Game\Core\Domain\ValueObject\Phase\PhaseTypeEnum;
 
-final class Phase
+class Phase
 {
     public function __construct(
         public PhaseId $phaseId,

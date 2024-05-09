@@ -4,7 +4,7 @@ namespace Dnw\Game\Core\Application\Command\CreateGame;
 
 use Dnw\Foundation\Identity\Id;
 
-final readonly class CreateGameCommand
+readonly class CreateGameCommand
 {
     public function __construct(
         public Id $gameId,

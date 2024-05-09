@@ -1,8 +1,8 @@
 <?php
 
-namespace ValueObjects;
+namespace Dnw\Game\Core\Domain\ValueObject;
 
-final class Count
+class Count
 {
     public static function zero(): self
     {

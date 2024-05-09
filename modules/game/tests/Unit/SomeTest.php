@@ -1,17 +1,19 @@
 <?php
 
-namespace Dnw\Game\Tests;
+namespace Dnw\Game\Tests\Unit;
 
-final class SomeTest extends \PHPUnit\Framework\TestCase
+use PHPUnit\Framework\TestCase;
+
+class SomeTest extends TestCase
 {
-    public function testSomething()
+    public function testSomething(): void
     {
         $mock = $this->createPartialMock(FooClass::class, ['foo']);
-        $mock->expects($this->once())
+        $mock->expects($this->exactly(2))
             ->method('foo')
-            ->willReturn('bar');
+            ->willReturn('huu');
 
-        $this->assertEquals('bar', $mock->bar());
+        $this->assertEquals('huu', $mock->bar());
 
     }
 }

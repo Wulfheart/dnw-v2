@@ -1,6 +1,6 @@
 <?php
 
-namespace ValueObjects;
+namespace Dnw\Game\Core\Domain\ValueObject;
 
 enum WeekdayEnum: int
 {
