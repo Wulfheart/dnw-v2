@@ -12,6 +12,9 @@ final class ListenerInfo
     ) {
     }
 
+    /**
+     * @param  array<string, mixed>  $arr
+     */
     public static function __set_state(array $arr): self
     {
         return new self(

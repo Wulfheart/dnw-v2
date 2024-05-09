@@ -8,7 +8,6 @@ use HaydenPierce\ClassFinder\ClassFinder;
 use Illuminate\Support\Reflector;
 use Illuminate\Support\Str;
 use ReflectionClass;
-use ReflectionException;
 use ReflectionMethod;
 use Symfony\Component\Filesystem\Filesystem;
 
@@ -75,6 +74,7 @@ final readonly class DomainEventProvider
     {
         $classes = ClassFinder::getClassesInNamespace(self::BASE_MODULE_NAMESPACE, ClassFinder::RECURSIVE_MODE);
 
+        /** @var array<class-string> $module_classes */
         $module_classes = array_filter($classes, function ($class) {
             return str_starts_with($class, self::BASE_MODULE_NAMESPACE);
         });
@@ -83,11 +83,7 @@ final readonly class DomainEventProvider
         $listener_classes = [];
 
         foreach ($module_classes as $module_class) {
-            try {
-                $reflection = new ReflectionClass($module_class);
-            } catch (ReflectionException $e) {
-                continue;
-            }
+            $reflection = new ReflectionClass($module_class);
             $attributes = $reflection->getAttributes();
 
             foreach ($attributes as $attribute) {
@@ -105,6 +101,7 @@ final readonly class DomainEventProvider
                             continue;
                         }
 
+                        /** @var array<class-string> $listenerEvents */
                         $listenerEvents = Reflector::getParameterClassNames(
                             $method->getParameters()[0]
                         );
