@@ -21,7 +21,7 @@ final class FoundationBusServiceProvider extends ServiceProvider
             function (Application $application) {
                 $inflector = new HandleInflector();
                 $extractor = new ClassNameExtractor();
-                $handlerLocator = new LaravelHandlerLocator();
+                $handlerLocator = $application->make(LaravelHandlerLocator::class);
                 $middleware = new CommandHandlerMiddleware(
                     $extractor,
                     $handlerLocator,

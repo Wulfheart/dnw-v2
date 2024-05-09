@@ -2,16 +2,23 @@
 
 namespace Dnw\Foundation\Bus;
 
+use Illuminate\Contracts\Foundation\Application;
 use League\Tactician\Handler\Locator\HandlerLocator;
 
-final class LaravelHandlerLocator implements HandlerLocator
+final readonly class LaravelHandlerLocator implements HandlerLocator
 {
+    public function __construct(
+        private Application $application,
+    )
+    {
+    }
+
     /**
      * @inheritDoc
      */
     public function getHandlerForCommand($commandName)
     {
         $commandHandler = $commandName . 'Handler';
-        return app($commandHandler);
+        return $this->application->make($commandHandler);
     }
 }
