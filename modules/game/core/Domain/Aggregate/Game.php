@@ -2,20 +2,28 @@
 
 namespace Dnw\Game\Core\Domain\Aggregate;
 
+use Carbon\CarbonImmutable;
+use Dnw\Foundation\Event\AggregateEventTrait;
 use Dnw\Game\Core\Domain\Collection\PowerCollection;
 use Dnw\Game\Core\Domain\Entity\MessageMode;
 use Dnw\Game\Core\Domain\Entity\Variant;
+use Dnw\Game\Core\Domain\Event\GameStartedEvent;
+use Dnw\Game\Core\Domain\Exception\DomainException;
 use Dnw\Game\Core\Domain\ValueObject\AdjudicationTiming\AdjudicationTiming;
-use Dnw\Game\Core\Domain\ValueObject\GameName;
+use Dnw\Game\Core\Domain\ValueObject\Game\GameId;
+use Dnw\Game\Core\Domain\ValueObject\Game\GameName;
 use Dnw\Game\Core\Domain\ValueObject\GameStartTiming\GameStartTiming;
 use Dnw\Game\Core\Domain\ValueObject\Phases\PhasesInfo;
 use Dnw\Game\Core\Domain\ValueObject\PlayerId;
-use PhpOption\None;
+use Dnw\Game\Core\Domain\ValueObject\Variant\VariantPower\VariantPowerId;
 use PhpOption\Option;
 
 class Game
 {
+    use AggregateEventTrait;
+
     public function __construct(
+        public GameId $gameId,
         public GameName $name,
         public MessageMode $messageMode,
         public AdjudicationTiming $adjudicationTiming,
@@ -23,10 +31,7 @@ class Game
         public bool $randomPowerAssignments,
         public Variant $variant,
         public PowerCollection $powers,
-        public DateTimeImmutable $startTime,
         public PhasesInfo $phasesInfo,
-        /** @var Option<DateTimeImmutable> $lockedAt */
-        public Option $lockedAt,
     ) {
 
     }
@@ -38,7 +43,7 @@ class Game
         GameStartTiming $gameStartTiming,
         Variant $variant,
         PlayerId $playerId,
-        DateTimeImmutable $startTime,
+        bool $createPrivateChats,
     ): self {
 
         $powers = PowerCollection::createFromVariantPowerCollection(
@@ -46,7 +51,10 @@ class Game
         );
         $powers->assignRandomly($playerId);
 
+        $gameId = GameId::generate();
+
         return new self(
+            $gameId,
             $name,
             $messageMode,
             $adjudicationTiming,
@@ -54,26 +62,104 @@ class Game
             true,
             $variant,
             $powers,
-            $startTime,
             PhasesInfo::initialize(),
-            None::create(),
         );
     }
 
-    public function joinWithRandomAssignment(PlayerId $playerId): void
+    /**
+     * @param  Option<VariantPowerId>  $variantPowerId
+     *
+     * @throws DomainException
+     */
+    public function join(PlayerId $playerId, Option $variantPowerId): void
     {
-        if ($this->powers->hasAvailablePowers()) {
-            $this->powers->assignRandomly($playerId);
+        if (! $this->canJoin($playerId, $variantPowerId)) {
+            throw new DomainException("Player $playerId cannot join game {$this->gameId}");
         }
+        if ($this->randomPowerAssignments) {
+            $this->powers->assignRandomly($playerId);
+        } else {
+            $this->powers->assign($playerId, $variantPowerId->get());
+        }
+
     }
 
-    public function lock(): void
+    /**
+     * @param  Option<VariantPowerId>  $variantPowerId
+     */
+    public function canJoin(PlayerId $playerId, Option $variantPowerId): bool
     {
-        $this->lockedAt = Option::fromValue(new DateTimeImmutable());
+        if ($this->hasBeenStarted()) {
+            return false;
+        }
+
+        // Ensure that the initial phase has already been created
+        if ($this->phasesInfo->count->int() === 1) {
+            return false;
+        }
+
+        if (! $this->powers->hasAvailablePowers()) {
+            return false;
+        }
+
+        if ($this->powers->containsPlayer($playerId)) {
+            return false;
+        }
+
+        if (! $this->randomPowerAssignments
+            && $this->powers->hasPowerFilled($variantPowerId->get())
+        ) {
+            return false;
+        }
+
+        return true;
     }
 
-    public function unlock(): void
+    /**
+     * @throws DomainException
+     */
+    public function leave(PlayerId $playerId): void
     {
-        $this->lockedAt = None::create();
+        if ($this->canLeave($playerId)) {
+            $this->powers->unassign($playerId);
+        }
+        throw new DomainException("Player $playerId cannot leave game {$this->gameId}");
+    }
+
+    public function canLeave(PlayerId $playerId): bool
+    {
+        if ($this->hasBeenStarted()) {
+            return false;
+        }
+        if (! $this->powers->containsPlayer($playerId)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function hasBeenStarted(): bool
+    {
+        return $this->phasesInfo->hasBeenStarted();
+    }
+
+    public function canBeStarted(CarbonImmutable $currentTime): bool
+    {
+        if (! $this->powers->hasAvailablePowers()) {
+            return false;
+        }
+
+        if ($this->gameStartTiming->startWhenReady) {
+            return true;
+        }
+
+        return $this->gameStartTiming->joinLengthExceeded($currentTime);
+    }
+
+    public function startGameIfConditionsAreFulfilled(CarbonImmutable $currentTime): void
+    {
+        if ($this->canBeStarted($currentTime)) {
+            $this->pushEvent(new GameStartedEvent());
+        }
     }
 }

@@ -27,4 +27,9 @@ class PhasesInfo
     {
         return $this->hasNewPhase;
     }
+
+    public function hasBeenStarted(): bool
+    {
+        return $this->currentPhase->isDefined() && $this->currentPhase->get();
+    }
 }

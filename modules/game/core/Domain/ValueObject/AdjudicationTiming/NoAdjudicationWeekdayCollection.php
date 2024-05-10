@@ -17,6 +17,14 @@ readonly class NoAdjudicationWeekdayCollection
         }
     }
 
+    /**
+     * @param  array<int>  $weekdays
+     */
+    public static function fromWeekdaysArray(array $weekdays): self
+    {
+        return new self($weekdays);
+    }
+
     public function adjudicatesOnWeekday(WeekdayEnum $weekday): bool
     {
         return in_array($weekday->value, $this->weekdays);

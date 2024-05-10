@@ -8,4 +8,14 @@ class Count
     {
         return new self(0);
     }
+
+    public function __construct(
+        private int $value,
+    ) {
+    }
+
+    public function int(): int
+    {
+        return $this->value;
+    }
 }

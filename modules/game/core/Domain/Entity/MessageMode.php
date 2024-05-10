@@ -9,10 +9,10 @@ use PhpOption\Option;
 readonly class MessageMode
 {
     public function __construct(
-        /** @var Option<MessageModeName> $messageModeId */
+        /** @var Option<MessageModeName> $name */
         public Option $name,
         /** @var Option<MessageModeId> $messageModeId */
-        public ?MessageModeId $messageModeId,
+        public Option $messageModeId,
         public bool $isCustom,
         public string $description,
         public bool $isAnonymous,

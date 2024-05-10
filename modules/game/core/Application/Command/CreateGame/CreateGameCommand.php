@@ -3,6 +3,7 @@
 namespace Dnw\Game\Core\Application\Command\CreateGame;
 
 use Dnw\Foundation\Identity\Id;
+use PhpOption\Option;
 
 readonly class CreateGameCommand
 {
@@ -17,9 +18,10 @@ readonly class CreateGameCommand
         public ?Id $selectedPowerId,
         public bool $isRanked,
         public bool $isAnonymous,
-        public bool $usesCustomMessageMode,
-        public ?CustomMessageModePermissions $customMessageModePermissions,
-        public ?string $messageModeId,
+        /** @var Option<CustomMessageModePermissions> $customMessageModePermissions */
+        public Option $customMessageModePermissions,
+        /** @var Option<string> $messageModeId */
+        public Option $messageModeId,
         public ?int $numberOfSupplyCentersToWin,
         public ?int $maximumNumberOfRounds,
         /** @var array<int> $weekdaysWithoutAdjudication */

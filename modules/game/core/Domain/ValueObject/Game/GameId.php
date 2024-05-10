@@ -1,10 +1,10 @@
 <?php
 
-namespace Dnw\Game\Core\Domain\ValueObject\Variant;
+namespace Dnw\Game\Core\Domain\ValueObject\Game;
 
 use Dnw\Foundation\Identity\UlidValueObjectTrait;
 
-class VariantId
+class GameId
 {
     use UlidValueObjectTrait;
 }

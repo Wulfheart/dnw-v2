@@ -34,4 +34,11 @@ readonly class LaravelEventDispatcher implements EventDispatcherInterface
         }
 
     }
+
+    public function dispatchMultiple(array $events): void
+    {
+        foreach ($events as $event) {
+            $this->dispatch($event);
+        }
+    }
 }
