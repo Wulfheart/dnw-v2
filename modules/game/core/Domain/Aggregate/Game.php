@@ -43,7 +43,6 @@ class Game
         GameStartTiming $gameStartTiming,
         Variant $variant,
         PlayerId $playerId,
-        bool $createPrivateChats,
     ): self {
 
         $powers = PowerCollection::createFromVariantPowerCollection(

@@ -6,12 +6,13 @@ class CustomMessageModePermissions
 {
     public function __construct(
         public string $description,
-        public bool $messageModeAllowCreationOfGroupChats,
-        public bool $messageModeAllowAdjustmentMessages,
-        public bool $messageModeAllowMoveMessages,
-        public bool $messageModeAllowRetreatMessages,
-        public bool $messageModeAllowPreGameMessages,
-        public bool $messageModeAllowPostGameMessages,
+        public bool $allowOnlyPublicMessages,
+        public bool $allowCreationOfGroupChats,
+        public bool $allowAdjustmentMessages,
+        public bool $allowMoveMessages,
+        public bool $allowRetreatMessages,
+        public bool $allowPreGameMessages,
+        public bool $allowPostGameMessages,
     ) {
 
     }

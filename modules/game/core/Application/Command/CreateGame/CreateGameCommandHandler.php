@@ -40,12 +40,13 @@ readonly class CreateGameCommandHandler
                 true,
                 $customMessageModePermissions->description,
                 $command->isAnonymous,
-                $customMessageModePermissions->messageModeAllowCreationOfGroupChats,
-                $customMessageModePermissions->messageModeAllowAdjustmentMessages,
-                $customMessageModePermissions->messageModeAllowMoveMessages,
-                $customMessageModePermissions->messageModeAllowRetreatMessages,
-                $customMessageModePermissions->messageModeAllowPreGameMessages,
-                $customMessageModePermissions->messageModeAllowPostGameMessages,
+                $customMessageModePermissions->allowOnlyPublicMessages,
+                $customMessageModePermissions->allowCreationOfGroupChats,
+                $customMessageModePermissions->allowAdjustmentMessages,
+                $customMessageModePermissions->allowMoveMessages,
+                $customMessageModePermissions->allowRetreatMessages,
+                $customMessageModePermissions->allowPreGameMessages,
+                $customMessageModePermissions->allowPostGameMessages,
             );
         } else {
             $messageMode = $this->messageModeRepository->load(

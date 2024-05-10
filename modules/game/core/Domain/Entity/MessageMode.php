@@ -2,6 +2,7 @@
 
 namespace Dnw\Game\Core\Domain\Entity;
 
+use Dnw\Game\Core\Domain\Exception\DomainException;
 use Dnw\Game\Core\Domain\ValueObject\MessageMode\MessageModeId;
 use Dnw\Game\Core\Domain\ValueObject\MessageMode\MessageModeName;
 use PhpOption\Option;
@@ -16,6 +17,7 @@ readonly class MessageMode
         public bool $isCustom,
         public string $description,
         public bool $isAnonymous,
+        public bool $allowOnlyPublicMessages,
         public bool $allowCreationOfGroupChats,
         public bool $allowAdjustmentMessages,
         public bool $allowMoveMessages,
@@ -23,5 +25,8 @@ readonly class MessageMode
         public bool $allowPreGameMessages,
         public bool $allowPostGameMessages,
     ) {
+        if ($this->allowOnlyPublicMessages && ! $this->isAnonymous) {
+            throw new DomainException('Only public messages are allowed in non-anonymous games');
+        }
     }
 }
