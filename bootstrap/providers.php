@@ -1,6 +1,9 @@
 <?php
 
+use App\Providers\AppServiceProvider;
+use Dnw\Foundation\Providers\FoundationEventServiceProvider;
+
 return [
-    App\Providers\AppServiceProvider::class,
-    Dnw\Foundation\Providers\FoundationEventServiceProvider::class,
+    AppServiceProvider::class,
+    FoundationEventServiceProvider::class,
 ];

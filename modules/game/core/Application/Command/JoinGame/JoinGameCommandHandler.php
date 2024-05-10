@@ -8,7 +8,7 @@ use Dnw\Game\Core\Domain\ValueObject\Game\GameId;
 use Dnw\Game\Core\Domain\ValueObject\PlayerId;
 use Dnw\Game\Core\Domain\ValueObject\Variant\VariantPower\VariantPowerId;
 
-class JoinGameCommandHandler
+readonly class JoinGameCommandHandler
 {
     public function __construct(
         private GameRepositoryInterface $gameRepository
