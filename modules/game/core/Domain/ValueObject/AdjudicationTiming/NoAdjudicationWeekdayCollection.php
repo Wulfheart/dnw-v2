@@ -3,6 +3,7 @@
 namespace Dnw\Game\Core\Domain\ValueObject\AdjudicationTiming;
 
 use Dnw\Game\Core\Domain\ValueObject\WeekdayEnum;
+use InvalidArgumentException;
 
 readonly class NoAdjudicationWeekdayCollection
 {
@@ -12,7 +13,7 @@ readonly class NoAdjudicationWeekdayCollection
     ) {
         foreach ($weekdays as $weekday) {
             if ($weekday < 0 || $weekday > 6) {
-                throw new \InvalidArgumentException('Invalid weekday');
+                throw new InvalidArgumentException('Invalid weekday');
             }
         }
     }

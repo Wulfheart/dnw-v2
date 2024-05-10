@@ -26,6 +26,5 @@ readonly class JoinGameCommandHandler
         );
 
         $this->gameRepository->save($game);
-
     }
 }
