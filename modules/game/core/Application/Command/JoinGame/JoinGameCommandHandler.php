@@ -18,7 +18,7 @@ readonly class JoinGameCommandHandler
 
     public function handle(JoinGameCommand $command): void
     {
-        $game = $this->gameRepository->find(GameId::fromString($command->gameId));
+        $game = $this->gameRepository->load(GameId::fromString($command->gameId));
 
         $game->join(
             PlayerId::fromId($command->userId),

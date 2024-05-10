@@ -48,7 +48,7 @@ readonly class CreateGameCommandHandler
                 $customMessageModePermissions->messageModeAllowPostGameMessages,
             );
         } else {
-            $messageMode = $this->messageModeRepository->find(
+            $messageMode = $this->messageModeRepository->load(
                 MessageModeId::fromString($command->messageModeId->get())
             );
         }
@@ -64,7 +64,7 @@ readonly class CreateGameCommandHandler
             $command->startWhenReady,
         );
 
-        $variant = $this->variantRepository->find(VariantId::fromString($command->variantId));
+        $variant = $this->variantRepository->load(VariantId::fromString($command->variantId));
 
         $game = Game::createWithRandomAssignments(
             GameName::fromString($command->name),
