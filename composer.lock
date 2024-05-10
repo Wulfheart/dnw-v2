@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5bd5e085a064f8db24945b909e6f5e9c",
+    "content-hash": "f40dae934dc4da32ea65a6689e72d92f",
     "packages": [
         {
             "name": "brick/math",
@@ -897,6 +897,38 @@
                     "Dnw\\Game\\Tests\\": "tests/",
                     "Dnw\\Game\\Database\\Factories\\": "database/factories/",
                     "Dnw\\Game\\Database\\Seeders\\": "database/seeders/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "dnw/in-game-messaging",
+            "version": "1.0",
+            "dist": {
+                "type": "path",
+                "url": "modules/in-game-messaging",
+                "reference": "5685615c64068e35cf9d3581655aeb09508288ca"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Dnw\\InGameMessaging\\Providers\\InGameMessagingServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Dnw\\InGameMessaging\\": "src/",
+                    "Dnw\\InGameMessaging\\Tests\\": "tests/",
+                    "Dnw\\InGameMessaging\\Database\\Factories\\": "database/factories/",
+                    "Dnw\\InGameMessaging\\Database\\Seeders\\": "database/seeders/"
                 }
             },
             "license": [
@@ -3623,20 +3655,20 @@
         },
         {
             "name": "psr/http-factory",
-            "version": "1.0.2",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/http-factory.git",
-                "reference": "e616d01114759c4c489f93b099585439f795fe35"
+                "reference": "2b4765fddfe3b508ac62f829e852b1501d3f6e8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/http-factory/zipball/e616d01114759c4c489f93b099585439f795fe35",
-                "reference": "e616d01114759c4c489f93b099585439f795fe35",
+                "url": "https://api.github.com/repos/php-fig/http-factory/zipball/2b4765fddfe3b508ac62f829e852b1501d3f6e8a",
+                "reference": "2b4765fddfe3b508ac62f829e852b1501d3f6e8a",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.0.0",
+                "php": ">=7.1",
                 "psr/http-message": "^1.0 || ^2.0"
             },
             "type": "library",
@@ -3660,7 +3692,7 @@
                     "homepage": "https://www.php-fig.org/"
                 }
             ],
-            "description": "Common interfaces for PSR-7 HTTP message factories",
+            "description": "PSR-17: Common interfaces for PSR-7 HTTP message factories",
             "keywords": [
                 "factory",
                 "http",
@@ -3672,9 +3704,9 @@
                 "response"
             ],
             "support": {
-                "source": "https://github.com/php-fig/http-factory/tree/1.0.2"
+                "source": "https://github.com/php-fig/http-factory"
             },
-            "time": "2023-04-10T20:10:41+00:00"
+            "time": "2024-04-15T12:06:14+00:00"
         },
         {
             "name": "psr/http-message",

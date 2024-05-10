@@ -11,6 +11,7 @@
         "php": "^8.3",
         "dnw/foundation": "*",
         "dnw/game": "*",
+        "dnw/in-game-messaging": "*",
         "haydenpierce/class-finder": "^0.5.3",
         "internachi/modular": "^2.2",
         "laravel/framework": "^11.0",
