@@ -13,6 +13,5 @@
         }
     ],
     "require": {
-        "spatie/laravel-data": "^4.6"
     }
 }

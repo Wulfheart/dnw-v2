@@ -2,19 +2,19 @@
 
 namespace Dnw\Adjudicator;
 
-use Dnw\Adjudicator\Dto\AdjudicateGameRequestDto;
-use Dnw\Adjudicator\Dto\AdjudicateGameResponseDto;
-use Dnw\Adjudicator\Dto\DumbbotRequestDto;
-use Dnw\Adjudicator\Dto\DumbbotResponseDto;
-use Dnw\Adjudicator\Dto\VariantsResponseDto;
+use Dnw\Adjudicator\Dto\AdjudicateGameRequest;
+use Dnw\Adjudicator\Dto\AdjudicateGameResponse;
+use Dnw\Adjudicator\Dto\DumbbotRequest;
+use Dnw\Adjudicator\Dto\DumbbotResponse;
+use Dnw\Adjudicator\Dto\VariantsResponse;
 
 interface AdjudicatorService
 {
-    public function getVariants(): VariantsResponseDto;
+    public function getVariants(): VariantsResponse;
 
-    public function initializeGame(string $variant): AdjudicateGameResponseDto;
+    public function initializeGame(string $variant): AdjudicateGameResponse;
 
-    public function adjudicateGame(AdjudicateGameRequestDto $request): AdjudicateGameResponseDto;
+    public function adjudicateGame(AdjudicateGameRequest $request): AdjudicateGameResponse;
 
-    public function getDumbbotOrders(DumbbotRequestDto $request): DumbbotResponseDto;
+    public function getDumbbotOrders(DumbbotRequest $request): DumbbotResponse;
 }

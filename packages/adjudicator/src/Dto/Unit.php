@@ -2,10 +2,7 @@
 
 namespace Dnw\Adjudicator\Dto;
 
-use Spatie\DataTransferObject\Attributes\Strict;
-
-#[Strict]
-class UnitDto extends BaseDto
+class Unit extends Base
 {
     /** @var string[] */
     public array $possible_orders;

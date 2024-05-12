@@ -2,10 +2,7 @@
 
 namespace Dnw\Adjudicator\Dto;
 
-use Spatie\DataTransferObject\Attributes\Strict;
-
-#[Strict]
-class PhasePowerDataDto extends BaseDto
+class PhasePowerData extends Base
 {
     public int $home_center_count;
 

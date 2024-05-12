@@ -2,10 +2,7 @@
 
 namespace Dnw\Adjudicator\Dto;
 
-use Spatie\DataTransferObject\Attributes\Strict;
-
-#[Strict]
-class DumbbotRequestDto extends BaseDto
+class DumbbotRequest extends Base
 {
     public string $current_state_encoded;
 

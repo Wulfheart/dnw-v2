@@ -2,10 +2,7 @@
 
 namespace Dnw\Adjudicator\Dto;
 
-use Spatie\DataTransferObject\Attributes\Strict;
-
-#[Strict]
-class DumbbotResponseDto extends BaseDto
+class DumbbotResponse extends Base
 {
     /** @var string[] */
     public array $orders;

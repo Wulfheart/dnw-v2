@@ -2,10 +2,7 @@
 
 namespace Dnw\Adjudicator\Dto;
 
-use Spatie\DataTransferObject\Attributes\Strict;
-
-#[Strict]
-class VariantDto extends BaseDto
+class Variant extends Base
 {
     public int $default_end_of_game;
 

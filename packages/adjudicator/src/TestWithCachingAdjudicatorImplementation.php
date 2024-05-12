@@ -2,11 +2,11 @@
 
 namespace Dnw\Adjudicator;
 
-use Dnw\Adjudicator\Dto\AdjudicateGameRequestDto;
-use Dnw\Adjudicator\Dto\AdjudicateGameResponseDto;
-use Dnw\Adjudicator\Dto\DumbbotRequestDto;
-use Dnw\Adjudicator\Dto\DumbbotResponseDto;
-use Dnw\Adjudicator\Dto\VariantsResponseDto;
+use Dnw\Adjudicator\Dto\AdjudicateGameRequest;
+use Dnw\Adjudicator\Dto\AdjudicateGameResponse;
+use Dnw\Adjudicator\Dto\DumbbotRequest;
+use Dnw\Adjudicator\Dto\DumbbotResponse;
+use Dnw\Adjudicator\Dto\VariantsResponse;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use Spatie\DataTransferObject\Exceptions\UnknownProperties;
@@ -17,11 +17,11 @@ class TestWithCachingAdjudicatorImplementation implements AdjudicatorService
      * @throws UnknownProperties
      * @throws RequestException
      */
-    public function getVariants(): VariantsResponseDto
+    public function getVariants(): VariantsResponse
     {
         $response = Http::baseUrl(config('diplomacy.adjudicator.base_url'))->get('variants');
         $response->throw();
-        $dto = new VariantsResponseDto($response->json());
+        $dto = new VariantsResponse($response->json());
         $dto->json = $response->body();
 
         return $dto;
@@ -31,7 +31,7 @@ class TestWithCachingAdjudicatorImplementation implements AdjudicatorService
      * @throws UnknownProperties
      * @throws RequestException
      */
-    public function initializeGame(string $variant): AdjudicateGameResponseDto
+    public function initializeGame(string $variant): AdjudicateGameResponse
     {
         $json_raw = $this->do($variant, function ($data) {
             $response = Http::baseUrl(config('diplomacy.adjudicator.base_url'))->get(implode('/',
@@ -41,7 +41,7 @@ class TestWithCachingAdjudicatorImplementation implements AdjudicatorService
             return $response->body();
         });
 
-        $dto = new AdjudicateGameResponseDto(json_decode($json_raw, true));
+        $dto = new AdjudicateGameResponse(json_decode($json_raw, true));
         $dto->json = $json_raw;
 
         return $dto;
@@ -51,7 +51,7 @@ class TestWithCachingAdjudicatorImplementation implements AdjudicatorService
      * @throws UnknownProperties
      * @throws RequestException
      */
-    public function adjudicateGame(AdjudicateGameRequestDto $request): AdjudicateGameResponseDto
+    public function adjudicateGame(AdjudicateGameRequest $request): AdjudicateGameResponse
     {
         $json_raw = $this->do($request, function ($data) {
             $response = Http::baseUrl(config('diplomacy.adjudicator.base_url'))->post('adjudicate', $data->toArray());
@@ -60,7 +60,7 @@ class TestWithCachingAdjudicatorImplementation implements AdjudicatorService
             return $response->body();
         });
 
-        $dto = new AdjudicateGameResponseDto(json_decode($json_raw, true));
+        $dto = new AdjudicateGameResponse(json_decode($json_raw, true));
         $dto->json = $json_raw;
 
         return $dto;
@@ -70,12 +70,12 @@ class TestWithCachingAdjudicatorImplementation implements AdjudicatorService
      * @throws UnknownProperties
      * @throws RequestException
      */
-    public function getDumbbotOrders(DumbbotRequestDto $request): DumbbotResponseDto
+    public function getDumbbotOrders(DumbbotRequest $request): DumbbotResponse
     {
         $response = Http::baseUrl(config('diplomacy.adjudicator.base_url'))->post('dumbbot', $request->toArray());
         $response->throw();
 
-        $dto = new DumbbotResponseDto($response->json());
+        $dto = new DumbbotResponse($response->json());
         $dto->json = $response->body();
 
         return $dto;
