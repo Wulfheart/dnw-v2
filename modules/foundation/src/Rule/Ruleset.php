@@ -40,7 +40,7 @@ class Ruleset
         $errors = [];
         foreach ($this->rules as $rule) {
             if (! $rule->passes()) {
-                $errors[] = $rule->key();
+                array_push($errors, ...$rule->failingKeys());
             }
         }
 

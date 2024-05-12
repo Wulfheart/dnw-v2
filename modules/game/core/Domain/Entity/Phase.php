@@ -7,6 +7,7 @@ use Dnw\Game\Core\Domain\Collection\PhasePowerCollection;
 use Dnw\Game\Core\Domain\Collection\WinnerCollection;
 use Dnw\Game\Core\Domain\ValueObject\Phase\PhaseId;
 use Dnw\Game\Core\Domain\ValueObject\Phase\PhaseTypeEnum;
+use Dnw\Game\Core\Domain\ValueObject\Power\PowerId;
 use PhpOption\Option;
 
 class Phase
@@ -26,5 +27,10 @@ class Phase
     public function hasWinners(): bool
     {
         return $this->winnerCollection->isDefined();
+    }
+
+    public function needsOrders(PowerId $powerId): bool
+    {
+        return $this->orders->needsOrders($powerId);
     }
 }

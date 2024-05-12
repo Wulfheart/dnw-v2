@@ -3,6 +3,7 @@
 namespace Dnw\Game\Core\Domain\Collection;
 
 use Dnw\Game\Core\Domain\ValueObject\Player\PlayerId;
+use Dnw\Game\Core\Domain\ValueObject\Power\PowerId;
 use Dnw\Game\Core\Domain\ValueObject\Variant\VariantPower\VariantPowerId;
 
 class PowerCollection
@@ -51,5 +52,9 @@ class PowerCollection
     public function hasNoAssignedPowers(): bool
     {
         return false;
+    }
+
+    public function getPowerIdByPlayerId(PlayerId $playerId): PowerId
+    {
     }
 }

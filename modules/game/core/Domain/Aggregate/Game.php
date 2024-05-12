@@ -13,6 +13,7 @@ use Dnw\Game\Core\Domain\Entity\Variant;
 use Dnw\Game\Core\Domain\Event\GameAbandonedEvent;
 use Dnw\Game\Core\Domain\Event\GameCreatedEvent;
 use Dnw\Game\Core\Domain\Event\GameStartedEvent;
+use Dnw\Game\Core\Domain\Event\OrdersSubmittedEvent;
 use Dnw\Game\Core\Domain\Exception\DomainException;
 use Dnw\Game\Core\Domain\Exception\RulesetHandler;
 use Dnw\Game\Core\Domain\Rule\GameRules;
@@ -201,12 +202,23 @@ class Game
         }
     }
 
-    public function submitOrders(PlayerId $playerId, OrderCollection $orderCollection): void
+    public function submitOrders(PlayerId $playerId, OrderCollection $orderCollection, bool $markAsReady): void
     {
         RulesetHandler::throwConditionally(
             "Player $playerId cannot submit orders for game {$this->gameId}",
             $this->canSubmitOrders($playerId)
         );
+
+        $powerId = $this->powerCollection->getPowerIdByPlayerId($playerId);
+
+        $this->phasesInfo->currentPhase->get()->orders->setOrdersForPower(
+            $powerId,
+            $orderCollection,
+            $markAsReady
+        );
+
+        $this->pushEvent(new OrdersSubmittedEvent());
+
     }
 
     public function canSubmitOrders(PlayerId $playerId): Ruleset
@@ -223,7 +235,14 @@ class Game
             new Rule(
                 GameRules::PLAYER_NOT_IN_GAME,
                 $this->powerCollection->doesNotContainPlayer($playerId),
+                new Rule(
+                    GameRules::POWER_DOES_NOT_NEED_TO_SUBMIT_ORDERS,
+                    ! $this->phasesInfo->currentPhase->get()->needsOrders(
+                        $this->powerCollection->getPowerIdByPlayerId($playerId)
+                    ),
+                )
             ),
+
         );
     }
 }
