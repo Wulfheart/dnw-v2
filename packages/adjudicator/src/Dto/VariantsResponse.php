@@ -4,6 +4,10 @@ namespace Dnw\Adjudicator\Dto;
 
 class VariantsResponse extends Base
 {
-    /** @var array<Variant> */
-    public array $variants;
+    public function __construct(
+        /** @var array<Variant> */
+        public array $variants,
+    ) {
+
+    }
 }

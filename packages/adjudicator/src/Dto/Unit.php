@@ -4,8 +4,11 @@ namespace Dnw\Adjudicator\Dto;
 
 class Unit extends Base
 {
-    /** @var array<string> */
-    public array $possible_orders;
+    public function __construct(
+        /** @var array<string> */
+        public array $possible_orders,
+        public string $space,
+    ) {
 
-    public string $space;
+    }
 }

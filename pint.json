@@ -117,6 +117,7 @@
             "import_constants": true,
             "import_functions": true
         },
-        "phpdoc_array_type": true
+        "phpdoc_array_type": true,
+        "phpdoc_trim": true
     }
 }

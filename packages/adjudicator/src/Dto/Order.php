@@ -4,8 +4,11 @@ namespace Dnw\Adjudicator\Dto;
 
 class Order extends Base
 {
-    public string $power;
+    public function __construct(
+        public string $power,
+        /** @var array<string> */
+        public array $instructions,
+    ) {
 
-    /** @var array<string> */
-    public array $instructions;
+    }
 }

@@ -4,8 +4,11 @@ namespace Dnw\Adjudicator\Dto;
 
 class PossibleOrder extends Base
 {
-    public string $power;
+    public function __construct(
+        public string $power,
+        /** @var array<Unit> */
+        public array $units,
+    ) {
 
-    /** @var array<Unit> */
-    public Collection $units;
+    }
 }

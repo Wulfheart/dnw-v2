@@ -11,5 +11,5 @@ abstract class Base implements JsonSerializable
     /**
      * @param  array<mixed>  $array
      */
-    abstract public function fromArray(array $array): static;
+    abstract public static function fromArray(array $array): static;
 }
