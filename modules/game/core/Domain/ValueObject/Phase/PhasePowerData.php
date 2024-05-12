@@ -9,7 +9,6 @@ class PhasePowerData
     public function __construct(
         public PowerId $powerId,
         public bool $ordersNeeded,
-
     ) {
 
     }

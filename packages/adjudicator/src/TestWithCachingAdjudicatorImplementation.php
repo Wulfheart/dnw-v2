@@ -34,8 +34,10 @@ class TestWithCachingAdjudicatorImplementation implements AdjudicatorService
     public function initializeGame(string $variant): AdjudicateGameResponse
     {
         $json_raw = $this->do($variant, function ($data) {
-            $response = Http::baseUrl(config('diplomacy.adjudicator.base_url'))->get(implode('/',
-                ['adjudicate', $data]));
+            $response = Http::baseUrl(config('diplomacy.adjudicator.base_url'))->get(implode(
+                '/',
+                ['adjudicate', $data]
+            ));
             $response->throw();
 
             return $response->body();
@@ -84,7 +86,7 @@ class TestWithCachingAdjudicatorImplementation implements AdjudicatorService
     protected function do(mixed $data, callable $callback): string
     {
         $hash = hash('sha256', json_encode($data));
-        $location = base_path('tests/cache/'.$hash.'.response.json');
+        $location = base_path('tests/cache/' . $hash . '.response.json');
 
         if (file_exists($location)) {
             $json_raw = file_get_contents($location);

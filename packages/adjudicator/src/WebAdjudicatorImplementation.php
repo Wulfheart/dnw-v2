@@ -33,8 +33,10 @@ class WebAdjudicatorImplementation implements AdjudicatorService
      */
     public function initializeGame(string $variant): AdjudicateGameResponse
     {
-        $response = Http::log()->baseUrl(config('diplomacy.adjudicator.base_url'))->get(implode('/',
-            ['adjudicate', $variant]));
+        $response = Http::log()->baseUrl(config('diplomacy.adjudicator.base_url'))->get(implode(
+            '/',
+            ['adjudicate', $variant]
+        ));
         $response->throw();
 
         $dto = new AdjudicateGameResponse($response->json());

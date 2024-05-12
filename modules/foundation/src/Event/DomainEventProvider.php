@@ -58,7 +58,7 @@ readonly class DomainEventProvider
         $events = $this->discoverEvents();
 
         $this->deleteCachedEvents();
-        $fileContent = '<?php return '.var_export($events, true).';';
+        $fileContent = '<?php return ' . var_export($events, true) . ';';
         $this->filesystem->dumpFile($this->cachePath, $fileContent);
     }
 

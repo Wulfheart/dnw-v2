@@ -4,7 +4,7 @@ namespace Dnw\Adjudicator\Dto;
 
 class AppliedOrder extends Base
 {
-    /** @var string[] */
+    /** @var array<string> */
     public array $orders;
 
     public string $power;

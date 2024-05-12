@@ -8,6 +8,6 @@ class Variant extends Base
 
     public string $name;
 
-    /** @var string[] */
+    /** @var array<string> */
     public array $powers;
 }

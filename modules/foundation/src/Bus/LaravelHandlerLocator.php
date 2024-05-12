@@ -17,7 +17,7 @@ readonly class LaravelHandlerLocator implements HandlerLocator
      */
     public function getHandlerForCommand($commandName)
     {
-        $commandHandler = $commandName.'Handler';
+        $commandHandler = $commandName . 'Handler';
 
         return $this->application->make($commandHandler);
     }

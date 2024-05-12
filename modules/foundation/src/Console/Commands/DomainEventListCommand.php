@@ -45,7 +45,7 @@ class DomainEventListCommand extends Command
             $this->components->twoColumnDetail($event);
             $listeners = [];
             foreach ($listenerInfos as $listenerInfo) {
-                $listenerString = $listenerInfo->class.'@'.$listenerInfo->method;
+                $listenerString = $listenerInfo->class . '@' . $listenerInfo->method;
                 if ($listenerInfo->isAsync) {
                     $listenerString .= ' <fg=bright-blue>(Async)</>';
                 }

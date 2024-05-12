@@ -4,7 +4,7 @@ namespace Dnw\Adjudicator\Dto;
 
 class Unit extends Base
 {
-    /** @var string[] */
+    /** @var array<string> */
     public array $possible_orders;
 
     public string $space;

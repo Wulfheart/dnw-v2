@@ -11,8 +11,8 @@ class DomainException extends Exception
         string $message,
         ?Ruleset $ruleset = null,
     ) {
-        if ($ruleset->fails()) {
-            $message .= ' Errors: '.implode(', ', $ruleset->getErrors());
+        if ($ruleset?->fails()) {
+            $message .= ' Errors: ' . implode(', ', $ruleset->getErrors());
         }
         parent::__construct($message);
     }

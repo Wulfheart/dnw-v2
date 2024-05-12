@@ -15,7 +15,6 @@ class Variant
         public VariantPowerCollection $powers,
         public Count $defaultSupplyCentersToWinCount,
         public Count $totalSupplyCentersCount,
-
     ) {
 
     }
