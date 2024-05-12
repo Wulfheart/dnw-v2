@@ -5,7 +5,7 @@ namespace Dnw\Game\Core\Application\Command\JoinGame;
 use Dnw\Foundation\Identity\Id;
 use Dnw\Game\Core\Domain\Repository\GameRepositoryInterface;
 use Dnw\Game\Core\Domain\ValueObject\Game\GameId;
-use Dnw\Game\Core\Domain\ValueObject\PlayerId;
+use Dnw\Game\Core\Domain\ValueObject\Player\PlayerId;
 use Dnw\Game\Core\Domain\ValueObject\Variant\VariantPower\VariantPowerId;
 
 readonly class JoinGameCommandHandler

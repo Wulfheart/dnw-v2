@@ -2,7 +2,7 @@
 
 namespace Dnw\Game\Core\Domain\Collection;
 
-use Dnw\Game\Core\Domain\ValueObject\PlayerId;
+use Dnw\Game\Core\Domain\ValueObject\Player\PlayerId;
 use Dnw\Game\Core\Domain\ValueObject\Variant\VariantPower\VariantPowerId;
 
 class PowerCollection
@@ -38,7 +38,17 @@ class PowerCollection
         return false;
     }
 
+    public function doesNotContainPlayer(PlayerId $playerId): bool
+    {
+        return false;
+    }
+
     public function hasPowerFilled(VariantPowerId $variantPowerId): bool
+    {
+        return false;
+    }
+
+    public function hasNoAssignedPowers(): bool
     {
         return false;
     }

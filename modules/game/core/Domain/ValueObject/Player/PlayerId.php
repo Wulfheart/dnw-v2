@@ -1,6 +1,6 @@
 <?php
 
-namespace Dnw\Game\Core\Domain\ValueObject;
+namespace Dnw\Game\Core\Domain\ValueObject\Player;
 
 use Dnw\Foundation\Identity\UlidValueObjectTrait;
 

@@ -23,6 +23,11 @@ class PhasesInfo
         return new self(Count::zero(), None::create());
     }
 
+    public function initialPhaseExists(): bool
+    {
+        return $this->count->int() >= 1;
+    }
+
     public function hasNewPhase(): bool
     {
         return $this->hasNewPhase;
@@ -30,6 +35,7 @@ class PhasesInfo
 
     public function hasBeenStarted(): bool
     {
-        return $this->currentPhase->isDefined() && $this->currentPhase->get();
+        return $this->currentPhase->isDefined()
+            && $this->currentPhase->get()->adjudicationTime->isDefined();
     }
 }

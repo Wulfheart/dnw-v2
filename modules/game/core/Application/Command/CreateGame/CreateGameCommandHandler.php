@@ -15,7 +15,7 @@ use Dnw\Game\Core\Domain\ValueObject\Game\GameName;
 use Dnw\Game\Core\Domain\ValueObject\GameStartTiming\GameStartTiming;
 use Dnw\Game\Core\Domain\ValueObject\GameStartTiming\JoinLength;
 use Dnw\Game\Core\Domain\ValueObject\MessageMode\MessageModeId;
-use Dnw\Game\Core\Domain\ValueObject\PlayerId;
+use Dnw\Game\Core\Domain\ValueObject\Player\PlayerId;
 use Dnw\Game\Core\Domain\ValueObject\Variant\VariantId;
 use PhpOption\None;
 
