@@ -8,4 +8,8 @@ class PhaseLength
     {
         return new self($length);
     }
+
+    public function minutes(): int
+    {
+    }
 }

@@ -33,4 +33,19 @@ class Phase
     {
         return $this->orders->needsOrders($powerId);
     }
+
+    public function markOrderStatus(PowerId $powerId, bool $orderStatus): void
+    {
+        $this->orders->markOrderStatus($powerId, $orderStatus);
+    }
+
+    public function allOrdersMarkedAsReady(): bool
+    {
+
+    }
+
+    public function adjudicationTimeExpired(CarbonImmutable $currentTime): bool
+    {
+
+    }
 }

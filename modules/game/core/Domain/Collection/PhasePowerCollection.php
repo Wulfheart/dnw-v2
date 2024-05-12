@@ -15,4 +15,13 @@ class PhasePowerCollection
     {
         return false;
     }
+
+    public function markOrderStatus(PowerId $powerId, bool $orderStatus): void
+    {
+    }
+
+    public function readyForAdjudication(): bool
+    {
+
+    }
 }

@@ -10,6 +10,10 @@ class GameRules
 
     public const string HAS_BEEN_FINISHED = 'has_been_finished';
 
+    public const string HAS_NOT_BEEN_FINISHED = 'has_not_been_finished';
+
+    public const string HAS_BEEN_ABANDONED = 'has_been_abandoned';
+
     public const string INITIAL_PHASE_DOES_NOT_EXIST = 'initial_phase_does_not_exist';
 
     public const string HAS_NO_AVAILABLE_POWERS = 'has_no_available_powers';
@@ -27,4 +31,9 @@ class GameRules
 
     public const string POWER_DOES_NOT_NEED_TO_SUBMIT_ORDERS
         = 'power_does_not_need_to_submit_orders';
+
+    public const string PHASE_NOT_MARKED_AS_READY_AND_TIME_HAS_NOT_EXPIRED
+        = 'phase_not_marked_as_ready_or_time_has_not_expired';
+
+    public const string GAME_READY_FOR_ADJUDICATION = 'game_ready_for_adjudication';
 }
