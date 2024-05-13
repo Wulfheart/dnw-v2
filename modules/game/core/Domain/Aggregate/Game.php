@@ -6,8 +6,11 @@ use Carbon\CarbonImmutable;
 use Dnw\Foundation\Event\AggregateEventTrait;
 use Dnw\Foundation\Rule\Rule;
 use Dnw\Foundation\Rule\Ruleset;
+use Dnw\Game\Core\Domain\Collection\AppliedOrdersCollection;
 use Dnw\Game\Core\Domain\Collection\OrderCollection;
+use Dnw\Game\Core\Domain\Collection\PhasePowerCollection;
 use Dnw\Game\Core\Domain\Collection\PowerCollection;
+use Dnw\Game\Core\Domain\Collection\WinnerCollection;
 use Dnw\Game\Core\Domain\Entity\MessageMode;
 use Dnw\Game\Core\Domain\Entity\Phase;
 use Dnw\Game\Core\Domain\Entity\Variant;
@@ -26,13 +29,17 @@ use Dnw\Game\Core\Domain\Exception\DomainException;
 use Dnw\Game\Core\Domain\Exception\RulesetHandler;
 use Dnw\Game\Core\Domain\Rule\GameRules;
 use Dnw\Game\Core\Domain\ValueObject\AdjudicationTiming\AdjudicationTiming;
+use Dnw\Game\Core\Domain\ValueObject\Count;
 use Dnw\Game\Core\Domain\ValueObject\Game\GameId;
 use Dnw\Game\Core\Domain\ValueObject\Game\GameName;
 use Dnw\Game\Core\Domain\ValueObject\GameStartTiming\GameStartTiming;
+use Dnw\Game\Core\Domain\ValueObject\Phase\PhaseId;
+use Dnw\Game\Core\Domain\ValueObject\Phase\PhaseTypeEnum;
 use Dnw\Game\Core\Domain\ValueObject\Phases\PhasesInfo;
 use Dnw\Game\Core\Domain\ValueObject\Player\PlayerId;
 use Dnw\Game\Core\Domain\ValueObject\Variant\VariantPower\VariantPowerId;
 use PhpOption\Option;
+use PhpOption\Some;
 
 class Game
 {
@@ -66,7 +73,7 @@ class Game
     ): self {
 
         $powers = PowerCollection::createFromVariantPowerCollection(
-            $variant->powers
+            $variant->variantPowerCollection
         );
         $powers->assignRandomly($playerId);
 
@@ -84,6 +91,11 @@ class Game
             PhasesInfo::initialize(),
             [new GameCreatedEvent()]
         );
+    }
+
+    public function calculateSupplyCenterCountForWinning(): Count
+    {
+        return $this->variant->defaultSupplyCentersToWinCount;
     }
 
     /**
@@ -232,7 +244,7 @@ class Game
 
         $powerId = $this->powerCollection->getPowerIdByPlayerId($playerId);
 
-        $this->phasesInfo->currentPhase->get()->orders->setOrdersForPower(
+        $this->phasesInfo->currentPhase->get()->phasePowerCollection->setOrdersForPower(
             $powerId,
             $orderCollection,
             $markAsReady
@@ -337,14 +349,34 @@ class Game
         );
     }
 
-    public function adjudicate(Phase $phase, CarbonImmutable $currentTime): void
-    {
+    /**
+     * @param  Option<WinnerCollection>  $winnerCollection
+     *
+     * @throws DomainException
+     */
+    public function applyAdjudication(
+        PhaseTypeEnum $phaseType,
+        PhasePowerCollection $phasePowerCollection,
+        Option $winnerCollection,
+        AppliedOrdersCollection $appliedOrdersCollection,
+        CarbonImmutable $currentTime
+    ): void {
         RulesetHandler::throwConditionally(
             "Game {$this->gameId} cannot be adjudicated",
             $this->canAdjudicate($currentTime)
         );
 
-        $this->phasesInfo->proceedToNewPhase($phase);
+        $nextAdjudication = $this->adjudicationTiming->calculateNextAdjudication($currentTime);
+
+        $newPhase = new Phase(
+            PhaseId::generate(),
+            $phaseType,
+            $phasePowerCollection,
+            Some::create($nextAdjudication),
+            $winnerCollection,
+        );
+
+        $this->phasesInfo->proceedToNewPhase($newPhase, $appliedOrdersCollection);
 
         $this->pushEvent(new GameAdjudicatedEvent());
 

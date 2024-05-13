@@ -29,7 +29,7 @@ class MessageRoom
 
     public function addMessage(PowerMessage|SystemMessage $message): void
     {
-        if ($message instanceof PowerMessage && ! $this->memberCollection->contains($message->sender)) {
+        if ($message instanceof PowerMessage && ! $this->memberCollection->hasPowerAdMember($message->sender)) {
             throw new DomainException('The sender is not a member of this room');
         }
         $this->messages[] = $message;

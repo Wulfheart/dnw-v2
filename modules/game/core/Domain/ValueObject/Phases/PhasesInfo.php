@@ -2,6 +2,7 @@
 
 namespace Dnw\Game\Core\Domain\ValueObject\Phases;
 
+use Dnw\Game\Core\Domain\Collection\AppliedOrdersCollection;
 use Dnw\Game\Core\Domain\Entity\Phase;
 use Dnw\Game\Core\Domain\ValueObject\Count;
 use PhpOption\None;
@@ -16,12 +17,13 @@ class PhasesInfo
         public Count $count,
         /** @var Option<Phase> $currentPhase */
         public Option $currentPhase,
+        public Option $previousPhase,
     ) {
     }
 
     public static function initialize(): self
     {
-        return new self(Count::zero(), None::create());
+        return new self(Count::zero(), None::create(), None::create());
     }
 
     public function initialPhaseExists(): bool
@@ -40,9 +42,11 @@ class PhasesInfo
             && $this->currentPhase->get()->adjudicationTime->isDefined();
     }
 
-    public function proceedToNewPhase(Phase $newPhase): void
+    public function proceedToNewPhase(Phase $newPhase, AppliedOrdersCollection $appliedOrdersCollection): void
     {
         $this->hasNewPhase = true;
+        $this->currentPhase->get()->applyOrders($appliedOrdersCollection);
+        $this->previousPhase = $this->currentPhase;
         $this->currentPhase = Some::create($newPhase);
     }
 }

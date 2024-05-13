@@ -3,6 +3,7 @@
 namespace Dnw\Game\Core\Domain\Entity;
 
 use Carbon\CarbonImmutable;
+use Dnw\Game\Core\Domain\Collection\AppliedOrdersCollection;
 use Dnw\Game\Core\Domain\Collection\PhasePowerCollection;
 use Dnw\Game\Core\Domain\Collection\WinnerCollection;
 use Dnw\Game\Core\Domain\ValueObject\Phase\PhaseId;
@@ -15,7 +16,7 @@ class Phase
     public function __construct(
         public PhaseId $phaseId,
         public PhaseTypeEnum $phaseType,
-        public PhasePowerCollection $orders,
+        public PhasePowerCollection $phasePowerCollection,
         /** @var Option<CarbonImmutable> $adjudicationTime */
         public Option $adjudicationTime,
         /** @var Option<WinnerCollection> $winnerCollection */
@@ -31,12 +32,12 @@ class Phase
 
     public function needsOrders(PowerId $powerId): bool
     {
-        return $this->orders->needsOrders($powerId);
+        return $this->phasePowerCollection->needsOrders($powerId);
     }
 
     public function markOrderStatus(PowerId $powerId, bool $orderStatus): void
     {
-        $this->orders->markOrderStatus($powerId, $orderStatus);
+        $this->phasePowerCollection->markOrderStatus($powerId, $orderStatus);
     }
 
     public function allOrdersMarkedAsReady(): bool
@@ -45,6 +46,11 @@ class Phase
     }
 
     public function adjudicationTimeExpired(CarbonImmutable $currentTime): bool
+    {
+
+    }
+
+    public function applyOrders(AppliedOrdersCollection $appliedOrdersCollection): void
     {
 
     }

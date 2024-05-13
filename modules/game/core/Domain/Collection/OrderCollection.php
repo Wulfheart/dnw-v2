@@ -2,14 +2,14 @@
 
 namespace Dnw\Game\Core\Domain\Collection;
 
+use Dnw\Foundation\Collection\Collection;
 use Dnw\Game\Core\Domain\ValueObject\Order\Order;
-use IteratorAggregate;
 use Traversable;
 
 /**
- * @implements IteratorAggregate<int, Order>
+ * @extends Collection<Order>
  */
-class OrderCollection implements IteratorAggregate
+class OrderCollection extends Collection
 {
     public function getIterator(): Traversable
     {
@@ -20,6 +20,14 @@ class OrderCollection implements IteratorAggregate
      * @param  array<string>  $orders
      */
     public function fromStringArray(array $orders): self
+    {
+
+    }
+
+    /**
+     * @return array<string>
+     */
+    public function toStringArray(): array
     {
 
     }

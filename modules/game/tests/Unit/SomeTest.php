@@ -16,4 +16,24 @@ class SomeTest extends TestCase
         $this->assertEquals('huu', $mock->bar());
 
     }
+
+    public function testCopy(): void
+    {
+        $class = new class() {
+            public int $foo = 1;
+
+            public int $bar = 2;
+
+            public function set(int $i): void
+            {
+                $this->foo = $this->bar;
+                $this->bar = $i;
+            }
+        };
+
+        $class->set(4);
+
+        $this->assertEquals(2, $class->foo);
+        $this->assertEquals(4, $class->bar);
+    }
 }

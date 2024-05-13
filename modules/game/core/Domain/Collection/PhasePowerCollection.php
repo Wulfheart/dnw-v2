@@ -2,9 +2,14 @@
 
 namespace Dnw\Game\Core\Domain\Collection;
 
+use Dnw\Foundation\Collection\Collection;
+use Dnw\Game\Core\Domain\ValueObject\Phase\PhasePowerData;
 use Dnw\Game\Core\Domain\ValueObject\Power\PowerId;
 
-class PhasePowerCollection
+/**
+ * @extends Collection<PhasePowerData>
+ */
+class PhasePowerCollection extends Collection
 {
     public function setOrdersForPower(PowerId $powerId, OrderCollection $orders, bool $markedAsReady): void
     {
@@ -20,7 +25,7 @@ class PhasePowerCollection
     {
     }
 
-    public function readyForAdjudication(): bool
+    public function allReadyForAdjudication(): bool
     {
 
     }

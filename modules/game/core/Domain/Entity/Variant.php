@@ -12,7 +12,7 @@ class Variant
     public function __construct(
         public VariantId $id,
         public VariantName $name,
-        public VariantPowerCollection $powers,
+        public VariantPowerCollection $variantPowerCollection,
         public Count $defaultSupplyCentersToWinCount,
         public Count $totalSupplyCentersCount,
     ) {
