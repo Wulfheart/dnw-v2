@@ -67,12 +67,8 @@ class PowerCollection extends Collection
     public function unassign(PlayerId $playerId): void
     {
         $power = $this->findBy(
-            fn (Power $power) => $playerId === $power->playerId->get()
+            fn (Power $power) => $power->playerId->map(fn (PlayerId $id) => $playerId === $id)->getOrElse(false)
         )->get();
-
-        if ($power->playerId->isEmpty()) {
-            throw new DomainException('Power not assigned');
-        }
 
         $power->playerId = None::create();
     }
@@ -91,7 +87,7 @@ class PowerCollection extends Collection
     {
         return $this->findBy(
             fn (Power $power) => $power->variantPowerId === $variantPowerId
-        )->isDefined();
+        )->get()->playerId->isDefined();
     }
 
     public function hasNoAssignedPowers(): bool
