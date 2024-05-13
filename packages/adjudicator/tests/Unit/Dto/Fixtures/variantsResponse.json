@@ -1,0 +1,17 @@
+{
+    "variants": [
+        {
+            "default_end_of_game": 18,
+            "name": "standard",
+            "powers": [
+                "AUSTRIA",
+                "ENGLAND",
+                "FRANCE",
+                "GERMANY",
+                "ITALY",
+                "RUSSIA",
+                "TURKEY"
+            ]
+        }
+    ]
+}

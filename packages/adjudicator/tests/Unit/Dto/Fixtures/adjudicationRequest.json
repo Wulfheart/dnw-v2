@@ -1,0 +1,13 @@
+{
+    "previous_state_encoded": "<current_state_encoded_as_base64>",
+    "orders": [
+        {
+            "power": "FRANCE",
+            "instructions": [
+                "A MAR - SPA",
+                "F BRE-PIC"
+            ]
+        }
+    ],
+    "scs_to_win": 18
+}

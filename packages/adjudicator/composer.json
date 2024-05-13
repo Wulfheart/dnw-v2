@@ -3,7 +3,8 @@
     "version": "1.0",
     "autoload": {
         "psr-4": {
-            "Dnw\\Adjudicator\\": "src/"
+            "Dnw\\Adjudicator\\": "src/",
+            "Dnw\\Adjudicator\\Test\\": "tests/"
         }
     },
     "authors": [

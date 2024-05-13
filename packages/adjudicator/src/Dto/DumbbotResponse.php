@@ -2,7 +2,7 @@
 
 namespace Dnw\Adjudicator\Dto;
 
-class DumbbotResponse extends Base
+class DumbbotResponse implements AdjudicatorDataInterface
 {
     public function __construct(
         /** @var array<string> */
@@ -10,5 +10,21 @@ class DumbbotResponse extends Base
         public string $power,
     ) {
 
+    }
+
+    public static function fromArray(array $array): AdjudicatorDataInterface
+    {
+        return new self(
+            $array['orders'],
+            $array['power'],
+        );
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'orders' => $this->orders,
+            'power' => $this->power,
+        ];
     }
 }
