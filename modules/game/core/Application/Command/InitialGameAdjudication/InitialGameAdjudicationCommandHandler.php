@@ -9,6 +9,7 @@ use Dnw\Game\Core\Domain\Adapter\TimeProviderInterface;
 use Dnw\Game\Core\Domain\Collection\PhasePowerCollection;
 use Dnw\Game\Core\Domain\Repository\GameRepositoryInterface;
 use Dnw\Game\Core\Domain\Repository\PhaseRepositoryInterface;
+use Dnw\Game\Core\Domain\ValueObject\Count;
 use Dnw\Game\Core\Domain\ValueObject\Game\GameId;
 use Dnw\Game\Core\Domain\ValueObject\Phase\PhasePowerData;
 use Dnw\Game\Core\Domain\ValueObject\Phase\PhaseTypeEnum;
@@ -53,7 +54,15 @@ readonly class InitialGameAdjudicationCommandHandler
 
             $powerId = $apiNameToPowerId($phasePowerData->power);
 
-            $ppd = new PhasePowerData($powerId, $ordersNeeded, None::create());
+            $ppd = new PhasePowerData(
+                $powerId,
+                $ordersNeeded,
+                false,
+                Count::fromInt($phasePowerData->supply_center_count),
+                Count::fromInt($phasePowerData->unit_count),
+                None::create(),
+                None::create(),
+            );
 
             $phasePowerDataCollection->push($ppd);
         }

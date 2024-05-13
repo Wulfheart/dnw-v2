@@ -11,11 +11,12 @@ trait UlidValueObjectTrait
     private function __construct(
         string $value
     ) {
+        $this->ulid = new Ulid($value);
     }
 
     public static function fromString(string $value): self
     {
-        return new self(new Ulid($value));
+        return new self($value);
     }
 
     public static function fromId(Id $id): self

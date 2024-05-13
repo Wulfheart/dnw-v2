@@ -65,19 +65,26 @@ class Game
         $this->events = $events;
     }
 
-    public static function createWithRandomAssignments(
+    /**
+     * @param  callable(int $lower, int $upper): int  $randomNumberGenerator
+     */
+    public static function create(
         GameName $name,
         MessageMode $messageMode,
         AdjudicationTiming $adjudicationTiming,
         GameStartTiming $gameStartTiming,
         Variant $variant,
         PlayerId $playerId,
+        callable $randomNumberGenerator
     ): self {
 
         $powers = PowerCollection::createFromVariantPowerCollection(
             $variant->variantPowerCollection
         );
-        $powers->assignRandomly($playerId);
+        /** @var int<0,max> $randomIndex */
+        $randomIndex = $randomNumberGenerator(0, $powers->count() - 1);
+        $randomPower = $powers->getOffset($randomIndex);
+        $powers->assign($playerId, $randomPower->variantPowerId);
 
         $gameId = GameId::generate();
 
@@ -102,18 +109,30 @@ class Game
 
     /**
      * @param  Option<VariantPowerId>  $variantPowerId
+     * @param  callable(int $lower, int $upper): int  $randomNumberGenerator
      *
      * @throws DomainException
      */
-    public function join(PlayerId $playerId, Option $variantPowerId, CarbonImmutable $currentTime): void
-    {
+    public function join(
+        PlayerId $playerId,
+        Option $variantPowerId,
+        CarbonImmutable $currentTime,
+        callable $randomNumberGenerator
+    ): void {
         RulesetHandler::throwConditionally(
             "Player $playerId cannot join game {$this->gameId}",
             $this->canJoin($playerId, $variantPowerId)
         );
 
         if ($this->randomPowerAssignments) {
-            $this->powerCollection->assignRandomly($playerId);
+            $unassignedPowers = $this->powerCollection->getUnassignedPowers();
+            if ($unassignedPowers->isEmpty()) {
+                throw new DomainException("No available powers for player $playerId in game {$this->gameId}");
+            }
+            /** @var int<0,max> $randomPowerIndex */
+            $randomPowerIndex = $randomNumberGenerator(0, $unassignedPowers->count() - 1);
+            $randomPower = $unassignedPowers->getOffset($randomPowerIndex);
+            $this->powerCollection->assign($playerId, $randomPower->variantPowerId);
         } else {
             $this->powerCollection->assign($playerId, $variantPowerId->get());
         }
@@ -287,7 +306,7 @@ class Game
                     GameRules::POWER_DOES_NOT_NEED_TO_SUBMIT_ORDERS,
                     ! $this->phasesInfo->currentPhase->get()->needsOrders(
                         $this->powerCollection->getPowerIdByPlayerId($playerId)
-                    ),
+                    )
                 )
             ),
             new Rule(
@@ -316,6 +335,12 @@ class Game
                     ! $this->phasesInfo->currentPhase->get()->needsOrders(
                         $this->powerCollection->getPowerIdByPlayerId($playerId)
                     ),
+                    new Rule(
+                        GameRules::ORDERS_ALREADY_MARKED_AS_READY,
+                        $this->phasesInfo->currentPhase->get()->ordersMarkedAsReady(
+                            $this->powerCollection->getPowerIdByPlayerId($playerId)
+                        )
+                    )
                 )
             ),
             new Rule(

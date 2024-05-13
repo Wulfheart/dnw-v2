@@ -15,7 +15,12 @@ class OrderCollection extends Collection
      */
     public static function fromStringArray(array $orders): self
     {
+        $orderCollection = new self();
+        foreach ($orders as $order) {
+            $orderCollection->push(new Order($order));
+        }
 
+        return $orderCollection;
     }
 
     /**
@@ -23,6 +28,6 @@ class OrderCollection extends Collection
      */
     public function toStringArray(): array
     {
-
+        return $this->map(fn (Order $order): string => (string) $order)->toArray();
     }
 }

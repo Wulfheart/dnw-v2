@@ -58,7 +58,7 @@ abstract class Collection implements IteratorAggregate
      */
     public function map(callable $callback): Collection
     {
-        return new static(array_map($callback, $this->items));
+        return new ArrayCollection(array_map($callback, $this->items));
     }
 
     /**
@@ -82,6 +82,16 @@ abstract class Collection implements IteratorAggregate
     }
 
     /**
+     * @template U
+     *
+     * @param  Collection<U>  $c
+     */
+    public static function fromCollection(Collection $c): static
+    {
+        return new static($c->toArray());
+    }
+
+    /**
      * @return array<T>
      */
     public function toArray(): array
@@ -92,5 +102,19 @@ abstract class Collection implements IteratorAggregate
     public function count(): int
     {
         return count($this->items);
+    }
+
+    /**
+     * @param  int<0,max>  $offset
+     * @return T
+     */
+    public function getOffset(int $offset): mixed
+    {
+        return $this->items[$offset];
+    }
+
+    public function isEmpty(): bool
+    {
+        return empty($this->items);
     }
 }

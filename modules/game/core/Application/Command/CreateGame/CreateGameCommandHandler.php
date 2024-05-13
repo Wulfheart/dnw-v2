@@ -2,6 +2,7 @@
 
 namespace Dnw\Game\Core\Application\Command\CreateGame;
 
+use Dnw\Game\Core\Domain\Adapter\RandomNumberGeneratorInterface;
 use Dnw\Game\Core\Domain\Adapter\TimeProviderInterface;
 use Dnw\Game\Core\Domain\Aggregate\Game;
 use Dnw\Game\Core\Domain\Entity\MessageMode;
@@ -26,6 +27,7 @@ readonly class CreateGameCommandHandler
         private VariantRepositoryInterface $variantRepository,
         private TimeProviderInterface $timeProvider,
         private GameRepositoryInterface $gameRepository,
+        private RandomNumberGeneratorInterface $randomNumberGenerator,
     ) {
     }
 
@@ -67,13 +69,14 @@ readonly class CreateGameCommandHandler
 
         $variant = $this->variantRepository->load(VariantId::fromString($command->variantId));
 
-        $game = Game::createWithRandomAssignments(
+        $game = Game::create(
             GameName::fromString($command->name),
             $messageMode,
             $adjudicationTiming,
             $gameStartTiming,
             $variant,
             PlayerId::fromString($command->creatorId),
+            $this->randomNumberGenerator->generate(...)
         );
 
         $this->gameRepository->save($game);

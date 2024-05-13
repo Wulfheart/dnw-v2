@@ -38,4 +38,6 @@ class GameRules
     public const string GAME_READY_FOR_ADJUDICATION = 'game_ready_for_adjudication';
 
     public const string PHASE_IS_ALREADY_SET = 'phase_is_already_set';
+
+    public const string ORDERS_ALREADY_MARKED_AS_READY = 'orders_already_marked_as_ready';
 }

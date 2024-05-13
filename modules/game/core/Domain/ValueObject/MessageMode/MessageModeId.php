@@ -2,10 +2,9 @@
 
 namespace Dnw\Game\Core\Domain\ValueObject\MessageMode;
 
+use Dnw\Foundation\Identity\UlidValueObjectTrait;
+
 class MessageModeId
 {
-    public static function fromString(string $id): self
-    {
-
-    }
+    use UlidValueObjectTrait;
 }
