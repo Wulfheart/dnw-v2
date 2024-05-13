@@ -106,11 +106,15 @@ readonly class DomainEventProvider
                             $method->getParameters()[0]
                         );
 
+                        /** @var DomainListener $attributeInstance */
+                        $attributeInstance = $attribute->newInstance();
+
                         foreach ($listenerEvents as $listenerEvent) {
                             $listener_classes[$listenerEvent][] = new ListenerInfo(
                                 $module_class,
                                 $method->name,
-                                $this->shouldBeQueued($listenerEvent, $module_class),
+                                $this->shouldBeQueued($listenerEvent, $module_class)
+                                || $attributeInstance->async,
                             );
                         }
 
