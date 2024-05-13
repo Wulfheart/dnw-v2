@@ -17,6 +17,7 @@
         <include>
             <directory>app</directory>
             <directory>./modules/*/src</directory>
+            <directory>./modules/*/core</directory>
             <directory>./packages/*/src</directory>
         </include>
     </source>

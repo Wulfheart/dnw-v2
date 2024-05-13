@@ -9,7 +9,7 @@ class SomeTest extends TestCase
     public function testSomething(): void
     {
         $mock = $this->createPartialMock(FooClass::class, ['foo']);
-        $mock->expects($this->exactly(2))
+        $mock->expects($this->exactly(1))
             ->method('foo')
             ->willReturn('huu');
 
