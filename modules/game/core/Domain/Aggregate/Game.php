@@ -339,6 +339,11 @@ class Game
 
     public function adjudicate(Phase $phase, CarbonImmutable $currentTime): void
     {
+        RulesetHandler::throwConditionally(
+            "Game {$this->gameId} cannot be adjudicated",
+            $this->canAdjudicate($currentTime)
+        );
+
         $this->phasesInfo->proceedToNewPhase($phase);
 
         $this->pushEvent(new GameAdjudicatedEvent());
