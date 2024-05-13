@@ -18,6 +18,7 @@ use Dnw\Game\Core\Domain\Event\GameAbandonedEvent;
 use Dnw\Game\Core\Domain\Event\GameAdjudicatedEvent;
 use Dnw\Game\Core\Domain\Event\GameCreatedEvent;
 use Dnw\Game\Core\Domain\Event\GameFinishedEvent;
+use Dnw\Game\Core\Domain\Event\GameInitializedEvent;
 use Dnw\Game\Core\Domain\Event\GameReadyForAdjudicationEvent;
 use Dnw\Game\Core\Domain\Event\GameStartedEvent;
 use Dnw\Game\Core\Domain\Event\OrdersSubmittedEvent;
@@ -38,6 +39,7 @@ use Dnw\Game\Core\Domain\ValueObject\Phase\PhaseTypeEnum;
 use Dnw\Game\Core\Domain\ValueObject\Phases\PhasesInfo;
 use Dnw\Game\Core\Domain\ValueObject\Player\PlayerId;
 use Dnw\Game\Core\Domain\ValueObject\Variant\VariantPower\VariantPowerId;
+use PhpOption\None;
 use PhpOption\Option;
 use PhpOption\Some;
 
@@ -383,5 +385,38 @@ class Game
         if ($this->phasesInfo->currentPhase->get()->hasWinners()) {
             $this->pushEvent(new GameFinishedEvent());
         }
+    }
+
+    public function canApplyInitialAdjudication(): Ruleset
+    {
+        return new Ruleset(
+            new Rule(
+                GameRules::PHASE_IS_ALREADY_SET,
+                $this->phasesInfo->currentPhase->isDefined(),
+            )
+        );
+    }
+
+    public function applyInitialAdjudication(
+        PhaseTypeEnum $phaseType,
+        PhasePowerCollection $phasePowerCollection,
+        CarbonImmutable $currentTime
+    ): void {
+        RulesetHandler::throwConditionally(
+            "Game {$this->gameId} cannot apply initial adjudication",
+            $this->canApplyInitialAdjudication()
+        );
+
+        $newPhase = new Phase(
+            PhaseId::generate(),
+            $phaseType,
+            $phasePowerCollection,
+            None::create(),
+            None::create(),
+        );
+
+        $this->phasesInfo->setInitialPhase($newPhase);
+
+        $this->pushEvent(new GameInitializedEvent());
     }
 }

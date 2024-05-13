@@ -11,12 +11,11 @@ use PhpOption\Some;
 
 class PhasesInfo
 {
-    private bool $hasNewPhase = false;
-
     public function __construct(
         public Count $count,
         /** @var Option<Phase> $currentPhase */
         public Option $currentPhase,
+        /** @var Option<Phase> $previousPhase */
         public Option $previousPhase,
     ) {
     }
@@ -31,11 +30,6 @@ class PhasesInfo
         return $this->count->int() >= 1;
     }
 
-    public function hasNewPhase(): bool
-    {
-        return $this->hasNewPhase;
-    }
-
     public function hasBeenStarted(): bool
     {
         return $this->currentPhase->isDefined()
@@ -44,9 +38,14 @@ class PhasesInfo
 
     public function proceedToNewPhase(Phase $newPhase, AppliedOrdersCollection $appliedOrdersCollection): void
     {
-        $this->hasNewPhase = true;
         $this->currentPhase->get()->applyOrders($appliedOrdersCollection);
         $this->previousPhase = $this->currentPhase;
         $this->currentPhase = Some::create($newPhase);
+    }
+
+    public function setInitialPhase(Phase $phase): void
+    {
+        $this->currentPhase = Some::create($phase);
+        $this->count = Count::fromInt(1);
     }
 }

@@ -36,4 +36,6 @@ class GameRules
         = 'phase_not_marked_as_ready_or_time_has_not_expired';
 
     public const string GAME_READY_FOR_ADJUDICATION = 'game_ready_for_adjudication';
+
+    public const string PHASE_IS_ALREADY_SET = 'phase_is_already_set';
 }

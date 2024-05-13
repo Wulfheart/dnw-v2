@@ -9,6 +9,7 @@ class SubmitOrdersCommand
     public function __construct(
         public Id $gameId,
         public Id $userId,
+        public bool $markedAsReady,
         /** @var array<string> $orders */
         public array $orders,
     ) {
