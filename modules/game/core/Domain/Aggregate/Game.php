@@ -9,9 +9,12 @@ use Dnw\Foundation\Rule\Ruleset;
 use Dnw\Game\Core\Domain\Collection\OrderCollection;
 use Dnw\Game\Core\Domain\Collection\PowerCollection;
 use Dnw\Game\Core\Domain\Entity\MessageMode;
+use Dnw\Game\Core\Domain\Entity\Phase;
 use Dnw\Game\Core\Domain\Entity\Variant;
 use Dnw\Game\Core\Domain\Event\GameAbandonedEvent;
+use Dnw\Game\Core\Domain\Event\GameAdjudicatedEvent;
 use Dnw\Game\Core\Domain\Event\GameCreatedEvent;
+use Dnw\Game\Core\Domain\Event\GameFinishedEvent;
 use Dnw\Game\Core\Domain\Event\GameReadyForAdjudicationEvent;
 use Dnw\Game\Core\Domain\Event\GameStartedEvent;
 use Dnw\Game\Core\Domain\Event\OrdersSubmittedEvent;
@@ -332,5 +335,16 @@ class Game
                 && ! $this->phasesInfo->currentPhase->get()->adjudicationTimeExpired($currentTime),
             )
         );
+    }
+
+    public function adjudicate(Phase $phase, CarbonImmutable $currentTime): void
+    {
+        $this->phasesInfo->proceedToNewPhase($phase);
+
+        $this->pushEvent(new GameAdjudicatedEvent());
+
+        if ($this->phasesInfo->currentPhase->get()->hasWinners()) {
+            $this->pushEvent(new GameFinishedEvent());
+        }
     }
 }

@@ -6,6 +6,7 @@ use Dnw\Game\Core\Domain\Entity\Phase;
 use Dnw\Game\Core\Domain\ValueObject\Count;
 use PhpOption\None;
 use PhpOption\Option;
+use PhpOption\Some;
 
 class PhasesInfo
 {
@@ -37,5 +38,11 @@ class PhasesInfo
     {
         return $this->currentPhase->isDefined()
             && $this->currentPhase->get()->adjudicationTime->isDefined();
+    }
+
+    public function proceedToNewPhase(Phase $newPhase): void
+    {
+        $this->hasNewPhase = true;
+        $this->currentPhase = Some::create($newPhase);
     }
 }
