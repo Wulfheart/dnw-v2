@@ -24,7 +24,7 @@ class AdjudicateGameResponse implements AdjudicatorDataInterface
 
     }
 
-    public static function fromArray(array $array): AdjudicatorDataInterface
+    public static function fromArray(array $array): AdjudicateGameResponse
     {
         return new self(
             array_map(fn ($applied_order) => AppliedOrder::fromArray($applied_order), $array['applied_orders']),

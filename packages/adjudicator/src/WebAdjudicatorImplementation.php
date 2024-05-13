@@ -7,71 +7,99 @@ use Dnw\Adjudicator\Dto\AdjudicateGameResponse;
 use Dnw\Adjudicator\Dto\DumbbotRequest;
 use Dnw\Adjudicator\Dto\DumbbotResponse;
 use Dnw\Adjudicator\Dto\VariantsResponse;
-use Illuminate\Http\Client\RequestException;
-use Illuminate\Support\Facades\Http;
-use Spatie\DataTransferObject\Exceptions\UnknownProperties;
+use Dnw\Adjudicator\Json\JsonHandlerInterface;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
+use Psr\Http\Message\UriInterface;
 
 class WebAdjudicatorImplementation implements AdjudicatorService
 {
-    /**
-     * @throws UnknownProperties
-     * @throws RequestException
-     */
+    public function __construct(
+        private ClientInterface $client,
+        private RequestFactoryInterface $requestFactory,
+        private StreamFactoryInterface $streamFactory,
+        private UriInterface $baseUrl,
+        private JsonHandlerInterface $jsonHandler,
+    ) {
+
+    }
+
     public function getVariants(): VariantsResponse
     {
-        $response = Http::log()->baseUrl(config('diplomacy.adjudicator.base_url'))->get('variants');
-        $response->throw();
-        $dto = new VariantsResponse($response->json());
-        $dto->json = $response->body();
+        $response = $this->client->sendRequest(
+            $this->requestFactory->createRequest(
+                'GET',
+                $this->baseUrl->withPath('variants')
+            )
+        );
 
-        return $dto;
+        if ($response->getStatusCode() !== 200) {
+            throw new HttpException('Failed to get variants', $response->getStatusCode());
+        }
+
+        $data = $this->jsonHandler->decodeAssociative((string) $response->getBody());
+
+        return VariantsResponse::fromArray($data);
     }
 
-    /**
-     * @throws UnknownProperties
-     * @throws RequestException
-     */
     public function initializeGame(string $variant): AdjudicateGameResponse
     {
-        $response = Http::log()->baseUrl(config('diplomacy.adjudicator.base_url'))->get(implode(
-            '/',
-            ['adjudicate', $variant]
-        ));
-        $response->throw();
+        $response = $this->client->sendRequest(
+            $this->requestFactory->createRequest(
+                'GET',
+                $this->baseUrl->withPath('adjudicate/' . $variant)
+            )
+        );
 
-        $dto = new AdjudicateGameResponse($response->json());
-        $dto->json = $response->body();
+        if ($response->getStatusCode() !== 200) {
+            throw new HttpException('Failed to initialize game', $response->getStatusCode());
+        }
 
-        return $dto;
+        $data = $this->jsonHandler->decodeAssociative((string) $response->getBody());
+
+        return AdjudicateGameResponse::fromArray($data);
     }
 
-    /**
-     * @throws UnknownProperties
-     * @throws RequestException
-     */
     public function adjudicateGame(AdjudicateGameRequest $request): AdjudicateGameResponse
     {
-        $response = Http::log()->baseUrl(config('diplomacy.adjudicator.base_url'))->post('adjudicate', $request->toArray());
-        $response->throw();
+        $body = $this->jsonHandler->encode($request);
 
-        $dto = new AdjudicateGameResponse($response->json());
-        $dto->json = $response->body();
+        $response = $this->client->sendRequest(
+            $this->requestFactory->createRequest(
+                'POST',
+                $this->baseUrl->withPath('adjudicate')
+            )->withBody(
+                $this->streamFactory->createStream($body)
+            )
+        );
 
-        return $dto;
+        if ($response->getStatusCode() !== 200) {
+            throw new HttpException('Failed to adjudicate game', $response->getStatusCode());
+        }
+
+        $data = $this->jsonHandler->decodeAssociative((string) $response->getBody());
+
+        return AdjudicateGameResponse::fromArray($data);
     }
 
-    /**
-     * @throws UnknownProperties
-     * @throws RequestException
-     */
     public function getDumbbotOrders(DumbbotRequest $request): DumbbotResponse
     {
-        $response = Http::log()->baseUrl(config('diplomacy.adjudicator.base_url'))->post('dumbbot', $request->toArray());
-        $response->throw();
+        $response = $this->client->sendRequest(
+            $this->requestFactory->createRequest(
+                'POST',
+                $this->baseUrl->withPath('dumbbot')
+            )->withBody(
+                $this->streamFactory->createStream($this->jsonHandler->encode($request))
+            )
+        );
 
-        $dto = new DumbbotResponse($response->json());
-        $dto->json = $response->body();
+        if ($response->getStatusCode() !== 200) {
+            throw new HttpException('Failed to get dumbbot orders', $response->getStatusCode());
+        }
 
-        return $dto;
+        $data = $this->jsonHandler->decodeAssociative((string) $response->getBody());
+
+        return DumbbotResponse::fromArray($data);
     }
 }

@@ -12,7 +12,7 @@ class DumbbotResponse implements AdjudicatorDataInterface
 
     }
 
-    public static function fromArray(array $array): AdjudicatorDataInterface
+    public static function fromArray(array $array): DumbbotResponse
     {
         return new self(
             $array['orders'],

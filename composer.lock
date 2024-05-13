@@ -846,7 +846,11 @@
             "dist": {
                 "type": "path",
                 "url": "packages/adjudicator",
-                "reference": "b63c8e37a40e6b72de2b83fd48ce7479b8f5de49"
+                "reference": "cefc52c8334cc8d65e95e38c947ab60a045406a8"
+            },
+            "require": {
+                "psr/http-client": "^1.0",
+                "psr/http-factory": "^1.0"
             },
             "type": "library",
             "autoload": {
