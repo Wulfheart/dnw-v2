@@ -12,6 +12,7 @@ use Dnw\Game\Core\Domain\Repository\VariantRepositoryInterface;
 use Dnw\Game\Core\Domain\ValueObject\AdjudicationTiming\AdjudicationTiming;
 use Dnw\Game\Core\Domain\ValueObject\AdjudicationTiming\NoAdjudicationWeekdayCollection;
 use Dnw\Game\Core\Domain\ValueObject\AdjudicationTiming\PhaseLength;
+use Dnw\Game\Core\Domain\ValueObject\Game\GameId;
 use Dnw\Game\Core\Domain\ValueObject\Game\GameName;
 use Dnw\Game\Core\Domain\ValueObject\GameStartTiming\GameStartTiming;
 use Dnw\Game\Core\Domain\ValueObject\GameStartTiming\JoinLength;
@@ -70,8 +71,8 @@ readonly class CreateGameCommandHandler
         $variant = $this->variantRepository->load(VariantId::fromString($command->variantId));
 
         $game = Game::create(
+            GameId::fromId($command->gameId),
             GameName::fromString($command->name),
-            $messageMode,
             $adjudicationTiming,
             $gameStartTiming,
             $variant,

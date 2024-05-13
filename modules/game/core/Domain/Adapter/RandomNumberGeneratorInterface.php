@@ -4,5 +4,5 @@ namespace Dnw\Game\Core\Domain\Adapter;
 
 interface RandomNumberGeneratorInterface
 {
-    public function generate(int $lower, int $upper): int;
+    public function generate(int $min, int $max): int;
 }

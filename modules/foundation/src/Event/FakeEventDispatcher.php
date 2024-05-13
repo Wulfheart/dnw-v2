@@ -82,4 +82,9 @@ class FakeEventDispatcher implements EventDispatcherInterface
             "Expected to dispatch events [$events] $expectedCount times, but dispatched $count times."
         );
     }
+
+    public function assertNothingDispatched(): void
+    {
+        Assert::assertEmpty($this->events, 'Expected no events to be dispatched, but some events were dispatched.');
+    }
 }

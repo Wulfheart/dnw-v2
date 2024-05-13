@@ -11,7 +11,6 @@ use Dnw\Game\Core\Domain\Collection\OrderCollection;
 use Dnw\Game\Core\Domain\Collection\PhasePowerCollection;
 use Dnw\Game\Core\Domain\Collection\PowerCollection;
 use Dnw\Game\Core\Domain\Collection\WinnerCollection;
-use Dnw\Game\Core\Domain\Entity\MessageMode;
 use Dnw\Game\Core\Domain\Entity\Phase;
 use Dnw\Game\Core\Domain\Entity\Variant;
 use Dnw\Game\Core\Domain\Event\GameAbandonedEvent;
@@ -53,7 +52,6 @@ class Game
     public function __construct(
         public GameId $gameId,
         public GameName $name,
-        public MessageMode $messageMode,
         public AdjudicationTiming $adjudicationTiming,
         public GameStartTiming $gameStartTiming,
         public bool $randomPowerAssignments,
@@ -69,8 +67,8 @@ class Game
      * @param  callable(int $lower, int $upper): int  $randomNumberGenerator
      */
     public static function create(
+        GameId $gameId,
         GameName $name,
-        MessageMode $messageMode,
         AdjudicationTiming $adjudicationTiming,
         GameStartTiming $gameStartTiming,
         Variant $variant,
@@ -86,12 +84,9 @@ class Game
         $randomPower = $powers->getOffset($randomIndex);
         $powers->assign($playerId, $randomPower->variantPowerId);
 
-        $gameId = GameId::generate();
-
         return new self(
             $gameId,
             $name,
-            $messageMode,
             $adjudicationTiming,
             $gameStartTiming,
             true,

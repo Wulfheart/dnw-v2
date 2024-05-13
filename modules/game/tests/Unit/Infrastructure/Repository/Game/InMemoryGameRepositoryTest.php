@@ -1,0 +1,18 @@
+<?php
+
+namespace Dnw\Game\Tests\Unit\Infrastructure\Repository\Game;
+
+use Dnw\Foundation\Event\EventDispatcherInterface;
+use Dnw\Game\Core\Domain\Repository\GameRepositoryInterface;
+use Dnw\Game\Core\Infrastructure\Repository\Game\InMemoryGameRepository;
+use Dnw\Game\Tests\Unit\Domain\Repository\AbstractGameRepositoryTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+
+#[CoversClass(InMemoryGameRepository::class)]
+class InMemoryGameRepositoryTest extends AbstractGameRepositoryTestCase
+{
+    public function buildRepository(EventDispatcherInterface $eventDispatcher): GameRepositoryInterface
+    {
+        return new InMemoryGameRepository($eventDispatcher);
+    }
+}
