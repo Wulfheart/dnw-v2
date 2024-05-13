@@ -32,7 +32,6 @@ readonly class LaravelEventDispatcher implements EventDispatcherInterface
                 $listener->{$listenerInfo->method}($event);
             }
         }
-
     }
 
     public function dispatchMultiple(array $events): void
