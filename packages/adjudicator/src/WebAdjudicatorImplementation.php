@@ -13,7 +13,7 @@ use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Message\UriInterface;
 
-class WebAdjudicatorImplementation implements AdjudicatorService
+readonly class WebAdjudicatorImplementation implements AdjudicatorService
 {
     public function __construct(
         private ClientInterface $client,
