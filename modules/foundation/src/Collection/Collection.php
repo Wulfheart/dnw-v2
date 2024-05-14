@@ -18,6 +18,9 @@ use Traversable;
  */
 abstract class Collection implements IteratorAggregate
 {
+    /**
+     * @param  array<T>  $items
+     */
     public function __construct(
         /** @var array<T> */
         private array $items = [],
