@@ -1,6 +1,6 @@
 <?php
 
-namespace Dnw\Game\Core\Domain\Game\Aggregate;
+namespace Dnw\Game\Core\Domain\Game;
 
 use Carbon\CarbonImmutable;
 use Dnw\Foundation\Event\AggregateEventTrait;

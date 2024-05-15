@@ -4,8 +4,8 @@ namespace Dnw\Game\Core\Application\Command\CreateGame;
 
 use Dnw\Game\Core\Domain\Adapter\RandomNumberGeneratorInterface;
 use Dnw\Game\Core\Domain\Adapter\TimeProviderInterface;
-use Dnw\Game\Core\Domain\Game\Aggregate\Game;
 use Dnw\Game\Core\Domain\Game\Entity\MessageMode;
+use Dnw\Game\Core\Domain\Game\Game;
 use Dnw\Game\Core\Domain\Game\Repository\GameRepositoryInterface;
 use Dnw\Game\Core\Domain\Game\Repository\MessageModeRepositoryInterface;
 use Dnw\Game\Core\Domain\Game\Repository\VariantRepositoryInterface;

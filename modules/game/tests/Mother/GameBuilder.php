@@ -3,7 +3,7 @@
 namespace Dnw\Game\Tests\Mother;
 
 use Carbon\CarbonImmutable;
-use Dnw\Game\Core\Domain\Game\Aggregate\Game;
+use Dnw\Game\Core\Domain\Game\Game;
 use Dnw\Game\Core\Domain\Game\ValueObject\AdjudicationTiming\AdjudicationTiming;
 use Dnw\Game\Core\Domain\Game\ValueObject\AdjudicationTiming\NoAdjudicationWeekdayCollection;
 use Dnw\Game\Core\Domain\Game\ValueObject\AdjudicationTiming\PhaseLength;
