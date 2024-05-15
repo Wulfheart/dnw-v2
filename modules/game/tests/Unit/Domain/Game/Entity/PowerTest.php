@@ -16,17 +16,17 @@ class PowerTest extends TestCase
 {
     public function test_assign_throws_exception_if_already_assigned(): void
     {
-        $playerId = PlayerId::generate();
+        $playerId = PlayerId::new();
 
         $power = PowerFactory::build(playerId: $playerId);
 
         $this->expectException(DomainException::class);
-        $power->assign(PlayerId::generate());
+        $power->assign(PlayerId::new());
     }
 
     public function test_assign(): void
     {
-        $playerId = PlayerId::generate();
+        $playerId = PlayerId::new();
         $power = PowerFactory::unassigned();
 
         $power->assign($playerId);
@@ -44,7 +44,7 @@ class PowerTest extends TestCase
 
     public function test_unassign(): void
     {
-        $playerId = PlayerId::generate();
+        $playerId = PlayerId::new();
         $power = PowerFactory::build(playerId: $playerId);
 
         $power->unassign();

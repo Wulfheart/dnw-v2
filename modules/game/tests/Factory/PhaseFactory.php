@@ -16,7 +16,7 @@ class PhaseFactory
         ?CarbonImmutable $adjudicationTime = null
     ): Phase {
         return new Phase(
-            $phaseId ?? PhaseId::generate(),
+            $phaseId ?? PhaseId::new(),
             $type ?? PhaseTypeEnum::MOVEMENT,
             //@phpstan-ignore-next-line
             Option::fromValue($adjudicationTime)

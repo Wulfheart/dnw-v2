@@ -23,7 +23,7 @@ class PhaseTest extends TestCase
     public function test_adjudicationTimeIsExpired(CarbonImmutable $currentTime, Option $adjudicationTime, bool $expectedResult): void
     {
         $phase = new Phase(
-            PhaseId::generate(),
+            PhaseId::new(),
             PhaseTypeEnum::MOVEMENT,
             $adjudicationTime
         );

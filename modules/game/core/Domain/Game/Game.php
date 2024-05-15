@@ -391,7 +391,7 @@ class Game
         $nextAdjudication = $this->adjudicationTiming->calculateNextAdjudication($currentTime);
 
         $newPhase = new Phase(
-            PhaseId::generate(),
+            PhaseId::new(),
             $phaseType,
             Some::create($nextAdjudication),
         );
@@ -437,7 +437,7 @@ class Game
         );
 
         $newPhase = new Phase(
-            PhaseId::generate(),
+            PhaseId::new(),
             $phaseType,
             None::create(),
         );

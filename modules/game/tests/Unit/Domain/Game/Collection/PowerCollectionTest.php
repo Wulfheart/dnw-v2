@@ -16,7 +16,7 @@ class PowerCollectionTest extends TestCase
 {
     public function test_createFromVariantPowerCollection(): void
     {
-        $variantPowerIdCollection = VariantPowerIdCollection::build(VariantPowerId::generate(), VariantPowerId::generate());
+        $variantPowerIdCollection = VariantPowerIdCollection::build(VariantPowerId::new(), VariantPowerId::new());
 
         $powerCollection = PowerCollection::createFromVariantPowerIdCollection($variantPowerIdCollection);
         for ($i = 0; $i < 2; $i++) {
@@ -62,8 +62,8 @@ class PowerCollectionTest extends TestCase
         $this->assertTrue($powerCollection->containsPlayer($assignedPower->playerId->get()));
         $this->assertFalse($powerCollection->doesNotContainPlayer($assignedPower->playerId->get()));
 
-        $this->assertFalse($powerCollection->containsPlayer(PlayerId::generate()));
-        $this->assertTrue($powerCollection->doesNotContainPlayer(PlayerId::generate()));
+        $this->assertFalse($powerCollection->containsPlayer(PlayerId::new()));
+        $this->assertTrue($powerCollection->doesNotContainPlayer(PlayerId::new()));
     }
 
     public function test_hasPowerFilled(): void
@@ -131,7 +131,7 @@ class PowerCollectionTest extends TestCase
 
         $powerCollection = new PowerCollection([$powerOne, $powerTwo]);
 
-        $powerTwo->assign(PlayerId::generate());
+        $powerTwo->assign(PlayerId::new());
 
         $two = $powerCollection->getByPowerId($powerTwo->powerId);
         $this->assertTrue($two->playerId->isDefined());

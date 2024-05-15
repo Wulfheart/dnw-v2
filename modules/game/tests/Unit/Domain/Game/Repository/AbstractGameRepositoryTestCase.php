@@ -35,6 +35,6 @@ abstract class AbstractGameRepositoryTestCase extends TestCase
 
         $repository = $this->buildRepository($eventDispatcher);
         $this->expectException(NotFoundException::class);
-        $repository->load(GameId::generate());
+        $repository->load(GameId::new());
     }
 }

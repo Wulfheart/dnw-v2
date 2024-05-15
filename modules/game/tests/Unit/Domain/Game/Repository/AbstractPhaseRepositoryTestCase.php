@@ -16,7 +16,7 @@ abstract class AbstractPhaseRepositoryTestCase extends TestCase
     {
         $repository = $this->buildRepository();
 
-        $phaseId = PhaseId::generate();
+        $phaseId = PhaseId::new();
         $encodedState = '::STATE::';
 
         $repository->saveEncodedState($phaseId, $encodedState);
@@ -29,7 +29,7 @@ abstract class AbstractPhaseRepositoryTestCase extends TestCase
     {
         $repository = $this->buildRepository();
 
-        $phaseId = PhaseId::generate();
+        $phaseId = PhaseId::new();
         $encodedState = '::STATE::';
 
         $repository->saveEncodedState($phaseId, $encodedState);
@@ -43,14 +43,14 @@ abstract class AbstractPhaseRepositoryTestCase extends TestCase
         $repository = $this->buildRepository();
 
         $this->expectException(NotFoundException::class);
-        $repository->loadEncodedState(PhaseId::generate());
+        $repository->loadEncodedState(PhaseId::new());
     }
 
     public function test_can_save_and_load_svg_with_orders(): void
     {
         $repository = $this->buildRepository();
 
-        $phaseId = PhaseId::generate();
+        $phaseId = PhaseId::new();
         $svg = '::SVG::';
 
         $repository->saveSvgWithOrders($phaseId, $svg);
@@ -63,7 +63,7 @@ abstract class AbstractPhaseRepositoryTestCase extends TestCase
     {
         $repository = $this->buildRepository();
 
-        $phaseId = PhaseId::generate();
+        $phaseId = PhaseId::new();
         $svg = '::SVG::';
 
         $repository->saveSvgWithOrders($phaseId, $svg);
@@ -77,14 +77,14 @@ abstract class AbstractPhaseRepositoryTestCase extends TestCase
         $repository = $this->buildRepository();
 
         $this->expectException(NotFoundException::class);
-        $repository->loadSvgWithOrders(PhaseId::generate());
+        $repository->loadSvgWithOrders(PhaseId::new());
     }
 
     public function test_can_save_and_load_adjudicated_svg(): void
     {
         $repository = $this->buildRepository();
 
-        $phaseId = PhaseId::generate();
+        $phaseId = PhaseId::new();
         $svg = '::SVG::';
 
         $repository->saveAdjudicatedSvg($phaseId, $svg);
@@ -97,7 +97,7 @@ abstract class AbstractPhaseRepositoryTestCase extends TestCase
     {
         $repository = $this->buildRepository();
 
-        $phaseId = PhaseId::generate();
+        $phaseId = PhaseId::new();
         $svg = '::SVG::';
 
         $repository->saveAdjudicatedSvg($phaseId, $svg);
@@ -111,6 +111,6 @@ abstract class AbstractPhaseRepositoryTestCase extends TestCase
         $repository = $this->buildRepository();
 
         $this->expectException(NotFoundException::class);
-        $repository->loadAdjudicatedSvg(PhaseId::generate());
+        $repository->loadAdjudicatedSvg(PhaseId::new());
     }
 }

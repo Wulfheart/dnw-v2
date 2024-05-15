@@ -30,7 +30,7 @@ class GameBuilder
         $standardVariant = VariantFactory::standard();
 
         $game = Game::create(
-            GameId::generate(),
+            GameId::new(),
             GameName::fromString('Test Game'),
             new AdjudicationTiming(
                 PhaseLength::fromMinutes(240),
@@ -48,7 +48,7 @@ class GameBuilder
                 ),
                 $standardVariant->defaultSupplyCentersToWinCount,
             ),
-            PlayerId::generate(),
+            PlayerId::new(),
             (new RandomNumberGenerator())->generate(...),
         );
 

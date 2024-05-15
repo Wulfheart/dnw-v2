@@ -12,11 +12,11 @@ class VariantPowerIdCollectionTest extends TestCase
 {
     public function test_containsVariantPowerId(): void
     {
-        $id = VariantPowerId::generate();
+        $id = VariantPowerId::new();
 
-        $collection = new VariantPowerIdCollection([VariantPowerId::generate(), $id]);
+        $collection = new VariantPowerIdCollection([VariantPowerId::new(), $id]);
 
         $this->assertTrue($collection->containsVariantPowerId($id));
-        $this->assertFalse($collection->containsVariantPowerId(VariantPowerId::generate()));
+        $this->assertFalse($collection->containsVariantPowerId(VariantPowerId::new()));
     }
 }

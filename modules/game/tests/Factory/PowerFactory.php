@@ -17,9 +17,9 @@ class PowerFactory
     public static function unassigned(): Power
     {
         return new Power(
-            PowerId::generate(),
+            PowerId::new(),
             None::create(),
-            VariantPowerId::generate(),
+            VariantPowerId::new(),
             None::create(),
             None::create(),
         );
@@ -28,9 +28,9 @@ class PowerFactory
     public static function assigned(): Power
     {
         return new Power(
-            PowerId::generate(),
-            Some::create(PlayerId::generate()),
-            VariantPowerId::generate(),
+            PowerId::new(),
+            Some::create(PlayerId::new()),
+            VariantPowerId::new(),
             None::create(),
             None::create(),
         );
@@ -45,10 +45,10 @@ class PowerFactory
     ): Power {
 
         return new Power(
-            $id ?? PowerId::generate(),
+            $id ?? PowerId::new(),
             //@phpstan-ignore-next-line
             Option::fromValue($playerId),
-            $variantPowerId ?? VariantPowerId::generate(),
+            $variantPowerId ?? VariantPowerId::new(),
             //@phpstan-ignore-next-line
             Option::fromValue($currentPhaseData),
             //@phpstan-ignore-next-line

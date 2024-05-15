@@ -24,7 +24,7 @@ trait UlidValueObjectTrait
         return new self($id);
     }
 
-    public static function generate(): self
+    public static function new(): self
     {
         return new self(new Ulid());
     }

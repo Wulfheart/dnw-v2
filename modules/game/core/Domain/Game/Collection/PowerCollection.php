@@ -22,7 +22,7 @@ class PowerCollection extends Collection
         foreach ($variantPowerIdCollection as $item) {
             $powers->push(
                 new Power(
-                    PowerId::generate(),
+                    PowerId::new(),
                     None::create(),
                     $item,
                     None::create(),
