@@ -19,6 +19,7 @@ use Dnw\Game\Core\Domain\Game\Event\GameAdjudicatedEvent;
 use Dnw\Game\Core\Domain\Game\Event\GameCreatedEvent;
 use Dnw\Game\Core\Domain\Game\Event\GameFinishedEvent;
 use Dnw\Game\Core\Domain\Game\Event\GameInitializedEvent;
+use Dnw\Game\Core\Domain\Game\Event\GameJoinTimeExceededEvent;
 use Dnw\Game\Core\Domain\Game\Event\GameReadyForAdjudicationEvent;
 use Dnw\Game\Core\Domain\Game\Event\GameStartedEvent;
 use Dnw\Game\Core\Domain\Game\Event\OrdersSubmittedEvent;
@@ -67,6 +68,7 @@ class Game
 
     /**
      * @param  callable(int $lower, int $upper): int  $randomNumberGenerator
+     * @param  Option<VariantPowerId>  $variantPowerId
      */
     public static function create(
         GameId $gameId,
@@ -74,24 +76,30 @@ class Game
         AdjudicationTiming $adjudicationTiming,
         GameStartTiming $gameStartTiming,
         GameVariantData $variantData,
+        bool $randomPowerAssignment,
         PlayerId $playerId,
+        Option $variantPowerId,
         callable $randomNumberGenerator
     ): self {
 
         $powers = PowerCollection::createFromVariantPowerIdCollection(
             $variantData->variantPowerIdCollection
         );
-        /** @var int<0,max> $randomIndex */
-        $randomIndex = $randomNumberGenerator(0, $powers->count() - 1);
-        $randomPower = $powers->getOffset($randomIndex);
-        $powers->getByVariantPowerId($randomPower->variantPowerId)->assign($playerId);
+        if ($randomPowerAssignment) {
+            /** @var int<0,max> $randomIndex */
+            $randomIndex = $randomNumberGenerator(0, $powers->count() - 1);
+            $randomPower = $powers->getOffset($randomIndex);
+            $powers->getByVariantPowerId($randomPower->variantPowerId)->assign($playerId);
+        } else {
+            $powers->getByVariantPowerId($variantPowerId->get())->assign($playerId);
+        }
 
         return new self(
             $gameId,
             $name,
             $adjudicationTiming,
             $gameStartTiming,
-            true,
+            $randomPowerAssignment,
             $variantData,
             $powers,
             PhasesInfo::initialize(),
@@ -123,9 +131,12 @@ class Game
 
         if ($this->randomPowerAssignments) {
             $unassignedPowers = $this->powerCollection->getUnassignedPowers();
+            // @codeCoverageIgnoreStart
+            // Should be covered by the rule check
             if ($unassignedPowers->isEmpty()) {
                 throw new DomainException("No available powers for player $playerId in game {$this->gameId}");
             }
+            // @codeCoverageIgnoreEnd
             /** @var int<0,max> $randomPowerIndex */
             $randomPowerIndex = $randomNumberGenerator(0, $unassignedPowers->count() - 1);
             $randomPower = $unassignedPowers->getOffset($randomPowerIndex);
@@ -136,7 +147,7 @@ class Game
 
         $this->pushEvent(new PlayerJoinedEvent());
 
-        $this->startGameIfConditionsAreFulfilled($currentTime);
+        $this->handleGameStartingConditions($currentTime);
     }
 
     /**
@@ -245,16 +256,20 @@ class Game
             ),
             new Rule(
                 GameRules::GAME_NOT_MARKED_AS_READY_OR_JOIN_LENGTH_NOT_EXCEEDED,
-                $this->gameStartTiming->startWhenReady
-                || $this->gameStartTiming->joinLengthExceeded($currentTime),
+                ! $this->gameStartTiming->startWhenReady
+                && ! $this->gameStartTiming->joinLengthExceeded($currentTime),
             ),
         );
     }
 
-    public function startGameIfConditionsAreFulfilled(CarbonImmutable $currentTime): void
+    public function handleGameStartingConditions(CarbonImmutable $currentTime): void
     {
         if ($this->canBeStarted($currentTime)->passes()) {
+            $this->phasesInfo->currentPhase->get()->adjudicationTime = Some::create($this->adjudicationTiming->calculateNextAdjudication($currentTime));
             $this->pushEvent(new GameStartedEvent());
+        }
+        if ($this->gameStartTiming->joinLengthExceeded($currentTime)) {
+            $this->pushEvent(new GameJoinTimeExceededEvent());
         }
     }
 

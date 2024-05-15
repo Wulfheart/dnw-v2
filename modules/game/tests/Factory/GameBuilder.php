@@ -4,69 +4,143 @@ namespace Dnw\Game\Tests\Factory;
 
 use Carbon\CarbonImmutable;
 use Dnw\Game\Core\Domain\Game\Collection\VariantPowerIdCollection;
+use Dnw\Game\Core\Domain\Game\Dto\InitialAdjudicationPowerDataDto;
+use Dnw\Game\Core\Domain\Game\Entity\Power;
 use Dnw\Game\Core\Domain\Game\Game;
-use Dnw\Game\Core\Domain\Game\ValueObject\AdjudicationTiming\AdjudicationTiming;
-use Dnw\Game\Core\Domain\Game\ValueObject\AdjudicationTiming\NoAdjudicationWeekdayCollection;
-use Dnw\Game\Core\Domain\Game\ValueObject\AdjudicationTiming\PhaseLength;
+use Dnw\Game\Core\Domain\Game\ValueObject\Count;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameName;
-use Dnw\Game\Core\Domain\Game\ValueObject\GameStartTiming\GameStartTiming;
-use Dnw\Game\Core\Domain\Game\ValueObject\GameStartTiming\JoinLength;
+use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhasePowerData;
+use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
 use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
-use Dnw\Game\Core\Domain\Game\ValueObject\Variant\GameVariantData;
-use Dnw\Game\Core\Domain\Variant\Entity\VariantPower;
+use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
 use Dnw\Game\Core\Infrastructure\Adapter\RandomNumberGenerator;
+use PhpOption\None;
+use PhpOption\Some;
 
 class GameBuilder
 {
     private function __construct(
-        private Game $game
+        private Game $game,
     ) {
 
     }
 
-    public static function create(): self
-    {
-        $standardVariant = VariantFactory::standard();
-
+    public static function initialize(
+        bool $randomAssignments = false,
+        bool $startWhenReady = true,
+    ): self {
+        $variantData = GameVariantDataFactory::build(
+            variantPowerIdCollection: VariantPowerIdCollection::build(
+                VariantPowerId::new(),
+                VariantPowerId::new(),
+                VariantPowerId::new(),
+                VariantPowerId::new(),
+                VariantPowerId::new(),
+                VariantPowerId::new(),
+                VariantPowerId::new(),
+                VariantPowerId::new(),
+            )
+        );
+        $rng = new RandomNumberGenerator();
         $game = Game::create(
             GameId::new(),
             GameName::fromString('Test Game'),
-            new AdjudicationTiming(
-                PhaseLength::fromMinutes(240),
-                NoAdjudicationWeekdayCollection::fromWeekdaysArray([1, 2, 3, 4, 5]),
-            ),
-            new GameStartTiming(
-                CarbonImmutable::now(),
-                JoinLength::fromDays(2),
-                true
-            ),
-            new GameVariantData(
-                $standardVariant->id,
-                VariantPowerIdCollection::fromCollection(
-                    $standardVariant->variantPowerCollection->map(fn (VariantPower $variantPower) => $variantPower->id)
-                ),
-                $standardVariant->defaultSupplyCentersToWinCount,
-            ),
+            AdjudicationTimingFactory::build(),
+            GameStartTimingFactory::build(startWhenReady: $startWhenReady),
+            $variantData,
+            $randomAssignments,
             PlayerId::new(),
-            (new RandomNumberGenerator())->generate(...),
+            Some::create($variantData->variantPowerIdCollection->getOffset(0)),
+            ($rng)->generate(...),
         );
 
-        return new self($game);
+        return new self(
+            $game,
+        );
+
     }
 
-    public function join(): self
+    public function storeInitialAdjudication(): self
     {
+        $c = $this->game->powerCollection->map(fn (Power $power) => new InitialAdjudicationPowerDataDto(
+            $power->powerId,
+            new PhasePowerData(
+                true,
+                false,
+                false,
+                Count::fromInt(5),
+                Count::fromInt(5),
+                None::create(),
+                None::create(),
+            ),
+        ));
+
+        $this->game->applyInitialAdjudication(
+            PhaseTypeEnum::MOVEMENT,
+            $c,
+            new CarbonImmutable(),
+        );
+
+        return $this;
+    }
+
+    public function join(?PlayerId $playerId = null): self
+    {
+        $powerToJoin = $this->game->powerCollection->getUnassignedPowers()->getOffset(0);
+
+        $this->game->join(
+            $playerId ?? PlayerId::new(),
+            Some::create($powerToJoin->variantPowerId),
+            new CarbonImmutable(),
+            (new RandomNumberGenerator())->generate(...)
+        );
+
         return $this;
     }
 
     public function makeFull(): self
     {
+        while ($this->game->powerCollection->hasAvailablePowers()) {
+            $this->join();
+        }
+
+        return $this;
+    }
+
+    public function fillUntilOnePowerLeft(): self
+    {
+        while ($this->game->powerCollection->getUnassignedPowers()->count() > 1) {
+            $this->join();
+        }
+
+        return $this;
+    }
+
+    public function abandon(): self
+    {
+        foreach ($this->game->powerCollection as $power) {
+            if ($power->playerId->isDefined()) {
+                $this->game->leave(
+                    $power->playerId->get(),
+                );
+            }
+        }
+
+        return $this;
+    }
+
+    public function start(): self
+    {
+        $this->makeFull();
+
         return $this;
     }
 
     public function build(): Game
     {
+        $this->game->releaseEvents();
+
         return $this->game;
     }
 }

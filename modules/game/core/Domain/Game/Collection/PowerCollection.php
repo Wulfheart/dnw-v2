@@ -43,32 +43,12 @@ class PowerCollection extends Collection
             ->filter(fn (Power $power) => $power->playerId->isEmpty());
     }
 
-    // public function assign(PlayerId $playerId, VariantPowerId $variantPowerId): void
-    // {
-    //     $power = $this->getByVariantPowerId($variantPowerId);
-    //
-    //     if ($power->playerId->isDefined()) {
-    //         throw new DomainException("Power $power->powerId already assigned to a player");
-    //     }
-    //
-    //     $power->playerId = Some::create($playerId);
-    // }
-
     public function hasAvailablePowers(): bool
     {
         return $this->filter(
             fn (Power $power) => $power->playerId->isEmpty()
         )->count() > 0;
     }
-
-    // public function unassign(PlayerId $playerId): void
-    // {
-    //     $power = $this->findBy(
-    //         fn (Power $power) => $power->playerId->map(fn (PlayerId $id) => $playerId === $id)->getOrElse(false)
-    //     )->get();
-    //
-    //     $power->playerId = None::create();
-    // }
 
     public function containsPlayer(PlayerId $playerId): bool
     {

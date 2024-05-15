@@ -3,6 +3,7 @@
 namespace Dnw\Foundation\Collection;
 
 use ArrayIterator;
+use Dnw\Foundation\Exception\NotFoundException;
 use IteratorAggregate;
 use PhpOption\None;
 use PhpOption\Option;
@@ -140,7 +141,7 @@ abstract class Collection implements IteratorAggregate
      */
     public function getOffset(int $offset): mixed
     {
-        return $this->items[$offset];
+        return $this->items[$offset] ?? throw new NotFoundException();
     }
 
     public function isEmpty(): bool
