@@ -16,7 +16,7 @@ class AdjudicationTiming
     public function calculateNextAdjudication(CarbonImmutable $currentTime): CarbonImmutable
     {
         $nextAdjudication = $currentTime->addMinutes($this->phaseLength->minutes());
-        while ($this->noAdjudicationWeekdays->adjudicatesOnWeekday(
+        while (! $this->noAdjudicationWeekdays->adjudicatesOnWeekday(
             WeekdayEnum::fromCarbon($nextAdjudication)
         )) {
             $nextAdjudication = $nextAdjudication->addDay();

@@ -9,7 +9,7 @@ class PhaseLength
     private function __construct(
         private int $minutes
     ) {
-        if ($minutes < 0) {
+        if ($minutes < 10) {
             throw new InvalidArgumentException('Length must be positive');
         }
     }
