@@ -2,6 +2,8 @@
 
 namespace Dnw\Adjudicator\Dto;
 
+use Dnw\Foundation\Collection\ArrayCollection;
+
 class AdjudicateGameResponse implements AdjudicatorDataInterface
 {
     public function __construct(
@@ -22,6 +24,32 @@ class AdjudicateGameResponse implements AdjudicatorDataInterface
         public string $winning_phase,
     ) {
 
+    }
+
+    public function getPossibleOrdersByPowerName(string $powerName): PossibleOrder
+    {
+        return ArrayCollection::fromArray($this->possible_orders)->findBy(
+            fn ($possibleOrder) => $possibleOrder->power === $powerName
+        )->get();
+    }
+
+    public function getAppliedOrdersByPowerName(string $powerName): AppliedOrder
+    {
+        return ArrayCollection::fromArray($this->applied_orders)->findBy(
+            fn ($appliedOrder) => $appliedOrder->power === $powerName
+        )->get();
+    }
+
+    public function getPhasePowerDataByPowerName(string $powerName): PhasePowerData
+    {
+        return ArrayCollection::fromArray($this->phase_power_data)->findBy(
+            fn ($phasePowerData) => $phasePowerData->power === $powerName
+        )->get();
+    }
+
+    public function powerHasWon(string $powerName): bool
+    {
+        return in_array($powerName, $this->winners);
     }
 
     public static function fromArray(array $array): AdjudicateGameResponse

@@ -15,7 +15,7 @@ class VariantPowerCollection extends Collection
     public function getByPowerApiName(VariantPowerApiName $powerApiName): VariantPower
     {
         return $this->findBy(
-            fn (VariantPower $variantPower) => $variantPower->powerApiName === $powerApiName
+            fn (VariantPower $variantPower) => $variantPower->apiName === $powerApiName
         )->get();
     }
 

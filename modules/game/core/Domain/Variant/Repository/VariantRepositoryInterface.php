@@ -1,15 +1,15 @@
 <?php
 
-namespace Dnw\Game\Core\Domain\Game\Repository;
+namespace Dnw\Game\Core\Domain\Variant\Repository;
 
 use Dnw\Foundation\Exception\NotFoundException;
-use Dnw\Game\Core\Domain\Game\ValueObject\Variant\GameVariantData;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantId;
+use Dnw\Game\Core\Domain\Variant\Variant;
 
 interface VariantRepositoryInterface
 {
     /**
      * @throws NotFoundException
      */
-    public function load(VariantId $variantId): GameVariantData;
+    public function load(VariantId $variantId): Variant;
 }

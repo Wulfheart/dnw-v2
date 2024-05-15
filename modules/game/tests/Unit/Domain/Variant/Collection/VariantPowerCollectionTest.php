@@ -1,6 +1,6 @@
 <?php
 
-namespace Dnw\Game\Tests\Unit\Domain\Game\Collection;
+namespace Dnw\Game\Tests\Unit\Domain\Variant\Collection;
 
 use Dnw\Game\Core\Domain\Variant\Collection\VariantPowerCollection;
 use Dnw\Game\Tests\Mother\VariantMother;
@@ -14,7 +14,7 @@ class VariantPowerCollectionTest extends TestCase
     {
         $collection = VariantMother::standard()->variantPowerCollection;
 
-        $power = $collection->getByPowerApiName($collection->getOffset(0)->powerApiName);
+        $power = $collection->getByPowerApiName($collection->getOffset(0)->apiName);
 
         $this->assertEquals($collection->getOffset(0), $power);
     }

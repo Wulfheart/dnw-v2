@@ -3,15 +3,10 @@
 namespace Dnw\Game\Tests\Unit\Domain\Game\Collection;
 
 use Dnw\Game\Core\Domain\Game\Collection\PowerCollection;
-use Dnw\Game\Core\Domain\Game\ValueObject\Color;
+use Dnw\Game\Core\Domain\Game\Collection\VariantPowerIdCollection;
 use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
-use Dnw\Game\Core\Domain\Variant\Collection\VariantPowerCollection;
-use Dnw\Game\Core\Domain\Variant\Entity\VariantPower;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
-use Dnw\Game\Core\Domain\Variant\ValueObject\VariantPower\VariantPowerApiName;
-use Dnw\Game\Core\Domain\Variant\ValueObject\VariantPower\VariantPowerName;
 use Dnw\Game\Tests\Mother\PowerMother;
-use DomainException;
 use PhpOption\None;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -21,31 +16,15 @@ class PowerCollectionTest extends TestCase
 {
     public function test_createFromVariantPowerCollection(): void
     {
-        $variantPowerCollection = new VariantPowerCollection(
-            [
-                new VariantPower(
-                    VariantPowerId::generate(),
-                    VariantPowerName::fromString('power1'),
-                    VariantPowerApiName::fromString('power1'),
-                    Color::fromString('red')
-                ),
-                new VariantPower(
-                    VariantPowerId::generate(),
-                    VariantPowerName::fromString('power2'),
-                    VariantPowerApiName::fromString('power2'),
-                    Color::fromString('blue')
-                ),
-            ]
-        );
+        $variantPowerIdCollection = VariantPowerIdCollection::build(VariantPowerId::generate(), VariantPowerId::generate());
 
-        $powerCollection = PowerCollection::createFromVariantPowerIdCollection($variantPowerCollection);
+        $powerCollection = PowerCollection::createFromVariantPowerIdCollection($variantPowerIdCollection);
         for ($i = 0; $i < 2; $i++) {
             $power = $powerCollection->getOffset($i);
-            $variantPower = $variantPowerCollection->getOffset($i);
+            $variantPowerId = $variantPowerIdCollection->getOffset($i);
 
-            $this->assertEquals($power->variantPowerId, $variantPower->id);
+            $this->assertEquals($power->variantPowerId, $variantPowerId);
             $this->assertEquals($power->playerId, None::create());
-            $this->assertFalse($power->isDefeated);
         }
 
     }
@@ -63,31 +42,6 @@ class PowerCollectionTest extends TestCase
         $this->assertEquals($unassignedPower, $unassignedPowers->getOffset(0));
     }
 
-    public function test_assign(): void
-    {
-        $unassignedPower = PowerMother::unassigned();
-        $assignedPower = PowerMother::assigned();
-
-        $powerCollection = new PowerCollection([$unassignedPower, $assignedPower]);
-
-        $playerId = PlayerId::generate();
-
-        $powerCollection->assign($playerId, $unassignedPower->variantPowerId);
-
-        $this->assertEquals($playerId, $unassignedPower->playerId->get());
-    }
-
-    public function test_assign_fails_if_power_is_already_assigned_to_player(): void
-    {
-        $unassignedPower = PowerMother::unassigned();
-        $assignedPower = PowerMother::assigned();
-
-        $powerCollection = new PowerCollection([$unassignedPower, $assignedPower]);
-
-        $this->expectException(DomainException::class);
-        $powerCollection->assign(PlayerId::generate(), $assignedPower->variantPowerId);
-    }
-
     public function test_hasAvailablePowers(): void
     {
         $unassignedPower = PowerMother::unassigned();
@@ -96,19 +50,6 @@ class PowerCollectionTest extends TestCase
         $powerCollection = new PowerCollection([$unassignedPower, $assignedPower]);
 
         $this->assertTrue($powerCollection->hasAvailablePowers());
-    }
-
-    public function test_unassign(): void
-    {
-        $unassignedPower = PowerMother::unassigned();
-        $assignedPower = PowerMother::assigned();
-
-        $powerCollection = new PowerCollection([$unassignedPower, $assignedPower]);
-
-        $playerId = $assignedPower->playerId->get();
-        $powerCollection->unassign($playerId);
-
-        $this->assertTrue($assignedPower->playerId->isEmpty());
     }
 
     public function test_containsPlayer_and_doesNotContainPlayer(): void

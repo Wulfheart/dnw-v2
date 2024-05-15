@@ -28,6 +28,19 @@ abstract class Collection implements IteratorAggregate
         $this->items = array_values($this->items);
     }
 
+    public static function empty(): static
+    {
+        return new static();
+    }
+
+    /**
+     * @param  T  ...$items
+     */
+    public static function build(...$items): static
+    {
+        return new static($items);
+    }
+
     /**
      * @param  T  $item
      */

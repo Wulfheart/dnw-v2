@@ -14,7 +14,6 @@ class GameVariantData
         /** @var VariantPowerIdCollection $variantPowerIdCollection */
         public Collection $variantPowerIdCollection,
         public Count $defaultSupplyCentersToWinCount,
-        public Count $totalSupplyCentersCount,
     ) {
 
     }

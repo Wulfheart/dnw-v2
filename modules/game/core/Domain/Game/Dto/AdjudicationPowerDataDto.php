@@ -1,6 +1,6 @@
 <?php
 
-namespace Dnw\Game\Core\Domain\Game\Dto\AdjudicationPowerData;
+namespace Dnw\Game\Core\Domain\Game\Dto;
 
 use Dnw\Game\Core\Domain\Game\Collection\OrderCollection;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhasePowerData;

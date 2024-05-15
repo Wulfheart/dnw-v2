@@ -4,7 +4,6 @@ namespace Dnw\Game\Tests\Mother;
 
 use Dnw\Game\Core\Domain\Game\ValueObject\Color;
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
-use Dnw\Game\Core\Domain\Game\ValueObject\Variant\GameVariantData;
 use Dnw\Game\Core\Domain\Variant\Collection\VariantPowerCollection;
 use Dnw\Game\Core\Domain\Variant\Entity\VariantPower;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantId;
@@ -13,10 +12,11 @@ use Dnw\Game\Core\Domain\Variant\ValueObject\VariantApiName;
 use Dnw\Game\Core\Domain\Variant\ValueObject\VariantName;
 use Dnw\Game\Core\Domain\Variant\ValueObject\VariantPower\VariantPowerApiName;
 use Dnw\Game\Core\Domain\Variant\ValueObject\VariantPower\VariantPowerName;
+use Dnw\Game\Core\Domain\Variant\Variant;
 
 class VariantMother
 {
-    public static function standard(): GameVariantData
+    public static function standard(): Variant
     {
         $variantPowerCollection = new VariantPowerCollection([
             new VariantPower(
@@ -63,7 +63,7 @@ class VariantMother
             ),
         ]);
 
-        return new GameVariantData(
+        return new Variant(
             VariantId::generate(),
             VariantName::fromString('Standard'),
             VariantApiName::fromString('standard'),

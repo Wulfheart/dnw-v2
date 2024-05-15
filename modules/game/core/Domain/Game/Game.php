@@ -3,14 +3,15 @@
 namespace Dnw\Game\Core\Domain\Game;
 
 use Carbon\CarbonImmutable;
+use Dnw\Foundation\Collection\Collection;
 use Dnw\Foundation\Event\AggregateEventTrait;
 use Dnw\Foundation\Exception\DomainException;
 use Dnw\Foundation\Rule\Rule;
 use Dnw\Foundation\Rule\Ruleset;
 use Dnw\Game\Core\Domain\Game\Collection\OrderCollection;
-use Dnw\Game\Core\Domain\Game\Collection\PhasePowerCollection;
 use Dnw\Game\Core\Domain\Game\Collection\PowerCollection;
-use Dnw\Game\Core\Domain\Game\Dto\AdjudicationPowerData\AdjudicationPowerDataCollection;
+use Dnw\Game\Core\Domain\Game\Dto\AdjudicationPowerDataDto;
+use Dnw\Game\Core\Domain\Game\Dto\InitialAdjudicationPowerDataDto;
 use Dnw\Game\Core\Domain\Game\Entity\Phase;
 use Dnw\Game\Core\Domain\Game\Entity\Power;
 use Dnw\Game\Core\Domain\Game\Event\GameAbandonedEvent;
@@ -72,13 +73,13 @@ class Game
         GameName $name,
         AdjudicationTiming $adjudicationTiming,
         GameStartTiming $gameStartTiming,
-        GameVariantData $variant,
+        GameVariantData $variantData,
         PlayerId $playerId,
         callable $randomNumberGenerator
     ): self {
 
         $powers = PowerCollection::createFromVariantPowerIdCollection(
-            $variant->variantPowerIdCollection
+            $variantData->variantPowerIdCollection
         );
         /** @var int<0,max> $randomIndex */
         $randomIndex = $randomNumberGenerator(0, $powers->count() - 1);
@@ -91,7 +92,7 @@ class Game
             $adjudicationTiming,
             $gameStartTiming,
             true,
-            $variant,
+            $variantData,
             $powers,
             PhasesInfo::initialize(),
             [new GameCreatedEvent()]
@@ -373,11 +374,13 @@ class Game
     }
 
     /**
+     * @param  Collection<AdjudicationPowerDataDto>  $adjudicationPowerDataCollection
+     *
      * @throws DomainException
      */
     public function applyAdjudication(
         PhaseTypeEnum $phaseType,
-        AdjudicationPowerDataCollection $adjudicationPowerDataCollection,
+        Collection $adjudicationPowerDataCollection,
         CarbonImmutable $currentTime
     ): void {
         RulesetHandler::throwConditionally(
@@ -418,9 +421,14 @@ class Game
         );
     }
 
+    /**
+     * @param  Collection<InitialAdjudicationPowerDataDto>  $phasePowerCollection
+     *
+     * @throws DomainException
+     */
     public function applyInitialAdjudication(
         PhaseTypeEnum $phaseType,
-        PhasePowerCollection $phasePowerCollection,
+        Collection $phasePowerCollection,
         CarbonImmutable $currentTime
     ): void {
         RulesetHandler::throwConditionally(
@@ -431,8 +439,6 @@ class Game
         $newPhase = new Phase(
             PhaseId::generate(),
             $phaseType,
-            $phasePowerCollection,
-            None::create(),
             None::create(),
         );
 

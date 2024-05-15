@@ -3,17 +3,17 @@
 namespace Dnw\Game\Core\Application\Command\InitialGameAdjudication;
 
 use Dnw\Adjudicator\AdjudicatorService;
-use Dnw\Adjudicator\Dto\PossibleOrder;
 use Dnw\Foundation\Collection\ArrayCollection;
+use Dnw\Foundation\Collection\Collection;
 use Dnw\Game\Core\Domain\Adapter\TimeProviderInterface;
-use Dnw\Game\Core\Domain\Game\Collection\PhasePowerCollection;
+use Dnw\Game\Core\Domain\Game\Dto\InitialAdjudicationPowerDataDto;
 use Dnw\Game\Core\Domain\Game\Repository\GameRepositoryInterface;
 use Dnw\Game\Core\Domain\Game\Repository\PhaseRepositoryInterface;
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhasePowerData;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
-use Dnw\Game\Core\Domain\Game\ValueObject\Power\PowerId;
+use Dnw\Game\Core\Domain\Variant\Repository\VariantRepositoryInterface;
 use Dnw\Game\Core\Domain\Variant\ValueObject\VariantPower\VariantPowerApiName;
 use PhpOption\None;
 
@@ -23,6 +23,7 @@ readonly class InitialGameAdjudicationCommandHandler
         private AdjudicatorService $adjudicatorService,
         private GameRepositoryInterface $gameRepository,
         private PhaseRepositoryInterface $phaseRepository,
+        private VariantRepositoryInterface $variantRepository,
         private TimeProviderInterface $timeProvider,
     ) {
     }
@@ -30,46 +31,40 @@ readonly class InitialGameAdjudicationCommandHandler
     public function handle(InitialGameAdjudicationCommand $command): void
     {
         $game = $this->gameRepository->load(GameId::fromId($command->gameId));
+        $variant = $this->variantRepository->load($game->variant->id);
 
         $adjudicationGameResult = $this->adjudicatorService->initializeGame(
-            $game->variant->apiName,
+            $variant->apiName,
         );
 
         $phaseType = PhaseTypeEnum::from($adjudicationGameResult->phase_type);
 
-        $apiNameToPowerId = function (string $name) use ($game): PowerId {
-            $variantPower = $game->variant->variantPowerCollection->getByPowerApiName(VariantPowerApiName::fromString($name));
+        /** @var Collection<InitialAdjudicationPowerDataDto> $phasePowerCollection */
+        $phasePowerCollection = new ArrayCollection();
 
-            return $game->powerCollection->getByVariantPowerId($variantPower->id)->powerId;
-        };
-
-        $phasePowerDataCollection = new PhasePowerCollection();
         foreach ($adjudicationGameResult->phase_power_data as $phasePowerData) {
-            /** @var PossibleOrder $possibleOrders */
-            $possibleOrders = ArrayCollection::fromArray($adjudicationGameResult->possible_orders)->findBy(
-                fn ($possibleOrder) => $possibleOrder->power === $phasePowerData->power
-            )->get();
+            $variantPower = $variant->variantPowerCollection->getByPowerApiName(VariantPowerApiName::fromString($phasePowerData->power));
+            $powerId = $game->powerCollection->getByVariantPowerId($variantPower->id)->powerId;
 
-            $ordersNeeded = count($possibleOrders->units) > 0;
+            $possibleOrders = $adjudicationGameResult->getPossibleOrdersByPowerName($phasePowerData->power);
 
-            $powerId = $apiNameToPowerId($phasePowerData->power);
-
-            $ppd = new PhasePowerData(
+            $phasePowerCollection->push(new InitialAdjudicationPowerDataDto(
                 $powerId,
-                $ordersNeeded,
-                false,
-                Count::fromInt($phasePowerData->supply_center_count),
-                Count::fromInt($phasePowerData->unit_count),
-                None::create(),
-                None::create(),
-            );
-
-            $phasePowerDataCollection->push($ppd);
+                new PhasePowerData(
+                    count($possibleOrders->units) > 0,
+                    false,
+                    $adjudicationGameResult->powerHasWon($phasePowerData->power),
+                    Count::fromInt($phasePowerData->supply_center_count),
+                    Count::fromInt($phasePowerData->unit_count),
+                    None::create(),
+                    None::create()
+                ),
+            ));
         }
 
         $game->applyInitialAdjudication(
             $phaseType,
-            $phasePowerDataCollection,
+            $phasePowerCollection,
             $this->timeProvider->getCurrentTime()
         );
 

@@ -4,11 +4,11 @@ namespace Dnw\Game\Core\Application\Command\CreateGame;
 
 use Dnw\Game\Core\Domain\Adapter\RandomNumberGeneratorInterface;
 use Dnw\Game\Core\Domain\Adapter\TimeProviderInterface;
+use Dnw\Game\Core\Domain\Game\Collection\VariantPowerIdCollection;
 use Dnw\Game\Core\Domain\Game\Entity\MessageMode;
 use Dnw\Game\Core\Domain\Game\Game;
 use Dnw\Game\Core\Domain\Game\Repository\GameRepositoryInterface;
 use Dnw\Game\Core\Domain\Game\Repository\MessageModeRepositoryInterface;
-use Dnw\Game\Core\Domain\Game\Repository\VariantRepositoryInterface;
 use Dnw\Game\Core\Domain\Game\ValueObject\AdjudicationTiming\AdjudicationTiming;
 use Dnw\Game\Core\Domain\Game\ValueObject\AdjudicationTiming\NoAdjudicationWeekdayCollection;
 use Dnw\Game\Core\Domain\Game\ValueObject\AdjudicationTiming\PhaseLength;
@@ -18,6 +18,8 @@ use Dnw\Game\Core\Domain\Game\ValueObject\GameStartTiming\GameStartTiming;
 use Dnw\Game\Core\Domain\Game\ValueObject\GameStartTiming\JoinLength;
 use Dnw\Game\Core\Domain\Game\ValueObject\MessageMode\MessageModeId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
+use Dnw\Game\Core\Domain\Game\ValueObject\Variant\GameVariantData;
+use Dnw\Game\Core\Domain\Variant\Repository\VariantRepositoryInterface;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantId;
 use PhpOption\None;
 
@@ -69,13 +71,20 @@ readonly class CreateGameCommandHandler
         );
 
         $variant = $this->variantRepository->load(VariantId::fromString($command->variantId));
+        $variantData = new GameVariantData(
+            $variant->id,
+            VariantPowerIdCollection::fromCollection($variant->variantPowerCollection->map(
+                fn ($variantPower) => $variantPower->id
+            )),
+            $variant->defaultSupplyCentersToWinCount
+        );
 
         $game = Game::create(
             GameId::fromId($command->gameId),
             GameName::fromString($command->name),
             $adjudicationTiming,
             $gameStartTiming,
-            $variant,
+            $variantData,
             PlayerId::fromString($command->creatorId),
             $this->randomNumberGenerator->generate(...)
         );
