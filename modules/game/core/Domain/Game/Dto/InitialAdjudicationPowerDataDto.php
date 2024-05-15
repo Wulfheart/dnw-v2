@@ -7,6 +7,9 @@ use Dnw\Game\Core\Domain\Game\ValueObject\Power\PowerId;
 
 class InitialAdjudicationPowerDataDto
 {
+    /**
+     * @codeCoverageIgnore
+     */
     public function __construct(
         public PowerId $powerId,
         public PhasePowerData $phasePowerData,

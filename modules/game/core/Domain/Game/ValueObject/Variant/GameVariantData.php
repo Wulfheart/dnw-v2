@@ -9,6 +9,9 @@ use Dnw\Game\Core\Domain\Variant\Shared\VariantId;
 
 class GameVariantData
 {
+    /**
+     * @codeCoverageIgnore
+     */
     public function __construct(
         public VariantId $id,
         /** @var VariantPowerIdCollection $variantPowerIdCollection */

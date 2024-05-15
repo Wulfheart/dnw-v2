@@ -21,9 +21,4 @@ class PhasePowerData
     ) {
 
     }
-
-    public function specifyAppliedOrders(OrderCollection $appliedOrdersCollection): void
-    {
-
-    }
 }

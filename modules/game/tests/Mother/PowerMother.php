@@ -2,11 +2,14 @@
 
 namespace Dnw\Game\Tests\Mother;
 
+use Dnw\Game\Core\Domain\Game\Collection\OrderCollection;
 use Dnw\Game\Core\Domain\Game\Entity\Power;
+use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhasePowerData;
 use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Power\PowerId;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
 use PhpOption\None;
+use PhpOption\Option;
 use PhpOption\Some;
 
 class PowerMother
@@ -30,6 +33,26 @@ class PowerMother
             VariantPowerId::generate(),
             None::create(),
             None::create(),
+        );
+    }
+
+    public static function factory(
+        ?PowerId $id = null,
+        ?PlayerId $playerId = null,
+        ?VariantPowerId $variantPowerId = null,
+        ?PhasePowerData $currentPhaseData = null,
+        ?OrderCollection $appliedOrders = null,
+    ): Power {
+
+        return new Power(
+            $id ?? PowerId::generate(),
+            //@phpstan-ignore-next-line
+            Option::fromValue($playerId),
+            $variantPowerId ?? VariantPowerId::generate(),
+            //@phpstan-ignore-next-line
+            Option::fromValue($currentPhaseData),
+            //@phpstan-ignore-next-line
+            Option::fromValue($appliedOrders),
         );
     }
 }

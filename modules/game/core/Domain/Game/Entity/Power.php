@@ -55,7 +55,11 @@ class Power
 
     public function submitOrders(OrderCollection $orderCollection, bool $markedAsReady): void
     {
+        if (! $this->ordersNeeded() || $this->ordersMarkedAsReady()) {
+            throw new DomainException("Power $this->powerId is ready for adjudication and cannot submit new orders");
+        }
         $this->currentPhaseData->get()->orderCollection = Some::create($orderCollection);
+        $this->markOrderStatus($markedAsReady);
     }
 
     public function ordersNeeded(): bool
@@ -74,7 +78,7 @@ class Power
 
     public function readyForAdjudication(): bool
     {
-        return $this->ordersNeeded() && $this->ordersMarkedAsReady();
+        return ! $this->ordersNeeded() || ! $this->ordersMarkedAsReady();
     }
 
     public function proceedToNextPhase(PhasePowerData $newPhaseData, OrderCollection $appliedOrders): void
