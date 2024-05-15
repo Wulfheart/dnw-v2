@@ -46,4 +46,15 @@ class Ruleset
 
         return $errors;
     }
+
+    public function containsViolation(string $key): bool
+    {
+        foreach ($this->rules as $rule) {
+            if (! $rule->passes() && in_array($key, $rule->failingKeys())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

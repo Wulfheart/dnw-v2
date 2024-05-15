@@ -14,7 +14,7 @@ readonly class NoAdjudicationWeekdayCollection
      * @param  array<int>  $weekdays
      */
     public function __construct(
-        array $weekdays
+        array $weekdays = []
     ) {
         $weekdays = array_unique($weekdays);
         foreach ($weekdays as $weekday) {
@@ -28,6 +28,11 @@ readonly class NoAdjudicationWeekdayCollection
         }
 
         $this->weekdays = $weekdays;
+    }
+
+    public static function empty(): self
+    {
+        return new self();
     }
 
     /**
