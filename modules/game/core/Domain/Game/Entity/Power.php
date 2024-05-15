@@ -78,7 +78,11 @@ class Power
 
     public function readyForAdjudication(): bool
     {
-        return ! $this->ordersNeeded() || ! $this->ordersMarkedAsReady();
+        if (! $this->ordersNeeded()) {
+            return true;
+        }
+
+        return $this->ordersMarkedAsReady();
     }
 
     public function proceedToNextPhase(PhasePowerData $newPhaseData, OrderCollection $appliedOrders): void

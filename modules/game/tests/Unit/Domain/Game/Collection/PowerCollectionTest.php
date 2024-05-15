@@ -94,14 +94,14 @@ class PowerCollectionTest extends TestCase
         $this->assertFalse($powerCollection->hasNoAssignedPowers());
     }
 
-    public function test_getPowerIdByPlayerId(): void
+    public function test_getPowerByPlayerId(): void
     {
         $unassignedPower = PowerMother::unassigned();
         $assignedPower = PowerMother::assigned();
 
         $powerCollection = new PowerCollection([$unassignedPower, $assignedPower]);
 
-        $this->assertEquals($assignedPower->powerId, $powerCollection->getByPlayerId($assignedPower->playerId->get()));
+        $this->assertEquals($assignedPower, $powerCollection->getByPlayerId($assignedPower->playerId->get()));
     }
 
     public function test_getByPowerId(): void

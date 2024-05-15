@@ -168,10 +168,15 @@ class PowerTest extends TestCase
                 markedAsReady: true
             )
         );
-        $this->assertFalse($power->readyForAdjudication());
+        $this->assertTrue($power->readyForAdjudication());
 
-        $power = PowerMother::factory();
-        $this->assertFalse($power->readyForAdjudication());
+        $power = PowerMother::factory(
+            currentPhaseData: PhasePowerDataMother::factory(
+                ordersNeeded: false,
+                markedAsReady: false
+            )
+        );
+        $this->assertTrue($power->readyForAdjudication());
     }
 
     public function test_proceedToNextPhase(): void
