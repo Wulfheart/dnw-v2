@@ -6,7 +6,7 @@ use Dnw\Foundation\Collection\Collection;
 use Dnw\Game\Core\Domain\Game\Entity\Power;
 use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Power\PowerId;
-use Dnw\Game\Core\Domain\Game\ValueObject\Variant\VariantPower\VariantPowerId;
+use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
 use PhpOption\None;
 use PhpOption\Option;
 
@@ -15,17 +15,18 @@ use PhpOption\Option;
  */
 class PowerCollection extends Collection
 {
-    public static function createFromVariantPowerCollection(
-        VariantPowerCollection $variantPowerCollection,
+    public static function createFromVariantPowerIdCollection(
+        VariantPowerIdCollection $variantPowerIdCollection,
     ): self {
         $powers = new self();
-        foreach ($variantPowerCollection as $item) {
+        foreach ($variantPowerIdCollection as $item) {
             $powers->push(
                 new Power(
                     PowerId::generate(),
                     None::create(),
-                    $item->id,
-                    false,
+                    $item,
+                    None::create(),
+                    None::create()
                 )
             );
         }

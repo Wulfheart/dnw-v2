@@ -1,17 +1,17 @@
 <?php
 
-namespace Dnw\Game\Core\Domain\Game\ValueObject\Variant;
+namespace Dnw\Game\Core\Domain\Variant\ValueObject\VariantPower;
 
 use InvalidArgumentException;
 use Stringable;
 
-class VariantApiName implements Stringable
+class VariantPowerApiName implements Stringable
 {
     private function __construct(
         private string $value
     ) {
         if (empty($value)) {
-            throw new InvalidArgumentException('VariantApiName cannot be empty');
+            throw new InvalidArgumentException('VariantPowerApiName cannot be empty');
         }
     }
 

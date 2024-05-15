@@ -2,7 +2,7 @@
 
 namespace Dnw\Game\Tests\Unit\Domain\Game\Collection;
 
-use Dnw\Game\Core\Domain\Game\Collection\VariantPowerCollection;
+use Dnw\Game\Core\Domain\Variant\Collection\VariantPowerCollection;
 use Dnw\Game\Tests\Mother\VariantMother;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;

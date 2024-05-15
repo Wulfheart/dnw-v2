@@ -2,9 +2,9 @@
 
 namespace Dnw\Game\Core\Domain\Game\ValueObject\Phases;
 
-use Dnw\Game\Core\Domain\Game\Collection\AppliedOrdersCollection;
 use Dnw\Game\Core\Domain\Game\Entity\Phase;
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
+use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseId;
 use PhpOption\None;
 use PhpOption\Option;
 use PhpOption\Some;
@@ -15,8 +15,8 @@ class PhasesInfo
         public Count $count,
         /** @var Option<Phase> $currentPhase */
         public Option $currentPhase,
-        /** @var Option<Phase> $previousPhase */
-        public Option $previousPhase,
+        /** @var Option<PhaseId> $lastPhaseId */
+        public Option $lastPhaseId,
     ) {
     }
 
@@ -36,10 +36,8 @@ class PhasesInfo
             && $this->currentPhase->get()->adjudicationTime->isDefined();
     }
 
-    public function proceedToNewPhase(Phase $newPhase, AppliedOrdersCollection $appliedOrdersCollection): void
+    public function proceedToNewPhase(Phase $newPhase): void
     {
-        $this->currentPhase->get()->applyOrders($appliedOrdersCollection);
-        $this->previousPhase = $this->currentPhase;
         $this->currentPhase = Some::create($newPhase);
     }
 

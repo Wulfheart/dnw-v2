@@ -2,21 +2,21 @@
 
 namespace Dnw\Game\Tests\Mother;
 
-use Dnw\Game\Core\Domain\Game\Collection\VariantPowerCollection;
-use Dnw\Game\Core\Domain\Game\Entity\Variant;
-use Dnw\Game\Core\Domain\Game\Entity\VariantPower;
 use Dnw\Game\Core\Domain\Game\ValueObject\Color;
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
-use Dnw\Game\Core\Domain\Game\ValueObject\Variant\VariantApiName;
-use Dnw\Game\Core\Domain\Game\ValueObject\Variant\VariantId;
-use Dnw\Game\Core\Domain\Game\ValueObject\Variant\VariantName;
-use Dnw\Game\Core\Domain\Game\ValueObject\Variant\VariantPower\VariantPowerApiName;
-use Dnw\Game\Core\Domain\Game\ValueObject\Variant\VariantPower\VariantPowerId;
-use Dnw\Game\Core\Domain\Game\ValueObject\Variant\VariantPower\VariantPowerName;
+use Dnw\Game\Core\Domain\Game\ValueObject\Variant\GameVariantData;
+use Dnw\Game\Core\Domain\Variant\Collection\VariantPowerCollection;
+use Dnw\Game\Core\Domain\Variant\Entity\VariantPower;
+use Dnw\Game\Core\Domain\Variant\Shared\VariantId;
+use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
+use Dnw\Game\Core\Domain\Variant\ValueObject\VariantApiName;
+use Dnw\Game\Core\Domain\Variant\ValueObject\VariantName;
+use Dnw\Game\Core\Domain\Variant\ValueObject\VariantPower\VariantPowerApiName;
+use Dnw\Game\Core\Domain\Variant\ValueObject\VariantPower\VariantPowerName;
 
 class VariantMother
 {
-    public static function standard(): Variant
+    public static function standard(): GameVariantData
     {
         $variantPowerCollection = new VariantPowerCollection([
             new VariantPower(
@@ -63,7 +63,7 @@ class VariantMother
             ),
         ]);
 
-        return new Variant(
+        return new GameVariantData(
             VariantId::generate(),
             VariantName::fromString('Standard'),
             VariantApiName::fromString('standard'),

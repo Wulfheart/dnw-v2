@@ -5,7 +5,7 @@ namespace Dnw\Game\Tests\Mother;
 use Dnw\Game\Core\Domain\Game\Entity\Power;
 use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Power\PowerId;
-use Dnw\Game\Core\Domain\Game\ValueObject\Variant\VariantPower\VariantPowerId;
+use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
 use PhpOption\None;
 use PhpOption\Some;
 
@@ -17,7 +17,8 @@ class PowerMother
             PowerId::generate(),
             None::create(),
             VariantPowerId::generate(),
-            false
+            None::create(),
+            None::create(),
         );
     }
 
@@ -27,7 +28,8 @@ class PowerMother
             PowerId::generate(),
             Some::create(PlayerId::generate()),
             VariantPowerId::generate(),
-            false
+            None::create(),
+            None::create(),
         );
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Dnw\Game\Core\Domain\Game\Exception;
+namespace Dnw\Foundation\Exception;
 
 use Exception;
 

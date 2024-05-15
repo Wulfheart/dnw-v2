@@ -2,8 +2,8 @@
 
 namespace Dnw\Game\Core\Infrastructure\Repository\Phase;
 
+use Dnw\Foundation\Exception\NotFoundException;
 use Dnw\Game\Core\Domain\Game\Exception\AlreadyPresentException;
-use Dnw\Game\Core\Domain\Game\Exception\NotFoundException;
 use Dnw\Game\Core\Domain\Game\Repository\PhaseRepositoryInterface;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseId;
 

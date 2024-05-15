@@ -4,8 +4,8 @@ namespace Dnw\Game\Tests\Unit\Domain\Game\Repository;
 
 use Dnw\Foundation\Event\EventDispatcherInterface;
 use Dnw\Foundation\Event\FakeEventDispatcher;
+use Dnw\Foundation\Exception\NotFoundException;
 use Dnw\Game\Core\Domain\Game\Event\GameCreatedEvent;
-use Dnw\Game\Core\Domain\Game\Exception\NotFoundException;
 use Dnw\Game\Core\Domain\Game\Repository\GameRepositoryInterface;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Tests\Mother\GameBuilder;

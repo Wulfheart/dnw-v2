@@ -2,8 +2,8 @@
 
 namespace Dnw\Game\Core\Domain\Game\Repository;
 
+use Dnw\Foundation\Exception\NotFoundException;
 use Dnw\Game\Core\Domain\Game\Entity\MessageMode;
-use Dnw\Game\Core\Domain\Game\Exception\NotFoundException;
 use Dnw\Game\Core\Domain\Game\ValueObject\MessageMode\MessageModeId;
 
 interface MessageModeRepositoryInterface

@@ -3,13 +3,13 @@
 namespace Dnw\Game\Tests\Unit\Domain\Game\Collection;
 
 use Dnw\Game\Core\Domain\Game\Collection\PowerCollection;
-use Dnw\Game\Core\Domain\Game\Collection\VariantPowerCollection;
-use Dnw\Game\Core\Domain\Game\Entity\VariantPower;
 use Dnw\Game\Core\Domain\Game\ValueObject\Color;
 use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
-use Dnw\Game\Core\Domain\Game\ValueObject\Variant\VariantPower\VariantPowerApiName;
-use Dnw\Game\Core\Domain\Game\ValueObject\Variant\VariantPower\VariantPowerId;
-use Dnw\Game\Core\Domain\Game\ValueObject\Variant\VariantPower\VariantPowerName;
+use Dnw\Game\Core\Domain\Variant\Collection\VariantPowerCollection;
+use Dnw\Game\Core\Domain\Variant\Entity\VariantPower;
+use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
+use Dnw\Game\Core\Domain\Variant\ValueObject\VariantPower\VariantPowerApiName;
+use Dnw\Game\Core\Domain\Variant\ValueObject\VariantPower\VariantPowerName;
 use Dnw\Game\Tests\Mother\PowerMother;
 use DomainException;
 use PhpOption\None;
@@ -38,7 +38,7 @@ class PowerCollectionTest extends TestCase
             ]
         );
 
-        $powerCollection = PowerCollection::createFromVariantPowerCollection($variantPowerCollection);
+        $powerCollection = PowerCollection::createFromVariantPowerIdCollection($variantPowerCollection);
         for ($i = 0; $i < 2; $i++) {
             $power = $powerCollection->getOffset($i);
             $variantPower = $variantPowerCollection->getOffset($i);
@@ -181,5 +181,19 @@ class PowerCollectionTest extends TestCase
         $powerCollection = new PowerCollection([$unassignedPower, $assignedPower]);
 
         $this->assertEquals($assignedPower, $powerCollection->getByVariantPowerId($assignedPower->variantPowerId));
+    }
+
+    public function test_some_things(): void
+    {
+        $powerOne = PowerMother::unassigned();
+        $powerTwo = PowerMother::unassigned();
+
+        $powerCollection = new PowerCollection([$powerOne, $powerTwo]);
+
+        $powerTwo->assign(PlayerId::generate());
+
+        $two = $powerCollection->getByPowerId($powerTwo->powerId);
+        $this->assertTrue($two->playerId->isDefined());
+
     }
 }

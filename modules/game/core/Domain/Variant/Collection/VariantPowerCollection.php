@@ -1,11 +1,11 @@
 <?php
 
-namespace Dnw\Game\Core\Domain\Game\Collection;
+namespace Dnw\Game\Core\Domain\Variant\Collection;
 
 use Dnw\Foundation\Collection\Collection;
-use Dnw\Game\Core\Domain\Game\Entity\VariantPower;
-use Dnw\Game\Core\Domain\Game\ValueObject\Variant\VariantPower\VariantPowerApiName;
-use Dnw\Game\Core\Domain\Game\ValueObject\Variant\VariantPower\VariantPowerId;
+use Dnw\Game\Core\Domain\Variant\Entity\VariantPower;
+use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
+use Dnw\Game\Core\Domain\Variant\ValueObject\VariantPower\VariantPowerApiName;
 
 /**
  * @extends Collection<VariantPower>

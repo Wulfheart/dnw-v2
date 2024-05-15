@@ -1,12 +1,12 @@
 <?php
 
-namespace Dnw\Game\Core\Domain\Game\Entity;
+namespace Dnw\Game\Core\Domain\Variant;
 
-use Dnw\Game\Core\Domain\Game\Collection\VariantPowerCollection;
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
-use Dnw\Game\Core\Domain\Game\ValueObject\Variant\VariantApiName;
-use Dnw\Game\Core\Domain\Game\ValueObject\Variant\VariantId;
-use Dnw\Game\Core\Domain\Game\ValueObject\Variant\VariantName;
+use Dnw\Game\Core\Domain\Variant\Collection\VariantPowerCollection;
+use Dnw\Game\Core\Domain\Variant\Shared\VariantId;
+use Dnw\Game\Core\Domain\Variant\ValueObject\VariantApiName;
+use Dnw\Game\Core\Domain\Variant\ValueObject\VariantName;
 
 class Variant
 {

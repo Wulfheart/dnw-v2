@@ -2,7 +2,7 @@
 
 namespace Dnw\Game\Core\Domain\Game\Entity;
 
-use Dnw\Game\Core\Domain\Game\Exception\DomainException;
+use Dnw\Foundation\Exception\DomainException;
 use Dnw\Game\Core\Domain\Game\ValueObject\MessageMode\MessageModeId;
 use Dnw\Game\Core\Domain\Game\ValueObject\MessageMode\MessageModeName;
 use PhpOption\Option;

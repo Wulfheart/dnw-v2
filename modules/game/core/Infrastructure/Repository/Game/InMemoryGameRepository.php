@@ -3,7 +3,7 @@
 namespace Dnw\Game\Core\Infrastructure\Repository\Game;
 
 use Dnw\Foundation\Event\EventDispatcherInterface;
-use Dnw\Game\Core\Domain\Game\Exception\NotFoundException;
+use Dnw\Foundation\Exception\NotFoundException;
 use Dnw\Game\Core\Domain\Game\Game;
 use Dnw\Game\Core\Domain\Game\Repository\GameRepositoryInterface;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;

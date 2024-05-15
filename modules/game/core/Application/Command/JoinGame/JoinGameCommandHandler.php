@@ -8,7 +8,7 @@ use Dnw\Game\Core\Domain\Adapter\TimeProviderInterface;
 use Dnw\Game\Core\Domain\Game\Repository\GameRepositoryInterface;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
-use Dnw\Game\Core\Domain\Game\ValueObject\Variant\VariantPower\VariantPowerId;
+use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
 
 readonly class JoinGameCommandHandler
 {

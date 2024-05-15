@@ -2,10 +2,10 @@
 
 namespace Dnw\Game\Core\Domain\Game\Entity;
 
+use Dnw\Foundation\Exception\DomainException;
 use Dnw\Game\Core\Domain\Game\Collection\MessageRoomMemberCollection;
 use Dnw\Game\Core\Domain\Game\Entity\Message\PowerMessage;
 use Dnw\Game\Core\Domain\Game\Entity\Message\SystemMessage;
-use Dnw\Game\Core\Domain\Game\Exception\DomainException;
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
 use Dnw\Game\Core\Domain\Game\ValueObject\MessageRoom\MessageRoomId;
 use Dnw\Game\Core\Domain\Game\ValueObject\MessageRoom\MessageRoomName;

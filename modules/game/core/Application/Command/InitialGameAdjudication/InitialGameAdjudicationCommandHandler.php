@@ -14,7 +14,7 @@ use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhasePowerData;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
 use Dnw\Game\Core\Domain\Game\ValueObject\Power\PowerId;
-use Dnw\Game\Core\Domain\Game\ValueObject\Variant\VariantPower\VariantPowerApiName;
+use Dnw\Game\Core\Domain\Variant\ValueObject\VariantPower\VariantPowerApiName;
 use PhpOption\None;
 
 readonly class InitialGameAdjudicationCommandHandler

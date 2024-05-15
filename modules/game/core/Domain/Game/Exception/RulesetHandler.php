@@ -2,6 +2,7 @@
 
 namespace Dnw\Game\Core\Domain\Game\Exception;
 
+use Dnw\Foundation\Exception\DomainException;
 use Dnw\Foundation\Rule\Ruleset;
 
 class RulesetHandler

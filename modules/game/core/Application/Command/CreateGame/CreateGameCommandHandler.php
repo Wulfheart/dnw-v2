@@ -18,7 +18,7 @@ use Dnw\Game\Core\Domain\Game\ValueObject\GameStartTiming\GameStartTiming;
 use Dnw\Game\Core\Domain\Game\ValueObject\GameStartTiming\JoinLength;
 use Dnw\Game\Core\Domain\Game\ValueObject\MessageMode\MessageModeId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
-use Dnw\Game\Core\Domain\Game\ValueObject\Variant\VariantId;
+use Dnw\Game\Core\Domain\Variant\Shared\VariantId;
 use PhpOption\None;
 
 readonly class CreateGameCommandHandler

@@ -79,6 +79,20 @@ abstract class Collection implements IteratorAggregate
         return None::create();
     }
 
+    /**
+     * @param  callable(T): bool  $predicate
+     */
+    public function every(callable $predicate): bool
+    {
+        foreach ($this->items as $item) {
+            if (! $predicate($item)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public function getIterator(): Traversable
     {
         return new ArrayIterator($this->items);
