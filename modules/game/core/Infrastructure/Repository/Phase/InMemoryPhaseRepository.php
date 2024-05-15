@@ -2,10 +2,10 @@
 
 namespace Dnw\Game\Core\Infrastructure\Repository\Phase;
 
-use Dnw\Game\Core\Domain\Exception\AlreadyPresentException;
-use Dnw\Game\Core\Domain\Exception\NotFoundException;
-use Dnw\Game\Core\Domain\Repository\PhaseRepositoryInterface;
-use Dnw\Game\Core\Domain\ValueObject\Phase\PhaseId;
+use Dnw\Game\Core\Domain\Game\Exception\AlreadyPresentException;
+use Dnw\Game\Core\Domain\Game\Exception\NotFoundException;
+use Dnw\Game\Core\Domain\Game\Repository\PhaseRepositoryInterface;
+use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseId;
 
 class InMemoryPhaseRepository implements PhaseRepositoryInterface
 {

@@ -2,9 +2,9 @@
 
 namespace Dnw\Game\Core\Application\Command\LeaveGame;
 
-use Dnw\Game\Core\Domain\Repository\GameRepositoryInterface;
-use Dnw\Game\Core\Domain\ValueObject\Game\GameId;
-use Dnw\Game\Core\Domain\ValueObject\Player\PlayerId;
+use Dnw\Game\Core\Domain\Game\Repository\GameRepositoryInterface;
+use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
+use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
 
 readonly class LeaveGameCommandHandler
 {

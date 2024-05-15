@@ -3,15 +3,15 @@
 namespace Dnw\Game\Tests\Mother;
 
 use Carbon\CarbonImmutable;
-use Dnw\Game\Core\Domain\Aggregate\Game;
-use Dnw\Game\Core\Domain\ValueObject\AdjudicationTiming\AdjudicationTiming;
-use Dnw\Game\Core\Domain\ValueObject\AdjudicationTiming\NoAdjudicationWeekdayCollection;
-use Dnw\Game\Core\Domain\ValueObject\AdjudicationTiming\PhaseLength;
-use Dnw\Game\Core\Domain\ValueObject\Game\GameId;
-use Dnw\Game\Core\Domain\ValueObject\Game\GameName;
-use Dnw\Game\Core\Domain\ValueObject\GameStartTiming\GameStartTiming;
-use Dnw\Game\Core\Domain\ValueObject\GameStartTiming\JoinLength;
-use Dnw\Game\Core\Domain\ValueObject\Player\PlayerId;
+use Dnw\Game\Core\Domain\Game\Aggregate\Game;
+use Dnw\Game\Core\Domain\Game\ValueObject\AdjudicationTiming\AdjudicationTiming;
+use Dnw\Game\Core\Domain\Game\ValueObject\AdjudicationTiming\NoAdjudicationWeekdayCollection;
+use Dnw\Game\Core\Domain\Game\ValueObject\AdjudicationTiming\PhaseLength;
+use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
+use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameName;
+use Dnw\Game\Core\Domain\Game\ValueObject\GameStartTiming\GameStartTiming;
+use Dnw\Game\Core\Domain\Game\ValueObject\GameStartTiming\JoinLength;
+use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
 use Dnw\Game\Core\Infrastructure\Adapter\RandomNumberGenerator;
 
 class GameBuilder

@@ -3,10 +3,10 @@
 namespace Dnw\Game\Core\Infrastructure\Repository\Game;
 
 use Dnw\Foundation\Event\EventDispatcherInterface;
-use Dnw\Game\Core\Domain\Aggregate\Game;
-use Dnw\Game\Core\Domain\Exception\NotFoundException;
-use Dnw\Game\Core\Domain\Repository\GameRepositoryInterface;
-use Dnw\Game\Core\Domain\ValueObject\Game\GameId;
+use Dnw\Game\Core\Domain\Game\Aggregate\Game;
+use Dnw\Game\Core\Domain\Game\Exception\NotFoundException;
+use Dnw\Game\Core\Domain\Game\Repository\GameRepositoryInterface;
+use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
 
 class InMemoryGameRepository implements GameRepositoryInterface
 {

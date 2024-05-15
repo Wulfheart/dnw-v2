@@ -2,10 +2,10 @@
 
 namespace Dnw\Game\Tests\Mother;
 
-use Dnw\Game\Core\Domain\Entity\Power;
-use Dnw\Game\Core\Domain\ValueObject\Player\PlayerId;
-use Dnw\Game\Core\Domain\ValueObject\Power\PowerId;
-use Dnw\Game\Core\Domain\ValueObject\Variant\VariantPower\VariantPowerId;
+use Dnw\Game\Core\Domain\Game\Entity\Power;
+use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
+use Dnw\Game\Core\Domain\Game\ValueObject\Power\PowerId;
+use Dnw\Game\Core\Domain\Game\ValueObject\Variant\VariantPower\VariantPowerId;
 use PhpOption\None;
 use PhpOption\Some;
 

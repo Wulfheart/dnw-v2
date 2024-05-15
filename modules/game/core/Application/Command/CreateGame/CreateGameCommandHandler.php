@@ -4,21 +4,21 @@ namespace Dnw\Game\Core\Application\Command\CreateGame;
 
 use Dnw\Game\Core\Domain\Adapter\RandomNumberGeneratorInterface;
 use Dnw\Game\Core\Domain\Adapter\TimeProviderInterface;
-use Dnw\Game\Core\Domain\Aggregate\Game;
-use Dnw\Game\Core\Domain\Entity\MessageMode;
-use Dnw\Game\Core\Domain\Repository\GameRepositoryInterface;
-use Dnw\Game\Core\Domain\Repository\MessageModeRepositoryInterface;
-use Dnw\Game\Core\Domain\Repository\VariantRepositoryInterface;
-use Dnw\Game\Core\Domain\ValueObject\AdjudicationTiming\AdjudicationTiming;
-use Dnw\Game\Core\Domain\ValueObject\AdjudicationTiming\NoAdjudicationWeekdayCollection;
-use Dnw\Game\Core\Domain\ValueObject\AdjudicationTiming\PhaseLength;
-use Dnw\Game\Core\Domain\ValueObject\Game\GameId;
-use Dnw\Game\Core\Domain\ValueObject\Game\GameName;
-use Dnw\Game\Core\Domain\ValueObject\GameStartTiming\GameStartTiming;
-use Dnw\Game\Core\Domain\ValueObject\GameStartTiming\JoinLength;
-use Dnw\Game\Core\Domain\ValueObject\MessageMode\MessageModeId;
-use Dnw\Game\Core\Domain\ValueObject\Player\PlayerId;
-use Dnw\Game\Core\Domain\ValueObject\Variant\VariantId;
+use Dnw\Game\Core\Domain\Game\Aggregate\Game;
+use Dnw\Game\Core\Domain\Game\Entity\MessageMode;
+use Dnw\Game\Core\Domain\Game\Repository\GameRepositoryInterface;
+use Dnw\Game\Core\Domain\Game\Repository\MessageModeRepositoryInterface;
+use Dnw\Game\Core\Domain\Game\Repository\VariantRepositoryInterface;
+use Dnw\Game\Core\Domain\Game\ValueObject\AdjudicationTiming\AdjudicationTiming;
+use Dnw\Game\Core\Domain\Game\ValueObject\AdjudicationTiming\NoAdjudicationWeekdayCollection;
+use Dnw\Game\Core\Domain\Game\ValueObject\AdjudicationTiming\PhaseLength;
+use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
+use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameName;
+use Dnw\Game\Core\Domain\Game\ValueObject\GameStartTiming\GameStartTiming;
+use Dnw\Game\Core\Domain\Game\ValueObject\GameStartTiming\JoinLength;
+use Dnw\Game\Core\Domain\Game\ValueObject\MessageMode\MessageModeId;
+use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
+use Dnw\Game\Core\Domain\Game\ValueObject\Variant\VariantId;
 use PhpOption\None;
 
 readonly class CreateGameCommandHandler

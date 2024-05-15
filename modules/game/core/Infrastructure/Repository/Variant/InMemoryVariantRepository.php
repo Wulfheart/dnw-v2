@@ -2,10 +2,10 @@
 
 namespace Dnw\Game\Core\Infrastructure\Repository\Variant;
 
-use Dnw\Game\Core\Domain\Entity\Variant;
-use Dnw\Game\Core\Domain\Exception\NotFoundException;
-use Dnw\Game\Core\Domain\Repository\VariantRepositoryInterface;
-use Dnw\Game\Core\Domain\ValueObject\Variant\VariantId;
+use Dnw\Game\Core\Domain\Game\Entity\Variant;
+use Dnw\Game\Core\Domain\Game\Exception\NotFoundException;
+use Dnw\Game\Core\Domain\Game\Repository\VariantRepositoryInterface;
+use Dnw\Game\Core\Domain\Game\ValueObject\Variant\VariantId;
 
 class InMemoryVariantRepository implements VariantRepositoryInterface
 {

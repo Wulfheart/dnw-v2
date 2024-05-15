@@ -6,15 +6,15 @@ use Dnw\Adjudicator\AdjudicatorService;
 use Dnw\Adjudicator\Dto\PossibleOrder;
 use Dnw\Foundation\Collection\ArrayCollection;
 use Dnw\Game\Core\Domain\Adapter\TimeProviderInterface;
-use Dnw\Game\Core\Domain\Collection\PhasePowerCollection;
-use Dnw\Game\Core\Domain\Repository\GameRepositoryInterface;
-use Dnw\Game\Core\Domain\Repository\PhaseRepositoryInterface;
-use Dnw\Game\Core\Domain\ValueObject\Count;
-use Dnw\Game\Core\Domain\ValueObject\Game\GameId;
-use Dnw\Game\Core\Domain\ValueObject\Phase\PhasePowerData;
-use Dnw\Game\Core\Domain\ValueObject\Phase\PhaseTypeEnum;
-use Dnw\Game\Core\Domain\ValueObject\Power\PowerId;
-use Dnw\Game\Core\Domain\ValueObject\Variant\VariantPower\VariantPowerApiName;
+use Dnw\Game\Core\Domain\Game\Collection\PhasePowerCollection;
+use Dnw\Game\Core\Domain\Game\Repository\GameRepositoryInterface;
+use Dnw\Game\Core\Domain\Game\Repository\PhaseRepositoryInterface;
+use Dnw\Game\Core\Domain\Game\ValueObject\Count;
+use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
+use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhasePowerData;
+use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
+use Dnw\Game\Core\Domain\Game\ValueObject\Power\PowerId;
+use Dnw\Game\Core\Domain\Game\ValueObject\Variant\VariantPower\VariantPowerApiName;
 use PhpOption\None;
 
 readonly class InitialGameAdjudicationCommandHandler

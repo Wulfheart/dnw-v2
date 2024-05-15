@@ -2,17 +2,17 @@
 
 namespace Dnw\Game\Tests\Mother;
 
-use Dnw\Game\Core\Domain\Collection\VariantPowerCollection;
-use Dnw\Game\Core\Domain\Entity\Variant;
-use Dnw\Game\Core\Domain\Entity\VariantPower;
-use Dnw\Game\Core\Domain\ValueObject\Color;
-use Dnw\Game\Core\Domain\ValueObject\Count;
-use Dnw\Game\Core\Domain\ValueObject\Variant\VariantApiName;
-use Dnw\Game\Core\Domain\ValueObject\Variant\VariantId;
-use Dnw\Game\Core\Domain\ValueObject\Variant\VariantName;
-use Dnw\Game\Core\Domain\ValueObject\Variant\VariantPower\VariantPowerApiName;
-use Dnw\Game\Core\Domain\ValueObject\Variant\VariantPower\VariantPowerId;
-use Dnw\Game\Core\Domain\ValueObject\Variant\VariantPower\VariantPowerName;
+use Dnw\Game\Core\Domain\Game\Collection\VariantPowerCollection;
+use Dnw\Game\Core\Domain\Game\Entity\Variant;
+use Dnw\Game\Core\Domain\Game\Entity\VariantPower;
+use Dnw\Game\Core\Domain\Game\ValueObject\Color;
+use Dnw\Game\Core\Domain\Game\ValueObject\Count;
+use Dnw\Game\Core\Domain\Game\ValueObject\Variant\VariantApiName;
+use Dnw\Game\Core\Domain\Game\ValueObject\Variant\VariantId;
+use Dnw\Game\Core\Domain\Game\ValueObject\Variant\VariantName;
+use Dnw\Game\Core\Domain\Game\ValueObject\Variant\VariantPower\VariantPowerApiName;
+use Dnw\Game\Core\Domain\Game\ValueObject\Variant\VariantPower\VariantPowerId;
+use Dnw\Game\Core\Domain\Game\ValueObject\Variant\VariantPower\VariantPowerName;
 
 class VariantMother
 {

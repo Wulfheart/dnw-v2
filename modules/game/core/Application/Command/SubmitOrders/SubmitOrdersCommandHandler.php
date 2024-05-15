@@ -3,10 +3,10 @@
 namespace Dnw\Game\Core\Application\Command\SubmitOrders;
 
 use Dnw\Game\Core\Domain\Adapter\TimeProviderInterface;
-use Dnw\Game\Core\Domain\Collection\OrderCollection;
-use Dnw\Game\Core\Domain\Repository\GameRepositoryInterface;
-use Dnw\Game\Core\Domain\ValueObject\Game\GameId;
-use Dnw\Game\Core\Domain\ValueObject\Player\PlayerId;
+use Dnw\Game\Core\Domain\Game\Collection\OrderCollection;
+use Dnw\Game\Core\Domain\Game\Repository\GameRepositoryInterface;
+use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
+use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
 
 class SubmitOrdersCommandHandler
 {
