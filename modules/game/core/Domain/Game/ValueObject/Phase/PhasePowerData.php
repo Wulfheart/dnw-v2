@@ -8,6 +8,9 @@ use PhpOption\Option;
 
 class PhasePowerData
 {
+    /**
+     * @codeCoverageIgnore
+     */
     public function __construct(
         public bool $ordersNeeded,
         public bool $markedAsReady,

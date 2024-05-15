@@ -38,6 +38,8 @@ class PhasesInfo
 
     public function proceedToNewPhase(Phase $newPhase): void
     {
+        $this->count = Count::fromInt($this->count->int() + 1);
+        $this->lastPhaseId = Some::create($this->currentPhase->get()->phaseId);
         $this->currentPhase = Some::create($newPhase);
     }
 
