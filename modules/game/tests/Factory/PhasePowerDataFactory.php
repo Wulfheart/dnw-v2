@@ -1,15 +1,15 @@
 <?php
 
-namespace Dnw\Game\Tests\Mother;
+namespace Dnw\Game\Tests\Factory;
 
 use Dnw\Game\Core\Domain\Game\Collection\OrderCollection;
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhasePowerData;
 use PhpOption\Option;
 
-class PhasePowerDataMother
+class PhasePowerDataFactory
 {
-    public static function factory(
+    public static function build(
         ?bool $ordersNeeded = null,
         ?bool $markedAsReady = null,
         ?bool $isWinner = null,

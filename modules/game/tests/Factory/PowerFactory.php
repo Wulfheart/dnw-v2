@@ -1,6 +1,6 @@
 <?php
 
-namespace Dnw\Game\Tests\Mother;
+namespace Dnw\Game\Tests\Factory;
 
 use Dnw\Game\Core\Domain\Game\Collection\OrderCollection;
 use Dnw\Game\Core\Domain\Game\Entity\Power;
@@ -12,7 +12,7 @@ use PhpOption\None;
 use PhpOption\Option;
 use PhpOption\Some;
 
-class PowerMother
+class PowerFactory
 {
     public static function unassigned(): Power
     {
@@ -36,7 +36,7 @@ class PowerMother
         );
     }
 
-    public static function factory(
+    public static function build(
         ?PowerId $id = null,
         ?PlayerId $playerId = null,
         ?VariantPowerId $variantPowerId = null,

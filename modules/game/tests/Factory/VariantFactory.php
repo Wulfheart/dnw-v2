@@ -1,6 +1,6 @@
 <?php
 
-namespace Dnw\Game\Tests\Mother;
+namespace Dnw\Game\Tests\Factory;
 
 use Dnw\Game\Core\Domain\Game\ValueObject\Color;
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
@@ -14,7 +14,7 @@ use Dnw\Game\Core\Domain\Variant\ValueObject\VariantPower\VariantPowerApiName;
 use Dnw\Game\Core\Domain\Variant\ValueObject\VariantPower\VariantPowerName;
 use Dnw\Game\Core\Domain\Variant\Variant;
 
-class VariantMother
+class VariantFactory
 {
     public static function standard(): Variant
     {

@@ -5,7 +5,7 @@ namespace Dnw\Game\Tests\Unit\Domain\Game\ValueObject\Phases;
 use Carbon\CarbonImmutable;
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phases\PhasesInfo;
-use Dnw\Game\Tests\Mother\PhaseMother;
+use Dnw\Game\Tests\Factory\PhaseFactory;
 use PhpOption\None;
 use PhpOption\Some;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -27,7 +27,7 @@ class PhasesInfoTest extends TestCase
         $phasesInfo = PhasesInfo::initialize();
         $this->assertFalse($phasesInfo->initialPhaseExists());
 
-        $phase = PhaseMother::factory();
+        $phase = PhaseFactory::build();
         $phasesInfo = new PhasesInfo(Count::fromInt(1), Some::create($phase), None::create());
         $this->assertTrue($phasesInfo->initialPhaseExists());
     }
@@ -37,16 +37,16 @@ class PhasesInfoTest extends TestCase
         $phasesInfo = PhasesInfo::initialize();
         $this->assertFalse($phasesInfo->hasBeenStarted());
 
-        $phase = PhaseMother::factory(adjudicationTime: new CarbonImmutable());
+        $phase = PhaseFactory::build(adjudicationTime: new CarbonImmutable());
         $phasesInfo = new PhasesInfo(Count::fromInt(1), Some::create($phase), None::create());
         $this->assertTrue($phasesInfo->hasBeenStarted());
     }
 
     public function test_proceedToNewPhase(): void
     {
-        $phase = PhaseMother::factory(adjudicationTime: new CarbonImmutable());
+        $phase = PhaseFactory::build(adjudicationTime: new CarbonImmutable());
         $phasesInfo = new PhasesInfo(Count::fromInt(3), Some::create($phase), None::create());
-        $newPhase = PhaseMother::factory();
+        $newPhase = PhaseFactory::build();
         $phasesInfo->proceedToNewPhase($newPhase);
 
         $this->assertEquals(4, $phasesInfo->count->int());
@@ -57,7 +57,7 @@ class PhasesInfoTest extends TestCase
     public function test_setInitialPhase(): void
     {
         $phasesInfo = PhasesInfo::initialize();
-        $phase = PhaseMother::factory();
+        $phase = PhaseFactory::build();
         $phasesInfo->setInitialPhase($phase);
 
         $this->assertEquals(1, $phasesInfo->count->int());

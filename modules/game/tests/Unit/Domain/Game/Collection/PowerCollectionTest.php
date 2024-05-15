@@ -6,7 +6,7 @@ use Dnw\Game\Core\Domain\Game\Collection\PowerCollection;
 use Dnw\Game\Core\Domain\Game\Collection\VariantPowerIdCollection;
 use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
-use Dnw\Game\Tests\Mother\PowerMother;
+use Dnw\Game\Tests\Factory\PowerFactory;
 use PhpOption\None;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -31,8 +31,8 @@ class PowerCollectionTest extends TestCase
 
     public function test_getUnassignedPowers(): void
     {
-        $unassignedPower = PowerMother::unassigned();
-        $assignedPower = PowerMother::assigned();
+        $unassignedPower = PowerFactory::unassigned();
+        $assignedPower = PowerFactory::assigned();
 
         $powerCollection = new PowerCollection([$unassignedPower, $assignedPower]);
 
@@ -44,8 +44,8 @@ class PowerCollectionTest extends TestCase
 
     public function test_hasAvailablePowers(): void
     {
-        $unassignedPower = PowerMother::unassigned();
-        $assignedPower = PowerMother::assigned();
+        $unassignedPower = PowerFactory::unassigned();
+        $assignedPower = PowerFactory::assigned();
 
         $powerCollection = new PowerCollection([$unassignedPower, $assignedPower]);
 
@@ -54,8 +54,8 @@ class PowerCollectionTest extends TestCase
 
     public function test_containsPlayer_and_doesNotContainPlayer(): void
     {
-        $unassignedPower = PowerMother::unassigned();
-        $assignedPower = PowerMother::assigned();
+        $unassignedPower = PowerFactory::unassigned();
+        $assignedPower = PowerFactory::assigned();
 
         $powerCollection = new PowerCollection([$unassignedPower, $assignedPower]);
 
@@ -68,8 +68,8 @@ class PowerCollectionTest extends TestCase
 
     public function test_hasPowerFilled(): void
     {
-        $unassignedPower = PowerMother::unassigned();
-        $assignedPower = PowerMother::assigned();
+        $unassignedPower = PowerFactory::unassigned();
+        $assignedPower = PowerFactory::assigned();
 
         $powerCollection = new PowerCollection([$unassignedPower, $assignedPower]);
 
@@ -79,15 +79,15 @@ class PowerCollectionTest extends TestCase
 
     public function test_hasNoAssignedPowers_returns_true(): void
     {
-        $powerCollection = new PowerCollection([PowerMother::unassigned(), PowerMother::unassigned()]);
+        $powerCollection = new PowerCollection([PowerFactory::unassigned(), PowerFactory::unassigned()]);
 
         $this->assertTrue($powerCollection->hasNoAssignedPowers());
     }
 
     public function test_hasNoAssignedPowers_returns_false(): void
     {
-        $unassignedPower = PowerMother::unassigned();
-        $assignedPower = PowerMother::assigned();
+        $unassignedPower = PowerFactory::unassigned();
+        $assignedPower = PowerFactory::assigned();
 
         $powerCollection = new PowerCollection([$unassignedPower, $assignedPower]);
 
@@ -96,8 +96,8 @@ class PowerCollectionTest extends TestCase
 
     public function test_getPowerByPlayerId(): void
     {
-        $unassignedPower = PowerMother::unassigned();
-        $assignedPower = PowerMother::assigned();
+        $unassignedPower = PowerFactory::unassigned();
+        $assignedPower = PowerFactory::assigned();
 
         $powerCollection = new PowerCollection([$unassignedPower, $assignedPower]);
 
@@ -106,8 +106,8 @@ class PowerCollectionTest extends TestCase
 
     public function test_getByPowerId(): void
     {
-        $unassignedPower = PowerMother::unassigned();
-        $assignedPower = PowerMother::assigned();
+        $unassignedPower = PowerFactory::unassigned();
+        $assignedPower = PowerFactory::assigned();
 
         $powerCollection = new PowerCollection([$unassignedPower, $assignedPower]);
 
@@ -116,8 +116,8 @@ class PowerCollectionTest extends TestCase
 
     public function test_getByVariantPowerId(): void
     {
-        $unassignedPower = PowerMother::unassigned();
-        $assignedPower = PowerMother::assigned();
+        $unassignedPower = PowerFactory::unassigned();
+        $assignedPower = PowerFactory::assigned();
 
         $powerCollection = new PowerCollection([$unassignedPower, $assignedPower]);
 
@@ -126,8 +126,8 @@ class PowerCollectionTest extends TestCase
 
     public function test_some_things(): void
     {
-        $powerOne = PowerMother::unassigned();
-        $powerTwo = PowerMother::unassigned();
+        $powerOne = PowerFactory::unassigned();
+        $powerTwo = PowerFactory::unassigned();
 
         $powerCollection = new PowerCollection([$powerOne, $powerTwo]);
 

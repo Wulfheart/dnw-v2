@@ -6,8 +6,8 @@ use Dnw\Foundation\Exception\DomainException;
 use Dnw\Game\Core\Domain\Game\Collection\OrderCollection;
 use Dnw\Game\Core\Domain\Game\Entity\Power;
 use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
-use Dnw\Game\Tests\Mother\PhasePowerDataMother;
-use Dnw\Game\Tests\Mother\PowerMother;
+use Dnw\Game\Tests\Factory\PhasePowerDataFactory;
+use Dnw\Game\Tests\Factory\PowerFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -18,7 +18,7 @@ class PowerTest extends TestCase
     {
         $playerId = PlayerId::generate();
 
-        $power = PowerMother::factory(playerId: $playerId);
+        $power = PowerFactory::build(playerId: $playerId);
 
         $this->expectException(DomainException::class);
         $power->assign(PlayerId::generate());
@@ -27,7 +27,7 @@ class PowerTest extends TestCase
     public function test_assign(): void
     {
         $playerId = PlayerId::generate();
-        $power = PowerMother::unassigned();
+        $power = PowerFactory::unassigned();
 
         $power->assign($playerId);
 
@@ -36,7 +36,7 @@ class PowerTest extends TestCase
 
     public function test_unassign_throws_exception_if_not_assigned(): void
     {
-        $power = PowerMother::unassigned();
+        $power = PowerFactory::unassigned();
 
         $this->expectException(DomainException::class);
         $power->unassign();
@@ -45,7 +45,7 @@ class PowerTest extends TestCase
     public function test_unassign(): void
     {
         $playerId = PlayerId::generate();
-        $power = PowerMother::factory(playerId: $playerId);
+        $power = PowerFactory::build(playerId: $playerId);
 
         $power->unassign();
 
@@ -54,7 +54,7 @@ class PowerTest extends TestCase
 
     public function test_markOrderStatus_throws_exception_if_no_current_phase_data(): void
     {
-        $power = PowerMother::unassigned();
+        $power = PowerFactory::unassigned();
 
         $this->expectException(DomainException::class);
         $power->markOrderStatus(true);
@@ -62,8 +62,8 @@ class PowerTest extends TestCase
 
     public function test_markOrderStatus(): void
     {
-        $power = PowerMother::factory(
-            currentPhaseData: PhasePowerDataMother::factory(
+        $power = PowerFactory::build(
+            currentPhaseData: PhasePowerDataFactory::build(
                 markedAsReady: false,
             )
         );
@@ -76,8 +76,8 @@ class PowerTest extends TestCase
     public function test_submitOrders(): void
     {
         $orderCollection = new OrderCollection();
-        $power = PowerMother::factory(
-            currentPhaseData: PhasePowerDataMother::factory(
+        $power = PowerFactory::build(
+            currentPhaseData: PhasePowerDataFactory::build(
                 ordersNeeded: true,
             )
         );
@@ -91,8 +91,8 @@ class PowerTest extends TestCase
     public function test_submitOrders_throws_exception_if_readyForAdjudication(): void
     {
         $orderCollection = new OrderCollection();
-        $power = PowerMother::factory(
-            currentPhaseData: PhasePowerDataMother::factory(
+        $power = PowerFactory::build(
+            currentPhaseData: PhasePowerDataFactory::build(
                 ordersNeeded: false,
             )
         );
@@ -104,74 +104,74 @@ class PowerTest extends TestCase
 
     public function test_ordersNeeded(): void
     {
-        $power = PowerMother::factory(
-            currentPhaseData: PhasePowerDataMother::factory(
+        $power = PowerFactory::build(
+            currentPhaseData: PhasePowerDataFactory::build(
                 ordersNeeded: true,
             )
         );
 
         $this->assertTrue($power->ordersNeeded());
 
-        $power = PowerMother::factory(
-            currentPhaseData: PhasePowerDataMother::factory(
+        $power = PowerFactory::build(
+            currentPhaseData: PhasePowerDataFactory::build(
                 ordersNeeded: false,
             )
         );
         $this->assertFalse($power->ordersNeeded());
 
-        $power = PowerMother::factory();
+        $power = PowerFactory::build();
         $this->assertFalse($power->ordersNeeded());
     }
 
     public function test_ordersMarkedAsReady(): void
     {
-        $power = PowerMother::factory(
-            currentPhaseData: PhasePowerDataMother::factory(
+        $power = PowerFactory::build(
+            currentPhaseData: PhasePowerDataFactory::build(
                 markedAsReady: true,
             )
         );
 
         $this->assertTrue($power->ordersMarkedAsReady());
 
-        $power = PowerMother::factory(
-            currentPhaseData: PhasePowerDataMother::factory(
+        $power = PowerFactory::build(
+            currentPhaseData: PhasePowerDataFactory::build(
                 markedAsReady: false,
             )
         );
         $this->assertFalse($power->ordersMarkedAsReady());
 
-        $power = PowerMother::factory();
+        $power = PowerFactory::build();
         $this->assertFalse($power->ordersMarkedAsReady());
     }
 
     public function test_readyForAdjudication(): void
     {
-        $power = PowerMother::factory(
-            currentPhaseData: PhasePowerDataMother::factory(
+        $power = PowerFactory::build(
+            currentPhaseData: PhasePowerDataFactory::build(
                 ordersNeeded: true,
                 markedAsReady: true
             )
         );
         $this->assertTrue($power->readyForAdjudication());
 
-        $power = PowerMother::factory(
-            currentPhaseData: PhasePowerDataMother::factory(
+        $power = PowerFactory::build(
+            currentPhaseData: PhasePowerDataFactory::build(
                 ordersNeeded: true,
                 markedAsReady: false
             )
         );
         $this->assertFalse($power->readyForAdjudication());
 
-        $power = PowerMother::factory(
-            currentPhaseData: PhasePowerDataMother::factory(
+        $power = PowerFactory::build(
+            currentPhaseData: PhasePowerDataFactory::build(
                 ordersNeeded: false,
                 markedAsReady: true
             )
         );
         $this->assertTrue($power->readyForAdjudication());
 
-        $power = PowerMother::factory(
-            currentPhaseData: PhasePowerDataMother::factory(
+        $power = PowerFactory::build(
+            currentPhaseData: PhasePowerDataFactory::build(
                 ordersNeeded: false,
                 markedAsReady: false
             )
@@ -181,9 +181,9 @@ class PowerTest extends TestCase
 
     public function test_proceedToNextPhase(): void
     {
-        $newPhaseData = PhasePowerDataMother::factory();
+        $newPhaseData = PhasePowerDataFactory::build();
         $appliedOrders = new OrderCollection();
-        $power = PowerMother::factory();
+        $power = PowerFactory::build();
 
         $power->proceedToNextPhase($newPhaseData, $appliedOrders);
 

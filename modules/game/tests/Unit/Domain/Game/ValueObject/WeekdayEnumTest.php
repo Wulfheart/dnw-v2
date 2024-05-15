@@ -1,6 +1,6 @@
 <?php
 
-namespace Dnw\Game\Tests\Unit\Domain\Game;
+namespace Dnw\Game\Tests\Unit\Domain\Game\ValueObject;
 
 use Carbon\CarbonImmutable;
 use Dnw\Game\Core\Domain\Game\ValueObject\WeekdayEnum;

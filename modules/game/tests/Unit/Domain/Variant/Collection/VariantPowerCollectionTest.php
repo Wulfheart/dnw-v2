@@ -3,7 +3,7 @@
 namespace Dnw\Game\Tests\Unit\Domain\Variant\Collection;
 
 use Dnw\Game\Core\Domain\Variant\Collection\VariantPowerCollection;
-use Dnw\Game\Tests\Mother\VariantMother;
+use Dnw\Game\Tests\Factory\VariantFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -12,7 +12,7 @@ class VariantPowerCollectionTest extends TestCase
 {
     public function test_getByPowerApiName(): void
     {
-        $collection = VariantMother::standard()->variantPowerCollection;
+        $collection = VariantFactory::standard()->variantPowerCollection;
 
         $power = $collection->getByPowerApiName($collection->getOffset(0)->apiName);
 
@@ -21,7 +21,7 @@ class VariantPowerCollectionTest extends TestCase
 
     public function test_getByVariantPowerId(): void
     {
-        $collection = VariantMother::standard()->variantPowerCollection;
+        $collection = VariantFactory::standard()->variantPowerCollection;
 
         $power = $collection->getByVariantPowerId($collection->getOffset(1)->id);
 

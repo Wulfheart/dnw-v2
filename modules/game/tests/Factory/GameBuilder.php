@@ -1,6 +1,6 @@
 <?php
 
-namespace Dnw\Game\Tests\Mother;
+namespace Dnw\Game\Tests\Factory;
 
 use Carbon\CarbonImmutable;
 use Dnw\Game\Core\Domain\Game\Collection\VariantPowerIdCollection;
@@ -27,7 +27,7 @@ class GameBuilder
 
     public static function create(): self
     {
-        $standardVariant = VariantMother::standard();
+        $standardVariant = VariantFactory::standard();
 
         $game = Game::create(
             GameId::generate(),
