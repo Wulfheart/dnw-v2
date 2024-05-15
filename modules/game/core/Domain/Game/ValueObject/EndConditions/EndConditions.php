@@ -7,6 +7,9 @@ use PhpOption\Option;
 
 class EndConditions
 {
+    /**
+     * @codeCoverageIgnore
+     */
     public function __construct(
         /** @var Option<MaximumNumberOfRounds> $maximumNumberOfRounds */
         public Option $maximumNumberOfRounds,
