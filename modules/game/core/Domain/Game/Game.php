@@ -29,6 +29,8 @@ use Dnw\Game\Core\Domain\Game\Event\PlayerJoinedEvent;
 use Dnw\Game\Core\Domain\Game\Event\PlayerLeftEvent;
 use Dnw\Game\Core\Domain\Game\Exception\RulesetHandler;
 use Dnw\Game\Core\Domain\Game\Rule\GameRules;
+use Dnw\Game\Core\Domain\Game\StateMachine\GameStateMachine;
+use Dnw\Game\Core\Domain\Game\StateMachine\GameStates;
 use Dnw\Game\Core\Domain\Game\ValueObject\AdjudicationTiming\AdjudicationTiming;
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
@@ -50,37 +52,40 @@ class Game
     use AggregateEventTrait;
 
     /**
-     * @param  array<object>  $events
+     * @param array<object> $events
      */
     public function __construct(
-        public GameId $gameId,
-        public GameName $name,
+        public GameId             $gameId,
+        public GameName           $name,
+        public GameStateMachine   $gameStateMachine,
         public AdjudicationTiming $adjudicationTiming,
-        public GameStartTiming $gameStartTiming,
-        public bool $randomPowerAssignments,
-        public GameVariantData $variant,
-        public PowerCollection $powerCollection,
-        public PhasesInfo $phasesInfo,
-        array $events = [],
-    ) {
+        public GameStartTiming    $gameStartTiming,
+        public bool               $randomPowerAssignments,
+        public GameVariantData    $variant,
+        public PowerCollection    $powerCollection,
+        public PhasesInfo         $phasesInfo,
+        array                     $events = [],
+    )
+    {
         $this->events = $events;
     }
 
     /**
-     * @param  callable(int $lower, int $upper): int  $randomNumberGenerator
-     * @param  Option<VariantPowerId>  $variantPowerId
+     * @param callable(int $lower, int $upper): int $randomNumberGenerator
+     * @param Option<VariantPowerId> $variantPowerId
      */
     public static function create(
-        GameId $gameId,
-        GameName $name,
+        GameId             $gameId,
+        GameName           $name,
         AdjudicationTiming $adjudicationTiming,
-        GameStartTiming $gameStartTiming,
-        GameVariantData $variantData,
-        bool $randomPowerAssignment,
-        PlayerId $playerId,
-        Option $variantPowerId,
-        callable $randomNumberGenerator
-    ): self {
+        GameStartTiming    $gameStartTiming,
+        GameVariantData    $variantData,
+        bool               $randomPowerAssignment,
+        PlayerId           $playerId,
+        Option             $variantPowerId,
+        callable           $randomNumberGenerator
+    ): self
+    {
 
         $powers = PowerCollection::createFromVariantPowerIdCollection(
             $variantData->variantPowerIdCollection
@@ -97,6 +102,7 @@ class Game
         return new self(
             $gameId,
             $name,
+            GameStateMachine::initialize(),
             $adjudicationTiming,
             $gameStartTiming,
             $randomPowerAssignment,
@@ -113,17 +119,18 @@ class Game
     }
 
     /**
-     * @param  Option<VariantPowerId>  $variantPowerId
-     * @param  callable(int $lower, int $upper): int  $randomNumberGenerator
+     * @param Option<VariantPowerId> $variantPowerId
+     * @param callable(int $lower, int $upper): int $randomNumberGenerator
      *
      * @throws DomainException
      */
     public function join(
-        PlayerId $playerId,
-        Option $variantPowerId,
+        PlayerId        $playerId,
+        Option          $variantPowerId,
         CarbonImmutable $currentTime,
-        callable $randomNumberGenerator
-    ): void {
+        callable        $randomNumberGenerator
+    ): void
+    {
         RulesetHandler::throwConditionally(
             "Player $playerId cannot join game {$this->gameId}",
             $this->canJoin($playerId, $variantPowerId)
@@ -151,22 +158,14 @@ class Game
     }
 
     /**
-     * @param  Option<VariantPowerId>  $variantPowerId
+     * @param Option<VariantPowerId> $variantPowerId
      */
     public function canJoin(PlayerId $playerId, Option $variantPowerId): Ruleset
     {
         return new Ruleset(
             new Rule(
-                GameRules::HAS_BEEN_STARTED,
-                $this->hasBeenStarted(),
-            ),
-            new Rule(
-                GameRules::INITIAL_PHASE_DOES_NOT_EXIST,
-                ! $this->phasesInfo->initialPhaseExists(),
-            ),
-            new Rule(
-                GameRules::HAS_NO_AVAILABLE_POWERS,
-                ! $this->powerCollection->hasAvailablePowers(),
+                GameRules::EXPECTS_STATE_PLAYERS_JOINING,
+                $this->gameStateMachine->currentStateIsNot(GameStates::PLAYERS_JOINING),
             ),
             new Rule(
                 GameRules::PLAYER_ALREADY_JOINED,
@@ -174,12 +173,8 @@ class Game
             ),
             new Rule(
                 GameRules::POWER_ALREADY_FILLED,
-                ! $this->randomPowerAssignments
+                !$this->randomPowerAssignments
                 && $this->powerCollection->hasPowerFilled($variantPowerId->get()),
-            ),
-            new Rule(
-                GameRules::HAS_BEEN_ABANDONED,
-                $this->hasBeenAbandoned(),
             )
         );
     }
@@ -198,6 +193,7 @@ class Game
         $this->pushEvent(new PlayerLeftEvent());
         if ($this->powerCollection->hasNoAssignedPowers()) {
             $this->pushEvent(new GameAbandonedEvent());
+            $this->gameStateMachine->transitionTo(GameStates::ABANDONED);
         }
     }
 
@@ -205,8 +201,8 @@ class Game
     {
         return new Ruleset(
             new Rule(
-                GameRules::HAS_BEEN_STARTED,
-                $this->hasBeenStarted(),
+                GameRules::EXPECTS_STATE_PLAYERS_JOINING,
+                $this->gameStateMachine->currentStateIsNot(GameStates::PLAYERS_JOINING),
             ),
             new Rule(
                 GameRules::PLAYER_NOT_IN_GAME,
@@ -215,40 +211,12 @@ class Game
         );
     }
 
-    private function hasBeenStarted(): bool
-    {
-        return $this->phasesInfo->hasBeenStarted();
-    }
-
-    private function hasBeenFinished(): bool
-    {
-        return $this->hasWinners();
-    }
-
-    private function hasWinners(): bool
-    {
-        return $this->powerCollection->filter(
-            fn (Power $power) => $power->currentPhaseData->map(
-                fn (PhasePowerData $data) => $data->isWinner
-            )->getOrElse(false)
-        )->count() > 0;
-    }
-
-    private function hasBeenAbandoned(): bool
-    {
-        return $this->powerCollection->hasNoAssignedPowers();
-    }
-
     public function canBeStarted(CarbonImmutable $currentTime): Ruleset
     {
         return new Ruleset(
             new Rule(
-                GameRules::HAS_BEEN_STARTED,
-                $this->hasBeenStarted(),
-            ),
-            new Rule(
-                GameRules::INITIAL_PHASE_DOES_NOT_EXIST,
-                ! $this->phasesInfo->initialPhaseExists(),
+                GameRules::EXPECTS_STATE_PLAYERS_JOINING,
+                $this->gameStateMachine->currentStateIsNot(GameStates::PLAYERS_JOINING),
             ),
             new Rule(
                 GameRules::HAS_AVAILABLE_POWERS,
@@ -256,8 +224,8 @@ class Game
             ),
             new Rule(
                 GameRules::GAME_NOT_MARKED_AS_READY_OR_JOIN_LENGTH_NOT_EXCEEDED,
-                ! $this->gameStartTiming->startWhenReady
-                && ! $this->gameStartTiming->joinLengthExceeded($currentTime),
+                !$this->gameStartTiming->startWhenReady
+                && !$this->gameStartTiming->joinLengthExceeded($currentTime),
             ),
         );
     }
@@ -267,9 +235,11 @@ class Game
         if ($this->canBeStarted($currentTime)->passes()) {
             $this->phasesInfo->currentPhase->get()->adjudicationTime = Some::create($this->adjudicationTiming->calculateNextAdjudication($currentTime));
             $this->pushEvent(new GameStartedEvent());
+            $this->gameStateMachine->transitionTo(GameStates::ORDER_SUBMISSION);
         }
         if ($this->gameStartTiming->joinLengthExceeded($currentTime)) {
             $this->pushEvent(new GameJoinTimeExceededEvent());
+            $this->gameStateMachine->transitionTo(GameStates::NOT_ENOUGH_PLAYERS_BY_DEADLINE);
         }
     }
 
@@ -285,9 +255,6 @@ class Game
         $this->powerCollection->getByPowerId($power->powerId)->submitOrders($orderCollection, $markAsReady);
 
         $this->pushEvent(new OrdersSubmittedEvent());
-        if ($markAsReady) {
-            $this->pushEvent(new PhaseMarkedAsReadyEvent());
-        }
 
         $this->adjudicateGameIfConditionsAreFulfilled($currentTime);
     }
@@ -320,12 +287,12 @@ class Game
                 $this->powerCollection->doesNotContainPlayer($playerId),
                 new Rule(
                     GameRules::POWER_DOES_NOT_NEED_TO_SUBMIT_ORDERS,
-                    ! $this->powerCollection->getByPlayerId($playerId)->ordersMarkedAsReady(),
+                    !$this->powerCollection->getByPlayerId($playerId)->ordersMarkedAsReady(),
                 )
             ),
             new Rule(
-                GameRules::GAME_READY_FOR_ADJUDICATION,
-                $this->canAdjudicate($currentTime)->fails(),
+                GameRules::EXPECTS_STATE_ORDER_SUBMISSION,
+                $this->gameStateMachine->currentStateIsNot(GameStates::ORDER_SUBMISSION),
             )
         );
     }
@@ -334,36 +301,29 @@ class Game
     {
         return new Ruleset(
             new Rule(
-                GameRules::HAS_NOT_BEEN_STARTED,
-                ! $this->phasesInfo->hasBeenStarted(),
-            ),
-            new Rule(
-                GameRules::HAS_BEEN_FINISHED,
-                $this->hasBeenFinished(),
+                GameRules::EXPECTS_STATE_ORDER_SUBMISSION,
+                $this->gameStateMachine->currentStateIsNot(GameStates::ORDER_SUBMISSION)
             ),
             new Rule(
                 GameRules::PLAYER_NOT_IN_GAME,
                 $this->powerCollection->doesNotContainPlayer($playerId),
                 new Rule(
                     GameRules::POWER_DOES_NOT_NEED_TO_SUBMIT_ORDERS,
-                    ! $this->powerCollection->getByPlayerId($playerId)->ordersNeeded(),
+                    !$this->powerCollection->getByPlayerId($playerId)->ordersNeeded(),
                     new Rule(
                         GameRules::ORDERS_ALREADY_MARKED_AS_READY,
                         $this->powerCollection->getByPlayerId($playerId)->ordersMarkedAsReady()
                     )
                 )
             ),
-            new Rule(
-                GameRules::GAME_READY_FOR_ADJUDICATION,
-                $this->canAdjudicate($currentTime)->fails(),
-            )
         );
     }
 
     public function adjudicateGameIfConditionsAreFulfilled(CarbonImmutable $currentTime): void
     {
-        if ($this->canAdjudicate($currentTime)->passes()) {
+        if ($this->isReadyForAdjudication($currentTime)) {
             $this->pushEvent(new GameReadyForAdjudicationEvent());
+            $this->gameStateMachine->transitionTo(GameStates::ADJUDICATING);
         }
     }
 
@@ -371,33 +331,31 @@ class Game
     {
         return new Ruleset(
             new Rule(
-                GameRules::HAS_BEEN_STARTED,
-                $this->phasesInfo->hasBeenStarted(),
-            ),
-            new Rule(
-                GameRules::HAS_NOT_BEEN_FINISHED,
-                ! $this->hasBeenFinished(),
-            ),
-            new Rule(
-                GameRules::PHASE_NOT_MARKED_AS_READY_AND_TIME_HAS_NOT_EXPIRED,
-                $this->phasesInfo->currentPhase->map(
-                    fn (Phase $phase) => $phase->adjudicationTimeIsExpired($currentTime)
-                )->getOrElse(false)
-                || ! $this->powerCollection->every(fn (Power $power) => $power->readyForAdjudication())
+                GameRules::EXPECTS_STATE_ADJUDICATING,
+                $this->gameStateMachine->currentStateIsNot(GameStates::ADJUDICATING),
             )
         );
     }
 
+    private function isReadyForAdjudication(CarbonImmutable $currentTime): bool
+    {
+        return $this->phasesInfo->currentPhase->map(
+                fn(Phase $phase) => $phase->adjudicationTimeIsExpired($currentTime)
+            )->getOrElse(false)
+            || !$this->powerCollection->every(fn(Power $power) => $power->readyForAdjudication());
+    }
+
     /**
-     * @param  Collection<AdjudicationPowerDataDto>  $adjudicationPowerDataCollection
+     * @param Collection<AdjudicationPowerDataDto> $adjudicationPowerDataCollection
      *
      * @throws DomainException
      */
     public function applyAdjudication(
-        PhaseTypeEnum $phaseType,
-        Collection $adjudicationPowerDataCollection,
+        PhaseTypeEnum   $phaseType,
+        Collection      $adjudicationPowerDataCollection,
         CarbonImmutable $currentTime
-    ): void {
+    ): void
+    {
         RulesetHandler::throwConditionally(
             "Game {$this->gameId} cannot be adjudicated",
             $this->canAdjudicate($currentTime)
@@ -421,7 +379,12 @@ class Game
 
         $this->pushEvent(new GameAdjudicatedEvent());
 
-        if ($this->hasBeenFinished()) {
+        $hasWinners = $this->powerCollection->filter(
+                fn(Power $power) => $power->currentPhaseData->map(
+                    fn(PhasePowerData $data) => $data->isWinner
+                )->getOrElse(false)
+            )->count() > 0;
+        if ($hasWinners) {
             $this->pushEvent(new GameFinishedEvent());
         }
     }
@@ -430,22 +393,21 @@ class Game
     {
         return new Ruleset(
             new Rule(
-                GameRules::PHASE_IS_ALREADY_SET,
-                $this->phasesInfo->currentPhase->isDefined(),
+                GameRules::EXPECTS_STATE_CREATED,
+                $this->gameStateMachine->currentStateIsNot(GameStates::CREATED)
             )
         );
     }
 
     /**
-     * @param  Collection<InitialAdjudicationPowerDataDto>  $phasePowerCollection
-     *
-     * @throws DomainException
+     * @param Collection<InitialAdjudicationPowerDataDto> $phasePowerCollection
      */
     public function applyInitialAdjudication(
-        PhaseTypeEnum $phaseType,
-        Collection $phasePowerCollection,
+        PhaseTypeEnum   $phaseType,
+        Collection      $phasePowerCollection,
         CarbonImmutable $currentTime
-    ): void {
+    ): void
+    {
         RulesetHandler::throwConditionally(
             "Game {$this->gameId} cannot apply initial adjudication",
             $this->canApplyInitialAdjudication()
@@ -460,5 +422,6 @@ class Game
         $this->phasesInfo->setInitialPhase($newPhase);
 
         $this->pushEvent(new GameInitializedEvent());
+        $this->gameStateMachine->transitionTo(GameStates::PLAYERS_JOINING);
     }
 }

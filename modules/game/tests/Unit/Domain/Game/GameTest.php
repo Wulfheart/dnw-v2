@@ -4,12 +4,17 @@ namespace Dnw\Game\Tests\Unit\Domain\Game;
 
 use Carbon\CarbonImmutable;
 use Dnw\Foundation\Collection\ArrayCollection;
+use Dnw\Foundation\Exception\DomainException;
 use Dnw\Game\Core\Domain\Game\Collection\VariantPowerIdCollection;
+use Dnw\Game\Core\Domain\Game\Event\GameAbandonedEvent;
+use Dnw\Game\Core\Domain\Game\Event\GameCreatedEvent;
 use Dnw\Game\Core\Domain\Game\Event\GameJoinTimeExceededEvent;
 use Dnw\Game\Core\Domain\Game\Event\GameStartedEvent;
 use Dnw\Game\Core\Domain\Game\Event\PlayerJoinedEvent;
+use Dnw\Game\Core\Domain\Game\Event\PlayerLeftEvent;
 use Dnw\Game\Core\Domain\Game\Game;
 use Dnw\Game\Core\Domain\Game\Rule\GameRules;
+use Dnw\Game\Core\Domain\Game\StateMachine\GameStates;
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameName;
@@ -56,6 +61,8 @@ class GameTest extends TestCase
 
         $this->assertCount(2, $game->powerCollection);
         $this->assertEquals($secondId, $game->powerCollection->getByPlayerId($playerId)->variantPowerId);
+        $this->assertEventsContain($game, GameCreatedEvent::class);
+        $this->assertEquals(GameStates::CREATED,$game->gameStateMachine->currentState());
     }
 
     public function test_create_non_random_assignment(): void
@@ -84,6 +91,8 @@ class GameTest extends TestCase
 
         $this->assertCount(2, $game->powerCollection);
         $this->assertEquals($secondId, $game->powerCollection->getByPlayerId($playerId)->variantPowerId);
+        $this->assertEventsContain($game, GameCreatedEvent::class);
+        $this->assertEquals(GameStates::CREATED,$game->gameStateMachine->currentState());
     }
 
     #[DataProvider('canJoinRuleBreakerProvider')]
@@ -206,9 +215,86 @@ class GameTest extends TestCase
         $this->assertEventsContain($game, GameJoinTimeExceededEvent::class);
     }
 
+    public function test_join_throws_exception_if_it_is_not_possible_to_join_the_game(): void
+    {
+        $game = GameBuilder::initialize(true)->storeInitialAdjudication()->makeFull()->build();
+
+        $this->expectException(DomainException::class);
+        $game->join(PlayerId::new(), None::create(), new CarbonImmutable(), fn () => 0);
+
+    }
+
+    public function test_canLeave_game_has_not_been_started(): void
+    {
+        $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->build();
+        $ruleset = $game->canLeave(
+            PlayerId::new(),
+        );
+
+        $this->assertTrue($ruleset->containsViolation(GameRules::HAS_BEEN_STARTED));
+    }
+
+    public function test_canLeave_player_is_not_in_game(): void
+    {
+        $game = GameBuilder::initialize()->storeInitialAdjudication()->build();
+        $ruleset = $game->canLeave(
+            PlayerId::new(),
+        );
+
+        $this->assertTrue($ruleset->containsViolation(GameRules::PLAYER_NOT_IN_GAME));
+    }
+
+    public function test_leave_throws_exception_if_player_cannot_leave(): void
+    {
+        $game = GameBuilder::initialize()->storeInitialAdjudication()->build();
+
+        $this->expectException(DomainException::class);
+        $game->leave(
+            PlayerId::new(),
+        );
+    }
+
+    public function test_leave_removes_player_from_game(): void
+    {
+        $playerId = PlayerId::new();
+        $game = GameBuilder::initialize()->storeInitialAdjudication()->join($playerId)->build();
+
+        $game->leave($playerId);
+
+        $this->assertTrue($game->powerCollection->doesNotContainPlayer($playerId));
+        $this->assertEventsContain($game, PlayerLeftEvent::class);
+        $this->assertEventsDoNotContain($game, GameAbandonedEvent::class);
+    }
+
+    public function test_leave_sends_GameAbandonedEvent_if_no_players_are_left(): void
+    {
+        $game = GameBuilder::initialize()->storeInitialAdjudication()->build();
+
+        $game->leave($game->powerCollection->findBy(fn ($power) => $power->playerId->isDefined())->get()->playerId->get());
+
+        $this->assertEventsContain($game, PlayerLeftEvent::class);
+        $this->assertEventsContain($game, GameAbandonedEvent::class);
+    }
+
+    public function test_canSubmitOrders_game_has_not_been_started(): void
+    {
+
+    }
+
+    public function test_canSubmitOrders_player_is_not_in_game(): void
+    {
+
+    }
+
     private function assertEventsContain(Game $game, string $eventName): void
     {
-        $result = ArrayCollection::build(...$game->releaseEvents())->findBy(fn ($event) => $event::class === $eventName);
+        $result = ArrayCollection::build(...$game->inspectEvents())->findBy(fn ($event) => $event::class === $eventName);
         $this->assertTrue($result->isDefined(), "Event $eventName not found in game events.");
+    }
+
+    private function assertEventsDoNotContain(Game $game, string $eventName): void
+    {
+        $result = ArrayCollection::build(...$game->inspectEvents())->findBy(fn ($event) => $event::class === $eventName);
+        $this->assertTrue($result->isEmpty(), "Event $eventName found in game events.");
     }
 }

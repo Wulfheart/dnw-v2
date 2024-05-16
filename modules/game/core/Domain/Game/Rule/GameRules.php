@@ -4,6 +4,16 @@ namespace Dnw\Game\Core\Domain\Game\Rule;
 
 class GameRules
 {
+    public const string EXPECTS_STATE_CREATED = 'expects_state_created';
+
+    public const string EXPECTS_STATE_PLAYERS_JOINING = 'expects_state_players_joining';
+
+    public const string EXPECTS_STATE_ADJUDICATING = 'expects_state_adjudicating';
+
+    public const string EXPECTS_STATE_ORDER_SUBMISSION = 'expects_state_order_submission';
+
+    public const string EXPECTS_STATE_FINISHED = 'expects_state_finished';
+
     public const string HAS_BEEN_STARTED = 'has_been_started';
 
     public const string HAS_NOT_BEEN_STARTED = 'has_not_been_started';

@@ -20,6 +20,14 @@ trait AggregateEventTrait
         return $events;
     }
 
+    /**
+     * @return array<object>
+     */
+    public function inspectEvents():array
+    {
+        return $this->events;
+    }
+
     private function pushEvent(object $event): void
     {
         $this->events[] = $event;
