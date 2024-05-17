@@ -3,6 +3,7 @@
 namespace Dnw\Game\Tests\Asserter;
 
 use Dnw\Foundation\Collection\ArrayCollection;
+use Dnw\Game\Core\Domain\Game\Collection\OrderCollection;
 use Dnw\Game\Core\Domain\Game\Game;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseId;
@@ -126,6 +127,22 @@ class GameAsserter
     {
         $exists = $this->game->powerCollection->findByPlayerId($playerId)->isDefined();
         Assert::assertTrue(! $exists, "Player $playerId is a member of the game.");
+
+        return $this;
+    }
+
+    public function hasPowerWithOrders(PowerId $powerId, OrderCollection $orders): self
+    {
+        $power = $this->game->powerCollection->getByPowerId($powerId);
+        $savedOrders = $power->currentPhaseData->get()->orderCollection->map(
+            fn (OrderCollection $orderCollection) => $orderCollection->toStringArray()
+        )->getOrElse([]);
+        foreach ($orders as $order) {
+            Assert::assertContains(
+                (string) $order,
+                $savedOrders,
+            );
+        }
 
         return $this;
     }
