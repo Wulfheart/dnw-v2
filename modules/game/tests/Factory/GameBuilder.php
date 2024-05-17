@@ -137,6 +137,56 @@ class GameBuilder
         return $this;
     }
 
+    public function markOnePowerAsReady(): self
+    {
+        $power = $this->game->powerCollection->findBy(
+            fn (Power $power) => $power->playerId->isDefined()
+                && $power->ordersNeeded()
+        )->get();
+
+        $this->game->markOrderStatus(
+            $power->playerId->get(),
+            true,
+            new CarbonImmutable(),
+        );
+
+        return $this;
+    }
+
+    public function markAllPowersAsReady(): self
+    {
+        $powers = $this->game->powerCollection->filter(
+            fn (Power $power) => $power->ordersNeeded() && ! $power->ordersMarkedAsReady()
+        );
+        foreach ($powers as $power) {
+            $this->game->markOrderStatus(
+                $power->playerId->get(),
+                true,
+                new CarbonImmutable(),
+            );
+        }
+
+        return $this;
+    }
+
+    public function markAllButOnePowerAsReady(): self
+    {
+        $powers = $this->game->powerCollection->filter(
+            fn (Power $power) => $power->ordersNeeded() && ! $power->ordersMarkedAsReady()
+        );
+
+        for ($i = 0; $i < $powers->count() - 1; $i++) {
+            $power = $powers->getOffset($i);
+            $this->game->markOrderStatus(
+                $power->playerId->get(),
+                true,
+                new CarbonImmutable(),
+            );
+        }
+
+        return $this;
+    }
+
     public function build(): Game
     {
         $this->game->releaseEvents();

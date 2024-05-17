@@ -28,6 +28,8 @@ class GameRules
 
     public const string HAS_NO_AVAILABLE_POWERS = 'has_no_available_powers';
 
+    public const string JOIN_LENGTH_IS_EXCEEDED = 'join_length_is_exceeded';
+
     public const string HAS_AVAILABLE_POWERS = 'has_available_powers';
 
     public const string PLAYER_ALREADY_JOINED = 'player_already_joined';
@@ -46,6 +48,8 @@ class GameRules
         = 'phase_not_marked_as_ready_or_time_has_not_expired';
 
     public const string GAME_READY_FOR_ADJUDICATION = 'game_ready_for_adjudication';
+
+    public const string GAME_PHASE_TIME_EXCEEDED = 'game_phase_time_exceeded';
 
     public const string PHASE_IS_ALREADY_SET = 'phase_is_already_set';
 

@@ -30,4 +30,11 @@ class OrderCollection extends Collection
     {
         return $this->map(fn (Order $order): string => (string) $order)->toArray();
     }
+
+    public function hasSameContents(OrderCollection $orderCollection): bool
+    {
+        $intersected = array_intersect($this->toStringArray(), $orderCollection->toStringArray());
+
+        return count($intersected) === count($this->toStringArray());
+    }
 }

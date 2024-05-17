@@ -90,4 +90,9 @@ class Power
         $this->currentPhaseData = Some::create($newPhaseData);
         $this->appliedOrders = Some::create($appliedOrders);
     }
+
+    public function persistInitialPhase(PhasePowerData $phasePowerData): void
+    {
+        $this->currentPhaseData = Some::create($phasePowerData);
+    }
 }
