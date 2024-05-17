@@ -7,14 +7,20 @@ use Dnw\Foundation\Collection\ArrayCollection;
 use Dnw\Foundation\Exception\DomainException;
 use Dnw\Game\Core\Domain\Game\Collection\OrderCollection;
 use Dnw\Game\Core\Domain\Game\Collection\VariantPowerIdCollection;
+use Dnw\Game\Core\Domain\Game\Dto\AdjudicationPowerDataDto;
 use Dnw\Game\Core\Domain\Game\Entity\Power;
 use Dnw\Game\Core\Domain\Game\Event\GameAbandonedEvent;
+use Dnw\Game\Core\Domain\Game\Event\GameAdjudicatedEvent;
 use Dnw\Game\Core\Domain\Game\Event\GameCreatedEvent;
+use Dnw\Game\Core\Domain\Game\Event\GameFinishedEvent;
 use Dnw\Game\Core\Domain\Game\Event\GameReadyForAdjudicationEvent;
 use Dnw\Game\Core\Domain\Game\Event\GameStartedEvent;
 use Dnw\Game\Core\Domain\Game\Event\OrdersSubmittedEvent;
+use Dnw\Game\Core\Domain\Game\Event\PhaseMarkedAsNotReadyEvent;
+use Dnw\Game\Core\Domain\Game\Event\PhaseMarkedAsReadyEvent;
 use Dnw\Game\Core\Domain\Game\Event\PlayerJoinedEvent;
 use Dnw\Game\Core\Domain\Game\Event\PlayerLeftEvent;
+use Dnw\Game\Core\Domain\Game\Event\PowerDefeatedEvent;
 use Dnw\Game\Core\Domain\Game\Game;
 use Dnw\Game\Core\Domain\Game\Rule\GameRules;
 use Dnw\Game\Core\Domain\Game\StateMachine\GameStates;
@@ -22,10 +28,13 @@ use Dnw\Game\Core\Domain\Game\ValueObject\Count;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameName;
 use Dnw\Game\Core\Domain\Game\ValueObject\Order\Order;
+use Dnw\Game\Core\Domain\Game\ValueObject\Phase\NewPhaseData;
+use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
 use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Variant\GameVariantData;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantId;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
+use Dnw\Game\Tests\Asserter\GameAsserter;
 use Dnw\Game\Tests\Factory\AdjudicationTimingFactory;
 use Dnw\Game\Tests\Factory\GameBuilder;
 use Dnw\Game\Tests\Factory\GameStartTimingFactory;
@@ -64,8 +73,10 @@ class GameTest extends TestCase
 
         $this->assertCount(2, $game->powerCollection);
         $this->assertEquals($secondId, $game->powerCollection->getByPlayerId($playerId)->variantPowerId);
-        $this->assertEventsContain($game, GameCreatedEvent::class);
-        $this->assertEquals(GameStates::CREATED, $game->gameStateMachine->currentState());
+
+        GameAsserter::assertThat($game)
+            ->hasEvent(GameCreatedEvent::class)
+            ->hasState(GameStates::CREATED);
     }
 
     public function test_create_non_random_assignment(): void
@@ -94,8 +105,10 @@ class GameTest extends TestCase
 
         $this->assertCount(2, $game->powerCollection);
         $this->assertEquals($secondId, $game->powerCollection->getByPlayerId($playerId)->variantPowerId);
-        $this->assertEventsContain($game, GameCreatedEvent::class);
-        $this->assertEquals(GameStates::CREATED, $game->gameStateMachine->currentState());
+
+        GameAsserter::assertThat($game)
+            ->hasEvent(GameCreatedEvent::class)
+            ->hasState(GameStates::CREATED);
     }
 
     public function test_canJoin_player_already_joined(): void
@@ -163,7 +176,10 @@ class GameTest extends TestCase
             $expectedVariantPowerId,
             $game->powerCollection->getByPlayerId($playerId)->variantPowerId
         );
-        $this->assertEventsContain($game, PlayerJoinedEvent::class);
+
+        GameAsserter::assertThat($game)
+            ->hasState(GameStates::PLAYERS_JOINING)
+            ->hasEvent(PlayerJoinedEvent::class);
     }
 
     public function test_join_with_non_random_assignments(): void
@@ -175,7 +191,10 @@ class GameTest extends TestCase
         $game->join($playerId, Some::create($variantPowerId), new CarbonImmutable(), fn () => 1);
 
         $this->assertTrue($game->powerCollection->getByPlayerId($playerId)->playerId->isDefined());
-        $this->assertEventsContain($game, PlayerJoinedEvent::class);
+
+        GameAsserter::assertThat($game)
+            ->hasState(GameStates::PLAYERS_JOINING)
+            ->hasEvent(PlayerJoinedEvent::class);
     }
 
     public function test_join_starts_the_game_if_start_when_ready_is_selected(): void
@@ -184,7 +203,9 @@ class GameTest extends TestCase
 
         $game->join(PlayerId::new(), None::create(), new CarbonImmutable(), fn () => 0);
 
-        $this->assertEventsContain($game, GameStartedEvent::class);
+        GameAsserter::assertThat($game)
+            ->hasState(GameStates::ORDER_SUBMISSION)
+            ->hasEvent(GameStartedEvent::class);
         $this->assertTrue($game->phasesInfo->currentPhase->get()->adjudicationTime->isDefined());
     }
 
@@ -235,8 +256,10 @@ class GameTest extends TestCase
         $game->leave($playerId);
 
         $this->assertTrue($game->powerCollection->doesNotContainPlayer($playerId));
-        $this->assertEventsContain($game, PlayerLeftEvent::class);
-        $this->assertEventsDoNotContain($game, GameAbandonedEvent::class);
+        GameAsserter::assertThat($game)
+            ->hasState(GameStates::PLAYERS_JOINING)
+            ->hasEvent(PlayerLeftEvent::class)
+            ->hasNotEvent(GameAbandonedEvent::class);
     }
 
     public function test_leave_sends_GameAbandonedEvent_if_no_players_are_left(): void
@@ -245,8 +268,10 @@ class GameTest extends TestCase
 
         $game->leave($game->powerCollection->findBy(fn ($power) => $power->playerId->isDefined())->get()->playerId->get());
 
-        $this->assertEventsContain($game, PlayerLeftEvent::class);
-        $this->assertEventsContain($game, GameAbandonedEvent::class);
+        GameAsserter::assertThat($game)
+            ->hasState(GameStates::ABANDONED)
+            ->hasEvent(PlayerLeftEvent::class)
+            ->hasEvent(GameAbandonedEvent::class);
     }
 
     public function test_canSubmitOrders_unexpected_status(): void
@@ -351,9 +376,11 @@ class GameTest extends TestCase
         $game->submitOrders($powerToTest->playerId->get(), $orders, true, new CarbonImmutable());
 
         $this->assertEquals($orders, $powerToTest->currentPhaseData->get()->orderCollection->get());
-        $this->assertEventsContain($game, OrdersSubmittedEvent::class);
-        $this->assertEventsDoNotContain($game, GameReadyForAdjudicationEvent::class);
-        $this->assertEquals(GameStates::ORDER_SUBMISSION, $game->gameStateMachine->currentState());
+
+        GameAsserter::assertThat($game)
+            ->hasState(GameStates::ORDER_SUBMISSION)
+            ->hasEvent(OrdersSubmittedEvent::class)
+            ->hasNotEvent(GameReadyForAdjudicationEvent::class);
     }
 
     public function test_submitOrders_adjudicates_game_if_ready(): void
@@ -366,21 +393,154 @@ class GameTest extends TestCase
         $game->submitOrders($powerToTest->playerId->get(), $orders, true, new CarbonImmutable());
 
         $this->assertEquals($orders, $powerToTest->currentPhaseData->get()->orderCollection->get());
-        $this->assertEventsContain($game, OrdersSubmittedEvent::class);
-        $this->assertEventsContain($game, GameReadyForAdjudicationEvent::class);
-        $this->assertEquals(GameStates::ADJUDICATING, $game->gameStateMachine->currentState());
 
+        GameAsserter::assertThat($game)
+            ->hasState(GameStates::ADJUDICATING)
+            ->hasEvent(OrdersSubmittedEvent::class)
+            ->hasEvent(GameReadyForAdjudicationEvent::class);
     }
 
-    private function assertEventsContain(Game $game, string $eventName): void
+    public function test_canMarkOrderStatus_player_not_in_game(): void
     {
-        $result = ArrayCollection::build(...$game->inspectEvents())->findBy(fn ($event) => $event::class === $eventName);
-        $this->assertTrue($result->isDefined(), "Event $eventName not found in game events.");
+        $game = GameBuilder::initialize()->storeInitialAdjudication()->build();
+        $ruleset = $game->canMarkOrderStatus(
+            PlayerId::new(),
+            new CarbonImmutable(),
+        );
+
+        $this->assertTrue($ruleset->containsViolation(GameRules::PLAYER_NOT_IN_GAME));
     }
 
-    private function assertEventsDoNotContain(Game $game, string $eventName): void
+    public function test_canMarkOrderStatus_player_does_not_need_to_submit_orders(): void
     {
-        $result = ArrayCollection::build(...$game->inspectEvents())->findBy(fn ($event) => $event::class === $eventName);
-        $this->assertTrue($result->isEmpty(), "Event $eventName found in game events.");
+        $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->build();
+
+        $powerToTest = $game->powerCollection->findBy(fn ($power) => $power->ordersNeeded())->get();
+        $powerToTest->currentPhaseData->get()->ordersNeeded = false;
+
+        $ruleset = $game->canMarkOrderStatus(
+            $powerToTest->playerId->get(),
+            new CarbonImmutable(),
+        );
+
+        $this->assertTrue($ruleset->containsViolation(GameRules::POWER_DOES_NOT_NEED_TO_SUBMIT_ORDERS));
+    }
+
+    public function test_canMarkOrderStatus_wrong_state(): void
+    {
+        $game = GameBuilder::initialize()->storeInitialAdjudication()->build();
+        $ruleset = $game->canMarkOrderStatus(
+            $game->powerCollection->findBy(fn ($power) => $power->playerId->isDefined())->get()->playerId->get(),
+            new CarbonImmutable(),
+        );
+
+        $this->assertTrue($ruleset->containsViolation(GameRules::EXPECTS_STATE_ORDER_SUBMISSION));
+    }
+
+    public function test_markOrderStatus_throws_exception_if_cannot_perform_action(): void
+    {
+        $game = GameBuilder::initialize()->storeInitialAdjudication()->build();
+
+        $this->expectException(DomainException::class);
+        $game->markOrderStatus(PlayerId::new(), true, new CarbonImmutable());
+    }
+
+    public function test_markOrderStatus_throws_exception_if_status_has_not_been_changed(): void
+    {
+        $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->build();
+        $powerToTest = $game->powerCollection->findBy(fn ($power) => $power->ordersNeeded())->get();
+
+        $this->expectException(DomainException::class);
+        $this->expectExceptionMessage("Order status for power $powerToTest->powerId has not changed for game {$game->gameId}");
+        $game->markOrderStatus($powerToTest->playerId->get(), false, new CarbonImmutable());
+    }
+
+    public function test_markOrderStatus_marks_orders_as_ready(): void
+    {
+        $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->build();
+        $powerToTest = $game->powerCollection->findBy(fn ($power) => $power->ordersNeeded())->get();
+
+        $game->markOrderStatus($powerToTest->playerId->get(), true, new CarbonImmutable());
+
+        $this->assertTrue($powerToTest->ordersMarkedAsReady());
+
+        GameAsserter::assertThat($game)
+            ->hasEvent(PhaseMarkedAsReadyEvent::class)
+            ->hasNotEvent(GameReadyForAdjudicationEvent::class)
+            ->hasState(GameStates::ORDER_SUBMISSION);
+    }
+
+    public function test_markOrderStatus_marks_orders_as_not_ready(): void
+    {
+        $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->build();
+        $powerToTest = $game->powerCollection->findBy(fn ($power) => $power->ordersNeeded())->get();
+        $powerToTest->currentPhaseData->get()->markedAsReady = true;
+
+        $game->markOrderStatus($powerToTest->playerId->get(), false, new CarbonImmutable());
+
+        $this->assertFalse($powerToTest->ordersMarkedAsReady());
+
+        GameAsserter::assertThat($game)
+            ->hasEvent(PhaseMarkedAsNotReadyEvent::class)
+            ->hasNotEvent(GameReadyForAdjudicationEvent::class)
+            ->hasState(GameStates::ORDER_SUBMISSION);
+    }
+
+    public function test_markOrderStatus_transitions_state_to_adjudicating_if_is_ready(): void
+    {
+        $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->markAllButOnePowerAsReady()->build();
+        $powerToTest = $game->powerCollection->findBy(fn ($power) => ! $power->ordersMarkedAsReady())->get();
+
+        $game->markOrderStatus($powerToTest->playerId->get(), true, new CarbonImmutable());
+
+        $this->assertTrue($powerToTest->ordersMarkedAsReady());
+
+        GameAsserter::assertThat($game)
+            ->hasEvent(PhaseMarkedAsReadyEvent::class)
+            ->hasEvent(GameReadyForAdjudicationEvent::class)
+            ->hasState(GameStates::ADJUDICATING);
+    }
+
+    public function test_canAdjudicate_expects_state(): void
+    {
+        $game = GameBuilder::initialize()->storeInitialAdjudication()->build();
+        $ruleset = $game->canAdjudicate(new CarbonImmutable());
+
+        $this->assertTrue($ruleset->containsViolation(GameRules::EXPECTS_STATE_ADJUDICATING));
+    }
+
+    public function test_applyAdjudication_throws_exception_if_it_is_not_permitted(): void
+    {
+        $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->build();
+
+        $this->expectException(DomainException::class);
+        $game->applyAdjudication(PhaseTypeEnum::MOVEMENT, new ArrayCollection(), new CarbonImmutable());
+    }
+
+    public function test_applyAdjudication_without_winners(): void
+    {
+        $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->transitionToAdjudicating()->build();
+
+        $game->powerCollection->map(fn (Power $power) => new AdjudicationPowerDataDto(
+            $power->powerId,
+            new NewPhaseData(true, false, Count::fromInt(1), Count::fromInt(1)),
+            new OrderCollection()
+        ));
+
+        GameAsserter::assertThat($game)
+            ->hasEvent(GameAdjudicatedEvent::class)
+            ->hasEvent(PowerDefeatedEvent::class)
+            ->hasState(GameStates::ORDER_SUBMISSION);
+    }
+
+    public function test_applyAdjudication_with_winners(): void
+    {
+        $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->transitionToAdjudicating()->build();
+
+        GameAsserter::assertThat($game)
+            ->hasEvent(GameAdjudicatedEvent::class)
+            ->hasEvent(PowerDefeatedEvent::class)
+            ->hasEvent(GameFinishedEvent::class)
+            ->hasState(GameStates::FINISHED);
     }
 }

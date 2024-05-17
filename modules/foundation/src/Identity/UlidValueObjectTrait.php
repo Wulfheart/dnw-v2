@@ -33,4 +33,9 @@ trait UlidValueObjectTrait
     {
         return $this->ulid->toRfc4122();
     }
+
+    public function toId(): Id
+    {
+        return Id::fromString((string) $this);
+    }
 }

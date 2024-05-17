@@ -28,6 +28,7 @@ use Dnw\Game\Core\Domain\Game\Event\PhaseMarkedAsNotReadyEvent;
 use Dnw\Game\Core\Domain\Game\Event\PhaseMarkedAsReadyEvent;
 use Dnw\Game\Core\Domain\Game\Event\PlayerJoinedEvent;
 use Dnw\Game\Core\Domain\Game\Event\PlayerLeftEvent;
+use Dnw\Game\Core\Domain\Game\Event\PowerDefeatedEvent;
 use Dnw\Game\Core\Domain\Game\Exception\RulesetHandler;
 use Dnw\Game\Core\Domain\Game\Rule\GameRules;
 use Dnw\Game\Core\Domain\Game\StateMachine\GameStateMachine;
@@ -108,7 +109,7 @@ class Game
             $variantData,
             $powers,
             PhasesInfo::initialize(),
-            [new GameCreatedEvent()]
+            [new GameCreatedEvent($gameId->toId(), $playerId->toId())]
         );
     }
 
@@ -145,14 +146,16 @@ class Game
             /** @var int<0,max> $randomPowerIndex */
             $randomPowerIndex = $randomNumberGenerator(0, $unassignedPowers->count() - 1);
             $randomPower = $unassignedPowers->getOffset($randomPowerIndex);
-            $this->powerCollection->getByVariantPowerId($randomPower->variantPowerId)->assign($playerId);
+            $power = $this->powerCollection->getByVariantPowerId($randomPower->variantPowerId);
+            $power->assign($playerId);
         } else {
-            $this->powerCollection->getByVariantPowerId($variantPowerId->get())->assign($playerId);
+            $power = $this->powerCollection->getByVariantPowerId($variantPowerId->get());
+            $power->assign($playerId);
         }
 
-        $this->pushEvent(new PlayerJoinedEvent());
+        $this->pushEvent(new PlayerJoinedEvent($this->gameId->toId(), $power->powerId->toId()));
 
-        $this->handleGameStartingConditions($currentTime);
+        $this->handleGameStarting($currentTime);
     }
 
     /**
@@ -194,9 +197,9 @@ class Game
         );
 
         $this->powerCollection->getByPlayerId($playerId)->unassign();
-        $this->pushEvent(new PlayerLeftEvent());
+        $this->pushEvent(new PlayerLeftEvent($this->gameId->toId(), $playerId->toId()));
         if ($this->powerCollection->hasNoAssignedPowers()) {
-            $this->pushEvent(new GameAbandonedEvent());
+            $this->pushEvent(new GameAbandonedEvent($this->gameId->toId()));
             $this->gameStateMachine->transitionTo(GameStates::ABANDONED);
         }
     }
@@ -245,7 +248,7 @@ class Game
     {
         if ($this->canBeStarted($currentTime)->passes()) {
             $this->phasesInfo->currentPhase->get()->adjudicationTime = Some::create($this->adjudicationTiming->calculateNextAdjudication($currentTime));
-            $this->pushEvent(new GameStartedEvent());
+            $this->pushEvent(new GameStartedEvent($this->gameId->toId()));
             $this->gameStateMachine->transitionTo(GameStates::ORDER_SUBMISSION);
         }
 
@@ -254,7 +257,7 @@ class Game
     private function handleGameJoinLengthExceeded(CarbonImmutable $currentTime): void
     {
         if ($this->gameStartTiming->joinLengthExceeded($currentTime)) {
-            $this->pushEvent(new GameJoinTimeExceededEvent());
+            $this->pushEvent(new GameJoinTimeExceededEvent($this->gameId->toId()));
             $this->gameStateMachine->transitionTo(GameStates::NOT_ENOUGH_PLAYERS_BY_DEADLINE);
         }
     }
@@ -282,7 +285,12 @@ class Game
 
         $power->submitOrders($orderCollection, $markAsReady);
 
-        $this->pushEvent(new OrdersSubmittedEvent());
+        $this->pushEvent(new OrdersSubmittedEvent(
+            $this->gameId->toId(),
+            $this->phasesInfo->currentPhase->get()->phaseId->toId(),
+            $power->powerId->toId(),
+            $markAsReady
+        ));
 
         $this->adjudicateGameIfConditionsAreFulfilled($currentTime);
     }
@@ -297,14 +305,24 @@ class Game
         $power = $this->powerCollection->getByPlayerId($playerId);
         $orderStatusHasChanged = $power->ordersMarkedAsReady() !== $orderStatus;
 
+        if (! $orderStatusHasChanged) {
+            throw new DomainException("Order status for power $power->powerId has not changed for game {$this->gameId}");
+        }
+
         $power->markOrderStatus($orderStatus);
 
-        if ($orderStatusHasChanged) {
-            if ($orderStatus) {
-                $this->pushEvent(new PhaseMarkedAsReadyEvent());
-            } else {
-                $this->pushEvent(new PhaseMarkedAsNotReadyEvent());
-            }
+        if ($orderStatus) {
+            $this->pushEvent(new PhaseMarkedAsReadyEvent(
+                $this->gameId->toId(),
+                $this->phasesInfo->currentPhase->get()->phaseId->toId(),
+                $power->powerId->toId()
+            ));
+        } else {
+            $this->pushEvent(new PhaseMarkedAsNotReadyEvent(
+                $this->gameId->toId(),
+                $this->phasesInfo->currentPhase->get()->phaseId->toId(),
+                $power->powerId->toId()
+            ));
         }
 
         $this->adjudicateGameIfConditionsAreFulfilled($currentTime);
@@ -358,7 +376,9 @@ class Game
     {
         if ($this->isReadyForAdjudication($currentTime)) {
             // TODO: Add NMRs from powers that did not submit orders even if they had to
-            $this->pushEvent(new GameReadyForAdjudicationEvent());
+            $this->pushEvent(new GameReadyForAdjudicationEvent(
+                $this->gameId->toId(),
+            ));
             $this->gameStateMachine->transitionTo(GameStates::ADJUDICATING);
         }
     }
@@ -409,23 +429,47 @@ class Game
             Some::create($nextAdjudication),
         );
 
-        $this->phasesInfo->proceedToNewPhase($newPhase);
-        foreach ($adjudicationPowerDataCollection as $adjudicationPowerData) {
-            $this->powerCollection->getByPowerId($adjudicationPowerData->powerId)->proceedToNextPhase(
-                $adjudicationPowerData->newPhaseData,
-                $adjudicationPowerData->appliedOrders,
+        /** @var AdjudicationPowerDataDto $data */
+        foreach ($adjudicationPowerDataCollection as $data) {
+            $power = $this->powerCollection->getByPowerId($data->powerId);
+            $isAlreadyDefeated = $power->isDefeated();
+
+            $this->powerCollection->getByPowerId($data->powerId)->proceedToNextPhase(
+                new PhasePowerData(
+                    $data->newPhaseData->ordersNeeded,
+                    false,
+                    $data->newPhaseData->isWinner,
+                    $data->newPhaseData->supplyCenterCount,
+                    $data->newPhaseData->unitCount,
+                    None::create(),
+                ),
+                $data->appliedOrders
             );
+
+            if (! $isAlreadyDefeated && $power->isDefeated()) {
+                $this->pushEvent(new PowerDefeatedEvent(
+                    $this->gameId->toId(),
+                    $power->powerId->toId(),
+                    $this->phasesInfo->count->int()
+                ));
+            }
         }
 
-        $this->pushEvent(new GameAdjudicatedEvent());
+        $this->phasesInfo->proceedToNewPhase($newPhase);
+
+        $this->pushEvent(new GameAdjudicatedEvent($this->gameId->toId()));
 
         $hasWinners = $this->powerCollection->filter(
             fn (Power $power) => $power->currentPhaseData->map(
                 fn (PhasePowerData $data) => $data->isWinner
             )->getOrElse(false)
         )->count() > 0;
+
         if ($hasWinners) {
-            $this->pushEvent(new GameFinishedEvent());
+            $this->pushEvent(new GameFinishedEvent($this->gameId->toId(), $this->phasesInfo->count->int()));
+            $this->gameStateMachine->transitionTo(GameStates::FINISHED);
+        } else {
+            $this->gameStateMachine->transitionTo(GameStates::ORDER_SUBMISSION);
         }
     }
 
@@ -460,13 +504,22 @@ class Game
 
         $this->phasesInfo->setInitialPhase($newPhase);
 
-        $phasePowerCollection->each(
-            fn (InitialAdjudicationPowerDataDto $data) => $this->powerCollection->getByPowerId($data->powerId)->persistInitialPhase(
-                $data->phasePowerData
-            )
-        );
+        foreach ($phasePowerCollection as $data) {
+            $power = $this->powerCollection->getByPowerId($data->powerId);
+            $power->persistInitialPhase(
+                new PhasePowerData(
+                    $data->phasePowerData->ordersNeeded,
+                    false,
+                    $data->phasePowerData->isWinner,
+                    $data->phasePowerData->supplyCenterCount,
+                    $data->phasePowerData->unitCount,
+                    None::create(),
+                )
+            );
 
-        $this->pushEvent(new GameInitializedEvent());
+        }
+
+        $this->pushEvent(new GameInitializedEvent($this->gameId->toId()));
         $this->gameStateMachine->transitionTo(GameStates::PLAYERS_JOINING);
     }
 }

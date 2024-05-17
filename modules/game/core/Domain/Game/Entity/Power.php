@@ -95,4 +95,12 @@ class Power
     {
         $this->currentPhaseData = Some::create($phasePowerData);
     }
+
+    public function isDefeated(): bool
+    {
+        return $this->currentPhaseData->map(
+            fn (PhasePowerData $phasePowerData) => $phasePowerData->supplyCenterCount->int() === 0
+                && $phasePowerData->unitCount->int() === 0
+        )->getOrElse(false);
+    }
 }

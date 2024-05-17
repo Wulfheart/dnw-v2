@@ -7,15 +7,16 @@ use Dnw\Game\Core\Domain\Game\Collection\VariantPowerIdCollection;
 use Dnw\Game\Core\Domain\Game\Dto\InitialAdjudicationPowerDataDto;
 use Dnw\Game\Core\Domain\Game\Entity\Power;
 use Dnw\Game\Core\Domain\Game\Game;
+use Dnw\Game\Core\Domain\Game\StateMachine\GameStates;
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameName;
-use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhasePowerData;
+use Dnw\Game\Core\Domain\Game\ValueObject\Phase\NewPhaseData;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
 use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
 use Dnw\Game\Core\Infrastructure\Adapter\RandomNumberGenerator;
-use PhpOption\None;
+use Exception;
 use PhpOption\Some;
 
 class GameBuilder
@@ -65,14 +66,11 @@ class GameBuilder
     {
         $c = $this->game->powerCollection->map(fn (Power $power) => new InitialAdjudicationPowerDataDto(
             $power->powerId,
-            new PhasePowerData(
+            new NewPhaseData(
                 true,
                 false,
-                false,
                 Count::fromInt(5),
                 Count::fromInt(5),
-                None::create(),
-                None::create(),
             ),
         ));
 
@@ -182,6 +180,16 @@ class GameBuilder
                 true,
                 new CarbonImmutable(),
             );
+        }
+
+        return $this;
+    }
+
+    public function transitionToAdjudicating(): self
+    {
+        $this->markAllPowersAsReady();
+        if ($this->game->gameStateMachine->currentStateIsNot(GameStates::ADJUDICATING)) {
+            throw new Exception('Game is not in the correct state to transition to adjudicating');
         }
 
         return $this;
