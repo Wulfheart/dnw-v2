@@ -6,23 +6,31 @@ use Symfony\Component\Uid\Ulid;
 
 readonly class Id
 {
+    private Ulid $ulid;
+
     private function __construct(
-        private string $value
+        string $value
     ) {
+        $this->ulid = new Ulid($value);
     }
 
     public static function fromString(string $value): self
     {
-        return new self((new Ulid($value))->toRfc4122());
+        return new self($value);
     }
 
     public static function generate(): self
     {
-        return new self((new Ulid())->toRfc4122());
+        return new self(new Ulid());
+    }
+
+    public function equals(Id $other): bool
+    {
+        return $this->ulid->equals($other->ulid);
     }
 
     public function __toString(): string
     {
-        return $this->value;
+        return (string) $this->ulid;
     }
 }

@@ -8,13 +8,13 @@ class GameStateMachine
      * @var array<string, array<string>>
      */
     private const array ALLOWED_TRANSITIONS = [
-            GameStates::CREATED => [GameStates::PLAYERS_JOINING],
-            GameStates::PLAYERS_JOINING => [GameStates::ABANDONED, GameStates::ORDER_SUBMISSION, GameStates::NOT_ENOUGH_PLAYERS_BY_DEADLINE],
-            GameStates::ABANDONED => [GameStates::CREATED],
-            GameStates::ORDER_SUBMISSION => [GameStates::ADJUDICATING, GameStates::ABANDONED],
-            GameStates::ADJUDICATING => [GameStates::FINISHED],
-            GameStates::FINISHED => [GameStates::CREATED],
-        ];
+        GameStates::CREATED => [GameStates::PLAYERS_JOINING],
+        GameStates::PLAYERS_JOINING => [GameStates::ABANDONED, GameStates::ORDER_SUBMISSION, GameStates::NOT_ENOUGH_PLAYERS_BY_DEADLINE],
+        GameStates::ABANDONED => [GameStates::CREATED],
+        GameStates::ORDER_SUBMISSION => [GameStates::ADJUDICATING, GameStates::ABANDONED],
+        GameStates::ADJUDICATING => [GameStates::FINISHED, GameStates::ORDER_SUBMISSION],
+        GameStates::FINISHED => [GameStates::CREATED],
+    ];
 
     public function __construct(
         private string $currentState,
@@ -30,7 +30,7 @@ class GameStateMachine
     {
         $allowedTransition = self::ALLOWED_TRANSITIONS[$this->currentState];
 
-        if (!in_array($state, $allowedTransition)) {
+        if (! in_array($state, $allowedTransition)) {
             throw new InvalidTransitionException($this->currentState, $state);
         }
         $this->currentState = $state;
@@ -43,7 +43,7 @@ class GameStateMachine
 
     public function currentStateIsNot(string $state): bool
     {
-        return !$this->hasCurrentState($state);
+        return ! $this->hasCurrentState($state);
     }
 
     public function currentState(): string

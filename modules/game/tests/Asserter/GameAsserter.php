@@ -22,7 +22,7 @@ class GameAsserter
     }
 
     /**
-     * @param  class-string|callable(object): bool  $event
+     * @param  class-string|callable  $event
      * @param  int<0, max>  $expectedCount
      */
     public function hasEvent(string|callable $event, int $expectedCount = 1): self

@@ -143,7 +143,20 @@ abstract class Collection implements IteratorAggregate
     }
 
     /**
+     * @throws NotFoundException
+     *
+     * @return T
+     */
+    public function first(): mixed
+    {
+        return $this->items[0] ?? throw new NotFoundException();
+    }
+
+    /**
      * @param  int<0,max>  $offset
+     *
+     * @throws NotFoundException
+     *
      * @return T
      */
     public function getOffset(int $offset): mixed

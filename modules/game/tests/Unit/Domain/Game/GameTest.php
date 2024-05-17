@@ -8,11 +8,13 @@ use Dnw\Foundation\Exception\DomainException;
 use Dnw\Game\Core\Domain\Game\Collection\OrderCollection;
 use Dnw\Game\Core\Domain\Game\Collection\VariantPowerIdCollection;
 use Dnw\Game\Core\Domain\Game\Dto\AdjudicationPowerDataDto;
+use Dnw\Game\Core\Domain\Game\Dto\InitialAdjudicationPowerDataDto;
 use Dnw\Game\Core\Domain\Game\Entity\Power;
 use Dnw\Game\Core\Domain\Game\Event\GameAbandonedEvent;
 use Dnw\Game\Core\Domain\Game\Event\GameAdjudicatedEvent;
 use Dnw\Game\Core\Domain\Game\Event\GameCreatedEvent;
 use Dnw\Game\Core\Domain\Game\Event\GameFinishedEvent;
+use Dnw\Game\Core\Domain\Game\Event\GameInitializedEvent;
 use Dnw\Game\Core\Domain\Game\Event\GameReadyForAdjudicationEvent;
 use Dnw\Game\Core\Domain\Game\Event\GameStartedEvent;
 use Dnw\Game\Core\Domain\Game\Event\OrdersSubmittedEvent;
@@ -526,10 +528,38 @@ class GameTest extends TestCase
             new NewPhaseData(true, false, Count::fromInt(1), Count::fromInt(1)),
             new OrderCollection()
         ));
+        $powerWhichIsAlreadyDefeated = $game->powerCollection->first();
+        $defeatedPhaseData = $powerWhichIsAlreadyDefeated->currentPhaseData->get();
+        $defeatedPhaseData->ordersNeeded = false;
+        $defeatedPhaseData->supplyCenterCount = Count::fromInt(0);
+        $defeatedPhaseData->unitCount = Count::fromInt(0);
+
+        $powerWhichWillBeDefeated = $game->powerCollection->getOffset(1);
+
+        $adjudicationPowerDataCollection = $game->powerCollection->map(fn (Power $power) => new AdjudicationPowerDataDto(
+            $power->powerId,
+            new NewPhaseData(true, false, Count::fromInt(1), Count::fromInt(1)),
+            new OrderCollection()
+        ));
+
+        /** @var AdjudicationPowerDataDto $defeatedPhasePowerData */
+        $defeatedPhasePowerData = $adjudicationPowerDataCollection->findBy(fn (AdjudicationPowerDataDto $adjudicationPowerData) => $adjudicationPowerData->powerId === $powerWhichIsAlreadyDefeated->powerId)->get();
+        $defeatedPhasePowerData->newPhaseData->supplyCenterCount = Count::fromInt(0);
+        $defeatedPhasePowerData->newPhaseData->unitCount = Count::fromInt(0);
+        $defeatedPhasePowerData->newPhaseData->ordersNeeded = false;
+
+        $powerWhichWillBeDefeatedPhasePowerData = $adjudicationPowerDataCollection->findBy(fn (AdjudicationPowerDataDto $adjudicationPowerData) => $adjudicationPowerData->powerId === $powerWhichWillBeDefeated->powerId)->get();
+        $powerWhichWillBeDefeatedPhasePowerData->newPhaseData->supplyCenterCount = Count::fromInt(0);
+        $powerWhichWillBeDefeatedPhasePowerData->newPhaseData->unitCount = Count::fromInt(0);
+        $powerWhichWillBeDefeatedPhasePowerData->newPhaseData->ordersNeeded = false;
+
+        $game->applyAdjudication(PhaseTypeEnum::MOVEMENT, $adjudicationPowerDataCollection, new CarbonImmutable());
 
         GameAsserter::assertThat($game)
             ->hasEvent(GameAdjudicatedEvent::class)
             ->hasEvent(PowerDefeatedEvent::class)
+            ->hasEvent(fn (PowerDefeatedEvent $event) => $event->powerId->equals($powerWhichWillBeDefeated->powerId->toId()))
+            ->hasEvent(PowerDefeatedEvent::class, 1)
             ->hasState(GameStates::ORDER_SUBMISSION);
     }
 
@@ -537,10 +567,60 @@ class GameTest extends TestCase
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->transitionToAdjudicating()->build();
 
+        $game->powerCollection->map(fn (Power $power) => new AdjudicationPowerDataDto(
+            $power->powerId,
+            new NewPhaseData(true, false, Count::fromInt(1), Count::fromInt(1)),
+            new OrderCollection()
+        ));
+        $powerWhichWillWin = $game->powerCollection->first();
+
+        $adjudicationPowerDataCollection = $game->powerCollection->map(fn (Power $power) => new AdjudicationPowerDataDto(
+            $power->powerId,
+            new NewPhaseData(true, false, Count::fromInt(1), Count::fromInt(1)),
+            new OrderCollection()
+        ));
+
+        /** @var AdjudicationPowerDataDto $defeatedPhasePowerData */
+        $defeatedPhasePowerData = $adjudicationPowerDataCollection->findBy(fn (AdjudicationPowerDataDto $adjudicationPowerData) => $adjudicationPowerData->powerId === $powerWhichWillWin->powerId)->get();
+        $defeatedPhasePowerData->newPhaseData->isWinner = true;
+
+        $game->applyAdjudication(PhaseTypeEnum::MOVEMENT, $adjudicationPowerDataCollection, new CarbonImmutable());
+
         GameAsserter::assertThat($game)
             ->hasEvent(GameAdjudicatedEvent::class)
-            ->hasEvent(PowerDefeatedEvent::class)
             ->hasEvent(GameFinishedEvent::class)
             ->hasState(GameStates::FINISHED);
+    }
+
+    public function test_canApplyInitialAdjudication_needs_correct_state(): void
+    {
+        $game = GameBuilder::initialize()->storeInitialAdjudication()->build();
+        $ruleset = $game->canApplyInitialAdjudication();
+
+        $this->assertTrue($ruleset->containsViolation(GameRules::EXPECTS_STATE_CREATED));
+    }
+
+    public function test_applyInitialAdjudication_throws_exception_if_not_permitted(): void
+    {
+        $game = GameBuilder::initialize()->storeInitialAdjudication()->build();
+
+        $this->expectException(DomainException::class);
+        $game->applyInitialAdjudication(PhaseTypeEnum::MOVEMENT, new ArrayCollection(), new CarbonImmutable());
+    }
+
+    public function test_applyInitialAdjudication_happy_path(): void
+    {
+        $game = GameBuilder::initialize()->build();
+
+        $initialAdjudicationPowerData = $game->powerCollection->map(fn (Power $power) => new InitialAdjudicationPowerDataDto(
+            $power->powerId,
+            new NewPhaseData(true, false, Count::fromInt(1), Count::fromInt(1)),
+        ));
+
+        $game->applyInitialAdjudication(PhaseTypeEnum::MOVEMENT, $initialAdjudicationPowerData, new CarbonImmutable());
+
+        GameAsserter::assertThat($game)
+            ->hasState(GameStates::PLAYERS_JOINING)
+            ->hasEvent(GameInitializedEvent::class);
     }
 }
