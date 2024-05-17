@@ -42,7 +42,8 @@ class GameBuilder
                 VariantPowerId::new(),
                 VariantPowerId::new(),
                 VariantPowerId::new(),
-            )
+            ),
+            defaultSupplyCenterCountToWin: Count::fromInt(18),
         );
         $rng = new RandomNumberGenerator();
         $game = Game::create(

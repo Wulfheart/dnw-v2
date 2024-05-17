@@ -33,6 +33,13 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Game::class)]
 class GameAdjudicationTest extends TestCase
 {
+    public function test_calculateSupplyCenterCountForWinning(): void
+    {
+        $game = GameBuilder::initialize()->build();
+
+        $this->assertEquals(18, $game->calculateSupplyCenterCountForWinning()->int());
+    }
+
     public function test_canSubmitOrders_unexpected_status(): void
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->build();
