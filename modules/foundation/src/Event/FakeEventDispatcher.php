@@ -2,6 +2,7 @@
 
 namespace Dnw\Foundation\Event;
 
+use Closure;
 use Dnw\Foundation\Collection\ArrayCollection;
 use Dnw\Foundation\Collection\Collection;
 use InvalidArgumentException;
@@ -35,7 +36,7 @@ class FakeEventDispatcher implements EventDispatcherInterface
     }
 
     /**
-     * @param  class-string|callable(object): bool  $event
+     * @param  class-string|Closure  $event
      * @param  int<0, max>  $expectedCount
      */
     public function assertDispatched(string|callable $event, int $expectedCount = 0): void

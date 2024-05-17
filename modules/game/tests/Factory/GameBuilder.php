@@ -23,6 +23,7 @@ class GameBuilder
 {
     private function __construct(
         private Game $game,
+        private bool $releaseEventsBeforeBuild = true,
     ) {
 
     }
@@ -195,9 +196,18 @@ class GameBuilder
         return $this;
     }
 
+    public function doNotReleaseEvents(): self
+    {
+        $this->releaseEventsBeforeBuild = false;
+
+        return $this;
+    }
+
     public function build(): Game
     {
-        $this->game->releaseEvents();
+        if ($this->releaseEventsBeforeBuild) {
+            $this->game->releaseEvents();
+        }
 
         return $this->game;
     }
