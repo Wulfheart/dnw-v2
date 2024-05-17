@@ -40,7 +40,7 @@ class GameBuilder
         ?Variant $variant = null,
     ): self {
         if ($variant === null) {
-            $variantData = $gameVariantData ?? GameVariantDataFactory::build(
+            $variantData = GameVariantDataFactory::build(
                 variantPowerIdCollection: VariantPowerIdCollection::build(
                     VariantPowerId::new(),
                     VariantPowerId::new(),

@@ -68,7 +68,7 @@ class PowerCollection extends Collection
     public function hasPowerFilled(VariantPowerId $variantPowerId): bool
     {
         return $this->findBy(
-            fn (Power $power) => $power->variantPowerId === $variantPowerId
+            fn (Power $power) => $power->variantPowerId == $variantPowerId
         )->get()->playerId->isDefined();
     }
 
@@ -91,24 +91,24 @@ class PowerCollection extends Collection
     public function getByPowerId(PowerId $powerId): Power
     {
         return $this->findBy(
-            fn (Power $power) => $power->powerId === $powerId
+            fn (Power $power) => $power->powerId == $powerId
         )->get();
     }
 
     public function getByVariantPowerId(VariantPowerId $variantPowerId): Power
     {
         return $this->findBy(
-            fn (Power $power) => $power->variantPowerId === $variantPowerId
+            fn (Power $power) => $power->variantPowerId == $variantPowerId
         )->get();
     }
 
     /**
      * @return Option<Power>
      */
-    private function findByPlayerId(PlayerId $playerId): Option
+    public function findByPlayerId(PlayerId $playerId): Option
     {
         return $this->findBy(
-            fn (Power $power) => $power->playerId->map(fn (PlayerId $id): bool => $id === $playerId)->getOrElse(false)
+            fn (Power $power) => $power->playerId->map(fn (PlayerId $id): bool => $id == $playerId)->getOrElse(false)
         );
     }
 }

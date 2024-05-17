@@ -113,4 +113,12 @@ class GameAsserter
 
         return $this;
     }
+
+    public function hasPlayerInGame(PlayerId $playerId): self
+    {
+        $exists = $this->game->powerCollection->findByPlayerId($playerId)->isDefined();
+        Assert::assertTrue($exists, "Player $playerId is not a member of the game.");
+
+        return $this;
+    }
 }
