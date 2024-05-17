@@ -50,6 +50,11 @@ class PowerCollection extends Collection
         )->count() > 0;
     }
 
+    public function hasAllPowersFilled(): bool
+    {
+        return $this->getUnassignedPowers()->isEmpty();
+    }
+
     public function containsPlayer(PlayerId $playerId): bool
     {
         return $this->findByPlayerId($playerId)->isDefined();

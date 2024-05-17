@@ -155,7 +155,7 @@ class Game
 
         $this->pushEvent(new PlayerJoinedEvent($this->gameId->toId(), $power->powerId->toId()));
 
-        $this->handleGameStarting($currentTime);
+        $this->startGameIfFullAndStartWhenReady($currentTime);
     }
 
     /**
@@ -218,47 +218,29 @@ class Game
         );
     }
 
-    public function canBeStarted(CarbonImmutable $currentTime): Ruleset
+    private function startGameIfFullAndStartWhenReady(CarbonImmutable $currentTime): void
     {
-        return new Ruleset(
-            new Rule(
-                GameRules::EXPECTS_STATE_PLAYERS_JOINING,
-                $this->gameStateMachine->currentStateIsNot(GameStates::PLAYERS_JOINING),
-            ),
-            new Rule(
-                GameRules::HAS_AVAILABLE_POWERS,
-                $this->powerCollection->hasAvailablePowers(),
-            ),
-            new Rule(
-                GameRules::GAME_NOT_MARKED_AS_READY_OR_JOIN_LENGTH_NOT_EXCEEDED,
-                ! $this->gameStartTiming->startWhenReady
-                && ! $this->gameStartTiming->joinLengthExceeded($currentTime),
-            ),
-        );
-    }
-
-    public function handleGameStartingConditions(CarbonImmutable $currentTime): void
-    {
-        $this->handleGameStarting($currentTime);
-        $this->handleGameJoinLengthExceeded($currentTime);
-
-    }
-
-    private function handleGameStarting(CarbonImmutable $currentTime): void
-    {
-        if ($this->canBeStarted($currentTime)->passes()) {
-            $this->phasesInfo->currentPhase->get()->adjudicationTime = Some::create($this->adjudicationTiming->calculateNextAdjudication($currentTime));
-            $this->pushEvent(new GameStartedEvent($this->gameId->toId()));
-            $this->gameStateMachine->transitionTo(GameStates::ORDER_SUBMISSION);
+        if ($this->gameStartTiming->startWhenReady && $this->powerCollection->hasAllPowersFilled()) {
+            $this->startGame($currentTime);
         }
-
     }
 
-    private function handleGameJoinLengthExceeded(CarbonImmutable $currentTime): void
+    private function startGame(CarbonImmutable $currentTime): void
+    {
+        $this->phasesInfo->currentPhase->get()->adjudicationTime = Some::create($this->adjudicationTiming->calculateNextAdjudication($currentTime));
+        $this->pushEvent(new GameStartedEvent($this->gameId->toId()));
+        $this->gameStateMachine->transitionTo(GameStates::ORDER_SUBMISSION);
+    }
+
+    public function handleGameJoinLengthExceeded(CarbonImmutable $currentTime): void
     {
         if ($this->gameStartTiming->joinLengthExceeded($currentTime)) {
-            $this->pushEvent(new GameJoinTimeExceededEvent($this->gameId->toId()));
-            $this->gameStateMachine->transitionTo(GameStates::NOT_ENOUGH_PLAYERS_BY_DEADLINE);
+            if ($this->powerCollection->hasAllPowersFilled()) {
+                $this->startGame($currentTime);
+            } else {
+                $this->pushEvent(new GameJoinTimeExceededEvent($this->gameId->toId()));
+                $this->gameStateMachine->transitionTo(GameStates::NOT_ENOUGH_PLAYERS_BY_DEADLINE);
+            }
         }
     }
 
