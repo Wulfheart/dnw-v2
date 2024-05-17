@@ -11,11 +11,10 @@ use Dnw\Game\Core\Domain\Game\Repository\GameRepositoryInterface;
 use Dnw\Game\Core\Domain\Game\Repository\PhaseRepositoryInterface;
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
-use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhasePowerData;
+use Dnw\Game\Core\Domain\Game\ValueObject\Phase\NewPhaseData;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
 use Dnw\Game\Core\Domain\Variant\Repository\VariantRepositoryInterface;
 use Dnw\Game\Core\Domain\Variant\ValueObject\VariantPower\VariantPowerApiName;
-use PhpOption\None;
 
 readonly class InitialGameAdjudicationCommandHandler
 {
@@ -50,14 +49,11 @@ readonly class InitialGameAdjudicationCommandHandler
 
             $phasePowerCollection->push(new InitialAdjudicationPowerDataDto(
                 $powerId,
-                new PhasePowerData(
+                new NewPhaseData(
                     count($possibleOrders->units) > 0,
-                    false,
                     $adjudicationGameResult->powerHasWon($phasePowerData->power),
                     Count::fromInt($phasePowerData->supply_center_count),
                     Count::fromInt($phasePowerData->unit_count),
-                    None::create(),
-                    None::create()
                 ),
             ));
         }
