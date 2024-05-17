@@ -5,7 +5,7 @@ namespace Dnw\Game\Core\Application\Command\InitialGameAdjudication;
 use Dnw\Adjudicator\AdjudicatorService;
 use Dnw\Foundation\Collection\ArrayCollection;
 use Dnw\Foundation\Collection\Collection;
-use Dnw\Game\Core\Domain\Adapter\TimeProviderInterface;
+use Dnw\Game\Core\Domain\Adapter\TimeProvider\TimeProviderInterface;
 use Dnw\Game\Core\Domain\Game\Dto\InitialAdjudicationPowerDataDto;
 use Dnw\Game\Core\Domain\Game\Repository\GameRepositoryInterface;
 use Dnw\Game\Core\Domain\Game\Repository\PhaseRepositoryInterface;

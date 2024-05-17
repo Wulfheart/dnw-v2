@@ -3,18 +3,22 @@
 namespace Dnw\Game\Tests\Factory;
 
 use Carbon\CarbonImmutable;
+use Dnw\Game\Core\Domain\Game\Collection\OrderCollection;
 use Dnw\Game\Core\Domain\Game\Collection\VariantPowerIdCollection;
 use Dnw\Game\Core\Domain\Game\Dto\InitialAdjudicationPowerDataDto;
 use Dnw\Game\Core\Domain\Game\Entity\Power;
 use Dnw\Game\Core\Domain\Game\Game;
 use Dnw\Game\Core\Domain\Game\StateMachine\GameStates;
+use Dnw\Game\Core\Domain\Game\ValueObject\AdjudicationTiming\AdjudicationTiming;
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameName;
+use Dnw\Game\Core\Domain\Game\ValueObject\GameStartTiming\GameStartTiming;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\NewPhaseData;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
 use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
+use Dnw\Game\Core\Domain\Variant\Variant;
 use Dnw\Game\Core\Infrastructure\Adapter\RandomNumberGenerator;
 use Exception;
 use PhpOption\Some;
@@ -31,26 +35,34 @@ class GameBuilder
     public static function initialize(
         bool $randomAssignments = false,
         bool $startWhenReady = true,
+        ?AdjudicationTiming $adjudicationTiming = null,
+        ?GameStartTiming $gameStartTiming = null,
+        ?Variant $variant = null,
     ): self {
-        $variantData = GameVariantDataFactory::build(
-            variantPowerIdCollection: VariantPowerIdCollection::build(
-                VariantPowerId::new(),
-                VariantPowerId::new(),
-                VariantPowerId::new(),
-                VariantPowerId::new(),
-                VariantPowerId::new(),
-                VariantPowerId::new(),
-                VariantPowerId::new(),
-                VariantPowerId::new(),
-            ),
-            defaultSupplyCenterCountToWin: Count::fromInt(18),
-        );
+        if ($variant === null) {
+            $variantData = $gameVariantData ?? GameVariantDataFactory::build(
+                variantPowerIdCollection: VariantPowerIdCollection::build(
+                    VariantPowerId::new(),
+                    VariantPowerId::new(),
+                    VariantPowerId::new(),
+                    VariantPowerId::new(),
+                    VariantPowerId::new(),
+                    VariantPowerId::new(),
+                    VariantPowerId::new(),
+                    VariantPowerId::new(),
+                ),
+                defaultSupplyCenterCountToWin: Count::fromInt(18),
+            );
+        } else {
+            $variantData = GameVariantDataFactory::fromVariant($variant);
+        }
+
         $rng = new RandomNumberGenerator();
         $game = Game::create(
             GameId::new(),
             GameName::fromString('Test Game'),
-            AdjudicationTimingFactory::build(),
-            GameStartTimingFactory::build(startWhenReady: $startWhenReady),
+            $adjudicationTiming ?? AdjudicationTimingFactory::build(),
+            $gameStartTiming ?? GameStartTimingFactory::build(startWhenReady: $startWhenReady),
             $variantData,
             $randomAssignments,
             PlayerId::new(),
@@ -192,6 +204,25 @@ class GameBuilder
         $this->markAllPowersAsReady();
         if ($this->game->gameStateMachine->currentStateIsNot(GameStates::ADJUDICATING)) {
             throw new Exception('Game is not in the correct state to transition to adjudicating');
+        }
+
+        return $this;
+    }
+
+    public function submitOrders(bool $markAsReady): self
+    {
+        $powersWithOrders = $this->game->powerCollection->filter(
+            fn (Power $power) => $power->ordersNeeded()
+        );
+
+        /** @var Power $power */
+        foreach ($powersWithOrders as $power) {
+            $this->game->submitOrders(
+                $power->playerId->get(),
+                OrderCollection::fromStringArray([(string) $power->playerId->get()]),
+                $markAsReady,
+                new CarbonImmutable(),
+            );
         }
 
         return $this;

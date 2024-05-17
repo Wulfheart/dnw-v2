@@ -22,43 +22,43 @@ class VariantFactory
             new VariantPower(
                 VariantPowerId::new(),
                 VariantPowerName::fromString('Austria'),
-                VariantPowerApiName::fromString('austria'),
+                VariantPowerApiName::fromString('AUSTRIA'),
                 Color::fromString('red')
             ),
             new VariantPower(
                 VariantPowerId::new(),
                 VariantPowerName::fromString('Great Britain'),
-                VariantPowerApiName::fromString('GB'),
+                VariantPowerApiName::fromString('ENGLAND'),
                 Color::fromString('pink')
             ),
             new VariantPower(
                 VariantPowerId::new(),
                 VariantPowerName::fromString('Germany'),
-                VariantPowerApiName::fromString('germany'),
+                VariantPowerApiName::fromString('GERMANY'),
                 Color::fromString('brown')
             ),
             new VariantPower(
                 VariantPowerId::new(),
                 VariantPowerName::fromString('Russia'),
-                VariantPowerApiName::fromString('russia'),
+                VariantPowerApiName::fromString('RUSSIA'),
                 Color::fromString('violet')
             ),
             new VariantPower(
                 VariantPowerId::new(),
                 VariantPowerName::fromString('Italy'),
-                VariantPowerApiName::fromString('italy'),
+                VariantPowerApiName::fromString('ITALY'),
                 Color::fromString('green')
             ),
             new VariantPower(
                 VariantPowerId::new(),
                 VariantPowerName::fromString('France'),
-                VariantPowerApiName::fromString('france'),
+                VariantPowerApiName::fromString('FRANCE'),
                 Color::fromString('blue')
             ),
             new VariantPower(
                 VariantPowerId::new(),
                 VariantPowerName::fromString('Turkey'),
-                VariantPowerApiName::fromString('turkey'),
+                VariantPowerApiName::fromString('TURKEY'),
                 Color::fromString('yellow')
             ),
         ]);

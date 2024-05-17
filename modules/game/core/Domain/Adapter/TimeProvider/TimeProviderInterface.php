@@ -1,6 +1,6 @@
 <?php
 
-namespace Dnw\Game\Core\Domain\Adapter;
+namespace Dnw\Game\Core\Domain\Adapter\TimeProvider;
 
 use Carbon\CarbonImmutable;
 

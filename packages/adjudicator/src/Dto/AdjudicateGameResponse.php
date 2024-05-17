@@ -33,11 +33,16 @@ class AdjudicateGameResponse implements AdjudicatorDataInterface
         )->get();
     }
 
-    public function getAppliedOrdersByPowerName(string $powerName): AppliedOrder
+    /**
+     * @return array<string>
+     */
+    public function getAppliedOrdersByPowerName(string $powerName): array
     {
         return ArrayCollection::fromArray($this->applied_orders)->findBy(
             fn ($appliedOrder) => $appliedOrder->power === $powerName
-        )->get();
+        )->map(
+            fn (AppliedOrder $appliedOrder) => $appliedOrder->orders
+        )->getOrElse([]);
     }
 
     public function getPhasePowerDataByPowerName(string $powerName): PhasePowerData

@@ -4,7 +4,7 @@ namespace Dnw\Game\Core\Application\Command\JoinGame;
 
 use Dnw\Foundation\Identity\Id;
 use Dnw\Game\Core\Domain\Adapter\RandomNumberGeneratorInterface;
-use Dnw\Game\Core\Domain\Adapter\TimeProviderInterface;
+use Dnw\Game\Core\Domain\Adapter\TimeProvider\TimeProviderInterface;
 use Dnw\Game\Core\Domain\Game\Repository\GameRepositoryInterface;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;

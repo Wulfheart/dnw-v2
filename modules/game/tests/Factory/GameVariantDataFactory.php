@@ -7,6 +7,7 @@ use Dnw\Game\Core\Domain\Game\ValueObject\Count;
 use Dnw\Game\Core\Domain\Game\ValueObject\Variant\GameVariantData;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantId;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
+use Dnw\Game\Core\Domain\Variant\Variant;
 
 class GameVariantDataFactory
 {
@@ -22,6 +23,17 @@ class GameVariantDataFactory
                 VariantPowerId::new(),
             ),
             $defaultSupplyCenterCountToWin ?? Count::fromInt(18)
+        );
+    }
+
+    public static function fromVariant(Variant $variant): GameVariantData
+    {
+        return new GameVariantData(
+            $variant->id,
+            VariantPowerIdCollection::fromCollection(
+                $variant->variantPowerCollection->map(fn ($variantPower) => $variantPower->id)
+            ),
+            $variant->defaultSupplyCentersToWinCount
         );
     }
 }

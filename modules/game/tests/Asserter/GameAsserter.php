@@ -4,6 +4,7 @@ namespace Dnw\Game\Tests\Asserter;
 
 use Dnw\Foundation\Collection\ArrayCollection;
 use Dnw\Game\Core\Domain\Game\Game;
+use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseId;
 use InvalidArgumentException;
 use PHPUnit\Framework\Assert;
 use Technically\CallableReflection\CallableReflection;
@@ -84,6 +85,13 @@ class GameAsserter
     public function hasState(string $state): self
     {
         Assert::assertEquals($state, $this->game->gameStateMachine->currentState());
+
+        return $this;
+    }
+
+    public function hasNotCurrentPhaseId(PhaseId $phaseId): self
+    {
+        Assert::assertNotEquals($phaseId, $this->game->phasesInfo->currentPhase->get()->phaseId);
 
         return $this;
     }

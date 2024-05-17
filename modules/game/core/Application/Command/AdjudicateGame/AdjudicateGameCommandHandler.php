@@ -7,18 +7,16 @@ use Dnw\Adjudicator\Dto\AdjudicateGameRequest;
 use Dnw\Adjudicator\Dto\Order as AdjudicatorOrder;
 use Dnw\Foundation\Collection\ArrayCollection;
 use Dnw\Foundation\Collection\Collection;
-use Dnw\Game\Core\Domain\Adapter\TimeProviderInterface;
+use Dnw\Game\Core\Domain\Adapter\TimeProvider\TimeProviderInterface;
 use Dnw\Game\Core\Domain\Game\Collection\OrderCollection;
 use Dnw\Game\Core\Domain\Game\Dto\AdjudicationPowerDataDto;
 use Dnw\Game\Core\Domain\Game\Repository\GameRepositoryInterface;
 use Dnw\Game\Core\Domain\Game\Repository\PhaseRepositoryInterface;
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
-use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhasePowerData;
+use Dnw\Game\Core\Domain\Game\ValueObject\Phase\NewPhaseData;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
 use Dnw\Game\Core\Domain\Variant\Repository\VariantRepositoryInterface;
-use Exception;
-use PhpOption\None;
 
 readonly class AdjudicateGameCommandHandler
 {
@@ -36,11 +34,6 @@ readonly class AdjudicateGameCommandHandler
         $game = $this->gameRepository->load(GameId::fromId($command->gameId));
         $variant = $this->variantRepository->load($game->variant->id);
 
-        if ($game->canAdjudicate($this->timeProvider->getCurrentTime())->fails()) {
-            // TODO: Make a more specific exception
-            throw new Exception();
-        }
-
         $encodedState = $this->phaseRepository->loadEncodedState($game->phasesInfo->currentPhase->get()->phaseId);
 
         $orders = [];
@@ -49,7 +42,9 @@ readonly class AdjudicateGameCommandHandler
 
             $orders[] = new AdjudicatorOrder(
                 $powerApiName,
-                $power->currentPhaseData->get()->orderCollection->get()->toStringArray()
+                $power->currentPhaseData->get()->orderCollection->map(
+                    fn (OrderCollection $orderCollection) => $orderCollection->toStringArray()
+                )->getOrElse([])
             );
         }
 
@@ -75,19 +70,16 @@ readonly class AdjudicateGameCommandHandler
             $phasePowerData = $adjudicationGameResult->getPhasePowerDataByPowerName($powerApiName);
             $possibleOrders = $adjudicationGameResult->getPossibleOrdersByPowerName($powerApiName);
 
-            $newPhaseData = new PhasePowerData(
+            $newPhaseData = new NewPhaseData(
                 count($possibleOrders->units) > 0,
-                false,
                 $adjudicationGameResult->powerHasWon($powerApiName),
                 Count::fromInt($phasePowerData->supply_center_count),
                 Count::fromInt($phasePowerData->unit_count),
-                None::create(),
-                None::create(),
             );
 
             $appliedOrdersResult = $adjudicationGameResult->getAppliedOrdersByPowerName($powerApiName);
 
-            $appliedOrders = OrderCollection::fromStringArray($appliedOrdersResult->orders);
+            $appliedOrders = OrderCollection::fromStringArray($appliedOrdersResult);
 
             $adjudicationPowerData = new AdjudicationPowerDataDto(
                 $power->powerId,
