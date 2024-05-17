@@ -4,7 +4,10 @@ namespace Dnw\Game\Tests\Asserter;
 
 use Dnw\Foundation\Collection\ArrayCollection;
 use Dnw\Game\Core\Domain\Game\Game;
+use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseId;
+use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
+use Dnw\Game\Core\Domain\Game\ValueObject\Power\PowerId;
 use InvalidArgumentException;
 use PHPUnit\Framework\Assert;
 use Technically\CallableReflection\CallableReflection;
@@ -92,6 +95,21 @@ class GameAsserter
     public function hasNotCurrentPhaseId(PhaseId $phaseId): self
     {
         Assert::assertNotEquals($phaseId, $this->game->phasesInfo->currentPhase->get()->phaseId);
+
+        return $this;
+    }
+
+    public function hasGameId(GameId $gameId): self
+    {
+        Assert::assertEquals($gameId, $this->game->gameId);
+
+        return $this;
+    }
+
+    public function powerIdHasPlayerId(PowerId $powerId, PlayerId $playerId): self
+    {
+        $power = $this->game->powerCollection->getByPowerId($powerId);
+        Assert::assertEquals($playerId, $power->playerId->get());
 
         return $this;
     }
