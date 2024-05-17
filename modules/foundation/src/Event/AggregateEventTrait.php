@@ -23,7 +23,7 @@ trait AggregateEventTrait
     /**
      * @return array<object>
      */
-    public function inspectEvents():array
+    public function inspectEvents(): array
     {
         return $this->events;
     }
