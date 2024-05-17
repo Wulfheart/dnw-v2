@@ -9,10 +9,18 @@ use Dnw\Game\Core\Domain\Variant\Variant;
 
 class InMemoryVariantRepository implements VariantRepositoryInterface
 {
+    /** @var array<string, Variant> */
+    private array $variants = [];
+
+    /**
+     * @param  array<Variant>  $variants
+     */
     public function __construct(
-        /** @var array<string, Variant> $variants */
-        private array $variants = []
+        array $variants = []
     ) {
+        foreach ($variants as $variant) {
+            $this->variants[(string) $variant->id] = $variant;
+        }
     }
 
     public function load(VariantId $variantId): Variant

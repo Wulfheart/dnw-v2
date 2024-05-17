@@ -46,13 +46,13 @@ class AdjudicateGameTest extends TestCase
 
         $gameRepository = new InMemoryGameRepository(
             new FakeEventDispatcher(),
-            [(string) $game->gameId => $game]
+            [$game]
         );
         $adjudicatorService = new FakeAdjudicatorService(
             adjudicateGameResponses: [$stateEncoded => $adjudicateGameResponse]
         );
         $variantRepository = new InMemoryVariantRepository([
-            (string) $game->variant->id => $variant,
+            $variant,
         ]);
 
         $previousPhaseId = $game->phasesInfo->currentPhase->get()->phaseId;

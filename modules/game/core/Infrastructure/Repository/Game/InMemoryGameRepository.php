@@ -10,11 +10,19 @@ use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
 
 class InMemoryGameRepository implements GameRepositoryInterface
 {
+    /** @var array<string, Game> */
+    private array $games = [];
+
+    /**
+     * @param  array<Game>  $games
+     */
     public function __construct(
         private EventDispatcherInterface $eventDispatcher,
-        /** @var array<string, Game> $games */
-        private array $games = []
+        array $games = []
     ) {
+        foreach ($games as $game) {
+            $this->games[(string) $game->gameId] = $game;
+        }
     }
 
     /**
@@ -22,10 +30,7 @@ class InMemoryGameRepository implements GameRepositoryInterface
      */
     public function load(GameId $gameId): Game
     {
-        if (array_key_exists((string) $gameId, $this->games)) {
-            return $this->games[(string) $gameId];
-        }
-        throw new NotFoundException();
+        return $this->games[(string) $gameId] ?? throw new NotFoundException();
     }
 
     public function save(Game $game): void

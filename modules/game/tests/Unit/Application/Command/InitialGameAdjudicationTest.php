@@ -43,14 +43,12 @@ class InitialGameAdjudicationTest extends TestCase
 
         $gameRepository = new InMemoryGameRepository(
             new FakeEventDispatcher(),
-            [(string) $game->gameId => $game]
+            [$game]
         );
         $adjudicatorService = new FakeAdjudicatorService(
             initializeGameResponses: [(string) $variant->apiName => $adjudicateGameResponse]
         );
-        $variantRepository = new InMemoryVariantRepository([
-            (string) $game->variant->id => $variant,
-        ]);
+        $variantRepository = new InMemoryVariantRepository([$variant]);
 
         $phaseRepository = new InMemoryPhaseRepository();
 

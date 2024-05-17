@@ -25,7 +25,7 @@ class CreateGameTest extends TestCase
     {
         $variant = VariantFactory::standard();
         $variantRepository = new InMemoryVariantRepository(
-            [(string) $variant->id => $variant]
+            [$variant]
         );
 
         $playerId = PlayerId::new();
