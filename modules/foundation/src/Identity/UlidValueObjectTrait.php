@@ -31,7 +31,7 @@ trait UlidValueObjectTrait
 
     public function __toString(): string
     {
-        return $this->ulid->toRfc4122();
+        return (string) $this->ulid;
     }
 
     public function toId(): Id
