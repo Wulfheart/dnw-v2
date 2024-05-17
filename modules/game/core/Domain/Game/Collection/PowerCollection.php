@@ -43,6 +43,15 @@ class PowerCollection extends Collection
             ->filter(fn (Power $power) => $power->playerId->isEmpty());
     }
 
+    /**
+     * @return Collection<Power>
+     */
+    public function getAssignedPowers(): Collection
+    {
+        return $this
+            ->filter(fn (Power $power) => $power->playerId->isDefined());
+    }
+
     public function hasAvailablePowers(): bool
     {
         return $this->filter(
