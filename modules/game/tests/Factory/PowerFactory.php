@@ -44,13 +44,10 @@ class PowerFactory
 
         return new Power(
             $id ?? PowerId::new(),
-            //@phpstan-ignore-next-line
-            Option::fromValue($playerId),
+            Option::fromNullable($playerId),
             $variantPowerId ?? VariantPowerId::new(),
-            //@phpstan-ignore-next-line
-            Option::fromValue($currentPhaseData),
-            //@phpstan-ignore-next-line
-            Option::fromValue($appliedOrders),
+            Option::fromNullable($currentPhaseData),
+            Option::fromNullable($appliedOrders),
         );
     }
 }

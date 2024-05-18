@@ -33,7 +33,7 @@ use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
 use Dnw\Game\Core\Infrastructure\Model\Game\GameModel;
 use Dnw\Game\Core\Infrastructure\Model\Game\PhaseModel;
 use Dnw\Game\Core\Infrastructure\Model\Game\PhasePowerDataModel;
-use PhpOption\Option;
+use Std\Option;
 
 class LaravelGameRepository implements GameRepositoryInterface
 {

@@ -16,7 +16,6 @@ class PhasePowerDataFactory
         ?Count $supplyCenterCount = null,
         ?Count $unitCount = null,
         ?OrderCollection $orderCollection = null,
-        ?OrderCollection $appliedOrdersCollection = null,
     ): PhasePowerData {
         return new PhasePowerData(
             $ordersNeeded ?? false,
@@ -24,8 +23,7 @@ class PhasePowerDataFactory
             $isWinner ?? false,
             $supplyCenterCount ?? new Count(0),
             $unitCount ?? new Count(0),
-            //@phpstan-ignore-next-line
-            Option::fromValue($orderCollection),
+            Option::fromNullable($orderCollection),
         );
     }
 }

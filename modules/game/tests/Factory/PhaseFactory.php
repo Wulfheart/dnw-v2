@@ -18,8 +18,7 @@ class PhaseFactory
         return new Phase(
             $phaseId ?? PhaseId::new(),
             $type ?? PhaseTypeEnum::MOVEMENT,
-            //@phpstan-ignore-next-line
-            Option::fromValue($adjudicationTime)
+            Option::fromNullable($adjudicationTime)
         );
     }
 }

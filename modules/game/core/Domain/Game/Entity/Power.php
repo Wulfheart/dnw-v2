@@ -37,7 +37,7 @@ class Power
 
     public function unassign(): void
     {
-        if ($this->playerId->isSome()) {
+        if ($this->playerId->isNone()) {
             throw new DomainException("Power $this->powerId is not assigned to a player");
         }
         $this->playerId = Option::none();
