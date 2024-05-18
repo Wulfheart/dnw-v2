@@ -19,7 +19,8 @@
         "league/tactician": "^1.1",
         "livewire/livewire": "^3.4",
         "phpoption/phpoption": "^1.9",
-        "symfony/property-access": "^7.0"
+        "symfony/property-access": "^7.0",
+        "std/option": "*"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.0",

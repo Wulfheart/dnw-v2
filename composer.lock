@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ce8feefc2fa7f2cd1aad5cce6792878f",
+    "content-hash": "c767b79efbfe72205288b861c4899f71",
     "packages": [
         {
             "name": "brick/math",
@@ -4409,6 +4409,31 @@
                 "source": "https://github.com/Seldaek/signal-handler/tree/2.0.2"
             },
             "time": "2023-09-03T09:24:00+00:00"
+        },
+        {
+            "name": "std/option",
+            "version": "1.0",
+            "dist": {
+                "type": "path",
+                "url": "packages/option",
+                "reference": "abfa3d0a60f501097802bfb060a6219c21ac32f3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Std\\Option\\": "src/"
+                }
+            },
+            "authors": [
+                {
+                    "name": "Alex Wulf",
+                    "email": "alex.f.wulf@gmail.com"
+                }
+            ],
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "symfony/clock",

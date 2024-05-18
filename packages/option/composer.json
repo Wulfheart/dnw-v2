@@ -1,0 +1,16 @@
+{
+    "name": "std/option",
+    "version": "1.0",
+    "autoload": {
+        "psr-4": {
+            "Std\\Option\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Alex Wulf",
+            "email": "alex.f.wulf@gmail.com"
+        }
+    ],
+    "require": {}
+}
