@@ -14,7 +14,7 @@ class GameModel extends Model
     public $table = 'game_games';
 
     /**
-     * @var array<int|string, string>
+     * @var array<string, string>
      */
     public $casts = [
         'game_start_timing_start_of_join_phase' => 'datetime',

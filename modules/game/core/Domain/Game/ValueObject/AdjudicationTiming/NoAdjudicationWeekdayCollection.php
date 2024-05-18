@@ -43,6 +43,11 @@ readonly class NoAdjudicationWeekdayCollection
         return new self($weekdays);
     }
 
+    public function toArray(): array
+    {
+        return $this->weekdays;
+    }
+
     public function adjudicatesOnWeekday(WeekdayEnum $weekday): bool
     {
         return ! in_array($weekday->value, $this->weekdays);

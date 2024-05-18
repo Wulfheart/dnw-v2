@@ -2,6 +2,9 @@ includes:
     - vendor/larastan/larastan/extension.neon
 
 parameters:
+    databaseMigrationsPath: [
+        modules/game/database/migrations,
+    ]
     level: 8
     paths:
         - modules

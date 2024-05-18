@@ -76,7 +76,8 @@ class LaravelGameRepository implements GameRepositoryInterface
             fn (PhaseModel $phase) => new Phase(
                 PhaseId::fromString($phase->id),
                 PhaseTypeEnum::from($phase->type),
-                Option::fromValue($phase->adjudication_time)
+                // @phpstan-ignore-next-line
+                Option::fromValue($phase->adjudication_time)->map(fn (string $adjudicationTime) => new CarbonImmutable($adjudicationTime)),
             ),
         );
 
@@ -104,7 +105,8 @@ class LaravelGameRepository implements GameRepositoryInterface
                         $powerData->is_winner,
                         Count::fromInt($powerData->supply_center_count),
                         Count::fromInt($powerData->unit_count),
-                        Option::fromValue($powerData->orders)->map(fn (array $orders) => OrderCollection::fromStringArray($orders))
+                        // @phpstan-ignore-next-line
+                        Option::fromValue($powerData->order_collection)->map(fn (array $orders) => OrderCollection::fromStringArray($orders))
                     );
                 }),
                 Option::fromValue($game->lastPhase?->powerData->where('power_id', $power->id)->firstOrFail()->applied_orders)->map(fn (array $orders) => OrderCollection::fromStringArray($orders))
@@ -129,6 +131,29 @@ class LaravelGameRepository implements GameRepositoryInterface
 
     public function save(Game $game): void
     {
-        // TODO: Implement save() method.
+        $gameModel = new GameModel([
+            'id' => (string) $game->gameId,
+            'name' => (string) $game->name,
+            'current_state' => $game->gameStateMachine->currentState(),
+            'variant_data_variant_id' => (string) $game->variant->id,
+            'variant_data_variant_power_ids' => $game->variant->variantPowerIdCollection->map(
+                fn (VariantPowerId $variantPowerId) => (string) $variantPowerId
+            )->toArray(),
+            'variant_data_default_supply_centers_to_win_count' => $game->variant->defaultSupplyCentersToWinCount->int(),
+            'adjudication_timing_phase_length' => $game->adjudicationTiming->phaseLength->minutes(),
+            'adjudication_timing_no_adjudication_weekdays' => $game->adjudicationTiming->noAdjudicationWeekdays->toArray(),
+            'random_power_assignments' => $game->randomPowerAssignments,
+            'game_start_timing_start_of_join_phase' => $game->gameStartTiming->startOfJoinPhase->toDateTimeString(),
+            'game_start_timing_join_length' => $game->gameStartTiming->joinLength->toDays(),
+            'game_start_timing_start_when_ready' => $game->gameStartTiming->startWhenReady,
+        ]);
+
+        $gameModel->powers->add()
+
+
+
+
+
+        $this->eventDispatcher->dispatchMultiple($game->releaseEvents());
     }
 }

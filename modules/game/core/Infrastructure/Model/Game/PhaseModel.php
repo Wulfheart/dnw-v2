@@ -12,9 +12,7 @@ class PhaseModel extends Model
 
     public $table = 'game_phases';
 
-    protected $casts = [
-        'adjudication_time' => 'datetime',
-    ];
+    protected $casts = [];
 
     /**
      * @return HasMany<PhasePowerDataModel>

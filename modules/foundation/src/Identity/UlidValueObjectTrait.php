@@ -2,7 +2,9 @@
 
 namespace Dnw\Foundation\Identity;
 
+use PhpOption\None;
 use PhpOption\Option;
+use PhpOption\Some;
 use Symfony\Component\Uid\Ulid;
 
 trait UlidValueObjectTrait
@@ -30,7 +32,11 @@ trait UlidValueObjectTrait
      */
     public static function fromNullableString(?string $value): Option
     {
-        return Option::fromValue($value)->map(fn (string $value) => self::fromString($value));
+        if ($value === null) {
+            return None::create();
+        }
+
+        return Some::create(self::fromString($value));
     }
 
     public static function new(): self
