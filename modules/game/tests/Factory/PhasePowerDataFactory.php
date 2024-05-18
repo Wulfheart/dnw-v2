@@ -26,8 +26,6 @@ class PhasePowerDataFactory
             $unitCount ?? new Count(0),
             //@phpstan-ignore-next-line
             Option::fromValue($orderCollection),
-            //@phpstan-ignore-next-line
-            Option::fromValue($appliedOrdersCollection),
         );
     }
 }
