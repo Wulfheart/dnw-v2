@@ -13,9 +13,9 @@ use Dnw\Game\Core\Infrastructure\Repository\Game\InMemoryGameRepository;
 use Dnw\Game\Core\Infrastructure\Repository\Variant\InMemoryVariantRepository;
 use Dnw\Game\Tests\Asserter\GameAsserter;
 use Dnw\Game\Tests\Factory\VariantFactory;
-use PhpOption\None;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Std\Option;
 
 #[CoversClass(CreateGameCommand::class)]
 #[CoversClass(CreateGameCommandHandler::class)]
@@ -39,7 +39,7 @@ class CreateGameTest extends TestCase
             true,
             $variant->id->toId(),
             true,
-            None::create(),
+            Option::none(),
             true,
             true,
             [0],

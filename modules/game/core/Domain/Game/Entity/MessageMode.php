@@ -5,7 +5,7 @@ namespace Dnw\Game\Core\Domain\Game\Entity;
 use Dnw\Foundation\Exception\DomainException;
 use Dnw\Game\Core\Domain\Game\ValueObject\MessageMode\MessageModeId;
 use Dnw\Game\Core\Domain\Game\ValueObject\MessageMode\MessageModeName;
-use PhpOption\Option;
+use Std\Option;
 
 readonly class MessageMode
 {

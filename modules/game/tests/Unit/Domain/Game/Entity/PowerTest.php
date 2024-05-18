@@ -31,7 +31,7 @@ class PowerTest extends TestCase
 
         $power->assign($playerId);
 
-        $this->assertEquals($playerId, $power->playerId->get());
+        $this->assertEquals($playerId, $power->playerId->unwrap());
     }
 
     public function test_unassign_throws_exception_if_not_assigned(): void
@@ -49,7 +49,7 @@ class PowerTest extends TestCase
 
         $power->unassign();
 
-        $this->assertTrue($power->playerId->isEmpty());
+        $this->assertTrue($power->playerId->isNone());
     }
 
     public function test_markOrderStatus_throws_exception_if_no_current_phase_data(): void
@@ -70,7 +70,7 @@ class PowerTest extends TestCase
 
         $power->markOrderStatus(true);
 
-        $this->assertTrue($power->currentPhaseData->get()->markedAsReady);
+        $this->assertTrue($power->currentPhaseData->unwrap()->markedAsReady);
     }
 
     public function test_submitOrders(): void
@@ -84,8 +84,8 @@ class PowerTest extends TestCase
 
         $power->submitOrders($orderCollection, true);
 
-        $this->assertEquals($orderCollection, $power->currentPhaseData->get()->orderCollection->get());
-        $this->assertTrue($power->currentPhaseData->get()->markedAsReady);
+        $this->assertEquals($orderCollection, $power->currentPhaseData->unwrap()->orderCollection->unwrap());
+        $this->assertTrue($power->currentPhaseData->unwrap()->markedAsReady);
     }
 
     public function test_submitOrders_throws_exception_if_readyForAdjudication(): void
@@ -187,7 +187,7 @@ class PowerTest extends TestCase
 
         $power->proceedToNextPhase($newPhaseData, $appliedOrders);
 
-        $this->assertEquals($newPhaseData, $power->currentPhaseData->get());
-        $this->assertEquals($appliedOrders, $power->appliedOrders->get());
+        $this->assertEquals($newPhaseData, $power->currentPhaseData->unwrap());
+        $this->assertEquals($appliedOrders, $power->appliedOrders->unwrap());
     }
 }

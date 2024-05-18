@@ -8,9 +8,7 @@ use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhasePowerData;
 use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Power\PowerId;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
-use PhpOption\None;
-use PhpOption\Option;
-use PhpOption\Some;
+use Std\Option;
 
 class Power
 {
@@ -29,28 +27,28 @@ class Power
 
     public function assign(PlayerId $playerId): void
     {
-        if ($this->playerId->isDefined()) {
+        if ($this->playerId->isSome()) {
             throw new DomainException(
-                "Power $this->powerId already assigned to player $playerId because {$this->playerId->get()} is already assigned"
+                "Power $this->powerId already assigned to player $playerId because {$this->playerId->unwrap()} is already assigned"
             );
         }
-        $this->playerId = Some::create($playerId);
+        $this->playerId = Option::some($playerId);
     }
 
     public function unassign(): void
     {
-        if ($this->playerId->isEmpty()) {
+        if ($this->playerId->isSome()) {
             throw new DomainException("Power $this->powerId is not assigned to a player");
         }
-        $this->playerId = None::create();
+        $this->playerId = Option::none();
     }
 
     public function markOrderStatus(bool $orderStatus): void
     {
-        if ($this->currentPhaseData->isEmpty()) {
+        if ($this->currentPhaseData->isNone()) {
             throw new DomainException("Power $this->powerId does not have current phase data");
         }
-        $this->currentPhaseData->get()->markedAsReady = $orderStatus;
+        $this->currentPhaseData->unwrap()->markedAsReady = $orderStatus;
     }
 
     public function submitOrders(OrderCollection $orderCollection, bool $markedAsReady): void
@@ -58,22 +56,24 @@ class Power
         if (! $this->ordersNeeded() || $this->ordersMarkedAsReady()) {
             throw new DomainException("Power $this->powerId is ready for adjudication and cannot submit new orders");
         }
-        $this->currentPhaseData->get()->orderCollection = Some::create($orderCollection);
+        $this->currentPhaseData->unwrap()->orderCollection = Option::some($orderCollection);
         $this->markOrderStatus($markedAsReady);
     }
 
     public function ordersNeeded(): bool
     {
-        return $this->currentPhaseData->map(
-            fn (PhasePowerData $phasePowerData) => $phasePowerData->ordersNeeded
-        )->getOrElse(false);
+        return $this->currentPhaseData->mapOr(
+            fn (PhasePowerData $phasePowerData) => $phasePowerData->ordersNeeded,
+            false
+        );
     }
 
     public function ordersMarkedAsReady(): bool
     {
-        return $this->currentPhaseData->map(
-            fn (PhasePowerData $phasePowerData) => $phasePowerData->markedAsReady
-        )->getOrElse(false);
+        return $this->currentPhaseData->mapOr(
+            fn (PhasePowerData $phasePowerData) => $phasePowerData->markedAsReady,
+            false
+        );
     }
 
     public function readyForAdjudication(): bool
@@ -87,20 +87,21 @@ class Power
 
     public function proceedToNextPhase(PhasePowerData $newPhaseData, OrderCollection $appliedOrders): void
     {
-        $this->currentPhaseData = Some::create($newPhaseData);
-        $this->appliedOrders = Some::create($appliedOrders);
+        $this->currentPhaseData = Option::some($newPhaseData);
+        $this->appliedOrders = Option::some($appliedOrders);
     }
 
     public function persistInitialPhase(PhasePowerData $phasePowerData): void
     {
-        $this->currentPhaseData = Some::create($phasePowerData);
+        $this->currentPhaseData = Option::some($phasePowerData);
     }
 
     public function isDefeated(): bool
     {
-        return $this->currentPhaseData->map(
+        return $this->currentPhaseData->mapOr(
             fn (PhasePowerData $phasePowerData) => $phasePowerData->supplyCenterCount->int() === 0
-                && $phasePowerData->unitCount->int() === 0
-        )->getOrElse(false);
+                && $phasePowerData->unitCount->int() === 0,
+            false
+        );
     }
 }

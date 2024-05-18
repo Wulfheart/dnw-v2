@@ -3,7 +3,7 @@
 namespace Dnw\Game\Core\Application\Command\JoinGame;
 
 use Dnw\Foundation\Identity\Id;
-use PhpOption\Option;
+use Std\Option;
 
 class JoinGameCommand
 {

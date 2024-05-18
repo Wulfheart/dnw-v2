@@ -5,9 +5,7 @@ namespace Dnw\Foundation\Collection;
 use ArrayIterator;
 use Dnw\Foundation\Exception\NotFoundException;
 use IteratorAggregate;
-use PhpOption\None;
-use PhpOption\Option;
-use PhpOption\Some;
+use Std\Option;
 use Traversable;
 
 /**
@@ -64,7 +62,7 @@ abstract class Collection implements IteratorAggregate
      */
     public function contains(callable $predicate): bool
     {
-        return $this->findBy($predicate)->isDefined();
+        return $this->findBy($predicate)->isSome();
     }
 
     /**
@@ -86,11 +84,11 @@ abstract class Collection implements IteratorAggregate
     {
         foreach ($this->items as $item) {
             if ($predicate($item)) {
-                return Some::create($item);
+                return Option::some($item);
             }
         }
 
-        return None::create();
+        return Option::none();
     }
 
     /**

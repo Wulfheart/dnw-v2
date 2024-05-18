@@ -21,7 +21,7 @@ use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
 use Dnw\Game\Core\Domain\Variant\Variant;
 use Dnw\Game\Core\Infrastructure\Adapter\RandomNumberGenerator;
 use Exception;
-use PhpOption\Some;
+use Std\Option;
 
 class GameBuilder
 {
@@ -66,7 +66,7 @@ class GameBuilder
             $variantData,
             $randomAssignments,
             PlayerId::new(),
-            Some::create($variantData->variantPowerIdCollection->getOffset(0)),
+            Option::some($variantData->variantPowerIdCollection->getOffset(0)),
             ($rng)->generate(...),
         );
 
@@ -103,7 +103,7 @@ class GameBuilder
 
         $this->game->join(
             $playerId ?? PlayerId::new(),
-            Some::create($powerToJoin->variantPowerId),
+            Option::some($powerToJoin->variantPowerId),
             new CarbonImmutable(),
             (new RandomNumberGenerator())->generate(...)
         );
@@ -132,9 +132,9 @@ class GameBuilder
     public function abandon(): self
     {
         foreach ($this->game->powerCollection as $power) {
-            if ($power->playerId->isDefined()) {
+            if ($power->playerId->isSome()) {
                 $this->game->leave(
-                    $power->playerId->get(),
+                    $power->playerId->unwrap(),
                 );
             }
         }
@@ -152,12 +152,12 @@ class GameBuilder
     public function markOnePowerAsReady(): self
     {
         $power = $this->game->powerCollection->findBy(
-            fn (Power $power) => $power->playerId->isDefined()
+            fn (Power $power) => $power->playerId->isSome()
                 && $power->ordersNeeded()
-        )->get();
+        )->unwrap();
 
         $this->game->markOrderStatus(
-            $power->playerId->get(),
+            $power->playerId->unwrap(),
             true,
             new CarbonImmutable(),
         );
@@ -172,7 +172,7 @@ class GameBuilder
         );
         foreach ($powers as $power) {
             $this->game->markOrderStatus(
-                $power->playerId->get(),
+                $power->playerId->unwrap(),
                 true,
                 new CarbonImmutable(),
             );
@@ -190,7 +190,7 @@ class GameBuilder
         for ($i = 0; $i < $powers->count() - 1; $i++) {
             $power = $powers->getOffset($i);
             $this->game->markOrderStatus(
-                $power->playerId->get(),
+                $power->playerId->unwrap(),
                 true,
                 new CarbonImmutable(),
             );
@@ -218,8 +218,8 @@ class GameBuilder
         /** @var Power $power */
         foreach ($powersWithOrders as $power) {
             $this->game->submitOrders(
-                $power->playerId->get(),
-                OrderCollection::fromStringArray([(string) $power->playerId->get()]),
+                $power->playerId->unwrap(),
+                OrderCollection::fromStringArray([(string) $power->playerId->unwrap()]),
                 $markAsReady,
                 new CarbonImmutable(),
             );

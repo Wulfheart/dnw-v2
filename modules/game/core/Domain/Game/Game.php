@@ -45,9 +45,7 @@ use Dnw\Game\Core\Domain\Game\ValueObject\Phases\PhasesInfo;
 use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Variant\GameVariantData;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
-use PhpOption\None;
-use PhpOption\Option;
-use PhpOption\Some;
+use Std\Option;
 
 class Game
 {
@@ -96,7 +94,7 @@ class Game
             $randomPower = $powers->getOffset($randomIndex);
             $powers->getByVariantPowerId($randomPower->variantPowerId)->assign($playerId);
         } else {
-            $powers->getByVariantPowerId($variantPowerId->get())->assign($playerId);
+            $powers->getByVariantPowerId($variantPowerId->unwrap())->assign($playerId);
         }
 
         return new self(
@@ -149,7 +147,7 @@ class Game
             $power = $this->powerCollection->getByVariantPowerId($randomPower->variantPowerId);
             $power->assign($playerId);
         } else {
-            $power = $this->powerCollection->getByVariantPowerId($variantPowerId->get());
+            $power = $this->powerCollection->getByVariantPowerId($variantPowerId->unwrap());
             $power->assign($playerId);
         }
 
@@ -175,9 +173,10 @@ class Game
             new Rule(
                 GameRules::POWER_ALREADY_FILLED,
                 ! $this->randomPowerAssignments
-                && $variantPowerId->map(
-                    fn (VariantPowerId $variantPowerId) => $this->powerCollection->hasPowerFilled($variantPowerId)
-                )->getOrElse(false),
+                && $variantPowerId->mapOr(
+                    fn (VariantPowerId $variantPowerId) => $this->powerCollection->hasPowerFilled($variantPowerId),
+                    false
+                ),
             ),
             new Rule(
                 GameRules::JOIN_LENGTH_IS_EXCEEDED,
@@ -227,7 +226,7 @@ class Game
 
     private function startGame(CarbonImmutable $currentTime): void
     {
-        $this->phasesInfo->currentPhase->get()->adjudicationTime = Some::create($this->adjudicationTiming->calculateNextAdjudication($currentTime));
+        $this->phasesInfo->currentPhase->unwrap()->adjudicationTime = Option::some($this->adjudicationTiming->calculateNextAdjudication($currentTime));
         $this->pushEvent(new GameStartedEvent($this->gameId->toId()));
         $this->gameStateMachine->transitionTo(GameStates::ORDER_SUBMISSION);
     }
@@ -252,15 +251,16 @@ class Game
         );
 
         $power = $this->powerCollection->getByPlayerId($playerId);
-        $currentPhaseData = $power->currentPhaseData->get();
+        $currentPhaseData = $power->currentPhaseData->unwrap();
 
         if ($orderCollection->isEmpty()) {
             throw new DomainException("Power $power->powerId cannot submit empty orders for game $this->gameId");
         }
 
-        $ordersChanged = $currentPhaseData->orderCollection->map(
-            fn (OrderCollection $oc) => ! $oc->hasSameContents($oc)
-        )->getOrElse(true);
+        $ordersChanged = $currentPhaseData->orderCollection->mapOr(
+            fn (OrderCollection $oc) => ! $oc->hasSameContents($oc),
+            true
+        );
         if (! $ordersChanged) {
             throw new DomainException("Power $power->powerId has already submitted orders exactly the same orders for game {$this->gameId}");
         }
@@ -269,7 +269,7 @@ class Game
 
         $this->pushEvent(new OrdersSubmittedEvent(
             $this->gameId->toId(),
-            $this->phasesInfo->currentPhase->get()->phaseId->toId(),
+            $this->phasesInfo->currentPhase->unwrap()->phaseId->toId(),
             $power->powerId->toId(),
             $markAsReady
         ));
@@ -296,13 +296,13 @@ class Game
         if ($orderStatus) {
             $this->pushEvent(new PhaseMarkedAsReadyEvent(
                 $this->gameId->toId(),
-                $this->phasesInfo->currentPhase->get()->phaseId->toId(),
+                $this->phasesInfo->currentPhase->unwrap()->phaseId->toId(),
                 $power->powerId->toId()
             ));
         } else {
             $this->pushEvent(new PhaseMarkedAsNotReadyEvent(
                 $this->gameId->toId(),
-                $this->phasesInfo->currentPhase->get()->phaseId->toId(),
+                $this->phasesInfo->currentPhase->unwrap()->phaseId->toId(),
                 $power->powerId->toId()
             ));
         }
@@ -383,9 +383,10 @@ class Game
 
     private function adjudicationTimeIsExpired(CarbonImmutable $currentTime): bool
     {
-        return $this->phasesInfo->currentPhase->map(
-            fn (Phase $phase) => $phase->adjudicationTimeIsExpired($currentTime)
-        )->getOrElse(false);
+        return $this->phasesInfo->currentPhase->mapOr(
+            fn (Phase $phase) => $phase->adjudicationTimeIsExpired($currentTime),
+            false
+        );
     }
 
     /**
@@ -408,7 +409,7 @@ class Game
         $newPhase = new Phase(
             PhaseId::new(),
             $phaseType,
-            Some::create($nextAdjudication),
+            Option::some($nextAdjudication),
         );
 
         /** @var AdjudicationPowerDataDto $data */
@@ -423,7 +424,7 @@ class Game
                     $data->newPhaseData->isWinner,
                     $data->newPhaseData->supplyCenterCount,
                     $data->newPhaseData->unitCount,
-                    None::create(),
+                    Option::none(),
                 ),
                 $data->appliedOrders
             );
@@ -442,9 +443,10 @@ class Game
         $this->pushEvent(new GameAdjudicatedEvent($this->gameId->toId()));
 
         $hasWinners = $this->powerCollection->filter(
-            fn (Power $power) => $power->currentPhaseData->map(
-                fn (PhasePowerData $data) => $data->isWinner
-            )->getOrElse(false)
+            fn (Power $power) => $power->currentPhaseData->mapOr(
+                fn (PhasePowerData $data) => $data->isWinner,
+                false
+            )
         )->count() > 0;
 
         if ($hasWinners) {
@@ -481,7 +483,7 @@ class Game
         $newPhase = new Phase(
             PhaseId::new(),
             $phaseType,
-            None::create(),
+            Option::none(),
         );
 
         $this->phasesInfo->setInitialPhase($newPhase);
@@ -495,7 +497,7 @@ class Game
                     $data->phasePowerData->isWinner,
                     $data->phasePowerData->supplyCenterCount,
                     $data->phasePowerData->unitCount,
-                    None::create(),
+                    Option::none(),
                 )
             );
 

@@ -7,9 +7,9 @@ use Dnw\Game\Core\Domain\Game\Collection\VariantPowerIdCollection;
 use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
 use Dnw\Game\Tests\Factory\PowerFactory;
-use PhpOption\None;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Std\Option;
 
 #[CoversClass(PowerCollection::class)]
 class PowerCollectionTest extends TestCase
@@ -24,7 +24,7 @@ class PowerCollectionTest extends TestCase
             $variantPowerId = $variantPowerIdCollection->getOffset($i);
 
             $this->assertEquals($power->variantPowerId, $variantPowerId);
-            $this->assertEquals($power->playerId, None::create());
+            $this->assertEquals($power->playerId, Option::none());
         }
 
     }
@@ -59,8 +59,8 @@ class PowerCollectionTest extends TestCase
 
         $powerCollection = new PowerCollection([$unassignedPower, $assignedPower]);
 
-        $this->assertTrue($powerCollection->containsPlayer($assignedPower->playerId->get()));
-        $this->assertFalse($powerCollection->doesNotContainPlayer($assignedPower->playerId->get()));
+        $this->assertTrue($powerCollection->containsPlayer($assignedPower->playerId->unwrap()));
+        $this->assertFalse($powerCollection->doesNotContainPlayer($assignedPower->playerId->unwrap()));
 
         $this->assertFalse($powerCollection->containsPlayer(PlayerId::new()));
         $this->assertTrue($powerCollection->doesNotContainPlayer(PlayerId::new()));
@@ -101,7 +101,7 @@ class PowerCollectionTest extends TestCase
 
         $powerCollection = new PowerCollection([$unassignedPower, $assignedPower]);
 
-        $this->assertEquals($assignedPower, $powerCollection->getByPlayerId($assignedPower->playerId->get()));
+        $this->assertEquals($assignedPower, $powerCollection->getByPlayerId($assignedPower->playerId->unwrap()));
     }
 
     public function test_getByPowerId(): void
@@ -134,7 +134,7 @@ class PowerCollectionTest extends TestCase
         $powerTwo->assign(PlayerId::new());
 
         $two = $powerCollection->getByPowerId($powerTwo->powerId);
-        $this->assertTrue($two->playerId->isDefined());
+        $this->assertTrue($two->playerId->isSome());
 
     }
 }

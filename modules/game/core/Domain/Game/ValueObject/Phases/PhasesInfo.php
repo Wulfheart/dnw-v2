@@ -5,9 +5,7 @@ namespace Dnw\Game\Core\Domain\Game\ValueObject\Phases;
 use Dnw\Game\Core\Domain\Game\Entity\Phase;
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseId;
-use PhpOption\None;
-use PhpOption\Option;
-use PhpOption\Some;
+use Std\Option;
 
 class PhasesInfo
 {
@@ -22,7 +20,7 @@ class PhasesInfo
 
     public static function initialize(): self
     {
-        return new self(Count::zero(), None::create(), None::create());
+        return new self(Count::zero(), Option::none(), Option::none());
     }
 
     public function initialPhaseExists(): bool
@@ -32,20 +30,20 @@ class PhasesInfo
 
     public function hasBeenStarted(): bool
     {
-        return $this->currentPhase->isDefined()
-            && $this->currentPhase->get()->adjudicationTime->isDefined();
+        return $this->currentPhase->isSome()
+            && $this->currentPhase->unwrap()->adjudicationTime->isSome();
     }
 
     public function proceedToNewPhase(Phase $newPhase): void
     {
         $this->count = Count::fromInt($this->count->int() + 1);
-        $this->lastPhaseId = Some::create($this->currentPhase->get()->phaseId);
-        $this->currentPhase = Some::create($newPhase);
+        $this->lastPhaseId = Option::some($this->currentPhase->unwrap()->phaseId);
+        $this->currentPhase = Option::some($newPhase);
     }
 
     public function setInitialPhase(Phase $phase): void
     {
-        $this->currentPhase = Some::create($phase);
+        $this->currentPhase = Option::some($phase);
         $this->count = Count::fromInt(1);
     }
 }

@@ -8,9 +8,7 @@ use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhasePowerData;
 use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Power\PowerId;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
-use PhpOption\None;
-use PhpOption\Option;
-use PhpOption\Some;
+use Std\Option;
 
 class PowerFactory
 {
@@ -18,10 +16,10 @@ class PowerFactory
     {
         return new Power(
             PowerId::new(),
-            None::create(),
+            Option::none(),
             VariantPowerId::new(),
-            None::create(),
-            None::create(),
+            Option::none(),
+            Option::none(),
         );
     }
 
@@ -29,10 +27,10 @@ class PowerFactory
     {
         return new Power(
             PowerId::new(),
-            Some::create(PlayerId::new()),
+            Option::some(PlayerId::new()),
             VariantPowerId::new(),
-            None::create(),
-            None::create(),
+            Option::none(),
+            Option::none(),
         );
     }
 

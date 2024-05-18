@@ -6,12 +6,10 @@ use Carbon\CarbonImmutable;
 use Dnw\Game\Core\Domain\Game\Entity\Phase;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
-use PhpOption\None;
-use PhpOption\Option;
-use PhpOption\Some;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use Std\Option;
 
 #[CoversClass(Phase::class)]
 class PhaseTest extends TestCase
@@ -42,22 +40,22 @@ class PhaseTest extends TestCase
         return [
             'not expired if is not set' => [
                 $currentTime,
-                None::create(),
+                Option::none(),
                 false,
             ],
             'not expired if is in the future' => [
                 $currentTime,
-                Some::create(new CarbonImmutable('tomorrow')),
+                Option::some(new CarbonImmutable('tomorrow')),
                 false,
             ],
             'not expired if is now' => [
                 $currentTime,
-                Some::create($currentTime),
+                Option::some($currentTime),
                 false,
             ],
             'expired if is in the past' => [
                 $currentTime,
-                Some::create(new CarbonImmutable('yesterday')),
+                Option::some(new CarbonImmutable('yesterday')),
                 true,
             ],
         ];

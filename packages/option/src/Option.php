@@ -1,6 +1,6 @@
 <?php
 
-namespace Std\Option;
+namespace Std;
 
 /**
  * @template T

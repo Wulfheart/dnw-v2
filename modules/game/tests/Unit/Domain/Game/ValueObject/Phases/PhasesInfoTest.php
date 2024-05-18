@@ -6,10 +6,9 @@ use Carbon\CarbonImmutable;
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phases\PhasesInfo;
 use Dnw\Game\Tests\Factory\PhaseFactory;
-use PhpOption\None;
-use PhpOption\Some;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Std\Option;
 
 #[CoversClass(PhasesInfo::class)]
 class PhasesInfoTest extends TestCase
@@ -18,8 +17,8 @@ class PhasesInfoTest extends TestCase
     {
         $phasesInfo = PhasesInfo::initialize();
         $this->assertEquals(0, $phasesInfo->count->int());
-        $this->assertTrue($phasesInfo->currentPhase->isEmpty());
-        $this->assertTrue($phasesInfo->lastPhaseId->isEmpty());
+        $this->assertTrue($phasesInfo->currentPhase->isNone());
+        $this->assertTrue($phasesInfo->lastPhaseId->isNone());
     }
 
     public function test_initialPhaseExists(): void
@@ -28,7 +27,7 @@ class PhasesInfoTest extends TestCase
         $this->assertFalse($phasesInfo->initialPhaseExists());
 
         $phase = PhaseFactory::build();
-        $phasesInfo = new PhasesInfo(Count::fromInt(1), Some::create($phase), None::create());
+        $phasesInfo = new PhasesInfo(Count::fromInt(1), Option::some($phase), Option::none());
         $this->assertTrue($phasesInfo->initialPhaseExists());
     }
 
@@ -38,20 +37,20 @@ class PhasesInfoTest extends TestCase
         $this->assertFalse($phasesInfo->hasBeenStarted());
 
         $phase = PhaseFactory::build(adjudicationTime: new CarbonImmutable());
-        $phasesInfo = new PhasesInfo(Count::fromInt(1), Some::create($phase), None::create());
+        $phasesInfo = new PhasesInfo(Count::fromInt(1), Option::some($phase), Option::none());
         $this->assertTrue($phasesInfo->hasBeenStarted());
     }
 
     public function test_proceedToNewPhase(): void
     {
         $phase = PhaseFactory::build(adjudicationTime: new CarbonImmutable());
-        $phasesInfo = new PhasesInfo(Count::fromInt(3), Some::create($phase), None::create());
+        $phasesInfo = new PhasesInfo(Count::fromInt(3), Option::some($phase), Option::none());
         $newPhase = PhaseFactory::build();
         $phasesInfo->proceedToNewPhase($newPhase);
 
         $this->assertEquals(4, $phasesInfo->count->int());
-        $this->assertEquals($newPhase, $phasesInfo->currentPhase->get());
-        $this->assertEquals($phase->phaseId, $phasesInfo->lastPhaseId->get());
+        $this->assertEquals($newPhase, $phasesInfo->currentPhase->unwrap());
+        $this->assertEquals($phase->phaseId, $phasesInfo->lastPhaseId->unwrap());
     }
 
     public function test_setInitialPhase(): void
@@ -61,6 +60,6 @@ class PhasesInfoTest extends TestCase
         $phasesInfo->setInitialPhase($phase);
 
         $this->assertEquals(1, $phasesInfo->count->int());
-        $this->assertEquals($phase, $phasesInfo->currentPhase->get());
+        $this->assertEquals($phase, $phasesInfo->currentPhase->unwrap());
     }
 }

@@ -62,7 +62,7 @@ readonly class CreateGameCommandHandler
             $variantData,
             $command->randomPowerAssignments,
             PlayerId::fromString($command->creatorId),
-            $command->selectedVariantPowerId->map(fn ($id) => VariantPowerId::fromString($id)),
+            $command->selectedVariantPowerId->mapIntoOption(fn ($id) => VariantPowerId::fromString($id)),
             $this->randomNumberGenerator->generate(...)
         );
 

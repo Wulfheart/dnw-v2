@@ -7,8 +7,7 @@ use Dnw\Game\Core\Domain\Game\Entity\Power;
 use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Power\PowerId;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
-use PhpOption\None;
-use PhpOption\Option;
+use Std\Option;
 
 /**
  * @extends Collection<Power>
@@ -23,10 +22,10 @@ class PowerCollection extends Collection
             $powers->push(
                 new Power(
                     PowerId::new(),
-                    None::create(),
+                    Option::none(),
                     $item,
-                    None::create(),
-                    None::create()
+                    Option::none(),
+                    Option::none()
                 )
             );
         }
@@ -40,7 +39,7 @@ class PowerCollection extends Collection
     public function getUnassignedPowers(): Collection
     {
         return $this
-            ->filter(fn (Power $power) => $power->playerId->isEmpty());
+            ->filter(fn (Power $power) => $power->playerId->isNone());
     }
 
     /**
@@ -49,13 +48,13 @@ class PowerCollection extends Collection
     public function getAssignedPowers(): Collection
     {
         return $this
-            ->filter(fn (Power $power) => $power->playerId->isDefined());
+            ->filter(fn (Power $power) => $power->playerId->isSome());
     }
 
     public function hasAvailablePowers(): bool
     {
         return $this->filter(
-            fn (Power $power) => $power->playerId->isEmpty()
+            fn (Power $power) => $power->playerId->isNone()
         )->count() > 0;
     }
 
@@ -66,25 +65,25 @@ class PowerCollection extends Collection
 
     public function containsPlayer(PlayerId $playerId): bool
     {
-        return $this->findByPlayerId($playerId)->isDefined();
+        return $this->findByPlayerId($playerId)->isSome();
     }
 
     public function doesNotContainPlayer(PlayerId $playerId): bool
     {
-        return $this->findByPlayerId($playerId)->isEmpty();
+        return $this->findByPlayerId($playerId)->isNone();
     }
 
     public function hasPowerFilled(VariantPowerId $variantPowerId): bool
     {
         return $this->findBy(
             fn (Power $power) => $power->variantPowerId == $variantPowerId
-        )->get()->playerId->isDefined();
+        )->unwrap()->playerId->isSome();
     }
 
     public function hasNoAssignedPowers(): bool
     {
         foreach ($this as $power) {
-            if ($power->playerId->isDefined()) {
+            if ($power->playerId->isSome()) {
                 return false;
             }
         }
@@ -94,21 +93,21 @@ class PowerCollection extends Collection
 
     public function getByPlayerId(PlayerId $playerId): Power
     {
-        return $this->findByPlayerId($playerId)->get();
+        return $this->findByPlayerId($playerId)->unwrap();
     }
 
     public function getByPowerId(PowerId $powerId): Power
     {
         return $this->findBy(
             fn (Power $power) => $power->powerId == $powerId
-        )->get();
+        )->unwrap();
     }
 
     public function getByVariantPowerId(VariantPowerId $variantPowerId): Power
     {
         return $this->findBy(
             fn (Power $power) => $power->variantPowerId == $variantPowerId
-        )->get();
+        )->unwrap();
     }
 
     /**
@@ -117,7 +116,7 @@ class PowerCollection extends Collection
     public function findByPlayerId(PlayerId $playerId): Option
     {
         return $this->findBy(
-            fn (Power $power) => $power->playerId->map(fn (PlayerId $id): bool => $id == $playerId)->getOrElse(false)
+            fn (Power $power) => $power->playerId->mapOr(fn (PlayerId $id): bool => $id == $playerId, false)
         );
     }
 }

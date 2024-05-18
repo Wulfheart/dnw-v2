@@ -30,7 +30,7 @@ class AdjudicateGameResponse implements AdjudicatorDataInterface
     {
         return ArrayCollection::fromArray($this->possible_orders)->findBy(
             fn ($possibleOrder) => $possibleOrder->power === $powerName
-        )->get();
+        )->unwrap();
     }
 
     /**
@@ -49,7 +49,7 @@ class AdjudicateGameResponse implements AdjudicatorDataInterface
     {
         return ArrayCollection::fromArray($this->phase_power_data)->findBy(
             fn ($phasePowerData) => $phasePowerData->power === $powerName
-        )->get();
+        )->unwrap();
     }
 
     public function powerHasWon(string $powerName): bool

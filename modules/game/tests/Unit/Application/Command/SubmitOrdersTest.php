@@ -31,7 +31,7 @@ class SubmitOrdersTest extends TestCase
 
         $command = new SubmitOrdersCommand(
             $game->gameId->toId(),
-            $power->playerId->get()->toId(),
+            $power->playerId->unwrap()->toId(),
             true,
             $orders
         );

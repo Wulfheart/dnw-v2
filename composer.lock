@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c767b79efbfe72205288b861c4899f71",
+    "content-hash": "10d917dca64c93acd8c0e1efe12b2afa",
     "packages": [
         {
             "name": "brick/math",
@@ -4416,12 +4416,12 @@
             "dist": {
                 "type": "path",
                 "url": "packages/option",
-                "reference": "abfa3d0a60f501097802bfb060a6219c21ac32f3"
+                "reference": "d92d56e80fc7369f92c1e5533344cef239813cd4"
             },
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "Std\\Option\\": "src/"
+                    "Std\\": "src/"
                 }
             },
             "authors": [

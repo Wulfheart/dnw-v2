@@ -68,7 +68,7 @@ class InitialGameAdjudicationTest extends TestCase
 
         $gameToPerformAssertionsOn = $gameRepository->load($game->gameId);
 
-        $currentPhaseId = $gameToPerformAssertionsOn->phasesInfo->currentPhase->get()->phaseId;
+        $currentPhaseId = $gameToPerformAssertionsOn->phasesInfo->currentPhase->unwrap()->phaseId;
         $newEncodedState = $phaseRepository->loadEncodedState($currentPhaseId);
         $this->assertEquals(self::NEW_ENCODED_STATE, $newEncodedState);
 

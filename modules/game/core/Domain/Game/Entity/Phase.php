@@ -5,7 +5,7 @@ namespace Dnw\Game\Core\Domain\Game\Entity;
 use Carbon\CarbonImmutable;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
-use PhpOption\Option;
+use Std\Option;
 
 class Phase
 {
@@ -20,8 +20,9 @@ class Phase
 
     public function adjudicationTimeIsExpired(CarbonImmutable $currentTime): bool
     {
-        return $this->adjudicationTime->map(
-            fn (CarbonImmutable $adjudicationTime) => $currentTime->gt($adjudicationTime)
-        )->getOrElse(false);
+        return $this->adjudicationTime->mapOr(
+            fn (CarbonImmutable $adjudicationTime) => $currentTime->gt($adjudicationTime),
+            false
+        );
     }
 }

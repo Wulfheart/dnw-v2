@@ -3,7 +3,7 @@
 namespace Dnw\Game\Core\Domain\Game\ValueObject\EndConditions;
 
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
-use PhpOption\Option;
+use Std\Option;
 
 class EndConditions
 {

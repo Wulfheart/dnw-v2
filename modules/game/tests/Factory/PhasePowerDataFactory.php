@@ -5,7 +5,7 @@ namespace Dnw\Game\Tests\Factory;
 use Dnw\Game\Core\Domain\Game\Collection\OrderCollection;
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhasePowerData;
-use PhpOption\Option;
+use Std\Option;
 
 class PhasePowerDataFactory
 {

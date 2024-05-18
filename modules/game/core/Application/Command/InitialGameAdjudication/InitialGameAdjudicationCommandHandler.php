@@ -65,12 +65,12 @@ readonly class InitialGameAdjudicationCommandHandler
         );
 
         $this->phaseRepository->saveEncodedState(
-            $game->phasesInfo->currentPhase->get()->phaseId,
+            $game->phasesInfo->currentPhase->unwrap()->phaseId,
             $adjudicationGameResult->current_state_encoded
         );
 
         $this->phaseRepository->saveAdjudicatedSvg(
-            $game->phasesInfo->currentPhase->get()->phaseId,
+            $game->phasesInfo->currentPhase->unwrap()->phaseId,
             $adjudicationGameResult->svg_adjudicated
         );
 

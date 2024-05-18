@@ -26,9 +26,8 @@ use Dnw\Game\Tests\Factory\AdjudicationTimingFactory;
 use Dnw\Game\Tests\Factory\GameBuilder;
 use Dnw\Game\Tests\Factory\GameStartTimingFactory;
 use Exception;
-use PhpOption\None;
-use PhpOption\Some;
 use PHPUnit\Framework\Attributes\CoversClass;
+use Std\Option;
 use Tests\TestCase;
 
 #[CoversClass(Game::class)]
@@ -54,7 +53,7 @@ class GamePregameTest extends TestCase
             $gameVariantData,
             true,
             $playerId,
-            None::create(),
+            Option::none(),
             fn () => 1
         );
 
@@ -86,7 +85,7 @@ class GamePregameTest extends TestCase
             $gameVariantData,
             false,
             $playerId,
-            Some::create($secondId),
+            Option::some($secondId),
             fn () => throw new Exception('Should not be called')
         );
 
@@ -102,8 +101,8 @@ class GamePregameTest extends TestCase
     {
         $game = GameBuilder::initialize(true)->storeInitialAdjudication()->join()->build();
         $ruleset = $game->canJoin(
-            $game->powerCollection->findBy(fn ($power) => $power->playerId->isDefined())->get()->playerId->get(),
-            None::create(),
+            $game->powerCollection->findBy(fn ($power) => $power->playerId->isSome())->unwrap()->playerId->unwrap(),
+            Option::none(),
             new CarbonImmutable(),
         );
 
@@ -115,7 +114,7 @@ class GamePregameTest extends TestCase
         $game = GameBuilder::initialize(false)->storeInitialAdjudication()->join()->build();
         $ruleset = $game->canJoin(
             PlayerId::new(),
-            Some::create($game->powerCollection->findBy(fn ($power) => $power->playerId->isDefined())->get()->variantPowerId),
+            Option::some($game->powerCollection->findBy(fn ($power) => $power->playerId->isSome())->unwrap()->variantPowerId),
             new CarbonImmutable(),
         );
 
@@ -127,7 +126,7 @@ class GamePregameTest extends TestCase
         $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->build();
         $ruleset = $game->canJoin(
             PlayerId::new(),
-            None::create(),
+            Option::none(),
             new CarbonImmutable(),
         );
 
@@ -143,7 +142,7 @@ class GamePregameTest extends TestCase
 
         $ruleset = $game->canJoin(
             PlayerId::new(),
-            None::create(),
+            Option::none(),
             $currentTime,
         );
 
@@ -157,7 +156,7 @@ class GamePregameTest extends TestCase
 
         $expectedVariantPowerId = $game->powerCollection->getUnassignedPowers()->getOffset(1)->variantPowerId;
 
-        $game->join($playerId, None::create(), new CarbonImmutable(), fn () => 1);
+        $game->join($playerId, Option::none(), new CarbonImmutable(), fn () => 1);
 
         $this->assertEquals(
             $expectedVariantPowerId,
@@ -175,9 +174,9 @@ class GamePregameTest extends TestCase
         $game = GameBuilder::initialize()->storeInitialAdjudication()->build();
         $variantPowerId = $game->powerCollection->getUnassignedPowers()->getOffset(0)->variantPowerId;
 
-        $game->join($playerId, Some::create($variantPowerId), new CarbonImmutable(), fn () => 1);
+        $game->join($playerId, Option::some($variantPowerId), new CarbonImmutable(), fn () => 1);
 
-        $this->assertTrue($game->powerCollection->getByPlayerId($playerId)->playerId->isDefined());
+        $this->assertTrue($game->powerCollection->getByPlayerId($playerId)->playerId->isSome());
 
         GameAsserter::assertThat($game)
             ->hasState(GameStates::PLAYERS_JOINING)
@@ -188,12 +187,12 @@ class GamePregameTest extends TestCase
     {
         $game = GameBuilder::initialize(true, true)->storeInitialAdjudication()->fillUntilOnePowerLeft()->build();
 
-        $game->join(PlayerId::new(), None::create(), new CarbonImmutable(), fn () => 0);
+        $game->join(PlayerId::new(), Option::none(), new CarbonImmutable(), fn () => 0);
 
         GameAsserter::assertThat($game)
             ->hasState(GameStates::ORDER_SUBMISSION)
             ->hasEvent(GameStartedEvent::class);
-        $this->assertTrue($game->phasesInfo->currentPhase->get()->adjudicationTime->isDefined());
+        $this->assertTrue($game->phasesInfo->currentPhase->unwrap()->adjudicationTime->isSome());
     }
 
     public function test_join_throws_exception_if_it_is_not_possible_to_join_the_game(): void
@@ -201,7 +200,7 @@ class GamePregameTest extends TestCase
         $game = GameBuilder::initialize(true)->storeInitialAdjudication()->makeFull()->build();
 
         $this->expectException(DomainException::class);
-        $game->join(PlayerId::new(), None::create(), new CarbonImmutable(), fn () => 0);
+        $game->join(PlayerId::new(), Option::none(), new CarbonImmutable(), fn () => 0);
 
     }
 
@@ -219,7 +218,7 @@ class GamePregameTest extends TestCase
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->build();
         $ruleset = $game->canLeave(
-            $game->powerCollection->findBy(fn ($power) => $power->playerId->isDefined())->get()->playerId->get(),
+            $game->powerCollection->findBy(fn ($power) => $power->playerId->isSome())->unwrap()->playerId->unwrap(),
         );
 
         $this->assertTrue($ruleset->containsViolation(GameRules::EXPECTS_STATE_PLAYERS_JOINING));
@@ -253,7 +252,7 @@ class GamePregameTest extends TestCase
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->build();
 
-        $game->leave($game->powerCollection->findBy(fn ($power) => $power->playerId->isDefined())->get()->playerId->get());
+        $game->leave($game->powerCollection->findBy(fn ($power) => $power->playerId->isSome())->unwrap()->playerId->unwrap());
 
         GameAsserter::assertThat($game)
             ->hasState(GameStates::ABANDONED)
@@ -273,7 +272,7 @@ class GamePregameTest extends TestCase
             ->hasState(GameStates::ORDER_SUBMISSION)
             ->hasEvent(GameStartedEvent::class);
 
-        $this->assertTrue($game->phasesInfo->currentPhase->get()->adjudicationTime->isDefined());
+        $this->assertTrue($game->phasesInfo->currentPhase->unwrap()->adjudicationTime->isSome());
     }
 
     public function test_handleGameJoinLengthExceeded_does_not_start_game_if_time_is_not_right_and_game_full(): void
@@ -286,7 +285,7 @@ class GamePregameTest extends TestCase
             ->hasState(GameStates::PLAYERS_JOINING)
             ->hasNotEvent(GameStartedEvent::class);
 
-        $this->assertTrue($game->phasesInfo->currentPhase->get()->adjudicationTime->isEmpty());
+        $this->assertTrue($game->phasesInfo->currentPhase->unwrap()->adjudicationTime->isNone());
     }
 
     public function test_handleGameJoinLengthExceeded_abandons_game_if_join_length_is_exceeded_and_game_not_full(): void

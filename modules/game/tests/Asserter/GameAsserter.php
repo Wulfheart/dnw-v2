@@ -81,7 +81,7 @@ class GameAsserter
     public function hasNotEvent(string $eventName): self
     {
         $result = ArrayCollection::build(...$this->game->inspectEvents())->findBy(fn ($event) => $event::class === $eventName);
-        Assert::assertTrue($result->isEmpty(), "Event $eventName found in game events.");
+        Assert::assertTrue($result->isNone(), "Event $eventName found in game events.");
 
         return $this;
     }
@@ -95,7 +95,7 @@ class GameAsserter
 
     public function hasNotCurrentPhaseId(PhaseId $phaseId): self
     {
-        Assert::assertNotEquals($phaseId, $this->game->phasesInfo->currentPhase->get()->phaseId);
+        Assert::assertNotEquals($phaseId, $this->game->phasesInfo->currentPhase->unwrap()->phaseId);
 
         return $this;
     }
@@ -110,14 +110,14 @@ class GameAsserter
     public function powerIdHasPlayerId(PowerId $powerId, PlayerId $playerId): self
     {
         $power = $this->game->powerCollection->getByPowerId($powerId);
-        Assert::assertEquals($playerId, $power->playerId->get());
+        Assert::assertEquals($playerId, $power->playerId->unwrap());
 
         return $this;
     }
 
     public function hasPlayerInGame(PlayerId $playerId): self
     {
-        $exists = $this->game->powerCollection->findByPlayerId($playerId)->isDefined();
+        $exists = $this->game->powerCollection->findByPlayerId($playerId)->isSome();
         Assert::assertTrue($exists, "Player $playerId is not a member of the game.");
 
         return $this;
@@ -125,7 +125,7 @@ class GameAsserter
 
     public function hasPlayerNotInGame(PlayerId $playerId): self
     {
-        $exists = $this->game->powerCollection->findByPlayerId($playerId)->isDefined();
+        $exists = $this->game->powerCollection->findByPlayerId($playerId)->isSome();
         Assert::assertTrue(! $exists, "Player $playerId is a member of the game.");
 
         return $this;
@@ -134,9 +134,10 @@ class GameAsserter
     public function hasPowerWithOrders(PowerId $powerId, OrderCollection $orders): self
     {
         $power = $this->game->powerCollection->getByPowerId($powerId);
-        $savedOrders = $power->currentPhaseData->get()->orderCollection->map(
-            fn (OrderCollection $orderCollection) => $orderCollection->toStringArray()
-        )->getOrElse([]);
+        $savedOrders = $power->currentPhaseData->unwrap()->orderCollection->mapOr(
+            fn (OrderCollection $orderCollection) => $orderCollection->toStringArray(),
+            []
+        );
         foreach ($orders as $order) {
             Assert::assertContains(
                 (string) $order,

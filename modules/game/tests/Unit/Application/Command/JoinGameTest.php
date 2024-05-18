@@ -12,9 +12,9 @@ use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
 use Dnw\Game\Core\Infrastructure\Repository\Game\InMemoryGameRepository;
 use Dnw\Game\Tests\Asserter\GameAsserter;
 use Dnw\Game\Tests\Factory\GameBuilder;
-use PhpOption\None;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Std\Option;
 
 #[CoversClass(JoinGameCommand::class)]
 #[CoversClass(JoinGameCommandHandler::class)]
@@ -42,7 +42,7 @@ class JoinGameTest extends TestCase
         $command = new JoinGameCommand(
             $game->gameId->toId(),
             $userId,
-            None::create(),
+            Option::none(),
         );
 
         $handler->handle($command);

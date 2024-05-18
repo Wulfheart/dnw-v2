@@ -34,7 +34,7 @@ readonly class AdjudicateGameCommandHandler
         $game = $this->gameRepository->load(GameId::fromId($command->gameId));
         $variant = $this->variantRepository->load($game->variant->id);
 
-        $encodedState = $this->phaseRepository->loadEncodedState($game->phasesInfo->currentPhase->get()->phaseId);
+        $encodedState = $this->phaseRepository->loadEncodedState($game->phasesInfo->currentPhase->unwrap()->phaseId);
 
         $orders = [];
         foreach ($game->powerCollection as $power) {
@@ -42,9 +42,10 @@ readonly class AdjudicateGameCommandHandler
 
             $orders[] = new AdjudicatorOrder(
                 $powerApiName,
-                $power->currentPhaseData->get()->orderCollection->map(
-                    fn (OrderCollection $orderCollection) => $orderCollection->toStringArray()
-                )->getOrElse([])
+                $power->currentPhaseData->unwrap()->orderCollection->mapOr(
+                    fn (OrderCollection $orderCollection) => $orderCollection->toStringArray(),
+                    []
+                )
             );
         }
 
@@ -97,17 +98,17 @@ readonly class AdjudicateGameCommandHandler
         );
 
         $this->phaseRepository->saveEncodedState(
-            $game->phasesInfo->currentPhase->get()->phaseId,
+            $game->phasesInfo->currentPhase->unwrap()->phaseId,
             $adjudicationGameResult->current_state_encoded
         );
 
         $this->phaseRepository->saveSvgWithOrders(
-            $game->phasesInfo->lastPhaseId->get(),
+            $game->phasesInfo->lastPhaseId->unwrap(),
             $adjudicationGameResult->svg_with_orders
         );
 
         $this->phaseRepository->saveAdjudicatedSvg(
-            $game->phasesInfo->currentPhase->get()->phaseId,
+            $game->phasesInfo->currentPhase->unwrap()->phaseId,
             $adjudicationGameResult->svg_adjudicated
         );
 

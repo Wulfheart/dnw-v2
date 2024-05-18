@@ -9,7 +9,7 @@ use Dnw\Game\Core\Domain\Game\Entity\Message\SystemMessage;
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
 use Dnw\Game\Core\Domain\Game\ValueObject\MessageRoom\MessageRoomId;
 use Dnw\Game\Core\Domain\Game\ValueObject\MessageRoom\MessageRoomName;
-use PhpOption\Option;
+use Std\Option;
 
 class MessageRoom
 {

@@ -55,7 +55,7 @@ class AdjudicateGameTest extends TestCase
             $variant,
         ]);
 
-        $previousPhaseId = $game->phasesInfo->currentPhase->get()->phaseId;
+        $previousPhaseId = $game->phasesInfo->currentPhase->unwrap()->phaseId;
         $phaseRepository = new InMemoryPhaseRepository(
             [(string) $previousPhaseId => $stateEncoded]
         );
@@ -78,7 +78,7 @@ class AdjudicateGameTest extends TestCase
         GameAsserter::assertThat($gameToPerformAssertionsOn)
             ->hasNotCurrentPhaseId($previousPhaseId);
 
-        $currentPhaseId = $gameToPerformAssertionsOn->phasesInfo->currentPhase->get()->phaseId;
+        $currentPhaseId = $gameToPerformAssertionsOn->phasesInfo->currentPhase->unwrap()->phaseId;
         $newEncodedState = $phaseRepository->loadEncodedState($currentPhaseId);
         $this->assertEquals(self::NEW_ENCODED_STATE, $newEncodedState);
 

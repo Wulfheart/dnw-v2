@@ -26,7 +26,7 @@ readonly class JoinGameCommandHandler
 
         $game->join(
             PlayerId::fromId($command->userId),
-            $command->variantPowerId->map(fn (Id $id) => VariantPowerId::fromId($id)),
+            $command->variantPowerId->mapIntoOption(fn (Id $id) => VariantPowerId::fromId($id)),
             $this->timeProvider->getCurrentTime(),
             $this->randomNumberGenerator->generate(...)
         );

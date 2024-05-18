@@ -7,7 +7,7 @@ use InvalidArgumentException;
 
 readonly class NoAdjudicationWeekdayCollection
 {
-    /** @var array<int> */
+    /** @var array<int<0,6>> */
     private array $weekdays;
 
     /**
@@ -26,7 +26,7 @@ readonly class NoAdjudicationWeekdayCollection
         if (count($weekdays) > 6) {
             throw new InvalidArgumentException('Excluded all days from adjudication');
         }
-
+        /** @var array<int<0,6>> $weekdays */
         $this->weekdays = $weekdays;
     }
 
@@ -43,6 +43,9 @@ readonly class NoAdjudicationWeekdayCollection
         return new self($weekdays);
     }
 
+    /**
+     * @return array<int<0,6>> $weekdays
+     */
     public function toArray(): array
     {
         return $this->weekdays;

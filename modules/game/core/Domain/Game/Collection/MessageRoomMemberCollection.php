@@ -15,6 +15,6 @@ class MessageRoomMemberCollection extends Collection
     {
         return $this->findBy(
             fn (MessageRoomMember $member) => $member->powerId === $powerId
-        )->isDefined();
+        )->isSome();
     }
 }

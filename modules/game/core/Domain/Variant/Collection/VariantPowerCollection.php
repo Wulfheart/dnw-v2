@@ -16,13 +16,13 @@ class VariantPowerCollection extends Collection
     {
         return $this->findBy(
             fn (VariantPower $variantPower) => $variantPower->apiName == $powerApiName
-        )->get();
+        )->unwrap();
     }
 
     public function getByVariantPowerId(VariantPowerId $variantPowerId): VariantPower
     {
         return $this->findBy(
             fn (VariantPower $variantPower) => $variantPower->id === $variantPowerId
-        )->get();
+        )->unwrap();
     }
 }

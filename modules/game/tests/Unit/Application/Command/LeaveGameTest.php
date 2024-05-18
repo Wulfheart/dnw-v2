@@ -18,7 +18,7 @@ class LeaveGameTest extends TestCase
     public function test_handle(): void
     {
         $game = GameBuilder::initialize(true)->storeInitialAdjudication()->join()->build();
-        $playerToRemove = $game->powerCollection->getAssignedPowers()->first()->playerId->get();
+        $playerToRemove = $game->powerCollection->getAssignedPowers()->first()->playerId->unwrap();
 
         $gameRepository = new InMemoryGameRepository(new FakeEventDispatcher(), [$game]);
 
