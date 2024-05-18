@@ -2,13 +2,13 @@
 
 namespace Dnw\Game\Core\Infrastructure\Adapter;
 
-use Carbon\CarbonImmutable;
+use Dnw\Foundation\DateTime\DateTime;
 use Dnw\Game\Core\Domain\Adapter\TimeProvider\TimeProviderInterface;
 
 class LaravelTimeProvider implements TimeProviderInterface
 {
-    public function getCurrentTime(): CarbonImmutable
+    public function getCurrentTime(): DateTime
     {
-        return CarbonImmutable::now();
+        return DateTime::now();
     }
 }

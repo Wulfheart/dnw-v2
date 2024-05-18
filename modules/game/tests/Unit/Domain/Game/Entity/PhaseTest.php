@@ -2,7 +2,7 @@
 
 namespace Dnw\Game\Tests\Unit\Domain\Game\Entity;
 
-use Carbon\CarbonImmutable;
+use Dnw\Foundation\DateTime\DateTime;
 use Dnw\Game\Core\Domain\Game\Entity\Phase;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
@@ -15,10 +15,10 @@ use Std\Option;
 class PhaseTest extends TestCase
 {
     /**
-     * @param  Option<CarbonImmutable>  $adjudicationTime
+     * @param  Option<DateTime>  $adjudicationTime
      */
     #[DataProvider('adjudicationTimeIsExpiredDataProvider')]
-    public function test_adjudicationTimeIsExpired(CarbonImmutable $currentTime, Option $adjudicationTime, bool $expectedResult): void
+    public function test_adjudicationTimeIsExpired(DateTime $currentTime, Option $adjudicationTime, bool $expectedResult): void
     {
         $phase = new Phase(
             PhaseId::new(),
@@ -31,11 +31,11 @@ class PhaseTest extends TestCase
     }
 
     /**
-     * @return array<string, array{0:CarbonImmutable, 1: Option<CarbonImmutable>, 2: bool}>
+     * @return array<string, array{0:DateTime, 1: Option<DateTime>, 2: bool}>
      */
     public static function adjudicationTimeIsExpiredDataProvider(): array
     {
-        $currentTime = new CarbonImmutable('now');
+        $currentTime = new DateTime('now');
 
         return [
             'not expired if is not set' => [
@@ -45,7 +45,7 @@ class PhaseTest extends TestCase
             ],
             'not expired if is in the future' => [
                 $currentTime,
-                Option::some(new CarbonImmutable('tomorrow')),
+                Option::some(new DateTime('tomorrow')),
                 false,
             ],
             'not expired if is now' => [
@@ -55,7 +55,7 @@ class PhaseTest extends TestCase
             ],
             'expired if is in the past' => [
                 $currentTime,
-                Option::some(new CarbonImmutable('yesterday')),
+                Option::some(new DateTime('yesterday')),
                 true,
             ],
         ];

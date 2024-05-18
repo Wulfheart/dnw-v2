@@ -2,8 +2,9 @@
 
 namespace Dnw\Game\Core\Domain\Game;
 
-use Carbon\CarbonImmutable;
+use Dnw\Foundation\Aggregate\AggregateVersion;
 use Dnw\Foundation\Collection\Collection;
+use Dnw\Foundation\DateTime\DateTime;
 use Dnw\Foundation\Event\AggregateEventTrait;
 use Dnw\Foundation\Exception\DomainException;
 use Dnw\Foundation\Rule\LazyRule;
@@ -64,6 +65,7 @@ class Game
         public GameVariantData $variant,
         public PowerCollection $powerCollection,
         public PhasesInfo $phasesInfo,
+        public AggregateVersion $version,
         array $events = [],
     ) {
         $this->events = $events;
@@ -107,7 +109,8 @@ class Game
             $variantData,
             $powers,
             PhasesInfo::initialize(),
-            [new GameCreatedEvent($gameId->toId(), $playerId->toId())]
+            AggregateVersion::initial(),
+            [new GameCreatedEvent($gameId->toId(), $playerId->toId())],
         );
     }
 
@@ -125,7 +128,7 @@ class Game
     public function join(
         PlayerId $playerId,
         Option $variantPowerId,
-        CarbonImmutable $currentTime,
+        DateTime $currentTime,
         callable $randomNumberGenerator
     ): void {
         RulesetHandler::throwConditionally(
@@ -159,7 +162,7 @@ class Game
     /**
      * @param  Option<VariantPowerId>  $variantPowerId
      */
-    public function canJoin(PlayerId $playerId, Option $variantPowerId, CarbonImmutable $currentTime): Ruleset
+    public function canJoin(PlayerId $playerId, Option $variantPowerId, DateTime $currentTime): Ruleset
     {
         return new Ruleset(
             new Rule(
@@ -217,21 +220,21 @@ class Game
         );
     }
 
-    private function startGameIfFullAndStartWhenReady(CarbonImmutable $currentTime): void
+    private function startGameIfFullAndStartWhenReady(DateTime $currentTime): void
     {
         if ($this->gameStartTiming->startWhenReady && $this->powerCollection->hasAllPowersFilled()) {
             $this->startGame($currentTime);
         }
     }
 
-    private function startGame(CarbonImmutable $currentTime): void
+    private function startGame(DateTime $currentTime): void
     {
         $this->phasesInfo->currentPhase->unwrap()->adjudicationTime = Option::some($this->adjudicationTiming->calculateNextAdjudication($currentTime));
         $this->pushEvent(new GameStartedEvent($this->gameId->toId()));
         $this->gameStateMachine->transitionTo(GameStates::ORDER_SUBMISSION);
     }
 
-    public function handleGameJoinLengthExceeded(CarbonImmutable $currentTime): void
+    public function handleGameJoinLengthExceeded(DateTime $currentTime): void
     {
         if ($this->gameStartTiming->joinLengthExceeded($currentTime)) {
             if ($this->powerCollection->hasAllPowersFilled()) {
@@ -243,7 +246,7 @@ class Game
         }
     }
 
-    public function submitOrders(PlayerId $playerId, OrderCollection $orderCollection, bool $markAsReady, CarbonImmutable $currentTime): void
+    public function submitOrders(PlayerId $playerId, OrderCollection $orderCollection, bool $markAsReady, DateTime $currentTime): void
     {
         RulesetHandler::throwConditionally(
             "Player $playerId cannot submit orders for game {$this->gameId}",
@@ -277,7 +280,7 @@ class Game
         $this->adjudicateGameIfConditionsAreFulfilled($currentTime);
     }
 
-    public function markOrderStatus(PlayerId $playerId, bool $orderStatus, CarbonImmutable $currentTime): void
+    public function markOrderStatus(PlayerId $playerId, bool $orderStatus, DateTime $currentTime): void
     {
         RulesetHandler::throwConditionally(
             "Player $playerId cannot mark order status for game {$this->gameId}",
@@ -310,7 +313,7 @@ class Game
         $this->adjudicateGameIfConditionsAreFulfilled($currentTime);
     }
 
-    public function canMarkOrderStatus(PlayerId $playerId, CarbonImmutable $currentTime): Ruleset
+    public function canMarkOrderStatus(PlayerId $playerId, DateTime $currentTime): Ruleset
     {
         return new Ruleset(
             new Rule(
@@ -328,7 +331,7 @@ class Game
         );
     }
 
-    public function canSubmitOrders(PlayerId $playerId, CarbonImmutable $currentTime): Ruleset
+    public function canSubmitOrders(PlayerId $playerId, DateTime $currentTime): Ruleset
     {
         return new Ruleset(
             new Rule(
@@ -354,7 +357,7 @@ class Game
         );
     }
 
-    public function adjudicateGameIfConditionsAreFulfilled(CarbonImmutable $currentTime): void
+    public function adjudicateGameIfConditionsAreFulfilled(DateTime $currentTime): void
     {
         if ($this->isReadyForAdjudication($currentTime)) {
             // TODO: Add NMRs from powers that did not submit orders even if they had to
@@ -365,7 +368,7 @@ class Game
         }
     }
 
-    public function canAdjudicate(CarbonImmutable $currentTime): Ruleset
+    public function canAdjudicate(DateTime $currentTime): Ruleset
     {
         return new Ruleset(
             new Rule(
@@ -375,13 +378,13 @@ class Game
         );
     }
 
-    private function isReadyForAdjudication(CarbonImmutable $currentTime): bool
+    private function isReadyForAdjudication(DateTime $currentTime): bool
     {
         return $this->adjudicationTimeIsExpired($currentTime)
             || $this->powerCollection->every(fn (Power $power) => $power->readyForAdjudication());
     }
 
-    private function adjudicationTimeIsExpired(CarbonImmutable $currentTime): bool
+    private function adjudicationTimeIsExpired(DateTime $currentTime): bool
     {
         return $this->phasesInfo->currentPhase->mapOr(
             fn (Phase $phase) => $phase->adjudicationTimeIsExpired($currentTime),
@@ -397,7 +400,7 @@ class Game
     public function applyAdjudication(
         PhaseTypeEnum $phaseType,
         Collection $adjudicationPowerDataCollection,
-        CarbonImmutable $currentTime
+        DateTime $currentTime
     ): void {
         RulesetHandler::throwConditionally(
             "Game {$this->gameId} cannot be adjudicated",
@@ -473,7 +476,7 @@ class Game
     public function applyInitialAdjudication(
         PhaseTypeEnum $phaseType,
         Collection $phasePowerCollection,
-        CarbonImmutable $currentTime
+        DateTime $currentTime
     ): void {
         RulesetHandler::throwConditionally(
             "Game {$this->gameId} cannot apply initial adjudication",

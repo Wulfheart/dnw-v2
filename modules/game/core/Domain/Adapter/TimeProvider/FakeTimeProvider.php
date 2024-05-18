@@ -2,19 +2,19 @@
 
 namespace Dnw\Game\Core\Domain\Adapter\TimeProvider;
 
-use Carbon\CarbonImmutable;
+use Dnw\Foundation\DateTime\DateTime;
 
 class FakeTimeProvider implements TimeProviderInterface
 {
-    private CarbonImmutable $currentTime;
+    private DateTime $currentTime;
 
     public function __construct(
-        string|CarbonImmutable $currentTime
+        string|DateTime $currentTime
     ) {
-        $this->currentTime = $currentTime instanceof CarbonImmutable ? $currentTime : CarbonImmutable::parse($currentTime);
+        $this->currentTime = $currentTime instanceof DateTime ? $currentTime : new DateTime($currentTime);
     }
 
-    public function getCurrentTime(): CarbonImmutable
+    public function getCurrentTime(): DateTime
     {
         return $this->currentTime;
     }

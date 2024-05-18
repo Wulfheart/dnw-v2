@@ -2,19 +2,19 @@
 
 namespace Dnw\Game\Core\Domain\Game\ValueObject\GameStartTiming;
 
-use Carbon\CarbonImmutable;
+use Dnw\Foundation\DateTime\DateTime;
 
 class GameStartTiming
 {
     public function __construct(
-        public CarbonImmutable $startOfJoinPhase,
+        public DateTime $startOfJoinPhase,
         public JoinLength $joinLength,
         public bool $startWhenReady,
     ) {
 
     }
 
-    public function joinLengthExceeded(CarbonImmutable $currentTime): bool
+    public function joinLengthExceeded(DateTime $currentTime): bool
     {
         $endDateTime = $this->startOfJoinPhase->addDays($this->joinLength->toDays());
 

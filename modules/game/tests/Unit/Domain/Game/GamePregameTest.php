@@ -2,7 +2,7 @@
 
 namespace Dnw\Game\Tests\Unit\Domain\Game;
 
-use Carbon\CarbonImmutable;
+use Dnw\Foundation\DateTime\DateTime;
 use Dnw\Foundation\Exception\DomainException;
 use Dnw\Game\Core\Domain\Game\Collection\VariantPowerIdCollection;
 use Dnw\Game\Core\Domain\Game\Event\GameAbandonedEvent;
@@ -103,7 +103,7 @@ class GamePregameTest extends TestCase
         $ruleset = $game->canJoin(
             $game->powerCollection->findBy(fn ($power) => $power->playerId->isSome())->unwrap()->playerId->unwrap(),
             Option::none(),
-            new CarbonImmutable(),
+            new DateTime(),
         );
 
         $this->assertTrue($ruleset->containsViolation(GameRules::PLAYER_ALREADY_JOINED));
@@ -115,7 +115,7 @@ class GamePregameTest extends TestCase
         $ruleset = $game->canJoin(
             PlayerId::new(),
             Option::some($game->powerCollection->findBy(fn ($power) => $power->playerId->isSome())->unwrap()->variantPowerId),
-            new CarbonImmutable(),
+            new DateTime(),
         );
 
         $this->assertTrue($ruleset->containsViolation(GameRules::POWER_ALREADY_FILLED));
@@ -127,7 +127,7 @@ class GamePregameTest extends TestCase
         $ruleset = $game->canJoin(
             PlayerId::new(),
             Option::none(),
-            new CarbonImmutable(),
+            new DateTime(),
         );
 
         $this->assertTrue($ruleset->containsViolation(GameRules::EXPECTS_STATE_PLAYERS_JOINING));
@@ -156,7 +156,7 @@ class GamePregameTest extends TestCase
 
         $expectedVariantPowerId = $game->powerCollection->getUnassignedPowers()->getOffset(1)->variantPowerId;
 
-        $game->join($playerId, Option::none(), new CarbonImmutable(), fn () => 1);
+        $game->join($playerId, Option::none(), new DateTime(), fn () => 1);
 
         $this->assertEquals(
             $expectedVariantPowerId,
@@ -174,7 +174,7 @@ class GamePregameTest extends TestCase
         $game = GameBuilder::initialize()->storeInitialAdjudication()->build();
         $variantPowerId = $game->powerCollection->getUnassignedPowers()->getOffset(0)->variantPowerId;
 
-        $game->join($playerId, Option::some($variantPowerId), new CarbonImmutable(), fn () => 1);
+        $game->join($playerId, Option::some($variantPowerId), new DateTime(), fn () => 1);
 
         $this->assertTrue($game->powerCollection->getByPlayerId($playerId)->playerId->isSome());
 
@@ -187,7 +187,7 @@ class GamePregameTest extends TestCase
     {
         $game = GameBuilder::initialize(true, true)->storeInitialAdjudication()->fillUntilOnePowerLeft()->build();
 
-        $game->join(PlayerId::new(), Option::none(), new CarbonImmutable(), fn () => 0);
+        $game->join(PlayerId::new(), Option::none(), new DateTime(), fn () => 0);
 
         GameAsserter::assertThat($game)
             ->hasState(GameStates::ORDER_SUBMISSION)
@@ -200,7 +200,7 @@ class GamePregameTest extends TestCase
         $game = GameBuilder::initialize(true)->storeInitialAdjudication()->makeFull()->build();
 
         $this->expectException(DomainException::class);
-        $game->join(PlayerId::new(), Option::none(), new CarbonImmutable(), fn () => 0);
+        $game->join(PlayerId::new(), Option::none(), new DateTime(), fn () => 0);
 
     }
 
@@ -279,7 +279,7 @@ class GamePregameTest extends TestCase
     {
         $game = GameBuilder::initialize(startWhenReady: false)->storeInitialAdjudication()->makeFull()->build();
 
-        $game->handleGameJoinLengthExceeded(new CarbonImmutable());
+        $game->handleGameJoinLengthExceeded(new DateTime());
 
         GameAsserter::assertThat($game)
             ->hasState(GameStates::PLAYERS_JOINING)

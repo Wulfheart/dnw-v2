@@ -2,9 +2,9 @@
 
 namespace Dnw\Game\Core\Domain\Adapter\TimeProvider;
 
-use Carbon\CarbonImmutable;
+use Dnw\Foundation\DateTime\DateTime;
 
 interface TimeProviderInterface
 {
-    public function getCurrentTime(): CarbonImmutable;
+    public function getCurrentTime(): DateTime;
 }

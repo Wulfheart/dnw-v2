@@ -2,7 +2,7 @@
 
 namespace Dnw\Game\Core\Domain\Game\ValueObject;
 
-use Carbon\CarbonImmutable;
+use Dnw\Foundation\DateTime\DateTime;
 
 enum WeekdayEnum: int
 {
@@ -14,7 +14,7 @@ enum WeekdayEnum: int
     case SATURDAY = 6;
     case SUNDAY = 0;
 
-    public static function fromCarbon(CarbonImmutable $carbonImmutable): self
+    public static function fromCarbon(DateTime $carbonImmutable): self
     {
         return self::from($carbonImmutable->weekday());
     }

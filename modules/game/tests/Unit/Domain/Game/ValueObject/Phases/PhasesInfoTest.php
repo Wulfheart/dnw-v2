@@ -2,7 +2,7 @@
 
 namespace Dnw\Game\Tests\Unit\Domain\Game\ValueObject\Phases;
 
-use Carbon\CarbonImmutable;
+use Dnw\Foundation\DateTime\DateTime;
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phases\PhasesInfo;
 use Dnw\Game\Tests\Factory\PhaseFactory;
@@ -36,14 +36,14 @@ class PhasesInfoTest extends TestCase
         $phasesInfo = PhasesInfo::initialize();
         $this->assertFalse($phasesInfo->hasBeenStarted());
 
-        $phase = PhaseFactory::build(adjudicationTime: new CarbonImmutable());
+        $phase = PhaseFactory::build(adjudicationTime: new DateTime());
         $phasesInfo = new PhasesInfo(Count::fromInt(1), Option::some($phase), Option::none());
         $this->assertTrue($phasesInfo->hasBeenStarted());
     }
 
     public function test_proceedToNewPhase(): void
     {
-        $phase = PhaseFactory::build(adjudicationTime: new CarbonImmutable());
+        $phase = PhaseFactory::build(adjudicationTime: new DateTime());
         $phasesInfo = new PhasesInfo(Count::fromInt(3), Option::some($phase), Option::none());
         $newPhase = PhaseFactory::build();
         $phasesInfo->proceedToNewPhase($newPhase);

@@ -2,7 +2,7 @@
 
 namespace Dnw\Game\Tests\Factory;
 
-use Carbon\CarbonImmutable;
+use Dnw\Foundation\DateTime\DateTime;
 use Dnw\Game\Core\Domain\Game\Collection\OrderCollection;
 use Dnw\Game\Core\Domain\Game\Collection\VariantPowerIdCollection;
 use Dnw\Game\Core\Domain\Game\Dto\InitialAdjudicationPowerDataDto;
@@ -91,7 +91,7 @@ class GameBuilder
         $this->game->applyInitialAdjudication(
             PhaseTypeEnum::MOVEMENT,
             $c,
-            new CarbonImmutable(),
+            new DateTime(),
         );
 
         return $this;
@@ -104,7 +104,7 @@ class GameBuilder
         $this->game->join(
             $playerId ?? PlayerId::new(),
             Option::some($powerToJoin->variantPowerId),
-            new CarbonImmutable(),
+            new DateTime(),
             (new RandomNumberGenerator())->generate(...)
         );
 
@@ -159,7 +159,7 @@ class GameBuilder
         $this->game->markOrderStatus(
             $power->playerId->unwrap(),
             true,
-            new CarbonImmutable(),
+            new DateTime(),
         );
 
         return $this;
@@ -174,7 +174,7 @@ class GameBuilder
             $this->game->markOrderStatus(
                 $power->playerId->unwrap(),
                 true,
-                new CarbonImmutable(),
+                new DateTime(),
             );
         }
 
@@ -192,7 +192,7 @@ class GameBuilder
             $this->game->markOrderStatus(
                 $power->playerId->unwrap(),
                 true,
-                new CarbonImmutable(),
+                new DateTime(),
             );
         }
 
@@ -221,7 +221,7 @@ class GameBuilder
                 $power->playerId->unwrap(),
                 OrderCollection::fromStringArray([(string) $power->playerId->unwrap()]),
                 $markAsReady,
-                new CarbonImmutable(),
+                new DateTime(),
             );
         }
 

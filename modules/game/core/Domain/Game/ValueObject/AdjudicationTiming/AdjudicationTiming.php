@@ -2,7 +2,7 @@
 
 namespace Dnw\Game\Core\Domain\Game\ValueObject\AdjudicationTiming;
 
-use Carbon\CarbonImmutable;
+use Dnw\Foundation\DateTime\DateTime;
 use Dnw\Game\Core\Domain\Game\ValueObject\WeekdayEnum;
 
 class AdjudicationTiming
@@ -13,7 +13,7 @@ class AdjudicationTiming
     ) {
     }
 
-    public function calculateNextAdjudication(CarbonImmutable $currentTime): CarbonImmutable
+    public function calculateNextAdjudication(DateTime $currentTime): DateTime
     {
         $nextAdjudication = $currentTime->addMinutes($this->phaseLength->minutes());
         while (! $this->noAdjudicationWeekdays->adjudicatesOnWeekday(

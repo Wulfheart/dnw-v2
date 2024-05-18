@@ -25,7 +25,7 @@ abstract class AbstractGameRepositoryTestCase extends TestCase
 
         $loadedGame = $repository->load($game->gameId);
 
-        $this->assertSame($game, $loadedGame);
+        $this->assertEquals($game, $loadedGame);
         $eventDispatcher->assertDispatched(GameCreatedEvent::class, 1);
     }
 
