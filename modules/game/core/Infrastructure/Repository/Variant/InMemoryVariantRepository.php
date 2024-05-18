@@ -27,4 +27,9 @@ class InMemoryVariantRepository implements VariantRepositoryInterface
     {
         return $this->variants[(string) $variantId] ?? throw new NotFoundException();
     }
+
+    public function save(Variant $variant): void
+    {
+        $this->variants[(string) $variant->id] = $variant;
+    }
 }

@@ -12,4 +12,6 @@ interface VariantRepositoryInterface
      * @throws NotFoundException
      */
     public function load(VariantId $variantId): Variant;
+
+    public function save(Variant $variant): void;
 }
