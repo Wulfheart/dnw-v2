@@ -76,8 +76,8 @@ class LaravelGameRepository implements GameRepositoryInterface
             fn (PhaseModel $phase) => new Phase(
                 PhaseId::fromString($phase->id),
                 PhaseTypeEnum::from($phase->type),
-                Option::fromValue($phase->adjudication_time)->map(fn (string $adjudicationTime) => new CarbonImmutable($adjudicationTime)),
-            )
+                Option::fromValue($phase->adjudication_time)
+            ),
         );
 
         $lastPhaseId = PhaseId::fromNullableString($game->currentPhase?->id);

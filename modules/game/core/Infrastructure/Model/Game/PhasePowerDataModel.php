@@ -2,10 +2,13 @@
 
 namespace Dnw\Game\Core\Infrastructure\Model\Game;
 
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 
 class PhasePowerDataModel extends Model
 {
+    use HasUlids;
+
     public $table = 'game_phase_power_data';
 
     public $casts = [
