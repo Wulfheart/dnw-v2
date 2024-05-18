@@ -67,10 +67,13 @@ class LaravelGameRepository implements GameRepositoryInterface
             JoinLength::fromDays($game->game_start_timing_join_length),
             $game->game_start_timing_start_when_ready,
         );
+        $arr = $game->variant_data_variant_power_ids->map(
+            fn (string $variantPowerId) => VariantPowerId::fromString($variantPowerId)
+        );
         $variantData = new GameVariantData(
             VariantId::fromString($game->variant_data_variant_id),
             VariantPowerIdCollection::build(
-                $game->variant_data_variant_power_ids->map(
+                ...$game->variant_data_variant_power_ids->map(
                     fn (string $variantPowerId) => VariantPowerId::fromString($variantPowerId)
                 )->toArray()
             ),
@@ -81,12 +84,11 @@ class LaravelGameRepository implements GameRepositoryInterface
             fn (PhaseModel $phase) => new Phase(
                 PhaseId::fromString($phase->id),
                 PhaseTypeEnum::from($phase->type),
-                // @phpstan-ignore-next-line
-                Option::fromNullable($phase->adjudication_time)->map(fn (string $adjudicationTime) => new DateTime($adjudicationTime)),
+                Option::fromNullable($phase->adjudication_time)->mapIntoOption(fn (string $adjudicationTime) => new DateTime($adjudicationTime)),
             ),
         );
 
-        $lastPhaseId = PhaseId::fromNullableString($game->currentPhase?->id);
+        $lastPhaseId = PhaseId::fromNullableString($game->lastPhase?->id);
 
         $phasesInfo = new PhasesInfo(
             Count::fromInt($game->phases->count()),
@@ -120,6 +122,8 @@ class LaravelGameRepository implements GameRepositoryInterface
                 Option::fromNullable($game->lastPhase?->powerData->where('power_id', $power->id)->firstOrFail()->applied_orders)
                     ->mapIntoOption(fn (array $orders) => OrderCollection::fromStringArray($orders))
             );
+
+            $powerCollection->push($power);
         }
 
         $loadedGame = new Game(
@@ -168,12 +172,14 @@ class LaravelGameRepository implements GameRepositoryInterface
             'game_start_timing_start_of_join_phase' => $game->gameStartTiming->startOfJoinPhase->toDateTimeString(),
             'game_start_timing_join_length' => $game->gameStartTiming->joinLength->toDays(),
             'game_start_timing_start_when_ready' => $game->gameStartTiming->startWhenReady,
-            'version' => $game->version->increment()->int(),
         ]);
 
         if ($oldVersion->isInitial()) {
+            $gameModel->version = $game->version->int();
             $gameModel->save();
         } else {
+            $game->version = $oldVersion->increment();
+            $gameModel->version = $game->version->int();
             $updateCount = GameModel::where('id', (string) $game->gameId)->where('version', $oldVersion->int())->update($gameModel->attributesToArray());
             if ($updateCount === 0) {
                 throw new NewerAggregateVersionAvailableException();
@@ -193,9 +199,17 @@ class LaravelGameRepository implements GameRepositoryInterface
                 'ordinal_number' => $game->phasesInfo->count->int(),
             ]);
 
-            $this->databaseManager->table($phaseModel->getTable())->updateOrInsert(
-                ['id' => (string) $phase->phaseId],
-                $phaseModel->attributesToArray()
+            PhaseModel::updateOrCreate(
+                [
+                    'id' => (string) $phase->phaseId,
+                ],
+                [
+                    'id' => (string) $phase->phaseId,
+                    'game_id' => (string) $game->gameId,
+                    'type' => $phase->phaseType->value,
+                    'adjudication_time' => $phase->adjudicationTime->mapOr(fn (DateTime $adjudicationTime) => $adjudicationTime->toDateTimeString(), null),
+                    'ordinal_number' => $game->phasesInfo->count->int(),
+                ]
             );
         }
     }
@@ -203,21 +217,20 @@ class LaravelGameRepository implements GameRepositoryInterface
     private function savePowers(Game $game): void
     {
         foreach ($game->powerCollection as $power) {
-            $powerModel = new PowerModel([
-                'id' => (string) $power->powerId,
-                'game_id' => (string) $game->gameId,
-                'variant_power_id' => (string) $power->variantPowerId,
-                'player_id' => $power->playerId->mapOr(fn (PlayerId $playerId) => (string) $playerId, null),
-            ]);
-            $this->databaseManager->table($powerModel->getTable())->updateOrInsert(
-                ['id' => (string) $power->powerId],
-                $powerModel->attributesToArray()
+            PowerModel::updateOrCreate(
+                [
+                    'id' => (string) $power->powerId,
+                ],
+                [
+                    'game_id' => (string) $game->gameId,
+                    'variant_power_id' => (string) $power->variantPowerId,
+                    'player_id' => $power->playerId->mapOr(fn (PlayerId $playerId) => (string) $playerId, null),
+                ]
             );
 
             if ($power->currentPhaseData->isSome()) {
                 $phasePowerData = $power->currentPhaseData->unwrap();
                 $phasePowerDataModel = new PhasePowerDataModel([
-                    'id' => (string) $power->powerId,
                     'phase_id' => (string) $game->phasesInfo->currentPhase->unwrap()->phaseId,
                     'power_id' => (string) $power->powerId,
                     'orders_needed' => $phasePowerData->ordersNeeded,
@@ -225,13 +238,24 @@ class LaravelGameRepository implements GameRepositoryInterface
                     'is_winner' => $phasePowerData->isWinner,
                     'supply_center_count' => $phasePowerData->supplyCenterCount->int(),
                     'unit_count' => $phasePowerData->unitCount->int(),
-                    'order_collection' => $phasePowerData->orderCollection->mapOr(fn (OrderCollection $orderCollection) => $orderCollection->toArray(), null),
+                    'order_collection' => $phasePowerData->orderCollection->mapOr(fn (OrderCollection $orderCollection) => $orderCollection->toStringArray(), null),
                     'applied_orders' => null,
                 ]);
 
-                $this->databaseManager->table($phasePowerDataModel->getTable())->updateOrInsert(
-                    ['id' => (string) $power->powerId],
-                    $phasePowerDataModel->attributesToArray()
+                PhasePowerDataModel::updateOrCreate(
+                    [
+                        'power_id' => (string) $power->powerId,
+                        'phase_id' => (string) $game->phasesInfo->currentPhase->unwrap()->phaseId,
+                    ],
+                    [
+                        'orders_needed' => $phasePowerData->ordersNeeded,
+                        'marked_as_ready' => $phasePowerData->markedAsReady,
+                        'is_winner' => $phasePowerData->isWinner,
+                        'supply_center_count' => $phasePowerData->supplyCenterCount->int(),
+                        'unit_count' => $phasePowerData->unitCount->int(),
+                        'order_collection' => $phasePowerData->orderCollection->mapOr(fn (OrderCollection $orderCollection) => $orderCollection->toStringArray(), null),
+                        'applied_orders' => $phasePowerData->orderCollection->mapOr(fn (OrderCollection $orderCollection) => $orderCollection->toStringArray(), null),
+                    ]
                 );
             }
 

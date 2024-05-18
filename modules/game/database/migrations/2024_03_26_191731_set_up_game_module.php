@@ -29,6 +29,7 @@ return new class() extends Migration {
             $table->ulid('player_id')->nullable();
             $table->ulid('game_id');
             $table->ulid('variant_power_id');
+            $table->timestamps();
         });
 
         Schema::create('game_phases', function (Blueprint $table) {
@@ -37,6 +38,7 @@ return new class() extends Migration {
             $table->unsignedInteger('ordinal_number');
             $table->string('type');
             $table->dateTime('adjudication_time')->nullable();
+            $table->timestamps();
         });
 
         Schema::create('game_phase_power_data', function (Blueprint $table) {
@@ -50,6 +52,7 @@ return new class() extends Migration {
             $table->unsignedInteger('unit_count');
             $table->json('order_collection')->nullable();
             $table->json('applied_orders')->nullable();
+            $table->timestamps();
         });
     }
 };

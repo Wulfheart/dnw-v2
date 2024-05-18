@@ -39,9 +39,9 @@ class LazyRule implements RuleInterface
 
     public function failingKeys(): array
     {
-        $keys = [$this->key];
+        $keys = [];
         if ($this->fails()) {
-            return $keys;
+            return [$this->key];
         }
 
         foreach ($this->dependentRules as $dependentRule) {

@@ -219,11 +219,25 @@ class GameBuilder
         foreach ($powersWithOrders as $power) {
             $this->game->submitOrders(
                 $power->playerId->unwrap(),
-                OrderCollection::fromStringArray([(string) $power->playerId->unwrap()]),
+                OrderCollection::fromStringArray(['ORDER: ' . (string) $power->playerId->unwrap()]),
                 $markAsReady,
                 new DateTime(),
             );
         }
+
+        return $this;
+    }
+
+    public function defeatPower(): self
+    {
+        $powerToDefeat = $this->game->powerCollection->filter(
+            fn (Power $power) => $power->ordersNeeded()
+        )->first();
+
+        $currentPhaseData = $powerToDefeat->currentPhaseData->unwrap();
+        $currentPhaseData->supplyCenterCount = Count::fromInt(0);
+        $currentPhaseData->unitCount = Count::fromInt(0);
+        $currentPhaseData->ordersNeeded = false;
 
         return $this;
     }

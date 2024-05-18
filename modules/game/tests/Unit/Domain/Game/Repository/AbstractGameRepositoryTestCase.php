@@ -29,6 +29,23 @@ abstract class AbstractGameRepositoryTestCase extends TestCase
         $eventDispatcher->assertDispatched(GameCreatedEvent::class, 1);
     }
 
+    public function test_advanced_mid_game(): void
+    {
+        $game = GameBuilder::initialize()
+            ->storeInitialAdjudication()
+            ->start()
+            ->submitOrders(true)
+            ->defeatPower()
+            ->build();
+        $repository = $this->buildRepository(new FakeEventDispatcher());
+
+        $repository->save($game);
+
+        $loadedGame = $repository->load($game->gameId);
+
+        $this->assertEquals($game, $loadedGame);
+    }
+
     public function test_errors_if_cannot_load(): void
     {
         $eventDispatcher = new FakeEventDispatcher();
