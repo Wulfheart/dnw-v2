@@ -9,17 +9,18 @@
     "license": "MIT",
     "require": {
         "php": "^8.3",
+        "dnw/adjudicator": "*",
         "dnw/foundation": "*",
         "dnw/game": "*",
-        "dnw/adjudicator": "*",
+        "filament/forms": "^3.2",
         "haydenpierce/class-finder": "^0.5.3",
         "internachi/modular": "^2.2",
         "laravel/framework": "^11.0",
         "laravel/tinker": "^2.9",
         "league/tactician": "^1.1",
         "livewire/livewire": "^3.4",
-        "symfony/property-access": "^7.0",
-        "std/option": "*"
+        "std/option": "*",
+        "symfony/property-access": "^7.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.0",

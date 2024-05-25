@@ -10,6 +10,7 @@ return new class() extends Migration {
         Schema::create('game_variants', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->string('name');
+            $table->string('description');
             $table->string('api_name');
             $table->unsignedInteger('default_supply_centers_to_win_count');
             $table->unsignedInteger('total_supply_center_count');

@@ -7,19 +7,18 @@
             </a>
             <div>
                 <div id="header-welcome">
-                    Welcome, <a href="#" profilelinkuserid="84364">wulfheart</a> (100<img
-                        src="#" alt="D" title="webDiplomacy points"><img
-                        src="#" width="12" height="12" alt="(I1)"
-                        title="0%: There is no information about the identity behind this account">
+                    Welcome, <a href="#" profilelinkuserid="84364">wulfheart</a> (100<img src="#"
+                        alt="D" title="webDiplomacy points"><img src="#" width="12" height="12"
+                        alt="(I1)" title="0%: There is no information about the identity behind this account">
                     <img style="" class="userOnlineImg" userid="84364" src="#" alt="Online"
-                         title="User currently logged on">)
+                        title="User currently logged on">)
                     <span class="logon">(<a href="#" class="light">Log off</a>)</span>
                 </div>
                 <div id="header-goto">
                     <div class="nav-wrap">
                         <div class="nav-tab"><a href="#" title="See what's happening">Home</a></div>
                         <div class="nav-tab"><a href="#"
-                                                title="The forum; chat, get help, help others, arrange games, discuss strategies">Forum</a>
+                                title="The forum; chat, get help, help others, arrange games, discuss strategies">Forum</a>
                         </div>
                         <div id="navSubMenu" class="clickable nav-tab">Search ▼
                             <div id="nav-drop">
@@ -32,16 +31,15 @@
                         <div id="navSubMenu" class="clickable nav-tab">Games ▼
                             <div id="nav-drop">
                                 <a href="#"
-                                   title="Game listings; a searchable list of the games on this server">New Games</a>
-                                <a href="#"
-                                   title="Open positions dropped by other players, free to claim">Open Games</a>
+                                    title="Game listings; a searchable list of the games on this server">New Games</a>
+                                <a href="#" title="Open positions dropped by other players, free to claim">Open
+                                    Games</a>
                                 <a href="#" title="Start up a new game">Start a New Game</a>
                                 <a href="#" title="Start up a new bots-only game">Start an AI/Bot
                                     Game</a>
                                 <a href="#" title="Start up a new bots-only game">Start a Sandbox
                                     Game</a>
-                                <a href="#"
-                                   title="View/Spectate games currently running">Active Games</a>
+                                <a href="#" title="View/Spectate games currently running">Active Games</a>
                                 <!-- <a href="ghostRatings.php" title="Ghost Ratings Information">Ghost Ratings</a> -->
                                 <a href="#" title="Information about tournaments on webDiplomacy">Tournaments</a>
                                 <a href="#" title="Information about tournaments on webDiplomacy">Hall of

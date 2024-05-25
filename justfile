@@ -1,5 +1,8 @@
 format:
     ./vendor/bin/pint
+
+format-blade:
+    npx blade-formatter --write --wrap=120 modules/**/*.blade.php
 analyse:
     ./vendor/bin/phpstan analyse -v
 test:

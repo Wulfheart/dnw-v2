@@ -9,6 +9,7 @@ use Dnw\Game\Core\Domain\Variant\Entity\VariantPower;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantId;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
 use Dnw\Game\Core\Domain\Variant\ValueObject\VariantApiName;
+use Dnw\Game\Core\Domain\Variant\ValueObject\VariantDescription;
 use Dnw\Game\Core\Domain\Variant\ValueObject\VariantName;
 use Dnw\Game\Core\Domain\Variant\ValueObject\VariantPower\VariantPowerApiName;
 use Dnw\Game\Core\Domain\Variant\ValueObject\VariantPower\VariantPowerName;
@@ -67,6 +68,7 @@ class VariantFactory
             VariantId::new(),
             VariantName::fromString('Standard'),
             VariantApiName::fromString('standard'),
+            VariantDescription::fromString('The standard variant of Diplomacy'),
             $variantPowerCollection,
             Count::fromInt(18),
             Count::fromInt(36),

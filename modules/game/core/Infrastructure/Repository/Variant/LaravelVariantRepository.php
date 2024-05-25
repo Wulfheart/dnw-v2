@@ -11,6 +11,7 @@ use Dnw\Game\Core\Domain\Variant\Repository\VariantRepositoryInterface;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantId;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
 use Dnw\Game\Core\Domain\Variant\ValueObject\VariantApiName;
+use Dnw\Game\Core\Domain\Variant\ValueObject\VariantDescription;
 use Dnw\Game\Core\Domain\Variant\ValueObject\VariantName;
 use Dnw\Game\Core\Domain\Variant\ValueObject\VariantPower\VariantPowerApiName;
 use Dnw\Game\Core\Domain\Variant\ValueObject\VariantPower\VariantPowerName;
@@ -44,6 +45,7 @@ class LaravelVariantRepository implements VariantRepositoryInterface
             VariantId::fromString($variantModel->id),
             VariantName::fromString($variantModel->name),
             VariantApiName::fromString($variantModel->api_name),
+            VariantDescription::fromString($variantModel->description),
             $variantPowerCollection,
             Count::fromInt($variantModel->default_supply_centers_to_win_count),
             Count::fromInt($variantModel->total_supply_center_count)
@@ -58,6 +60,7 @@ class LaravelVariantRepository implements VariantRepositoryInterface
                 [
                     'name' => $variant->name,
                     'api_name' => $variant->apiName,
+                    'description' => $variant->description,
                     'default_supply_centers_to_win_count' => $variant->defaultSupplyCentersToWinCount->int(),
                     'total_supply_center_count' => $variant->totalSupplyCentersCount->int(),
                 ]

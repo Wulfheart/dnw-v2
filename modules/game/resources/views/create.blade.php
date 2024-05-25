@@ -1,7 +1,11 @@
+<?php
+/** @var \Dnw\Game\Http\Controllers\CreateGame\CreateGameFormViewModel $view */
+?>
+
 <x-layout.registered>
     <div class="content-bare content-board-header content-title-header">
-        <div class="pageTitle">Create a new game</div>
-        <div class="pageDescription">Start a new game of Diplomacy that other players can join.</div>
+        <div class="pageTitle">{{ $view->create_game_title }}</div>
+        <div class="pageDescription">{{ $view->create_game_description }}</div>
     </div>
     <ul>
         @foreach ($errors->all() as $error)
@@ -11,41 +15,50 @@
 
     <div class="content content-follow-on">
         <div class="gameCreateShow">
-            <form method="POST" action="{{ route('game.store') }}">
-                <h3>Basic settings</h3>
+            <form method="POST" action="{{ $view->create_game_url }}">
                 @csrf
                 <p>
-                    <strong>Name:</strong>
+                    <strong>{{ $view->name_label }}:</strong>
                     <br>
-                    <input class="gameCreate" type="text" name="name">
+                    <input class="gameCreate" type="text" name="{{ $view->name_form_key }}">
                 </p>
                 <p>
-                    <strong>Phase Length:</strong>
+                    <strong>{{ $view->phase_length_in_minutes_label }}:</strong>
                     <br>
-                    <select class="gameCreate" name="phase_length_in_minutes">
-                        <option value="5">5 minutes</option>
-                        <option value="10">10 minutes</option>
-                        <option value="1440" selected>1 day</option>
+                    <select class="gameCreate" name="{{ $view->phase_length_in_minutes_form_key }}">
+                        @foreach ($view->phase_length_in_minutes_options as $option)
+                            <option value="{{ $option->value }}" @selected(old($view->phase_length_in_minutes_form_key, $option->selected))>
+                                {{ $option->label }}
+                            </option>
+                        @endforeach
                     </select>
                 </p>
                 <p>
-                    <strong>Variante:</strong>
+                    <strong>{{ $view->variant_id_label }}:</strong>
                     <br>
-                    <select class="gameCreate" name="variant_id">
-                        <option value="01HY5Y27GEEDVQ2B3VJK7SM7AW">Standard</option>
-                        <option value="01HY5Y2JYRQZRWQPSFNPW3ZHSB">1900</option>
+                    <select class="gameCreate" name="{{ $view->variant_id_form_key }}">
+                        @foreach ($view->variant_id_options as $option)
+                            <option value="{{ $option->value }}" @selected(old($view->variant_id_form_key, $option->selected))>
+                                {{ $option->name }}
+                            </option>
+                        @endforeach
                     </select>
                 </p>
 
-                <h3>Advanced Settings</h3>
+                <h3>{{ $view->advanced_settings_title }}</h3>
                 <p>
-                    <strong>Time to fill game:</strong>
+                    <strong>{{ $view->join_length_in_days_label }}:</strong>
                     <br>
-                    <select class="gameCreate" name="join_length_in_days">
-                        <option value="1">1 day</option>
-                        <option value="2">2 days</option>
-                        <option value="3">3 days</option>
-                        <option value="7" selected>7 days</option>
+                    <input type="number" class="gameCreate" min="4" max="200"
+                        name="{{ $view->join_length_in_days_form_key }}" value="{{ $view->join_length_in_days_default_value }}" size="4">
+                    <br>
+                    <br>
+                    <select class="gameCreate" name="{{ $view->start_when_ready_form_key }}">
+                        @foreach ($view->start_when_ready_options as $option)
+                            <option value="{{ $option->value }}" @selected(old($view->start_when_ready_form_key, $option->selected))>
+                                {{ $option->label }}
+                            </option>
+                        @endforeach
                     </select>
                 </p>
                 <p>
