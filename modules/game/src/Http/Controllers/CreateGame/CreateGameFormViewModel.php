@@ -5,10 +5,11 @@ namespace Dnw\Game\Http\Controllers\CreateGame;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
 use Dnw\Foundation\ViewModel\Option;
+use Dnw\Foundation\ViewModel\Options;
 use Dnw\Foundation\ViewModel\ViewModel;
 use Dnw\Game\Core\Application\Query\GetAllVariants\VariantDto;
 use Dnw\Game\Http\Controllers\CreateGame\ViewModel\VariantInformationOption;
-use Livewire\Wireable;
+use Dnw\Game\Http\Controllers\CreateGame\ViewModel\VariantInformationOptions;
 
 class CreateGameFormViewModel extends ViewModel
 {
@@ -19,15 +20,16 @@ class CreateGameFormViewModel extends ViewModel
         public string $advanced_settings_title,
         public string $name_label,
         public string $phase_length_in_minutes_label,
-        /** @var array<Option> $phase_length_in_minutes_options */
-        public array $phase_length_in_minutes_options,
+        public string $phase_length_in_minutes_description,
+        public Options $phase_length_in_minutes_options,
         public string $variant_id_label,
-        /** @var array<VariantInformationOption> $variant_id_options */
-        public array $variant_id_options,
+        public VariantInformationOptions $variant_id_options,
         public string $join_length_in_days_label,
         public int $join_length_in_days_default_value,
-        /** @var array<Option> $start_when_ready_options */
-        public array $start_when_ready_options,
+        public Options $start_when_ready_options,
+        public string $no_adjudication_weekdays_label,
+        public string $no_adjudication_weekdays_description,
+        public Options $no_adjudication_weekdays_options,
         public string $anonymous_orders_label,
         public string $random_power_assignments_label,
         public string $selected_power_id_label,
@@ -53,37 +55,53 @@ class CreateGameFormViewModel extends ViewModel
             return $date->diffAsCarbonInterval($baseDate)->forHumans();
         };
 
-        $phaseLengthInMinutesOptions = array_map(
-            fn (int $length) => new Option(
-                (string) $length,
-                $differFunction($length),
-                $length == CarbonInterface::HOURS_PER_DAY * CarbonInterface::MINUTES_PER_HOUR
-            ),
-            $allowedLengths
-        );
-
-        $variantInformationOptions = array_map(
-            fn (VariantDto $variantDto) => new VariantInformationOption(
-                (string) $variantDto->id,
-                $variantDto->name,
-                $variantDto->name === 'Standard',
-                $variantDto->description,
-                array_map(
-                    fn ($power) => new Option(
-                        (string) $power->variantPowerId,
-                        $power->name,
-                        false
-                    ),
-                    $variantDto->powers
+        $phaseLengthInMinutesOptions = new Options(
+            array_map(
+                fn (int $length) => new Option(
+                    (string) $length,
+                    $differFunction($length),
+                    $length == CarbonInterface::HOURS_PER_DAY * CarbonInterface::MINUTES_PER_HOUR
                 ),
-            ),
-            $variants
+                $allowedLengths
+            )
         );
 
-        $startWhenReadyOptions = [
+        $variantInformationOptions = new VariantInformationOptions(
+            array_map(
+                fn (VariantDto $variantDto) => new VariantInformationOption(
+                    (string) $variantDto->id,
+                    $variantDto->name,
+                    $variantDto->name === 'Standard',
+                    $variantDto->description,
+                    new Options(
+                        array_map(
+                            fn ($power) => new Option(
+                                (string) $power->variantPowerId,
+                                $power->name,
+                                false
+                            ),
+                            $variantDto->powers
+                        )
+                    ),
+                ),
+                $variants
+            ),
+        );
+
+        $noAdjudicationWeekdaysOptions = new Options([
+            new Option('1', 'Montag', false),
+            new Option('2', 'Dienstag', false),
+            new Option('3', 'Mittwoch', false),
+            new Option('4', 'Donnerstag', false),
+            new Option('5', 'Freitag', false),
+            new Option('6', 'Samstag', false),
+            new Option('0', 'Sonntag', false),
+        ]);
+
+        $startWhenReadyOptions = new Options([
             new Option('1', 'Das Spiel wird gestartet, sobald genug Spieler beigetreten sind.', true),
             new Option('0', 'Das Spiel startet erst, wenn das Start-Datum und die Start-Zeit erreicht ist.', false),
-        ];
+        ]);
 
         return new self(
             'Neues Spiel erstellen',
@@ -92,12 +110,16 @@ class CreateGameFormViewModel extends ViewModel
             'Erweiterte Einstellungen',
             'Name',
             'Phasenlänge',
+            'Wie lange dauert jede Phase?',
             $phaseLengthInMinutesOptions,
             'Variante',
             $variantInformationOptions,
             'Länge der Beitrittsphase in Tagen',
             10,
             $startWhenReadyOptions,
+            'Keine Spielauswertung an',
+            'Wähle die Wochentage aus, an denen keine Spielauswertung stattfinden soll.',
+            $noAdjudicationWeekdaysOptions,
             'Anonyme Befehle',
             'Zufällige Mächtezuweisungen',
             'Ausgewählte Macht',

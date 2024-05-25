@@ -12,13 +12,12 @@ use Dnw\Game\Core\Infrastructure\Adapter\RandomNumberGenerator;
 use Dnw\Game\Core\Infrastructure\Query\GetAllVariants\GetAllVariantsLaravelQueryHandler;
 use Dnw\Game\Core\Infrastructure\Repository\Game\LaravelGameRepository;
 use Dnw\Game\Core\Infrastructure\Repository\Variant\LaravelVariantRepository;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class GameServiceProvider extends ServiceProvider
 {
     /** @var array<class-string, class-string> */
-    public $bindings = [
+    public array $bindings = [
         VariantRepositoryInterface::class => LaravelVariantRepository::class,
         GameRepositoryInterface::class => LaravelGameRepository::class,
         TimeProviderInterface::class => LaravelTimeProvider::class,

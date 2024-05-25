@@ -1,3 +1,3 @@
 import './bootstrap';
-import './webdip/clickhandler';
-import 'htmx.org';
+// import './webdip/clickhandler';
+// import 'htmx.org';

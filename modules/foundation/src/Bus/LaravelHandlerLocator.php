@@ -2,9 +2,11 @@
 
 namespace Dnw\Foundation\Bus;
 
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Foundation\Application;
 use League\Tactician\Exception\MissingHandlerException;
 use League\Tactician\Handler\Locator\HandlerLocator;
+use Psr\Log\LoggerInterface;
 
 readonly class LaravelHandlerLocator implements HandlerLocator
 {
@@ -19,12 +21,14 @@ readonly class LaravelHandlerLocator implements HandlerLocator
     public function getHandlerForCommand($commandName)
     {
         $handlerClassName = $commandName . 'Handler';
-        if($this->application->has($handlerClassName)) {
+        try {
             return $this->application->make($handlerClassName);
+        } catch (BindingResolutionException $e) {
         }
 
         $handlerInterface = $commandName . 'HandlerInterface';
-        if($this->application->has($handlerInterface)) {
+        $isPresent = $this->application->has($handlerInterface);
+        if($isPresent) {
             return $this->application->make($handlerInterface);
         }
         throw new MissingHandlerException("Handler not found for command $commandName");

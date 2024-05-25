@@ -14,8 +14,10 @@ class VariantSeeder extends Seeder
     public function run(): void
     {
         $variant = VariantFactory::standard();
+        $colonial = VariantFactory::colonial();
 
         $variantRepo = app(VariantRepositoryInterface::class);
         $variantRepo->save($variant);
+        $variantRepo->save($colonial);
     }
 }

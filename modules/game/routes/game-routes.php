@@ -1,7 +1,7 @@
 <?php
 
-use Dnw\Game\Http\Controllers\CreateGame\CreateGameComponent;
 use Dnw\Game\Http\Controllers\CreateGame\CreateGameController;
+use Dnw\Game\Livewire\CreateGameComponent;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('games/')->middleware('web')->name('game.')->group(function () {
