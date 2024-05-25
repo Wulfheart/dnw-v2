@@ -50,7 +50,8 @@
                     <strong>{{ $view->join_length_in_days_label }}:</strong>
                     <br>
                     <input type="number" class="gameCreate" min="4" max="200"
-                        name="{{ $view->join_length_in_days_form_key }}" value="{{ $view->join_length_in_days_default_value }}" size="4">
+                        name="{{ $view->join_length_in_days_form_key }}"
+                        value="{{ $view->join_length_in_days_default_value }}" size="4">
                     <br>
                     <br>
                     <select class="gameCreate" name="{{ $view->start_when_ready_form_key }}">

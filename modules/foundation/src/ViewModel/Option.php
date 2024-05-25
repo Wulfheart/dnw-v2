@@ -2,7 +2,7 @@
 
 namespace Dnw\Foundation\ViewModel;
 
-class Option {
+class Option extends ViewModel{
     public function __construct(
         public string $value,
         public string $label,

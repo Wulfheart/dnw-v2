@@ -1,3 +1,3 @@
-<x-layout.registered>
+<x-layout>
 
-</x-layout.registered>
+</x-layout>

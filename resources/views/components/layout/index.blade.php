@@ -1,17 +1,33 @@
-<!doctype html>
-<html lang="en">
-
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <meta charset="utf-8">
+
+    <meta name="application-name" content="{{ config('app.name') }}">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{{ config('app.name') }}</title>
+
+    <link rel="preconnect" href="https://rsms.me/">
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
+
+    @filamentStyles
+    @vite('resources/css/app.css')
 </head>
 
-<body>
-    {{ $slot }}
-</body>
+<body class="antialiased min-h-screen">
+<x-nav.index />
+{{ $slot }}
 
+@filamentScripts
+@livewireScripts
+@vite('resources/js/app.js')
+</body>
 </html>
