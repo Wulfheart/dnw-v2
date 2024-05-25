@@ -1,8 +1,7 @@
 <?php
 
-namespace Dnw\Game\Http\Controllers\CreateGame\ViewModel;
+namespace Dnw\Game\ViewModel\CreateGame\ViewModel;
 
-use Dnw\Foundation\ViewModel\Option;
 use Dnw\Foundation\ViewModel\Options;
 use Dnw\Foundation\ViewModel\ViewModel;
 

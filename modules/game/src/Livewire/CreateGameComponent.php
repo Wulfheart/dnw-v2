@@ -7,8 +7,7 @@ use Dnw\Foundation\Identity\Id;
 use Dnw\Foundation\State\State;
 use Dnw\Game\Core\Application\Command\CreateGame\CreateGameCommand;
 use Dnw\Game\Core\Application\Query\GetAllVariants\GetAllVariantsQuery;
-use Dnw\Game\Http\Controllers\CreateGame\CreateGameFormViewModel;
-use Dnw\Game\Http\Controllers\CreateGame\CreateGameRequest;
+use Dnw\Game\ViewModel\CreateGame\CreateGameFormViewModel;
 use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\CheckboxList;
@@ -32,13 +31,21 @@ class CreateGameComponent extends Component implements HasForms
     use InteractsWithForms;
 
     public const string KEY_TITLE = 'title';
+
     public const string KEY_PHASE_LENGTH_IN_MINUTES = 'phase_length_in_minutes';
+
     public const string KEY_VARIANT_ID = 'variant_id';
+
     public const string KEY_RANDOM_POWER_ASSIGNMENTS = 'random_power_assignments';
+
     public const string KEY_SELECTED_POWER_ID = 'selected_power_id';
+
     public const string KEY_NO_ADJUDICATION_WEEKDAYS = 'no_adjudication_weekdays';
+
     public const string KEY_ADVANCED_OPTIONS = 'advanced_options';
+
     public const string KEY_JOIN_LENGTH_IN_DAYS = 'join_length_in_days';
+
     public const string KEY_START_WHEN_READY = 'start_when_ready';
 
     /**
@@ -144,7 +151,6 @@ class CreateGameComponent extends Component implements HasForms
         $state = new State($this->form->getState());
         $gameId = Id::generate();
 
-
         $command = new CreateGameCommand(
             $gameId,
             $state->get(self::KEY_TITLE),
@@ -163,7 +169,6 @@ class CreateGameComponent extends Component implements HasForms
         $this->bus->handle($command);
 
         $this->redirect('/', true);
-
 
     }
 

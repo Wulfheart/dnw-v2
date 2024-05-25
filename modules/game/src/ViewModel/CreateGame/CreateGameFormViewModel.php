@@ -1,6 +1,6 @@
 <?php
 
-namespace Dnw\Game\Http\Controllers\CreateGame;
+namespace Dnw\Game\ViewModel\CreateGame;
 
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
@@ -8,8 +8,8 @@ use Dnw\Foundation\ViewModel\Option;
 use Dnw\Foundation\ViewModel\Options;
 use Dnw\Foundation\ViewModel\ViewModel;
 use Dnw\Game\Core\Application\Query\GetAllVariants\VariantDto;
-use Dnw\Game\Http\Controllers\CreateGame\ViewModel\VariantInformationOption;
-use Dnw\Game\Http\Controllers\CreateGame\ViewModel\VariantInformationOptions;
+use Dnw\Game\ViewModel\CreateGame\ViewModel\VariantInformationOption;
+use Dnw\Game\ViewModel\CreateGame\ViewModel\VariantInformationOptions;
 
 class CreateGameFormViewModel extends ViewModel
 {

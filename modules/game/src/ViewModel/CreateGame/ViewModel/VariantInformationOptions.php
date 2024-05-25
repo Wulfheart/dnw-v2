@@ -1,16 +1,16 @@
 <?php
 
-namespace Dnw\Game\Http\Controllers\CreateGame\ViewModel;
+namespace Dnw\Game\ViewModel\CreateGame\ViewModel;
 
 use Dnw\Foundation\ViewModel\ViewModel;
+use InvalidArgumentException;
 
-class VariantInformationOptions extends ViewModel {
-
+class VariantInformationOptions extends ViewModel
+{
     public function __construct(
         /** @var array<VariantInformationOption> $options */
         public array $options = []
-    )
-    {
+    ) {
     }
 
     /**
@@ -45,6 +45,6 @@ class VariantInformationOptions extends ViewModel {
             }
         }
 
-        throw new \InvalidArgumentException("No option with value $value found");
+        throw new InvalidArgumentException("No option with value $value found");
     }
 }
