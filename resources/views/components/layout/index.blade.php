@@ -1,3 +1,5 @@
+@props(['active' => null])
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -29,7 +31,7 @@ use Dnw\Foundation\User\UserViewModel;
 
 /** @var UserViewModel $user */ ?>
 @if($user->isAuthenticated)
-<x-nav.index />
+<x-nav.index :active="$active"/>
 @endif
 {{ $slot }}
 

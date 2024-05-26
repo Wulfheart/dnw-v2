@@ -2,6 +2,7 @@
 
 namespace Dnw\Game\Livewire;
 
+use App\Navigation\NavigationItemNameEnum;
 use Dnw\Foundation\Bus\BusInterface;
 use Dnw\Foundation\Identity\Id;
 use Dnw\Foundation\State\State;
@@ -164,7 +165,8 @@ class CreateGameComponent extends Component implements HasForms
             $state->get(self::KEY_START_WHEN_READY, $this->view->start_when_ready_options->getSelectedValue()),
             Id::fromString($state->get(self::KEY_VARIANT_ID)),
             $state->get(self::KEY_RANDOM_POWER_ASSIGNMENTS),
-            Option::fromNullable($state->get(self::KEY_SELECTED_POWER_ID))->mapIntoOption(fn (string $id) => Id::fromString($id)),
+            Option::fromNullable($state->get(self::KEY_SELECTED_POWER_ID))
+                ->mapIntoOption(fn (string $id) => Id::fromString($id)),
             true,
             false,
             $state->get(self::KEY_NO_ADJUDICATION_WEEKDAYS, []),
@@ -179,6 +181,6 @@ class CreateGameComponent extends Component implements HasForms
 
     public function render(): View
     {
-        return view('game::create');
+        return view('game::create')->active(NavigationItemNameEnum::GAMES);
     }
 }
