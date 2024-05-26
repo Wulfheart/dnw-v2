@@ -2,8 +2,10 @@
 
 namespace Dnw\Foundation\Providers;
 
-use Dnw\Foundation\Identity\IdRule;
-use Illuminate\Support\Facades\Validator;
+use App\Models\User;
+use Dnw\Foundation\User\UserViewModel;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class FoundationServiceProvider extends ServiceProvider
@@ -15,5 +17,17 @@ class FoundationServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        View::composer('*', function ($view) {
+            /** @var ?User $user */
+            $user = Auth::user();
+
+            $isAuthenticated = Auth::check();
+            $userViewModel = new UserViewModel(
+                $isAuthenticated,
+                $user?->id,
+                $user?->name,
+            );
+            $view->with('user', $userViewModel);
+        });
     }
 }

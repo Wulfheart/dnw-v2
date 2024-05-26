@@ -19,6 +19,7 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Livewire\Component;
 use Std\Option;
@@ -151,6 +152,10 @@ class CreateGameComponent extends Component implements HasForms
         $state = new State($this->form->getState());
         $gameId = Id::generate();
 
+        // This is ensured by the middleware
+        /** @var string $id */
+        $id = Auth::id();
+
         $command = new CreateGameCommand(
             $gameId,
             $state->get(self::KEY_TITLE),
@@ -163,7 +168,7 @@ class CreateGameComponent extends Component implements HasForms
             true,
             false,
             $state->get(self::KEY_NO_ADJUDICATION_WEEKDAYS, []),
-            Id::generate(),
+            Id::fromString($id),
         );
 
         $this->bus->handle($command);
