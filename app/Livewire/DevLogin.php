@@ -9,7 +9,10 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 use Livewire\Component;
 
 /**
@@ -55,7 +58,7 @@ class DevLogin extends Component implements HasForms
         $this->redirect(route('game.create'), true);
     }
 
-    public function render()
+    public function render(): \Illuminate\Contracts\View\View|Application|Factory|View|\Illuminate\Contracts\Foundation\Application
     {
         return view('livewire.dev-login');
     }
