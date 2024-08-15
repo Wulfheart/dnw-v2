@@ -5,8 +5,6 @@ namespace App\Providers;
 use App\Navigation\NavigationItemNameEnum;
 use App\Navigation\NavigationItemsViewModel;
 use App\Navigation\NavigationItemViewModel;
-use Filament\Support\Colors\Color;
-use Filament\Support\Facades\FilamentColor;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades;
 use Illuminate\Support\ServiceProvider;
@@ -29,16 +27,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Model::unguard();
-
-        FilamentColor::register([
-            'danger' => Color::Red,
-            'gray' => Color::Gray,
-            'info' => Color::Blue,
-            'primary' => Color::Emerald,
-            'success' => Color::Green,
-            'warning' => Color::Amber,
-            'black' => Color::hex('#000000'),
-        ]);
 
         // Navigation
         Facades\View::composer('*', function (View $view) {

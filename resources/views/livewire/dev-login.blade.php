@@ -10,6 +10,7 @@
                     <p>
                         <strong>User:</strong>
                         <select class="gameCreate" wire:model="userId">
+                            <option value=""></option>
                             @foreach($users as $id => $name)
                                 <option value="{{ $id }}">{{ $name }}</option>
                             @endforeach
