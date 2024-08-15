@@ -20,6 +20,7 @@
         "laravel/tinker": "^2.9",
         "league/tactician": "^1.1",
         "livewire/livewire": "^3.5",
+        "mauricius/laravel-htmx": "^0.6.0",
         "std/option": "*",
         "symfony/property-access": "^7.0"
     },

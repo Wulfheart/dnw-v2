@@ -19,3 +19,7 @@ yarn-error.log
 /.vscode
 /build
 _ide_helper_models.php
+
+/caddy
+frankenphp
+frankenphp-worker.php

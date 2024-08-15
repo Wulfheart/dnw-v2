@@ -19,6 +19,7 @@
     },
     "dependencies": {
         "alpinejs": "^3.14.0",
-        "htmx.org": "^1.9.12"
+        "htmx.org": "^1.9.12",
+        "nprogress": "^0.2.0"
     }
 }

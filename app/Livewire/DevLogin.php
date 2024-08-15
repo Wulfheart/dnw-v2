@@ -3,57 +3,31 @@
 namespace App\Livewire;
 
 use App\Models\User;
-use Filament\Forms\Components\Actions;
-use Filament\Forms\Components\Actions\Action;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 
-/**
- * @property-read Form $form
- */
-class DevLogin extends Component implements HasForms
+class DevLogin extends Component
 {
-    use InteractsWithForms;
+    #[Validate('required|string')]
+    public string $userId = '';
 
     /**
-     * @var array<string, mixed>|null
+     * @var array<string, string>
      */
-    public ?array $data = [];
+    public array $users = [];
 
     public function mount(): void
     {
-        $this->form->fill();
-    }
-
-    public function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Select::make('user_id')
-                    ->label('User')
-                    ->options(User::all()->pluck('name', 'id'))
-                    ->searchable()
-                    ->required(),
-                Actions::make([
-                    Action::make('Login')
-                        ->label('Login')
-                        ->button()
-                        ->submit('login'),
-                ])->fullWidth(),
-            ])
-            ->statePath('data');
+        $this->users = User::all()->pluck('name', 'id')->toArray();
     }
 
     public function login(): void
     {
-        Auth::loginUsingId($this->form->getState()['user_id']);
+        Auth::loginUsingId($this->userId);
 
         $this->redirect(route('game.create'), true);
     }

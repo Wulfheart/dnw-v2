@@ -1,6 +1,27 @@
-<x-container>
-    <form wire:submit="login">
-        {{ $this->form }}
+<div>
+    <div class="content-bare content-board-header content-title-header">
+        <div class="pageTitle barAlt1">Dev Login</div>
+        <div class="pageDescription">This should only be used in development mode.</div>
+    </div>
+    <div>
+        <div class="content content-follow-on">
+            <div class="gameCreateShow">
+                <form wire:submit="login">
+                    <p>
+                        <strong>User:</strong>
+                        <select class="gameCreate" wire:model="userId">
+                            @foreach($users as $id => $name)
+                                <option value="{{ $id }}">{{ $name }}</option>
+                            @endforeach
+                        </select>
+                    </p>
+                    <p class="notice">
+                        <input class="green-Submit" type="submit" value="Login">
+                    </p>
+                </form>
+            </div>
+        </div>
 
-    </form>
-</x-container>
+    </div>
+
+</div>

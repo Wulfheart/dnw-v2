@@ -1,8 +1,8 @@
-/*@import "./webdip/global.css";*/
-/*@import "./webdip/gamepanel.css";*/
-/*@import "./webdip/home.css";*/
-/*@import "./webdip/notices.css";*/
+@import "./webdip/global.css";
+@import "./webdip/gamepanel.css";
+@import "./webdip/home.css";
+@import "./webdip/notices.css";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/*@tailwind base;*/
+/*@tailwind components;*/
+/*@tailwind utilities;*/
