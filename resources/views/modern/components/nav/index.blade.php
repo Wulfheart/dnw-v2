@@ -2,8 +2,8 @@
 
 <?php
 
-use App\Navigation\NavigationItemNameEnum;
-use App\Navigation\NavigationItemsViewModel;
+use App\ViewModel\Navigation\NavigationItemNameEnum;
+use App\ViewModel\Navigation\NavigationItemsViewModel;
 use Dnw\Foundation\User\UserViewModel;
 
 /** @var UserViewModel $user */
@@ -26,7 +26,8 @@ $currentlyActiveItem = $active ?? null;
                         <a href="#" class="flex flex-row items-end">
                             <div class="text-4xl font-black">DNW</div>
                             <div class="">
-                            <span class="inline-flex items-center px-2.5 py-0.5 mb-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
+                            <span
+                                class="inline-flex items-center px-2.5 py-0.5 mb-1 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
                                 alpha
                             </span>
                             </div>
@@ -36,7 +37,8 @@ $currentlyActiveItem = $active ?? null;
                     <!-- Navigation Links -->
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                         @foreach($navigation as $nav)
-                            <x-nav.link href="{{ $nav->route }}" :active="request()->routeIs($nav->route) || $currentlyActiveItem == $nav->name ">
+                            <x-nav.link href="{{ $nav->route }}"
+                                        :active="request()->routeIs($nav->route) || $currentlyActiveItem == $nav->name ">
                                 {{ $nav->label }}
                             </x-nav.link>
                         @endforeach
@@ -111,7 +113,8 @@ $currentlyActiveItem = $active ?? null;
         <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
             <div class="pt-2 pb-3 space-y-1">
                 @foreach($navigation as $nav)
-                    <x-nav.responsive-link href="{{ $nav->route }}" :active="request()->routeIs($nav->route) || $currentlyActiveItem == $nav->name ">
+                    <x-nav.responsive-link href="{{ $nav->route }}"
+                                           :active="request()->routeIs($nav->route) || $currentlyActiveItem == $nav->name ">
                         {{ $nav->label }}
                     </x-nav.responsive-link>
                 @endforeach

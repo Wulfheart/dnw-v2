@@ -6,4 +6,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/dev-login', DevLogin::class)->name('dev-login');
+Route::get('/dev-login', [\App\Http\Controllers\DevLoginController::class, 'show'])->name('dev-login');

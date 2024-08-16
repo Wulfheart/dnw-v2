@@ -1,4 +1,4 @@
-<div>
+<x-layout>
     <div class="content-bare content-board-header content-title-header">
         <div class="pageTitle barAlt1">Dev Login</div>
         <div class="pageDescription">This should only be used in development mode.</div>
@@ -6,14 +6,14 @@
     <div>
         <div class="content content-follow-on">
             <div class="gameCreateShow">
-                <form wire:submit="login">
+                <form>
                     <p>
                         <strong>User:</strong>
-                        <select class="gameCreate" wire:model="userId">
+                        <select class="gameCreate" name="">
                             <option value=""></option>
-                            @foreach($users as $id => $name)
-                                <option value="{{ $id }}">{{ $name }}</option>
-                            @endforeach
+    {{--                        @foreach($users as $id => $name)--}}
+    {{--                            <option value="{{ $id }}">{{ $name }}</option>--}}
+    {{--                        @endforeach--}}
                         </select>
                     </p>
                     <p class="notice">
@@ -25,4 +25,6 @@
 
     </div>
 
-</div>
+
+</x-layout>
+

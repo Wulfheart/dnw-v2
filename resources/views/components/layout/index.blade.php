@@ -6,10 +6,26 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ $title ?? config('app.name') }}</title>
+
+{{--    <meta--}}
+{{--        name="htmx-config"--}}
+{{--        content='{--}}
+{{--        "responseHandling":[--}}
+{{--            {"code":"204", "swap": false},--}}
+{{--            {"code":"[23]..", "swap": true},--}}
+{{--            {"code":"422", "swap": true},--}}
+{{--            {"code":"[45]..", "swap": true, "error":false},--}}
+{{--            {"code":"...", "swap": true}--}}
+{{--        ]--}}
+{{--    }'--}}
+{{--    />--}}
     @vite('resources/js/app.js')
     @vite('resources/css/app.css')
 </head>
-<body>
+<body hx-boost="true">
+<x-nav></x-nav>
     {{ $slot }}
+
+<x-htmx-error-handler />
 </body>
 </html>

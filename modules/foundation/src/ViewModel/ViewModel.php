@@ -3,14 +3,13 @@
 namespace Dnw\Foundation\ViewModel;
 
 use Illuminate\Contracts\Support\Arrayable;
-use Livewire\Wireable;
 use ReflectionClass;
 use ReflectionProperty;
 
 /**
  * @implements Arrayable<string, static>
  */
-abstract class ViewModel implements Arrayable, Wireable {
+abstract class ViewModel implements Arrayable {
 
     /**
      * @return array<string, static>

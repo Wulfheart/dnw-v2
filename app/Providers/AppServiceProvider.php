@@ -2,14 +2,18 @@
 
 namespace App\Providers;
 
-use App\Navigation\NavigationItemNameEnum;
-use App\Navigation\NavigationItemsViewModel;
-use App\Navigation\NavigationItemViewModel;
+use App\Models\User;
+use App\ViewModel\Navigation\NavigationItemNameEnum;
+use App\ViewModel\Navigation\NavigationItemsViewModel;
+use App\ViewModel\Navigation\NavigationItemViewModel;
+use App\ViewModel\User\UserInfoViewModel;
+use Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\View;
 use Livewire\Features\SupportPageComponents\PageComponentConfig;
+use Std\Option;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,22 +32,25 @@ class AppServiceProvider extends ServiceProvider
     {
         Model::unguard();
 
-        // Navigation
         Facades\View::composer('*', function (View $view) {
-            $view->with('navigation', new NavigationItemsViewModel([
-                new NavigationItemViewModel(NavigationItemNameEnum::GAMES, 'Spiele', 'games.index'),
-            ]));
-        });
-
-        View::macro('active', function (NavigationItemNameEnum $active) {
-            // @phpstan-ignore-next-line
-            if (! isset($this->layoutConfig)) {
-                $this->layoutConfig = new PageComponentConfig();
+            $isGuest = Auth::guest();
+            if($isGuest) {
+                $user = new UserInfoViewModel(
+                    isAuthenticated: false,
+                    name: Option::none(),
+                    id: Option::none(),
+                );
+            } else {
+                /** @var User $authUser */
+                $authUser = Auth::user();
+                $user = new UserInfoViewModel(
+                    isAuthenticated: true,
+                    name: Option::some($authUser->name),
+                    id: Option::some($authUser->id),
+                );
             }
-
-            $this->layoutConfig->mergeParams(['active' => $active]);
-
-            return $this;
+            $view->with('userInfo', $user);
         });
+
     }
 }
