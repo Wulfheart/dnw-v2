@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\DevLogin;
+namespace App\Http\DevLogin;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;

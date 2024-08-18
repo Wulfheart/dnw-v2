@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\DevLogin;
+namespace App\Http\DevLogin;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\ViewModel\DevLogin\DevLoginUserInfo;
 use App\ViewModel\DevLogin\DevLoginViewModel;
 use Illuminate\Http\Response;
 
-class DevLoginController extends Controller
+class DevLoginController
 {
     public function show(): Response
     {

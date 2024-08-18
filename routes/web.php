@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\DevLogin\DevLoginController;
+use App\Http\DevLogin\DevLoginController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
