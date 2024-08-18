@@ -7,9 +7,7 @@ class VariantsResponse implements AdjudicatorDataInterface
     public function __construct(
         /** @var array<Variant> */
         public array $variants,
-    ) {
-
-    }
+    ) {}
 
     public static function fromArray(array $array): VariantsResponse
     {

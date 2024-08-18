@@ -8,9 +8,7 @@ class Order implements AdjudicatorDataInterface
         public string $power,
         /** @var array<string> */
         public array $instructions,
-    ) {
-
-    }
+    ) {}
 
     public static function fromArray(array $array): self
     {

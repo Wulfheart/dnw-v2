@@ -22,9 +22,7 @@ class AdjudicateGameResponse implements AdjudicatorDataInterface
         /** @var array<string> */
         public array $winners,
         public string $winning_phase,
-    ) {
-
-    }
+    ) {}
 
     public function getPossibleOrdersByPowerName(string $powerName): PossibleOrder
     {

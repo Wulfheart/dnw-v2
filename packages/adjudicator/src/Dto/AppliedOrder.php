@@ -8,9 +8,7 @@ class AppliedOrder implements AdjudicatorDataInterface
         /** @var array<string> */
         public array $orders,
         public string $power,
-    ) {
-
-    }
+    ) {}
 
     public static function fromArray(array $array): AppliedOrder
     {

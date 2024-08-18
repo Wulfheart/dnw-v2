@@ -18,8 +18,7 @@ class GameAsserter
 {
     private function __construct(
         private readonly Game $game
-    ) {
-    }
+    ) {}
 
     public static function assertThat(Game $game): self
     {

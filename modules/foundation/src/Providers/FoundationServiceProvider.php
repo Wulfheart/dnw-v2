@@ -10,10 +10,7 @@ use Illuminate\Support\ServiceProvider;
 
 class FoundationServiceProvider extends ServiceProvider
 {
-    public function register()
-    {
-
-    }
+    public function register() {}
 
     public function boot(): void
     {

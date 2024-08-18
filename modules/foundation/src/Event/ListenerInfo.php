@@ -9,8 +9,7 @@ class ListenerInfo
         public string $class,
         public string $method,
         public bool $isAsync,
-    ) {
-    }
+    ) {}
 
     /**
      * @param  array<string, mixed>  $arr

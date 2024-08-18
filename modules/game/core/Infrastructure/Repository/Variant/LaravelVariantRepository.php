@@ -24,9 +24,7 @@ class LaravelVariantRepository implements VariantRepositoryInterface
 {
     public function __construct(
         private DatabaseManager $databaseManager
-    ) {
-
-    }
+    ) {}
 
     public function load(VariantId $variantId): Variant
     {

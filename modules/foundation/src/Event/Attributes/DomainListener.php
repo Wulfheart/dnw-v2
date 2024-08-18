@@ -9,7 +9,5 @@ class DomainListener
 {
     public function __construct(
         public readonly bool $async = false,
-    ) {
-
-    }
+    ) {}
 }

@@ -13,7 +13,5 @@ class GetGameQueryResult
         public string $name,
         public Id $variantId,
         public ?string $currentPhase,
-    ) {
-
-    }
+    ) {}
 }

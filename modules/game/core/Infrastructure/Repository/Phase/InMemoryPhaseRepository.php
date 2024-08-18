@@ -16,8 +16,7 @@ class InMemoryPhaseRepository implements PhaseRepositoryInterface
         private array $svgsWithOrders = [],
         /** @var array<string, string> $adjudicatedSvgs */
         private array $adjudicatedSvgs = []
-    ) {
-    }
+    ) {}
 
     public function loadEncodedState(PhaseId $phaseId): string
     {

@@ -15,7 +15,5 @@ class AdjudicationPowerDataDto
         public PowerId $powerId,
         public NewPhaseData $newPhaseData,
         public OrderCollection $appliedOrders,
-    ) {
-
-    }
+    ) {}
 }

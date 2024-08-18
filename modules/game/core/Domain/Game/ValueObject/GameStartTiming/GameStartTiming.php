@@ -10,9 +10,7 @@ class GameStartTiming
         public DateTime $startOfJoinPhase,
         public JoinLength $joinLength,
         public bool $startWhenReady,
-    ) {
-
-    }
+    ) {}
 
     public function joinLengthExceeded(DateTime $currentTime): bool
     {

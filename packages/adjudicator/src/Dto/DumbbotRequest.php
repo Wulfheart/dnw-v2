@@ -7,9 +7,7 @@ class DumbbotRequest implements AdjudicatorDataInterface
     public function __construct(
         public string $current_state_encoded,
         public string $power,
-    ) {
-
-    }
+    ) {}
 
     public static function fromArray(array $array): AdjudicatorDataInterface
     {

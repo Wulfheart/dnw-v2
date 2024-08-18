@@ -16,9 +16,7 @@ readonly class DomainEventProvider
     public function __construct(
         private string $cachePath,
         private Filesystem $filesystem
-    ) {
-
-    }
+    ) {}
 
     private const string BASE_MODULE_NAMESPACE = 'Dnw\\';
 

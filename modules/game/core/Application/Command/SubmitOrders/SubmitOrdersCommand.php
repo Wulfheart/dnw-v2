@@ -12,6 +12,5 @@ class SubmitOrdersCommand
         public bool $markedAsReady,
         /** @var array<string> $orders */
         public array $orders,
-    ) {
-    }
+    ) {}
 }

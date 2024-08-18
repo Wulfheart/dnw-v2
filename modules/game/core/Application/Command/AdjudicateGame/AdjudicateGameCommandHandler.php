@@ -26,8 +26,7 @@ readonly class AdjudicateGameCommandHandler
         private VariantRepositoryInterface $variantRepository,
         private PhaseRepositoryInterface $phaseRepository,
         private TimeProviderInterface $timeProvider,
-    ) {
-    }
+    ) {}
 
     public function handle(AdjudicateGameCommand $command): void
     {

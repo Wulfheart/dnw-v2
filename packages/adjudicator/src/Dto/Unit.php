@@ -8,9 +8,7 @@ class Unit implements AdjudicatorDataInterface
         /** @var array<string> */
         public array $possible_orders,
         public string $space,
-    ) {
-
-    }
+    ) {}
 
     public static function fromArray(array $array): Unit
     {

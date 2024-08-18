@@ -9,17 +9,17 @@ use Dnw\Game\Core\Application\Query\GetAllVariants\VariantDto;
 use Dnw\Game\Core\Application\Query\GetAllVariants\VariantPowerDto;
 use Dnw\Game\Core\Infrastructure\Model\Variant\VariantModel;
 
-class GetAllVariantsLaravelQueryHandler implements GetAllVariantsQueryHandlerInterface{
-
+class GetAllVariantsLaravelQueryHandler implements GetAllVariantsQueryHandlerInterface
+{
     public function handle(GetAllVariantsQuery $query): array
     {
         $variants = VariantModel::query()->with('powers')->orderBy('name')->get();
 
-        return $variants->map(fn(VariantModel $variantModel) => new VariantDto(
+        return $variants->map(fn (VariantModel $variantModel) => new VariantDto(
             Id::fromString($variantModel->id),
             $variantModel->name,
             $variantModel->description,
-            $variantModel->powers->map(fn($power) => new VariantPowerDto(
+            $variantModel->powers->map(fn ($power) => new VariantPowerDto(
                 Id::fromString($power->id),
                 $power->name,
             ))->toArray(),

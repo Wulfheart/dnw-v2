@@ -27,8 +27,7 @@ readonly class CreateGameCommandHandler
         private TimeProviderInterface $timeProvider,
         private GameRepositoryInterface $gameRepository,
         private RandomNumberGeneratorInterface $randomNumberGenerator,
-    ) {
-    }
+    ) {}
 
     public function handle(
         CreateGameCommand $command

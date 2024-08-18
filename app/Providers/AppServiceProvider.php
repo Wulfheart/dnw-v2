@@ -3,16 +3,12 @@
 namespace App\Providers;
 
 use App\Models\User;
-use App\ViewModel\Navigation\NavigationItemNameEnum;
-use App\ViewModel\Navigation\NavigationItemsViewModel;
-use App\ViewModel\Navigation\NavigationItemViewModel;
 use App\ViewModel\User\UserInfoViewModel;
 use Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\View;
-use Livewire\Features\SupportPageComponents\PageComponentConfig;
 use Std\Option;
 
 class AppServiceProvider extends ServiceProvider
@@ -34,7 +30,7 @@ class AppServiceProvider extends ServiceProvider
 
         Facades\View::composer('*', function (View $view) {
             $isGuest = Auth::guest();
-            if($isGuest) {
+            if ($isGuest) {
                 $user = new UserInfoViewModel(
                     isAuthenticated: false,
                     name: Option::none(),

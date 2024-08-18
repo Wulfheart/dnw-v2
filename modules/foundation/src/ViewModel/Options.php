@@ -2,15 +2,14 @@
 
 namespace Dnw\Foundation\ViewModel;
 
-class Options extends ViewModel {
+class Options extends ViewModel
+{
     /**
-     * @param array<Option> $options
+     * @param  array<Option>  $options
      */
     public function __construct(
         public array $options = []
-    )
-    {
-    }
+    ) {}
 
     public function getSelectedValue(): ?string
     {

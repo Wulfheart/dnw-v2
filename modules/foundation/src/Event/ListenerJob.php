@@ -9,9 +9,7 @@ class ListenerJob
     public function __construct(
         private ListenerInfo $listenerInfo,
         private object $payload
-    ) {
-
-    }
+    ) {}
 
     public function displayName(): string
     {

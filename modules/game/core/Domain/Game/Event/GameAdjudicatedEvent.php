@@ -11,6 +11,5 @@ class GameAdjudicatedEvent
 {
     public function __construct(
         public Id $gameId,
-    ) {
-    }
+    ) {}
 }

@@ -8,9 +8,7 @@ class PossibleOrder implements AdjudicatorDataInterface
         public string $power,
         /** @var array<Unit> */
         public array $units,
-    ) {
-
-    }
+    ) {}
 
     public static function fromArray(array $array): PossibleOrder
     {

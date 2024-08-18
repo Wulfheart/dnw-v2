@@ -6,14 +6,12 @@ use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Foundation\Application;
 use League\Tactician\Exception\MissingHandlerException;
 use League\Tactician\Handler\Locator\HandlerLocator;
-use Psr\Log\LoggerInterface;
 
 readonly class LaravelHandlerLocator implements HandlerLocator
 {
     public function __construct(
         private Application $application,
-    ) {
-    }
+    ) {}
 
     /**
      * {@inheritDoc}
@@ -28,7 +26,7 @@ readonly class LaravelHandlerLocator implements HandlerLocator
 
         $handlerInterface = $commandName . 'HandlerInterface';
         $isPresent = $this->application->has($handlerInterface);
-        if($isPresent) {
+        if ($isPresent) {
             return $this->application->make($handlerInterface);
         }
         throw new MissingHandlerException("Handler not found for command $commandName");

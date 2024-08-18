@@ -13,6 +13,5 @@ class InitialAdjudicationPowerDataDto
     public function __construct(
         public PowerId $powerId,
         public NewPhaseData $phasePowerData,
-    ) {
-    }
+    ) {}
 }

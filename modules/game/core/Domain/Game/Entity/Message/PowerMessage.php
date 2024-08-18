@@ -14,7 +14,5 @@ class PowerMessage
         public MessageContent $content,
         public PowerId $sender,
         public DateTime $sentAt,
-    ) {
-
-    }
+    ) {}
 }

@@ -14,7 +14,5 @@ class OrdersSubmittedEvent
         public Id $phaseId,
         public Id $powerId,
         public bool $markedAsReady,
-    ) {
-
-    }
+    ) {}
 }

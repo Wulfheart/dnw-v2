@@ -10,6 +10,5 @@ class UserViewModel extends ViewModel
         public bool $isAuthenticated,
         public ?string $id,
         public ?string $name
-    ) {
-    }
+    ) {}
 }

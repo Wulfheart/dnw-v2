@@ -9,7 +9,5 @@ class GameFinishedEvent
     public function __construct(
         public Id $gameId,
         public int $phaseNumber,
-    ) {
-
-    }
+    ) {}
 }

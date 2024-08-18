@@ -9,9 +9,7 @@ class Variant implements AdjudicatorDataInterface
         public string $name,
         /** @var array<string> */
         public array $powers,
-    ) {
-
-    }
+    ) {}
 
     public static function fromArray(array $array): Variant
     {

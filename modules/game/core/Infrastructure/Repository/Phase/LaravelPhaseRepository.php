@@ -18,8 +18,7 @@ class LaravelPhaseRepository implements PhaseRepositoryInterface
 
     public function __construct(
         private Filesystem $filesystem,
-    ) {
-    }
+    ) {}
 
     public function loadEncodedState(PhaseId $phaseId): string
     {

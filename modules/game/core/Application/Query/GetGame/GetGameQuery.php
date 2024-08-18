@@ -8,6 +8,5 @@ class GetGameQuery
 {
     public function __construct(
         public Id $id
-    ) {
-    }
+    ) {}
 }

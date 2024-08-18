@@ -12,6 +12,5 @@ class PlayerLeftEvent
     public function __construct(
         public Id $gameId,
         public Id $playerId,
-    ) {
-    }
+    ) {}
 }

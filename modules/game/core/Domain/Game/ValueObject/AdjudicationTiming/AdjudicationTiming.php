@@ -10,8 +10,7 @@ class AdjudicationTiming
     public function __construct(
         public PhaseLength $phaseLength,
         public NoAdjudicationWeekdayCollection $noAdjudicationWeekdays,
-    ) {
-    }
+    ) {}
 
     public function calculateNextAdjudication(DateTime $currentTime): DateTime
     {

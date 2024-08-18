@@ -12,7 +12,5 @@ class JoinGameCommand
         public Id $userId,
         /** @var Option<Id> $variantPowerId */
         public Option $variantPowerId,
-    ) {
-
-    }
+    ) {}
 }

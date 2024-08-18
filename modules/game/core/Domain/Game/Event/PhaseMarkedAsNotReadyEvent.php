@@ -13,7 +13,5 @@ class PhaseMarkedAsNotReadyEvent
         public Id $gameId,
         public Id $phaseId,
         public Id $powerId,
-    ) {
-
-    }
+    ) {}
 }

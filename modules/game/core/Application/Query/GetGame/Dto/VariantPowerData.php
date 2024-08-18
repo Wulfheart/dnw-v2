@@ -9,7 +9,5 @@ class VariantPowerData
     public function __construct(
         public Id $variantPowerId,
         public Id $playerId,
-    ) {
-
-    }
+    ) {}
 }

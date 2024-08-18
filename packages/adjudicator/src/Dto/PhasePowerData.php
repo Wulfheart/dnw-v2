@@ -9,9 +9,7 @@ class PhasePowerData implements AdjudicatorDataInterface
         public string $power,
         public int $supply_center_count,
         public int $unit_count,
-    ) {
-
-    }
+    ) {}
 
     public static function fromArray(array $array): PhasePowerData
     {

@@ -9,6 +9,5 @@ class LeaveGameCommand
     public function __construct(
         public Id $gameId,
         public Id $userId,
-    ) {
-    }
+    ) {}
 }

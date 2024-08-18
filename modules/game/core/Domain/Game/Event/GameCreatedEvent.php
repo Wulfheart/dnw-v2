@@ -12,7 +12,5 @@ class GameCreatedEvent
     public function __construct(
         public Id $gameId,
         public Id $creatorId,
-    ) {
-
-    }
+    ) {}
 }

@@ -10,9 +10,7 @@ readonly class LeaveGameCommandHandler
 {
     public function __construct(
         private GameRepositoryInterface $gameRepository
-    ) {
-
-    }
+    ) {}
 
     public function handle(LeaveGameCommand $command): void
     {

@@ -28,9 +28,7 @@ class GameBuilder
     private function __construct(
         private Game $game,
         private bool $releaseEventsBeforeBuild = true,
-    ) {
-
-    }
+    ) {}
 
     public static function initialize(
         bool $randomAssignments = false,

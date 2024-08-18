@@ -18,8 +18,7 @@ class GameStateMachine
 
     public function __construct(
         private string $currentState,
-    ) {
-    }
+    ) {}
 
     public static function initialize(): self
     {

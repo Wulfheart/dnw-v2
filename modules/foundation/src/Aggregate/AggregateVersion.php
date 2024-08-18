@@ -8,8 +8,7 @@ readonly class AggregateVersion
 
     public function __construct(
         private readonly int $version
-    ) {
-    }
+    ) {}
 
     public static function initial(): AggregateVersion
     {

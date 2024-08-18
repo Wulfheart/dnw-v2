@@ -14,6 +14,5 @@ class VariantPower
         public VariantPowerName $name,
         public VariantPowerApiName $apiName,
         public Color $color,
-    ) {
-    }
+    ) {}
 }

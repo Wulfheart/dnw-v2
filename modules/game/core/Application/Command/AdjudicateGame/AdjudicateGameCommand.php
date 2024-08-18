@@ -8,7 +8,5 @@ readonly class AdjudicateGameCommand
 {
     public function __construct(
         public Id $gameId
-    ) {
-
-    }
+    ) {}
 }

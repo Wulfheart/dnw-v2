@@ -13,9 +13,7 @@ readonly class RetryIfNewerAggregateVersionIsAvailableMiddleware implements Midd
 
     public function __construct(
         private SleepProviderInterface $sleepProvider,
-    ) {
-
-    }
+    ) {}
 
     public function execute($command, callable $next)
     {

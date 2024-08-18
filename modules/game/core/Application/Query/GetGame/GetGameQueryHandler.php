@@ -11,8 +11,7 @@ class GetGameQueryHandler
 {
     public function __construct(
         private GameRepositoryInterface $gameRepository,
-    ) {
-    }
+    ) {}
 
     public function handle(GetGameQuery $query): GetGameQueryResult
     {

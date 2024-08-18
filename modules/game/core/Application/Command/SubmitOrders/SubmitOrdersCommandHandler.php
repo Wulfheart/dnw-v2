@@ -13,9 +13,7 @@ class SubmitOrdersCommandHandler
     public function __construct(
         private GameRepositoryInterface $gameRepository,
         private TimeProviderInterface $timeProvider,
-    ) {
-
-    }
+    ) {}
 
     public function handle(SubmitOrdersCommand $command): void
     {

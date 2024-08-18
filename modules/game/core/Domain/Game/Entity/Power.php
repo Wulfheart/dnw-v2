@@ -21,9 +21,7 @@ class Power
         public Option $currentPhaseData,
         /** @var Option<OrderCollection> $appliedOrders */
         public Option $appliedOrders,
-    ) {
-
-    }
+    ) {}
 
     public function assign(PlayerId $playerId): void
     {

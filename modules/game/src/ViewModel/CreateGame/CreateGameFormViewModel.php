@@ -34,9 +34,7 @@ class CreateGameFormViewModel extends ViewModel
         public string $selected_power_id_label,
         public string $is_ranked_label,
         public string $submit_button_label,
-    ) {
-
-    }
+    ) {}
 
     /**
      * @param  array<VariantDto>  $variants

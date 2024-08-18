@@ -9,8 +9,8 @@ use ReflectionProperty;
 /**
  * @implements Arrayable<string, static>
  */
-abstract class ViewModel implements Arrayable {
-
+abstract class ViewModel implements Arrayable
+{
     /**
      * @return array<string, static>
      */
@@ -26,12 +26,13 @@ abstract class ViewModel implements Arrayable {
     {
         $reflectionClass = new ReflectionClass(static::class);
         $properties = $reflectionClass->getProperties(
-            ReflectionProperty::IS_PUBLIC);
+            ReflectionProperty::IS_PUBLIC
+        );
         $data = [];
 
         foreach ($properties as $property) {
             // For now only support public properties as they should all be public anyway
-            if($property->isPublic()) {
+            if ($property->isPublic()) {
                 $data[$property->getName()] = $property->getValue($this);
             }
         }
@@ -40,17 +41,18 @@ abstract class ViewModel implements Arrayable {
     }
 
     /**
-     * @param array<string, mixed> $value
+     * @param  array<string, mixed>  $value
      */
-    public static function fromLivewire($value):static
+    public static function fromLivewire($value): static
     {
         $reflectionClass = new ReflectionClass(static::class);
         $properties = $reflectionClass->getProperties(
-            ReflectionProperty::IS_PUBLIC);
+            ReflectionProperty::IS_PUBLIC
+        );
         $object = $reflectionClass->newInstanceWithoutConstructor();
 
         foreach ($properties as $property) {
-            if($property->isPublic()) {
+            if ($property->isPublic()) {
                 $property->setValue($object, $value[$property->getName()]);
             }
         }

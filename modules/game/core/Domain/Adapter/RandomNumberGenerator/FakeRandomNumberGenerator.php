@@ -6,8 +6,7 @@ class FakeRandomNumberGenerator implements RandomNumberGeneratorInterface
 {
     public function __construct(
         private readonly int $number,
-    ) {
-    }
+    ) {}
 
     public function generate(int $min, int $max): int
     {

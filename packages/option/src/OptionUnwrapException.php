@@ -6,6 +6,4 @@ namespace Std;
 
 use Exception;
 
-final class OptionUnwrapException extends Exception
-{
-}
+final class OptionUnwrapException extends Exception {}

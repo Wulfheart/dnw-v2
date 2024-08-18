@@ -15,8 +15,7 @@ class PhasesInfo
         public Option $currentPhase,
         /** @var Option<PhaseId> $lastPhaseId */
         public Option $lastPhaseId,
-    ) {
-    }
+    ) {}
 
     public static function initialize(): self
     {

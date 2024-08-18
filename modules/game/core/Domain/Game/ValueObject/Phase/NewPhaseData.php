@@ -14,7 +14,5 @@ class NewPhaseData
         public bool $isWinner,
         public Count $supplyCenterCount,
         public Count $unitCount,
-    ) {
-
-    }
+    ) {}
 }

@@ -15,7 +15,5 @@ class EndConditions
         public Option $maximumNumberOfRounds,
         /** @var Option<Count> $numberOfSupplyCentersToWin */
         public Option $numberOfSupplyCentersToWin
-    ) {
-
-    }
+    ) {}
 }

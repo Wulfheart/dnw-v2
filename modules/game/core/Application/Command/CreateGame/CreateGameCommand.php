@@ -22,7 +22,5 @@ readonly class CreateGameCommand
         /** @var array<int> $weekdaysWithoutAdjudication */
         public array $weekdaysWithoutAdjudication,
         public Id $creatorId,
-    ) {
-
-    }
+    ) {}
 }

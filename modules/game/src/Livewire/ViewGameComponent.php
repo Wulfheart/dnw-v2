@@ -15,7 +15,5 @@ class ViewGameComponent extends Component
         $this->bus = $bus;
     }
 
-    public function mount(string $id): void
-    {
-    }
+    public function mount(string $id): void {}
 }

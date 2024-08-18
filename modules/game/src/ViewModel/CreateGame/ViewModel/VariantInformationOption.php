@@ -13,7 +13,5 @@ class VariantInformationOption extends ViewModel
         public bool $selected,
         public string $description,
         public Options $variant_powers,
-    ) {
-
-    }
+    ) {}
 }

@@ -11,6 +11,5 @@ class GameInitializedEvent
 {
     public function __construct(
         public Id $gameId,
-    ) {
-    }
+    ) {}
 }

@@ -34,6 +34,5 @@
             document.getElementById('htmx-error-modal-content').innerHTML = '';
         }
 
-        });
     </script>
 </div>

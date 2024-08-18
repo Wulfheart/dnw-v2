@@ -74,6 +74,7 @@ class VariantFactory
             Count::fromInt(36),
         );
     }
+
     public static function colonial(): Variant
     {
         $variantPowerCollection = new VariantPowerCollection([

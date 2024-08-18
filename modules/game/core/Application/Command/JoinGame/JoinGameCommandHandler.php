@@ -16,9 +16,7 @@ readonly class JoinGameCommandHandler
         private GameRepositoryInterface $gameRepository,
         private TimeProviderInterface $timeProvider,
         private RandomNumberGeneratorInterface $randomNumberGenerator,
-    ) {
-
-    }
+    ) {}
 
     public function handle(JoinGameCommand $command): void
     {

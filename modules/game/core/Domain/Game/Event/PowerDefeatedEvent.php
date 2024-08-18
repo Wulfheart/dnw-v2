@@ -13,7 +13,5 @@ class PowerDefeatedEvent
         public Id $gameId,
         public Id $powerId,
         public int $phaseNumber,
-    ) {
-
-    }
+    ) {}
 }

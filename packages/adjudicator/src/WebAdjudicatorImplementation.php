@@ -21,9 +21,7 @@ readonly class WebAdjudicatorImplementation implements AdjudicatorService
         private StreamFactoryInterface $streamFactory,
         private UriInterface $baseUrl,
         private JsonHandlerInterface $jsonHandler,
-    ) {
-
-    }
+    ) {}
 
     public function getVariants(): VariantsResponse
     {

@@ -10,8 +10,7 @@ final class Option
     private function __construct(
         private mixed $value,
         private bool $ok,
-    ) {
-    }
+    ) {}
 
     /**
      * @template S

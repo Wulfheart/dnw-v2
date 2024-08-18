@@ -10,8 +10,7 @@ class VariantInformationOptions extends ViewModel
     public function __construct(
         /** @var array<VariantInformationOption> $options */
         public array $options = []
-    ) {
-    }
+    ) {}
 
     /**
      * @return array<string, string>

@@ -4,7 +4,8 @@ namespace Dnw\Game\Core\Domain\Variant\ValueObject;
 
 use InvalidArgumentException;
 
-class VariantDescription {
+class VariantDescription
+{
     private function __construct(
         private string $value
     ) {

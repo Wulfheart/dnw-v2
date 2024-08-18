@@ -12,9 +12,7 @@ readonly class LaravelEventDispatcher implements EventDispatcherInterface
         /** @var array<class-string, array<ListenerInfo>> */
         private array $events,
         private Application $application,
-    ) {
-
-    }
+    ) {}
 
     public function dispatch(object $event): void
     {

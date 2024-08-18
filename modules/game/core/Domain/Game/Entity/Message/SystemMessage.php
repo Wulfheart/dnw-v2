@@ -12,7 +12,5 @@ class SystemMessage
         public MessageId $id,
         public MessageContent $content,
         public DateTime $sentAt,
-    ) {
-
-    }
+    ) {}
 }

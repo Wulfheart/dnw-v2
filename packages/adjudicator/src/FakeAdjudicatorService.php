@@ -17,9 +17,7 @@ class FakeAdjudicatorService implements AdjudicatorService
         /** @var ?array<string, AdjudicateGameResponse> $adjudicateGameResponses */
         private ?array $adjudicateGameResponses = null,
         private ?VariantsResponse $variants = null,
-    ) {
-
-    }
+    ) {}
 
     public function getVariants(): VariantsResponse
     {

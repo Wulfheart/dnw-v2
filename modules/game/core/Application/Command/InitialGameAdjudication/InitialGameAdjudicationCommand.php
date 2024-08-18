@@ -8,7 +8,5 @@ class InitialGameAdjudicationCommand
 {
     public function __construct(
         public Id $gameId
-    ) {
-
-    }
+    ) {}
 }

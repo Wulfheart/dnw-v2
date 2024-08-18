@@ -11,7 +11,5 @@ class GameJoinTimeExceededEvent
 {
     public function __construct(
         public Id $gameId,
-    ) {
-
-    }
+    ) {}
 }

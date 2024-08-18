@@ -19,7 +19,5 @@ class PhasePowerData
         public Count $unitCount,
         /** @var Option<OrderCollection> $orderCollection */
         public Option $orderCollection,
-    ) {
-
-    }
+    ) {}
 }

@@ -23,9 +23,7 @@ class MessageRoom
         public MessageRoomMemberCollection $memberCollection,
         public bool $isGroup,
         public Count $messagesCount,
-    ) {
-
-    }
+    ) {}
 
     public function addMessage(PowerMessage|SystemMessage $message): void
     {

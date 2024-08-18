@@ -14,9 +14,7 @@ class Phase
         public PhaseTypeEnum $phaseType,
         /** @var Option<DateTime> $adjudicationTime */
         public Option $adjudicationTime,
-    ) {
-
-    }
+    ) {}
 
     public function adjudicationTimeIsExpired(DateTime $currentTime): bool
     {

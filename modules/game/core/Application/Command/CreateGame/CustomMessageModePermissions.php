@@ -13,7 +13,5 @@ class CustomMessageModePermissions
         public bool $allowRetreatMessages,
         public bool $allowPreGameMessages,
         public bool $allowPostGameMessages,
-    ) {
-
-    }
+    ) {}
 }

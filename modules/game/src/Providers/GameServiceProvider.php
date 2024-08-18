@@ -25,11 +25,7 @@ class GameServiceProvider extends ServiceProvider
         GetAllVariantsQueryHandlerInterface::class => GetAllVariantsLaravelQueryHandler::class,
     ];
 
-    public function register()
-    {
-    }
+    public function register() {}
 
-    public function boot(): void
-    {
-    }
+    public function boot(): void {}
 }

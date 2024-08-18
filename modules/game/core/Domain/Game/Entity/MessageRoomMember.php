@@ -11,7 +11,5 @@ class MessageRoomMember
         public MessageRoomMemberId $id,
         public PowerId $powerId,
         public bool $isOwner,
-    ) {
-
-    }
+    ) {}
 }

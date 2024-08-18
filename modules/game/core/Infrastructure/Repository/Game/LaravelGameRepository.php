@@ -44,8 +44,7 @@ class LaravelGameRepository implements GameRepositoryInterface
     public function __construct(
         private EventDispatcherInterface $eventDispatcher,
         private DatabaseManager $databaseManager
-    ) {
-    }
+    ) {}
 
     public function load(GameId $gameId): Game
     {

@@ -9,9 +9,7 @@ class AdjudicateGameRequest implements AdjudicatorDataInterface
         /** @var array<Order> */
         public array $orders,
         public int $scs_to_win,
-    ) {
-
-    }
+    ) {}
 
     public static function fromArray(array $array): self
     {
