@@ -1,5 +1,8 @@
 <?php
-    /** @var \App\ViewModel\DevLogin\DevLoginViewModel $viewModel */
+
+use App\ViewModel\DevLogin\DevLoginViewModel;
+
+/** @var DevLoginViewModel $viewModel */
 ?>
 
 <x-layout>
@@ -9,22 +12,18 @@
     </div>
     <div>
         <div class="content content-follow-on">
-            <div class="gameCreateShow">
-                <form>
-                    <p>
-                        <strong>User:</strong>
-                        <select class="gameCreate" name="">
-                            <option value=""></option>
-                            @foreach($viewModel->users as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }}</option>
-                            @endforeach
-                        </select>
-                    </p>
-                    <p class="notice">
-                        <input class="green-Submit" type="submit" value="Login">
-                    </p>
-                </form>
-            </div>
+            <form action="{{ $viewModel->endpoint }}" method="POST" class="web">
+                @csrf
+                <x-input label="User" name="userId">
+                    <select name="userId">
+                        <option value=""></option>
+                        @foreach($viewModel->users as $user)
+                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                        @endforeach
+                    </select>
+                </x-input>
+                <input type="submit" value="Login">
+            </form>
         </div>
 
     </div>

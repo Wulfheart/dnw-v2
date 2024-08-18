@@ -19,7 +19,8 @@ class DevLoginController
         })->toArray();
 
         $viewModel = new DevLoginViewModel(
-            $users
+            $users,
+            route('dev-login.login')
         );
 
         return response()->view('dev-login', ['viewModel' => $viewModel]);
@@ -28,6 +29,8 @@ class DevLoginController
 
     public function login(DevLoginRequest $request): Response
     {
+        dd('HERE');
+
         return response();
     }
 }

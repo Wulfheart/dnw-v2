@@ -7,25 +7,12 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{{ $title ?? config('app.name') }}</title>
 
-{{--    <meta--}}
-{{--        name="htmx-config"--}}
-{{--        content='{--}}
-{{--        "responseHandling":[--}}
-{{--            {"code":"204", "swap": false},--}}
-{{--            {"code":"[23]..", "swap": true},--}}
-{{--            {"code":"422", "swap": true},--}}
-{{--            {"code":"[45]..", "swap": true, "error":false},--}}
-{{--            {"code":"...", "swap": true}--}}
-{{--        ]--}}
-{{--    }'--}}
-{{--    />--}}
     @vite('resources/js/app.js')
     @vite('resources/css/app.css')
 </head>
-<body hx-boost="true">
+<body>
 <x-nav></x-nav>
-    {{ $slot }}
+{{ $slot }}
 
-<x-htmx-error-handler />
 </body>
 </html>
