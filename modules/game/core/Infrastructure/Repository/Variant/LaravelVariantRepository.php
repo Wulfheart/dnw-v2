@@ -2,11 +2,12 @@
 
 namespace Dnw\Game\Core\Infrastructure\Repository\Variant;
 
-use Dnw\Foundation\Exception\NotFoundException;
 use Dnw\Game\Core\Domain\Game\ValueObject\Color;
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
 use Dnw\Game\Core\Domain\Variant\Collection\VariantPowerCollection;
 use Dnw\Game\Core\Domain\Variant\Entity\VariantPower;
+use Dnw\Game\Core\Domain\Variant\Repository\LoadVariantResult;
+use Dnw\Game\Core\Domain\Variant\Repository\SaveVariantResult;
 use Dnw\Game\Core\Domain\Variant\Repository\VariantRepositoryInterface;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantId;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
@@ -26,9 +27,15 @@ class LaravelVariantRepository implements VariantRepositoryInterface
         private DatabaseManager $databaseManager
     ) {}
 
-    public function load(VariantId $variantId): Variant
+    public function load(VariantId $variantId): LoadVariantResult
     {
-        $variantModel = VariantModel::with('powers')->findOr((string) $variantId, fn () => throw new NotFoundException());
+        $variantModel = VariantModel::with('powers')->first(
+            (string) $variantId,
+        );
+
+        if ($variantModel === null) {
+            return LoadVariantResult::err(LoadVariantResult::E_VARIANT_NOT_FOUND);
+        }
 
         $variantPowerCollection = new VariantPowerCollection(
             $variantModel->powers->map(fn (VariantPowerModel $power) => new VariantPower(
@@ -39,7 +46,7 @@ class LaravelVariantRepository implements VariantRepositoryInterface
             ))->toArray()
         );
 
-        return new Variant(
+        $variant =  new Variant(
             VariantId::fromString($variantModel->id),
             VariantName::fromString($variantModel->name),
             VariantApiName::fromString($variantModel->api_name),
@@ -48,9 +55,11 @@ class LaravelVariantRepository implements VariantRepositoryInterface
             Count::fromInt($variantModel->default_supply_centers_to_win_count),
             Count::fromInt($variantModel->total_supply_center_count)
         );
+
+        return LoadVariantResult::ok($variant);
     }
 
-    public function save(Variant $variant): void
+    public function save(Variant $variant): SaveVariantResult
     {
         $this->databaseManager->transaction(function () use ($variant) {
             VariantModel::query()->updateOrCreate(
@@ -77,5 +86,7 @@ class LaravelVariantRepository implements VariantRepositoryInterface
             }
 
         });
+
+        return SaveVariantResult::ok();
     }
 }

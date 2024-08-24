@@ -8,10 +8,7 @@ use Dnw\Game\Core\Domain\Variant\Variant;
 
 interface VariantRepositoryInterface
 {
-    /**
-     * @throws NotFoundException
-     */
-    public function load(VariantId $variantId): Variant;
+    public function load(VariantId $variantId): LoadVariantResult;
 
-    public function save(Variant $variant): void;
+    public function save(Variant $variant): SaveVariantResult;
 }

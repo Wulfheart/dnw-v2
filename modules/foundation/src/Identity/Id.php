@@ -2,6 +2,7 @@
 
 namespace Dnw\Foundation\Identity;
 
+use Std\Option;
 use Symfony\Component\Uid\Ulid;
 
 readonly class Id
@@ -17,6 +18,11 @@ readonly class Id
     public static function fromString(string $value): self
     {
         return new self($value);
+    }
+
+    public static function fromNullable(?string $value): Option
+    {
+        return Option::fromNullable($value);
     }
 
     public static function generate(): self

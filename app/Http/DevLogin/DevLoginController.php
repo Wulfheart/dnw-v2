@@ -5,7 +5,9 @@ namespace App\Http\DevLogin;
 use App\Models\User;
 use App\ViewModel\DevLogin\DevLoginUserInfo;
 use App\ViewModel\DevLogin\DevLoginViewModel;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class DevLoginController
 {
@@ -27,10 +29,9 @@ class DevLoginController
 
     }
 
-    public function login(DevLoginRequest $request): Response
+    public function login(DevLoginRequest $request): RedirectResponse
     {
-        dd('HERE');
-
-        return response();
+        Auth::loginUsingId($request->get('userId'));
+        return new RedirectResponse(route('game.create'));
     }
 }

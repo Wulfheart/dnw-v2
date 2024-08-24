@@ -2,6 +2,7 @@
 
 namespace Dnw\Game\Core\Application\Command\CreateGame;
 
+use Dnw\Foundation\Exception\NotFoundException;
 use Dnw\Game\Core\Domain\Adapter\RandomNumberGenerator\RandomNumberGeneratorInterface;
 use Dnw\Game\Core\Domain\Adapter\TimeProvider\TimeProviderInterface;
 use Dnw\Game\Core\Domain\Game\Collection\VariantPowerIdCollection;
@@ -19,6 +20,9 @@ use Dnw\Game\Core\Domain\Game\ValueObject\Variant\GameVariantData;
 use Dnw\Game\Core\Domain\Variant\Repository\VariantRepositoryInterface;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantId;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
+use Dnw\Game\Http\CreateGame\CreateGameController;
+use Psr\Log\LoggerInterface;
+use Std\Result;
 
 readonly class CreateGameCommandHandler
 {
@@ -27,11 +31,12 @@ readonly class CreateGameCommandHandler
         private TimeProviderInterface $timeProvider,
         private GameRepositoryInterface $gameRepository,
         private RandomNumberGeneratorInterface $randomNumberGenerator,
+        private LoggerInterface $logger,
     ) {}
 
     public function handle(
         CreateGameCommand $command
-    ): void {
+    ): CreateGameResult {
 
         $adjudicationTiming = new AdjudicationTiming(
             PhaseLength::fromMinutes($command->phaseLengthInMinutes),
@@ -44,7 +49,17 @@ readonly class CreateGameCommandHandler
             $command->startWhenReady,
         );
 
-        $variant = $this->variantRepository->load(VariantId::fromString($command->variantId));
+        $variantResult = $this->variantRepository->load(VariantId::fromString($command->variantId));
+
+        if($variantResult->hasErr()) {
+            $this->logger->warning(
+                'Unable to load variant',
+                ['variantId' => $command->variantId, 'error' => $variantResult->unwrapErr()]
+            );
+            return CreateGameResult::err(CreateGameResult::E_UNABLE_TO_LOAD_VARIANT);
+        }
+
+        $variant = $variantResult->unwrap();
         $variantData = new GameVariantData(
             $variant->id,
             VariantPowerIdCollection::fromCollection($variant->variantPowerCollection->map(
@@ -66,5 +81,9 @@ readonly class CreateGameCommandHandler
         );
 
         $this->gameRepository->save($game);
+
+        $this->logger->info('Game created', ['gameId' => $command->gameId, '']);
+
+        return CreateGameResult::ok();
     }
 }

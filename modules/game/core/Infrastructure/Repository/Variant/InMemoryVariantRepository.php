@@ -2,7 +2,8 @@
 
 namespace Dnw\Game\Core\Infrastructure\Repository\Variant;
 
-use Dnw\Foundation\Exception\NotFoundException;
+use Dnw\Game\Core\Domain\Variant\Repository\LoadVariantResult;
+use Dnw\Game\Core\Domain\Variant\Repository\SaveVariantResult;
 use Dnw\Game\Core\Domain\Variant\Repository\VariantRepositoryInterface;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantId;
 use Dnw\Game\Core\Domain\Variant\Variant;
@@ -23,13 +24,19 @@ class InMemoryVariantRepository implements VariantRepositoryInterface
         }
     }
 
-    public function load(VariantId $variantId): Variant
+    public function load(VariantId $variantId): LoadVariantResult
     {
-        return $this->variants[(string) $variantId] ?? throw new NotFoundException();
+        $variant = $this->variants[(string) $variantId] ?? null;
+        if (isset($variant)) {
+            return LoadVariantResult::ok($variant);
+        }
+
+        return LoadVariantResult::err(LoadVariantResult::E_VARIANT_NOT_FOUND);
     }
 
-    public function save(Variant $variant): void
+    public function save(Variant $variant): SaveVariantResult
     {
         $this->variants[(string) $variant->id] = $variant;
+        return SaveVariantResult::ok();
     }
 }
