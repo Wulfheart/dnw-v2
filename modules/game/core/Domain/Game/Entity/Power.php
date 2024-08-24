@@ -5,8 +5,8 @@ namespace Dnw\Game\Core\Domain\Game\Entity;
 use Dnw\Foundation\Exception\DomainException;
 use Dnw\Game\Core\Domain\Game\Collection\OrderCollection;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhasePowerData;
-use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Power\PowerId;
+use Dnw\Game\Core\Domain\Player\ValueObject\PlayerId;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
 use Std\Option;
 

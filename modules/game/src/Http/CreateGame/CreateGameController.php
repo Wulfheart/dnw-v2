@@ -6,8 +6,10 @@ use App\Models\User;
 use Dnw\Foundation\Bus\BusInterface;
 use Dnw\Foundation\Identity\Id;
 use Dnw\Game\Core\Application\Command\CreateGame\CreateGameCommand;
+use Dnw\Game\Core\Application\Command\CreateGame\CreateGameResult;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Std\Option;
+use Symfony\Component\HttpFoundation\Response;
 
 readonly class CreateGameController
 {
@@ -15,11 +17,9 @@ readonly class CreateGameController
         private BusInterface $bus,
     ) {}
 
-    public function show(Request $request): void {
-        // TODO: Show a message if a user cannot create a game due to some rules
-    }
+    public function show(Request $request): void {}
 
-    public function store(StoreGameRequest $request): void
+    public function store(StoreGameRequest $request): RedirectResponse
     {
         /** @var User $user */
         $user = $request->user();
@@ -38,6 +38,15 @@ readonly class CreateGameController
             $request->input('weekdaysWithoutAdjudication'),
             Id::fromString($user->id),
         );
-        $this->bus->handle($command);
+        /** @var CreateGameResult $result */
+        $result = $this->bus->handle($command);
+        if ($result->hasErr()) {
+            match ($result->unwrapErr()) {
+                CreateGameResult::E_UNABLE_TO_LOAD_VARIANT => abort(404),
+                CreateGameResult::E_NOT_ALLOWED_TO_CREATE_GAME => abort(Response::HTTP_FORBIDDEN),
+            };
+        }
+
+        return response()->redirectTo(route(''));
     }
 }

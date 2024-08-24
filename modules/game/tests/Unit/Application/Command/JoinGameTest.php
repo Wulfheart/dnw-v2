@@ -8,7 +8,7 @@ use Dnw\Game\Core\Application\Command\JoinGame\JoinGameCommand;
 use Dnw\Game\Core\Application\Command\JoinGame\JoinGameCommandHandler;
 use Dnw\Game\Core\Domain\Adapter\RandomNumberGenerator\FakeRandomNumberGenerator;
 use Dnw\Game\Core\Domain\Adapter\TimeProvider\FakeTimeProvider;
-use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
+use Dnw\Game\Core\Domain\Player\ValueObject\PlayerId;
 use Dnw\Game\Core\Infrastructure\Repository\Game\InMemoryGameRepository;
 use Dnw\Game\Tests\Asserter\GameAsserter;
 use Dnw\Game\Tests\Factory\GameBuilder;

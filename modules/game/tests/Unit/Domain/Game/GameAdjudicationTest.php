@@ -24,7 +24,7 @@ use Dnw\Game\Core\Domain\Game\ValueObject\Count;
 use Dnw\Game\Core\Domain\Game\ValueObject\Order\Order;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\NewPhaseData;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
-use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
+use Dnw\Game\Core\Domain\Player\ValueObject\PlayerId;
 use Dnw\Game\Tests\Asserter\GameAsserter;
 use Dnw\Game\Tests\Factory\GameBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;

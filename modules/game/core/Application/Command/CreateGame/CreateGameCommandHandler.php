@@ -2,7 +2,6 @@
 
 namespace Dnw\Game\Core\Application\Command\CreateGame;
 
-use Dnw\Foundation\Exception\NotFoundException;
 use Dnw\Game\Core\Domain\Adapter\RandomNumberGenerator\RandomNumberGeneratorInterface;
 use Dnw\Game\Core\Domain\Adapter\TimeProvider\TimeProviderInterface;
 use Dnw\Game\Core\Domain\Game\Collection\VariantPowerIdCollection;
@@ -15,14 +14,13 @@ use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameName;
 use Dnw\Game\Core\Domain\Game\ValueObject\GameStartTiming\GameStartTiming;
 use Dnw\Game\Core\Domain\Game\ValueObject\GameStartTiming\JoinLength;
-use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Variant\GameVariantData;
+use Dnw\Game\Core\Domain\Player\Repository\Player\PlayerRepositoryInterface;
+use Dnw\Game\Core\Domain\Player\ValueObject\PlayerId;
 use Dnw\Game\Core\Domain\Variant\Repository\VariantRepositoryInterface;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantId;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
-use Dnw\Game\Http\CreateGame\CreateGameController;
 use Psr\Log\LoggerInterface;
-use Std\Result;
 
 readonly class CreateGameCommandHandler
 {
@@ -30,6 +28,7 @@ readonly class CreateGameCommandHandler
         private VariantRepositoryInterface $variantRepository,
         private TimeProviderInterface $timeProvider,
         private GameRepositoryInterface $gameRepository,
+        private PlayerRepositoryInterface $playerRepository,
         private RandomNumberGeneratorInterface $randomNumberGenerator,
         private LoggerInterface $logger,
     ) {}
@@ -37,6 +36,15 @@ readonly class CreateGameCommandHandler
     public function handle(
         CreateGameCommand $command
     ): CreateGameResult {
+        $player = $this->playerRepository->load(PlayerId::fromString($command->creatorId));
+        if ($player->canParticipateInAnotherGame()->fails()) {
+            $this->logger->warning(
+                'Player cannot participate in another game',
+                ['playerId' => $command->creatorId]
+            );
+
+            return CreateGameResult::err(CreateGameResult::E_NOT_ALLOWED_TO_CREATE_GAME);
+        }
 
         $adjudicationTiming = new AdjudicationTiming(
             PhaseLength::fromMinutes($command->phaseLengthInMinutes),
@@ -51,11 +59,12 @@ readonly class CreateGameCommandHandler
 
         $variantResult = $this->variantRepository->load(VariantId::fromString($command->variantId));
 
-        if($variantResult->hasErr()) {
+        if ($variantResult->hasErr()) {
             $this->logger->warning(
                 'Unable to load variant',
                 ['variantId' => $command->variantId, 'error' => $variantResult->unwrapErr()]
             );
+
             return CreateGameResult::err(CreateGameResult::E_UNABLE_TO_LOAD_VARIANT);
         }
 

@@ -5,6 +5,7 @@ namespace Dnw\Game\Tests\Factory;
 use Dnw\Foundation\DateTime\DateTime;
 use Dnw\Game\Core\Domain\Game\Collection\OrderCollection;
 use Dnw\Game\Core\Domain\Game\Collection\VariantPowerIdCollection;
+use Dnw\Game\Core\Domain\Game\Dto\AdjudicationPowerDataDto;
 use Dnw\Game\Core\Domain\Game\Dto\InitialAdjudicationPowerDataDto;
 use Dnw\Game\Core\Domain\Game\Entity\Power;
 use Dnw\Game\Core\Domain\Game\Game;
@@ -16,7 +17,8 @@ use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameName;
 use Dnw\Game\Core\Domain\Game\ValueObject\GameStartTiming\GameStartTiming;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\NewPhaseData;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
-use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
+use Dnw\Game\Core\Domain\Game\ValueObject\Power\PowerId;
+use Dnw\Game\Core\Domain\Player\ValueObject\PlayerId;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
 use Dnw\Game\Core\Domain\Variant\Variant;
 use Dnw\Game\Core\Infrastructure\Adapter\RandomNumberGenerator;
@@ -36,6 +38,7 @@ class GameBuilder
         ?AdjudicationTiming $adjudicationTiming = null,
         ?GameStartTiming $gameStartTiming = null,
         ?Variant $variant = null,
+        ?PlayerId $playerId = null,
     ): self {
         if ($variant === null) {
             $variantData = GameVariantDataFactory::build(
@@ -63,7 +66,7 @@ class GameBuilder
             $gameStartTiming ?? GameStartTimingFactory::build(startWhenReady: $startWhenReady),
             $variantData,
             $randomAssignments,
-            PlayerId::new(),
+            $playerId ?? PlayerId::new(),
             Option::some($variantData->variantPowerIdCollection->getOffset(0)),
             ($rng)->generate(...),
         );
@@ -226,16 +229,46 @@ class GameBuilder
         return $this;
     }
 
-    public function defeatPower(): self
+    public function defeatPower(?PowerId $powerId = null): self
     {
-        $powerToDefeat = $this->game->powerCollection->filter(
-            fn (Power $power) => $power->ordersNeeded()
-        )->first();
+        if ($powerId === null) {
+            $powerToDefeat = $this->game->powerCollection->filter(
+                fn (Power $power) => $power->ordersNeeded()
+            )->first();
+        } else {
+            $powerToDefeat = $this->game->powerCollection->findBy(
+                fn (Power $power) => $power->powerId === $powerId
+            )->unwrap();
+        }
 
         $currentPhaseData = $powerToDefeat->currentPhaseData->unwrap();
         $currentPhaseData->supplyCenterCount = Count::fromInt(0);
         $currentPhaseData->unitCount = Count::fromInt(0);
         $currentPhaseData->ordersNeeded = false;
+
+        return $this;
+    }
+
+    public function finish(): self
+    {
+        $this->game->powerCollection->map(fn (Power $power) => new AdjudicationPowerDataDto(
+            $power->powerId,
+            new NewPhaseData(true, false, Count::fromInt(1), Count::fromInt(1)),
+            new OrderCollection()
+        ));
+        $powerWhichWillWin = $this->game->powerCollection->first();
+
+        $adjudicationPowerDataCollection = $this->game->powerCollection->map(fn (Power $power) => new AdjudicationPowerDataDto(
+            $power->powerId,
+            new NewPhaseData(true, false, Count::fromInt(1), Count::fromInt(1)),
+            new OrderCollection()
+        ));
+
+        /** @var AdjudicationPowerDataDto $defeatedPhasePowerData */
+        $defeatedPhasePowerData = $adjudicationPowerDataCollection->findBy(fn (AdjudicationPowerDataDto $adjudicationPowerData) => $adjudicationPowerData->powerId === $powerWhichWillWin->powerId)->unwrap();
+        $defeatedPhasePowerData->newPhaseData->isWinner = true;
+
+        $this->game->applyAdjudication(PhaseTypeEnum::MOVEMENT, $adjudicationPowerDataCollection, new DateTime());
 
         return $this;
     }

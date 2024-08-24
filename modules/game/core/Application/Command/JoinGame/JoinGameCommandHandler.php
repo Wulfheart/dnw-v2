@@ -7,7 +7,7 @@ use Dnw\Game\Core\Domain\Adapter\RandomNumberGenerator\RandomNumberGeneratorInte
 use Dnw\Game\Core\Domain\Adapter\TimeProvider\TimeProviderInterface;
 use Dnw\Game\Core\Domain\Game\Repository\GameRepositoryInterface;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
-use Dnw\Game\Core\Domain\Game\ValueObject\Player\PlayerId;
+use Dnw\Game\Core\Domain\Player\ValueObject\PlayerId;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
 
 readonly class JoinGameCommandHandler
