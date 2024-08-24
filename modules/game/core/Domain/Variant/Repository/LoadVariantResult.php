@@ -8,6 +8,7 @@ use Std\Result;
 /**
  * @extends Result<Variant, LoadVariantResult::E_*>
  */
-class LoadVariantResult extends Result {
+class LoadVariantResult extends Result
+{
     public const string E_VARIANT_NOT_FOUND = 'variant_not_found';
 }

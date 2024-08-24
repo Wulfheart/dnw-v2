@@ -2,11 +2,10 @@
 
 namespace Std;
 
-use Monolog\Test\TestCase;
-
 /**
  * @template TSuccess
  * @template TError
+ *
  * @phpstan-consistent-constructor
  */
 class Result
@@ -18,7 +17,6 @@ class Result
     ) {}
 
     /**
-     *
      * @param  TSuccess|null  $value
      */
     public static function ok(mixed $value = null): static
@@ -27,8 +25,7 @@ class Result
     }
 
     /**
-     * @param TError $error
-     * @return static
+     * @param  TError  $error
      */
     public static function err(mixed $error): static
     {

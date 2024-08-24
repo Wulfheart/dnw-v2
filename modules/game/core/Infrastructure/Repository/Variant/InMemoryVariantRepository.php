@@ -37,6 +37,7 @@ class InMemoryVariantRepository implements VariantRepositoryInterface
     public function save(Variant $variant): SaveVariantResult
     {
         $this->variants[(string) $variant->id] = $variant;
+
         return SaveVariantResult::ok();
     }
 }

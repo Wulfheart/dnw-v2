@@ -32,6 +32,7 @@ class DevLoginController
     public function login(DevLoginRequest $request): RedirectResponse
     {
         Auth::loginUsingId($request->get('userId'));
+
         return new RedirectResponse(route('game.create'));
     }
 }

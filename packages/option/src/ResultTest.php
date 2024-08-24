@@ -2,6 +2,4 @@
 
 namespace Std;
 
-class ResultTest {
-
-}
+class ResultTest {}

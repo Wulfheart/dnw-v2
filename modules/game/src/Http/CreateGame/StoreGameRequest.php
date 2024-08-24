@@ -2,12 +2,9 @@
 
 namespace Dnw\Game\Http\CreateGame;
 
-use Dnw\Foundation\Identity\Id;
 use Dnw\Foundation\Identity\IdRule;
-use Dnw\Game\Core\Application\Command\CreateGame\CreateGameCommand;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule as IlluminateRule;
 
 class StoreGameRequest extends FormRequest
 {

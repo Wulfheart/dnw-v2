@@ -2,7 +2,6 @@
 
 namespace Dnw\Game\Core\Domain\Variant\Repository;
 
-use Dnw\Foundation\Exception\NotFoundException;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantId;
 use Dnw\Game\Core\Domain\Variant\Variant;
 
