@@ -17,7 +17,9 @@ readonly class CreateGameController
         private BusInterface $bus,
     ) {}
 
-    public function show(Request $request): void {}
+    public function show(Request $request): void {
+        // TODO: Add a query to determine if a user can create a game
+    }
 
     public function store(StoreGameRequest $request): RedirectResponse
     {
