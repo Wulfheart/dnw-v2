@@ -2,6 +2,7 @@
 
 namespace Dnw\Foundation\Form;
 
-enum FormMethodEnum: string{
+enum FormMethodEnum: string
+{
     case POST = 'POST';
 }

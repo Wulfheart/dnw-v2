@@ -12,7 +12,7 @@ class Select implements FieldInterface
         public string $key,
         public string $label,
         public ?string $description = null,
-        /** @var SelectOption[] $options */
+        /** @var array<SelectOption> $options */
         public array $options = [],
     ) {
         foreach ($options as $option) {

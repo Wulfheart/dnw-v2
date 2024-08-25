@@ -7,8 +7,8 @@ use Illuminate\View\View;
 readonly class TextInput implements FieldInterface
 {
     public function __construct(
-        public string  $key,
-        public string  $label,
+        public string $key,
+        public string $label,
         public ?string $description = null,
         public ?string $defaultValue = null,
     ) {}

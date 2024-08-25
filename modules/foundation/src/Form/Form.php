@@ -2,7 +2,6 @@
 
 namespace Dnw\Foundation\Form;
 
-
 use Illuminate\View\View;
 
 class Form

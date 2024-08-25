@@ -3,6 +3,7 @@
 use Dnw\Game\ViewModel\CreateGame\CreateGameFormViewModel;
 
 /** @var CreateGameFormViewModel $vm */
+
 ?>
 <x-layout>
     <x-display.header :title="$vm->create_game_title" :description="$vm->create_game_description" />
