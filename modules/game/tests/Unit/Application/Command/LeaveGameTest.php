@@ -27,7 +27,7 @@ class LeaveGameTest extends TestCase
         $command = new LeaveGameCommand($game->gameId->toId(), $playerToRemove->toId());
         $handler->handle($command);
 
-        $game = $gameRepository->load($game->gameId);
+        $game = $gameRepository->load($game->gameId)->unwrap();
         GameAsserter::assertThat($game)
             ->hasPlayerNotInGame($playerToRemove);
     }

@@ -6,14 +6,14 @@ use Dnw\Foundation\Aggregate\AggregateVersion;
 use Dnw\Foundation\Aggregate\NewerAggregateVersionAvailableException;
 use Dnw\Foundation\DateTime\DateTime;
 use Dnw\Foundation\Event\EventDispatcherInterface;
-use Dnw\Foundation\Exception\NotFoundException;
 use Dnw\Game\Core\Domain\Game\Collection\OrderCollection;
 use Dnw\Game\Core\Domain\Game\Collection\PowerCollection;
 use Dnw\Game\Core\Domain\Game\Collection\VariantPowerIdCollection;
 use Dnw\Game\Core\Domain\Game\Entity\Phase;
 use Dnw\Game\Core\Domain\Game\Entity\Power;
 use Dnw\Game\Core\Domain\Game\Game;
-use Dnw\Game\Core\Domain\Game\Repository\GameRepositoryInterface;
+use Dnw\Game\Core\Domain\Game\Repository\Game\GameRepositoryInterface;
+use Dnw\Game\Core\Domain\Game\Repository\Game\LoadGameResult;
 use Dnw\Game\Core\Domain\Game\StateMachine\GameStateMachine;
 use Dnw\Game\Core\Domain\Game\ValueObject\AdjudicationTiming\AdjudicationTiming;
 use Dnw\Game\Core\Domain\Game\ValueObject\AdjudicationTiming\NoAdjudicationWeekdayCollection;
@@ -46,13 +46,17 @@ class LaravelGameRepository implements GameRepositoryInterface
         private DatabaseManager $databaseManager
     ) {}
 
-    public function load(GameId $gameId): Game
+    public function load(GameId $gameId): LoadGameResult
     {
         $game = GameModel::with(
             'currentPhase.powerData',
             'powers',
             'lastPhase.powerData'
-        )->findOr((string) $gameId, fn () => throw new NotFoundException());
+        )->find((string) $gameId);
+
+        if ($game === null) {
+            return LoadGameResult::err(LoadGameResult::E_GAME_NOT_FOUND);
+        }
 
         $gameId = GameId::fromString($game->id);
         $gameName = GameName::fromString($game->name);
@@ -139,7 +143,8 @@ class LaravelGameRepository implements GameRepositoryInterface
             [],
         );
 
-        return $loadedGame;
+        return LoadGameResult::ok($loadedGame);
+
     }
 
     public function save(Game $game): void

@@ -5,7 +5,7 @@ namespace Dnw\Game\Providers;
 use Dnw\Game\Core\Application\Query\GetAllVariants\GetAllVariantsQueryHandlerInterface;
 use Dnw\Game\Core\Domain\Adapter\RandomNumberGenerator\RandomNumberGeneratorInterface;
 use Dnw\Game\Core\Domain\Adapter\TimeProvider\TimeProviderInterface;
-use Dnw\Game\Core\Domain\Game\Repository\GameRepositoryInterface;
+use Dnw\Game\Core\Domain\Game\Repository\Game\GameRepositoryInterface;
 use Dnw\Game\Core\Domain\Player\Repository\Player\PlayerRepositoryInterface;
 use Dnw\Game\Core\Domain\Variant\Repository\VariantRepositoryInterface;
 use Dnw\Game\Core\Infrastructure\Adapter\LaravelTimeProvider;

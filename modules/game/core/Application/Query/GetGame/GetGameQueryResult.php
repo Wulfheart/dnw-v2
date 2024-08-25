@@ -2,16 +2,12 @@
 
 namespace Dnw\Game\Core\Application\Query\GetGame;
 
-use Dnw\Foundation\Identity\Id;
-use Dnw\Game\Core\Application\Query\GetGame\Dto\GameStateEnum;
+use Std\Result;
 
-class GetGameQueryResult
+/**
+ * @extends Result<GetGameQueryResultData, self::E_*>
+ */
+class GetGameQueryResult extends Result
 {
-    public function __construct(
-        public Id $id,
-        public GameStateEnum $state,
-        public string $name,
-        public Id $variantId,
-        public ?string $currentPhase,
-    ) {}
+    public const E_GAME_NOT_FOUND = 'game_not_found';
 }

@@ -6,7 +6,7 @@ use Dnw\Game\Core\Domain\Adapter\RandomNumberGenerator\RandomNumberGeneratorInte
 use Dnw\Game\Core\Domain\Adapter\TimeProvider\TimeProviderInterface;
 use Dnw\Game\Core\Domain\Game\Collection\VariantPowerIdCollection;
 use Dnw\Game\Core\Domain\Game\Game;
-use Dnw\Game\Core\Domain\Game\Repository\GameRepositoryInterface;
+use Dnw\Game\Core\Domain\Game\Repository\Game\GameRepositoryInterface;
 use Dnw\Game\Core\Domain\Game\ValueObject\AdjudicationTiming\AdjudicationTiming;
 use Dnw\Game\Core\Domain\Game\ValueObject\AdjudicationTiming\NoAdjudicationWeekdayCollection;
 use Dnw\Game\Core\Domain\Game\ValueObject\AdjudicationTiming\PhaseLength;

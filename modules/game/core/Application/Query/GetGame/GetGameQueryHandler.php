@@ -3,8 +3,7 @@
 namespace Dnw\Game\Core\Application\Query\GetGame;
 
 use Dnw\Game\Core\Application\Query\GetGame\Dto\GameStateEnum;
-use Dnw\Game\Core\Domain\Game\Entity\Phase;
-use Dnw\Game\Core\Domain\Game\Repository\GameRepositoryInterface;
+use Dnw\Game\Core\Domain\Game\Repository\Game\GameRepositoryInterface;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
 
 class GetGameQueryHandler
@@ -15,14 +14,22 @@ class GetGameQueryHandler
 
     public function handle(GetGameQuery $query): GetGameQueryResult
     {
-        $game = $this->gameRepository->load(GameId::fromId($query->id));
+        $gameResult = $this->gameRepository->load(GameId::fromId($query->id));
+        if ($gameResult->hasErr()) {
+            return GetGameQueryResult::err(GetGameQueryResult::E_GAME_NOT_FOUND);
+        }
 
-        return new GetGameQueryResult(
-            $query->id,
-            GameStateEnum::fromGameState($game->gameStateMachine->currentState()),
-            $game->name,
-            $game->variant->id->toId(),
-            // $game->phasesInfo->currentPhase->mapOr(fn(Phase $phase) => $phase->, null),
+        $game = $gameResult->unwrap();
+
+        return GetGameQueryResult::ok(
+            new GetGameQueryResultData(
+                $query->id,
+                GameStateEnum::fromGameState($game->gameStateMachine->currentState()),
+                $game->name,
+                $game->variant->id->toId(),
+                null
+                // $game->phasesInfo->currentPhase->mapOr(fn(Phase $phase) => $phase->, null),
+            )
         );
     }
 }

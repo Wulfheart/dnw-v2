@@ -47,7 +47,7 @@ class JoinGameTest extends TestCase
 
         $handler->handle($command);
 
-        $game = $gameRepository->load($game->gameId);
+        $game = $gameRepository->load($game->gameId)->unwrap();
         GameAsserter::assertThat($game)
             ->hasPlayerInGame(PlayerId::fromId($userId));
 

@@ -3,9 +3,9 @@
 namespace Dnw\Game\Core\Infrastructure\Repository\Game;
 
 use Dnw\Foundation\Event\EventDispatcherInterface;
-use Dnw\Foundation\Exception\NotFoundException;
 use Dnw\Game\Core\Domain\Game\Game;
-use Dnw\Game\Core\Domain\Game\Repository\GameRepositoryInterface;
+use Dnw\Game\Core\Domain\Game\Repository\Game\GameRepositoryInterface;
+use Dnw\Game\Core\Domain\Game\Repository\Game\LoadGameResult;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
 
 class InMemoryGameRepository implements GameRepositoryInterface
@@ -25,12 +25,13 @@ class InMemoryGameRepository implements GameRepositoryInterface
         }
     }
 
-    /**
-     * @throws NotFoundException
-     */
-    public function load(GameId $gameId): Game
+    public function load(GameId $gameId): LoadGameResult
     {
-        return $this->games[(string) $gameId] ?? throw new NotFoundException();
+        if (! isset($this->games[(string) $gameId])) {
+            return LoadGameResult::err(LoadGameResult::E_GAME_NOT_FOUND);
+        }
+
+        return LoadGameResult::ok($this->games[(string) $gameId]);
     }
 
     public function save(Game $game): void

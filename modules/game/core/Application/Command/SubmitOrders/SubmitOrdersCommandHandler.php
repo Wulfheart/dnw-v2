@@ -4,7 +4,7 @@ namespace Dnw\Game\Core\Application\Command\SubmitOrders;
 
 use Dnw\Game\Core\Domain\Adapter\TimeProvider\TimeProviderInterface;
 use Dnw\Game\Core\Domain\Game\Collection\OrderCollection;
-use Dnw\Game\Core\Domain\Game\Repository\GameRepositoryInterface;
+use Dnw\Game\Core\Domain\Game\Repository\Game\GameRepositoryInterface;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Core\Domain\Player\ValueObject\PlayerId;
 
@@ -15,9 +15,13 @@ class SubmitOrdersCommandHandler
         private TimeProviderInterface $timeProvider,
     ) {}
 
-    public function handle(SubmitOrdersCommand $command): void
+    public function handle(SubmitOrdersCommand $command): SubmitOrdersResult
     {
-        $game = $this->gameRepository->load(GameId::fromId($command->gameId));
+        $gameResult = $this->gameRepository->load(GameId::fromId($command->gameId));
+        if ($gameResult->hasErr()) {
+            return SubmitOrdersResult::err(SubmitOrdersResult::E_GAME_NOT_FOUND);
+        }
+        $game = $gameResult->unwrap();
 
         $orderCollection = OrderCollection::fromStringArray($command->orders);
 
@@ -29,5 +33,7 @@ class SubmitOrdersCommandHandler
         );
 
         $this->gameRepository->save($game);
+
+        return SubmitOrdersResult::ok();
     }
 }

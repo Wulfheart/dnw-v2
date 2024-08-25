@@ -3,7 +3,7 @@
 namespace Dnw\Game\Tests\Unit\Infrastructure\Repository\Player;
 
 use Dnw\Foundation\Event\FakeEventDispatcher;
-use Dnw\Game\Core\Domain\Game\Repository\GameRepositoryInterface;
+use Dnw\Game\Core\Domain\Game\Repository\Game\GameRepositoryInterface;
 use Dnw\Game\Core\Domain\Player\Repository\Player\PlayerRepositoryInterface;
 use Dnw\Game\Core\Infrastructure\Repository\Game\InMemoryGameRepository;
 use Dnw\Game\Core\Infrastructure\Repository\Player\InMemoryPlayerRepository;

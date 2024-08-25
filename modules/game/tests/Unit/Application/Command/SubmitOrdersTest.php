@@ -38,7 +38,7 @@ class SubmitOrdersTest extends TestCase
 
         $handler->handle($command);
 
-        $game = $gameRepository->load($game->gameId);
+        $game = $gameRepository->load($game->gameId)->unwrap();
         GameAsserter::assertThat($game)
             ->hasPowerWithOrders($power->powerId, OrderCollection::fromStringArray($orders));
 

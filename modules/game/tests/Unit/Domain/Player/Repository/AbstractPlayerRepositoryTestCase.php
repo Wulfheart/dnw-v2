@@ -4,7 +4,7 @@ namespace Dnw\Game\Tests\Unit\Domain\Player\Repository;
 
 use Dnw\Foundation\DateTime\DateTime;
 use Dnw\Game\Core\Domain\Game\Game;
-use Dnw\Game\Core\Domain\Game\Repository\GameRepositoryInterface;
+use Dnw\Game\Core\Domain\Game\Repository\Game\GameRepositoryInterface;
 use Dnw\Game\Core\Domain\Game\StateMachine\GameStates;
 use Dnw\Game\Core\Domain\Game\ValueObject\GameStartTiming\GameStartTiming;
 use Dnw\Game\Core\Domain\Game\ValueObject\GameStartTiming\JoinLength;

@@ -74,7 +74,7 @@ class AdjudicateGameTest extends TestCase
 
         $handler->handle($command);
 
-        $gameToPerformAssertionsOn = $gameRepository->load($game->gameId);
+        $gameToPerformAssertionsOn = $gameRepository->load($game->gameId)->unwrap();
         GameAsserter::assertThat($gameToPerformAssertionsOn)
             ->hasNotCurrentPhaseId($previousPhaseId);
 

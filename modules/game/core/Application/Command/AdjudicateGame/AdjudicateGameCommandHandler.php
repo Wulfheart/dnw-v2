@@ -10,7 +10,7 @@ use Dnw\Foundation\Collection\Collection;
 use Dnw\Game\Core\Domain\Adapter\TimeProvider\TimeProviderInterface;
 use Dnw\Game\Core\Domain\Game\Collection\OrderCollection;
 use Dnw\Game\Core\Domain\Game\Dto\AdjudicationPowerDataDto;
-use Dnw\Game\Core\Domain\Game\Repository\GameRepositoryInterface;
+use Dnw\Game\Core\Domain\Game\Repository\Game\GameRepositoryInterface;
 use Dnw\Game\Core\Domain\Game\Repository\PhaseRepositoryInterface;
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
@@ -28,10 +28,18 @@ readonly class AdjudicateGameCommandHandler
         private TimeProviderInterface $timeProvider,
     ) {}
 
-    public function handle(AdjudicateGameCommand $command): void
+    public function handle(AdjudicateGameCommand $command): AdjudicateGameCommandResult
     {
-        $game = $this->gameRepository->load(GameId::fromId($command->gameId));
-        $variant = $this->variantRepository->load($game->variant->id);
+        $gameResult = $this->gameRepository->load(GameId::fromId($command->gameId));
+        if ($gameResult->hasErr()) {
+            return AdjudicateGameCommandResult::err(AdjudicateGameCommandResult::E_GAME_NOT_FOUND);
+        }
+        $game = $gameResult->unwrap();
+        $variantResult = $this->variantRepository->load($game->variant->id);
+        if ($variantResult->hasErr()) {
+            return AdjudicateGameCommandResult::err(AdjudicateGameCommandResult::E_VARIANT_NOT_FOUND);
+        }
+        $variant = $variantResult->unwrap();
 
         $encodedState = $this->phaseRepository->loadEncodedState($game->phasesInfo->currentPhase->unwrap()->phaseId);
 
@@ -112,6 +120,8 @@ readonly class AdjudicateGameCommandHandler
         );
 
         $this->gameRepository->save($game);
+
+        return AdjudicateGameCommandResult::ok();
 
     }
 }

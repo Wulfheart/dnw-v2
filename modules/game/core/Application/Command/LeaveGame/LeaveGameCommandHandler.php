@@ -2,7 +2,7 @@
 
 namespace Dnw\Game\Core\Application\Command\LeaveGame;
 
-use Dnw\Game\Core\Domain\Game\Repository\GameRepositoryInterface;
+use Dnw\Game\Core\Domain\Game\Repository\Game\GameRepositoryInterface;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Core\Domain\Player\ValueObject\PlayerId;
 
@@ -12,10 +12,17 @@ readonly class LeaveGameCommandHandler
         private GameRepositoryInterface $gameRepository
     ) {}
 
-    public function handle(LeaveGameCommand $command): void
+    public function handle(LeaveGameCommand $command): LeaveGameResult
     {
-        $game = $this->gameRepository->load(GameId::fromString($command->gameId));
+        $gameResult = $this->gameRepository->load(GameId::fromString($command->gameId));
+        if ($gameResult->hasErr()) {
+            return LeaveGameResult::err(LeaveGameResult::E_GAME_NOT_FOUND);
+        }
+        $game = $gameResult->unwrap();
+
         $game->leave(PlayerId::fromString($command->userId));
         $this->gameRepository->save($game);
+
+        return LeaveGameResult::ok();
     }
 }

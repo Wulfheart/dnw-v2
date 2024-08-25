@@ -71,7 +71,7 @@ class CreateGameTest extends TestCase
 
         $handler->handle($command);
 
-        $game = $gameRepository->load($gameId);
+        $game = $gameRepository->load($gameId)->unwrap();
 
         GameAsserter::assertThat($game)
             ->hasGameId($gameId)
