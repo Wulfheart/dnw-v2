@@ -20,9 +20,16 @@ readonly class Id
         return new self($value);
     }
 
+    /**
+     * @return Option<Id>
+     */
     public static function fromNullable(?string $value): Option
     {
-        return Option::fromNullable($value);
+        if ($value === null) {
+            return Option::none();
+        }
+
+        return Option::some(new self($value));
     }
 
     public static function generate(): self
