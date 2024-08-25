@@ -10,11 +10,13 @@ use Dnw\Game\Core\Domain\Adapter\TimeProvider\FakeTimeProvider;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Core\Domain\Player\ValueObject\PlayerId;
 use Dnw\Game\Core\Infrastructure\Repository\Game\InMemoryGameRepository;
+use Dnw\Game\Core\Infrastructure\Repository\Player\InMemoryPlayerRepository;
 use Dnw\Game\Core\Infrastructure\Repository\Variant\InMemoryVariantRepository;
 use Dnw\Game\Tests\Asserter\GameAsserter;
 use Dnw\Game\Tests\Factory\VariantFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 use Std\Option;
 
 #[CoversClass(CreateGameCommand::class)]
@@ -51,13 +53,20 @@ class CreateGameTest extends TestCase
             new FakeEventDispatcher(),
             []
         );
+        $playerRepository = new InMemoryPlayerRepository(
+            $gameRepository
+        );
         $randomNumberGenerator = new FakeRandomNumberGenerator(0);
+
+        $logger = new NullLogger();
 
         $handler = new CreateGameCommandHandler(
             $variantRepository,
             $timeProvider,
             $gameRepository,
-            $randomNumberGenerator
+            $playerRepository,
+            $randomNumberGenerator,
+            $logger
         );
 
         $handler->handle($command);

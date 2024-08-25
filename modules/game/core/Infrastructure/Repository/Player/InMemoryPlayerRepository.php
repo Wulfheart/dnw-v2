@@ -2,25 +2,29 @@
 
 namespace Dnw\Game\Core\Infrastructure\Repository\Player;
 
+use Dnw\Game\Core\Domain\Game\StateMachine\GameStates;
 use Dnw\Game\Core\Domain\Player\Player;
 use Dnw\Game\Core\Domain\Player\Repository\Player\PlayerRepositoryInterface;
 use Dnw\Game\Core\Domain\Player\ValueObject\PlayerId;
+use Dnw\Game\Core\Infrastructure\Repository\Game\InMemoryGameRepository;
 
 class InMemoryPlayerRepository implements PlayerRepositoryInterface
 {
     public function __construct(
-        /** @var array<string, Player> */
-        private array $players = [],
+        private InMemoryGameRepository $gameRepository,
     ) {}
 
     public function load(PlayerId $playerId): Player
     {
-        $player = $this->players[(string) $playerId] ?? null;
-        if ($player === null) {
-            $player = new Player($playerId, 0);
-            $this->players[(string) $playerId] = $player;
+        $games = $this->gameRepository->getAllGames();
+        $count = 0;
+        foreach ($games as $game) {
+            if ($game->powerCollection->containsPlayer($playerId)
+                && $game->gameStateMachine->hasCurrentState(GameStates::FINISHED)) {
+                $count++;
+            }
         }
 
-        return $player;
+        return new Player($playerId, $count);
     }
 }

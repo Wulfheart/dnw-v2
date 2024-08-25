@@ -2,8 +2,10 @@
 
 namespace Dnw\Game\Tests\Unit\Infrastructure\Repository\Player;
 
-use Dnw\Game\Core\Domain\Player\Player;
-use Dnw\Game\Core\Domain\Player\ValueObject\PlayerId;
+use Dnw\Foundation\Event\FakeEventDispatcher;
+use Dnw\Game\Core\Domain\Game\Repository\GameRepositoryInterface;
+use Dnw\Game\Core\Domain\Player\Repository\Player\PlayerRepositoryInterface;
+use Dnw\Game\Core\Infrastructure\Repository\Game\InMemoryGameRepository;
 use Dnw\Game\Core\Infrastructure\Repository\Player\InMemoryPlayerRepository;
 use Dnw\Game\Tests\Unit\Domain\Player\Repository\AbstractPlayerRepositoryTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -11,22 +13,23 @@ use PHPUnit\Framework\Attributes\CoversClass;
 #[CoversClass(InMemoryPlayerRepository::class)]
 class InMemoryPlayerRepositoryTest extends AbstractPlayerRepositoryTestCase
 {
-    protected function buildRepository(): array
+    protected function buildPlayerRepo(): PlayerRepositoryInterface
     {
-        $players = [
-            new Player(PlayerId::new(), 0),
-            new Player(PlayerId::new(), 4),
-            new Player(PlayerId::new(), 2),
-            new Player(PlayerId::new(), 10),
-        ];
-        $index = [];
-        foreach ($players as $player) {
-            $index[(string) $player->playerId] = $player;
+        return new InMemoryPlayerRepository($this->buildInMemoryGameRepo());
+    }
+
+    protected function buildGameRepo(): GameRepositoryInterface
+    {
+        return $this->buildInMemoryGameRepo();
+    }
+
+    private function buildInMemoryGameRepo(): InMemoryGameRepository
+    {
+        static $repo;
+        if (! $repo) {
+            $repo = new InMemoryGameRepository(new FakeEventDispatcher());
         }
 
-        return [
-            new InMemoryPlayerRepository($index),
-            $players,
-        ];
+        return $repo;
     }
 }

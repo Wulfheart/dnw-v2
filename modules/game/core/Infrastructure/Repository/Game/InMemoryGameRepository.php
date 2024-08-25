@@ -39,4 +39,12 @@ class InMemoryGameRepository implements GameRepositoryInterface
         $this->games[(string) $game->gameId] = $game;
         $this->eventDispatcher->dispatchMultiple($events);
     }
+
+    /**
+     * @return array<Game>
+     */
+    public function getAllGames(): array
+    {
+        return array_values($this->games);
+    }
 }
