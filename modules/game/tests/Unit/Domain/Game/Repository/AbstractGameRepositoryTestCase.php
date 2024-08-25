@@ -7,6 +7,7 @@ use Dnw\Foundation\Event\FakeEventDispatcher;
 use Dnw\Foundation\Exception\NotFoundException;
 use Dnw\Game\Core\Domain\Game\Event\GameCreatedEvent;
 use Dnw\Game\Core\Domain\Game\Repository\Game\GameRepositoryInterface;
+use Dnw\Game\Core\Domain\Game\Repository\Game\LoadGameResult;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Tests\Factory\GameBuilder;
 use Tests\TestCase;
@@ -23,7 +24,7 @@ abstract class AbstractGameRepositoryTestCase extends TestCase
 
         $repository->save($game);
 
-        $loadedGame = $repository->load($game->gameId);
+        $loadedGame = $repository->load($game->gameId)->unwrap();
 
         $this->assertEquals($game, $loadedGame);
         $eventDispatcher->assertDispatched(GameCreatedEvent::class, 1);
@@ -41,7 +42,7 @@ abstract class AbstractGameRepositoryTestCase extends TestCase
 
         $repository->save($game);
 
-        $loadedGame = $repository->load($game->gameId);
+        $loadedGame = $repository->load($game->gameId)->unwrap();
 
         $this->assertEquals($game, $loadedGame);
     }
@@ -51,7 +52,8 @@ abstract class AbstractGameRepositoryTestCase extends TestCase
         $eventDispatcher = new FakeEventDispatcher();
 
         $repository = $this->buildRepository($eventDispatcher);
-        $this->expectException(NotFoundException::class);
-        $repository->load(GameId::new());
+        $result = $repository->load(GameId::new());
+        $this->assertTrue($result->hasErr());
+        $this->assertEquals(LoadGameResult::E_GAME_NOT_FOUND, $result->unwrapErr());
     }
 }
