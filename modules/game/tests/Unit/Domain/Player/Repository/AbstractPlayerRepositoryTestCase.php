@@ -16,8 +16,6 @@ use Tests\TestCase;
 
 abstract class AbstractPlayerRepositoryTestCase extends TestCase
 {
-    private GameRepositoryInterface $gameRepository;
-
     abstract protected function buildPlayerRepo(): PlayerRepositoryInterface;
 
     abstract protected function buildGameRepo(): GameRepositoryInterface;
@@ -31,24 +29,24 @@ abstract class AbstractPlayerRepositoryTestCase extends TestCase
 
     public function test_load(): void
     {
-        $this->gameRepository = $this->buildGameRepo();
+        $gameRepo = $this->buildGameRepo();
         $one = PlayerId::new();
-        $this->makeCreated($one);
-        $this->makePlayersJoining($one);
-        $this->makeAbandoned($one);
-        $this->makeOrderSubmission($one, 3);
-        $this->makeAdjudicating($one, 2);
-        $this->makeFinished($one);
-        $this->makeNotEnoughPlayersByDeadline($one);
+        $this->makeCreated($one, $gameRepo);
+        $this->makePlayersJoining($one, $gameRepo);
+        $this->makeAbandoned($one, $gameRepo);
+        $this->makeOrderSubmission($one, $gameRepo, 3);
+        $this->makeAdjudicating($one, $gameRepo, 2);
+        $this->makeFinished($one, $gameRepo);
+        $this->makeNotEnoughPlayersByDeadline($one, $gameRepo);
 
         $two = PlayerId::new();
-        $this->makeCreated($two, 2);
-        $this->makePlayersJoining($two);
-        $this->makeAbandoned($two);
-        $this->makeOrderSubmission($two);
-        $this->makeAdjudicating($two);
-        $this->makeFinished($two, 4);
-        $this->makeNotEnoughPlayersByDeadline($two);
+        $this->makeCreated($two, $gameRepo, 2);
+        $this->makePlayersJoining($two, $gameRepo);
+        $this->makeAbandoned($two, $gameRepo);
+        $this->makeOrderSubmission($two, $gameRepo);
+        $this->makeAdjudicating($two, $gameRepo);
+        $this->makeFinished($two, $gameRepo, 4);
+        $this->makeNotEnoughPlayersByDeadline($two, $gameRepo);
 
         $repo = $this->buildPlayerRepo();
         $players =  [
@@ -61,73 +59,73 @@ abstract class AbstractPlayerRepositoryTestCase extends TestCase
         }
     }
 
-    private function makeCreated(PlayerId $playerId, int $count = 1): void
+    private function makeCreated(PlayerId $playerId, GameRepositoryInterface $repo, int $count = 1): void
     {
         for ($i = 0; $i < $count; $i++) {
             $game = GameBuilder::initialize(playerId: $playerId)->build();
             $this->assertTrue($game->gameStateMachine->hasCurrentState(GameStates::CREATED));
 
-            $this->persist($game);
+            $this->persist($game, $repo);
         }
     }
 
-    private function makePlayersJoining(PlayerId $playerId, int $count = 1): void
+    private function makePlayersJoining(PlayerId $playerId, GameRepositoryInterface $repo, int $count = 1): void
     {
         for ($i = 0; $i < $count; $i++) {
             $game = GameBuilder::initialize()->storeInitialAdjudication()->join($playerId)->build();
 
             $this->assertTrue($game->gameStateMachine->hasCurrentState(GameStates::PLAYERS_JOINING));
-            $this->persist($game);
+            $this->persist($game, $repo);
         }
 
     }
 
-    private function makeAbandoned(PlayerId $playerId, int $count = 1): void
+    private function makeAbandoned(PlayerId $playerId, GameRepositoryInterface $repo, int $count = 1): void
     {
         for ($i = 0; $i < $count; $i++) {
 
             $game = GameBuilder::initialize(playerId: $playerId)->storeInitialAdjudication()->abandon()->build();
 
             $this->assertTrue($game->gameStateMachine->hasCurrentState(GameStates::ABANDONED));
-            $this->persist($game);
+            $this->persist($game, $repo);
         }
 
     }
 
-    private function makeOrderSubmission(PlayerId $playerId, int $count = 1): void
+    private function makeOrderSubmission(PlayerId $playerId, GameRepositoryInterface $repo, int $count = 1): void
     {
         for ($i = 0; $i < $count; $i++) {
             $game = GameBuilder::initialize()->storeInitialAdjudication()->join($playerId)->makeFull()->build();
 
             $this->assertTrue($game->gameStateMachine->hasCurrentState(GameStates::ORDER_SUBMISSION));
-            $this->persist($game);
+            $this->persist($game, $repo);
         }
 
     }
 
-    private function makeAdjudicating(PlayerId $playerId, int $count = 1): void
+    private function makeAdjudicating(PlayerId $playerId, GameRepositoryInterface $repo, int $count = 1): void
     {
         for ($i = 0; $i < $count; $i++) {
             $game = GameBuilder::initialize()->storeInitialAdjudication()->join($playerId)->makeFull()->transitionToAdjudicating()->build();
 
             $this->assertTrue($game->gameStateMachine->hasCurrentState(GameStates::ADJUDICATING));
-            $this->persist($game);
+            $this->persist($game, $repo);
         }
 
     }
 
-    private function makeFinished(PlayerId $playerId, int $count = 1): void
+    private function makeFinished(PlayerId $playerId, GameRepositoryInterface $repo, int $count = 1): void
     {
         for ($i = 0; $i < $count; $i++) {
             $game = GameBuilder::initialize()->storeInitialAdjudication()->join($playerId)->makeFull()->transitionToAdjudicating()->finish()->build();
 
             $this->assertTrue($game->gameStateMachine->hasCurrentState(GameStates::FINISHED));
-            $this->persist($game);
+            $this->persist($game, $repo);
         }
 
     }
 
-    private function makeNotEnoughPlayersByDeadline(PlayerId $playerId, int $count = 1): void
+    private function makeNotEnoughPlayersByDeadline(PlayerId $playerId, GameRepositoryInterface $repo, int $count = 1): void
     {
         for ($i = 0; $i < $count; $i++) {
             $gameStartTiming = new GameStartTiming(
@@ -139,13 +137,13 @@ abstract class AbstractPlayerRepositoryTestCase extends TestCase
             $game->handleGameJoinLengthExceeded(new DateTime('2021-01-05 00:00:00'));
 
             $this->assertTrue($game->gameStateMachine->hasCurrentState(GameStates::NOT_ENOUGH_PLAYERS_BY_DEADLINE));
-            $this->persist($game);
+            $this->persist($game, $repo);
         }
 
     }
 
-    private function persist(Game $game): void
+    private function persist(Game $game, GameRepositoryInterface $repo): void
     {
-        $this->gameRepository->save($game);
+        $repo->save($game);
     }
 }

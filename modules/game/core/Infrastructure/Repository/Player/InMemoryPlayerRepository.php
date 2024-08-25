@@ -20,7 +20,7 @@ class InMemoryPlayerRepository implements PlayerRepositoryInterface
         $count = 0;
         foreach ($games as $game) {
             if ($game->powerCollection->containsPlayer($playerId)
-                && $game->gameStateMachine->hasCurrentState(GameStates::FINISHED)) {
+                && $game->gameStateMachine->currentStateIsNot(GameStates::FINISHED)) {
                 $count++;
             }
         }
