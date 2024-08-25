@@ -4,37 +4,23 @@ namespace Dnw\Game\ViewModel\CreateGame;
 
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
-use Dnw\Foundation\ViewModel\Option;
-use Dnw\Foundation\ViewModel\Options;
+use Dnw\Foundation\Form\Fields\Heading;
+use Dnw\Foundation\Form\Fields\NumberInput;
+use Dnw\Foundation\Form\Fields\Select;
+use Dnw\Foundation\Form\Fields\SelectOption;
+use Dnw\Foundation\Form\Fields\Separator;
+use Dnw\Foundation\Form\Fields\TextInput;
+use Dnw\Foundation\Form\Form;
 use Dnw\Foundation\ViewModel\ViewModel;
 use Dnw\Game\Core\Application\Query\GetAllVariants\VariantDto;
-use Dnw\Game\ViewModel\CreateGame\ViewModel\VariantInformationOption;
-use Dnw\Game\ViewModel\CreateGame\ViewModel\VariantInformationOptions;
+use Dnw\Game\Http\CreateGame\StoreGameRequest;
 
 class CreateGameFormViewModel extends ViewModel
 {
     public function __construct(
         public string $create_game_title,
         public string $create_game_description,
-        public string $endpoint,
-        public string $advanced_settings_title,
-        public string $name_label,
-        public string $phase_length_in_minutes_label,
-        public string $phase_length_in_minutes_description,
-        public Options $phase_length_in_minutes_options,
-        public string $variant_id_label,
-        public VariantInformationOptions $variant_id_options,
-        public string $join_length_in_days_label,
-        public int $join_length_in_days_default_value,
-        public Options $start_when_ready_options,
-        public string $no_adjudication_weekdays_label,
-        public string $no_adjudication_weekdays_description,
-        public Options $no_adjudication_weekdays_options,
-        public string $anonymous_orders_label,
-        public string $random_power_assignments_label,
-        public string $selected_power_id_label,
-        public string $is_ranked_label,
-        public string $submit_button_label,
+        public Form $form,
     ) {}
 
     /**
@@ -53,76 +39,71 @@ class CreateGameFormViewModel extends ViewModel
             return $date->diffAsCarbonInterval($baseDate)->forHumans();
         };
 
-        $phaseLengthInMinutesOptions = new Options(
-            array_map(
-                fn (int $length) => new Option(
-                    (string) $length,
-                    $differFunction($length),
-                    $length == CarbonInterface::HOURS_PER_DAY * CarbonInterface::MINUTES_PER_HOUR
-                ),
-                $allowedLengths
-            )
-        );
-
-        $variantInformationOptions = new VariantInformationOptions(
-            array_map(
-                fn (VariantDto $variantDto) => new VariantInformationOption(
-                    (string) $variantDto->id,
-                    $variantDto->name,
-                    $variantDto->name === 'Standard',
-                    $variantDto->description,
-                    new Options(
-                        array_map(
-                            fn ($power) => new Option(
-                                (string) $power->variantPowerId,
-                                $power->name,
-                                false
-                            ),
-                            $variantDto->powers
-                        )
-                    ),
-                ),
-                $variants
+        $phaseLengthInMinutesOptions = array_map(
+            fn (int $length) => new SelectOption(
+                (string) $length,
+                $differFunction($length),
+                $length == CarbonInterface::HOURS_PER_DAY * CarbonInterface::MINUTES_PER_HOUR
             ),
+            $allowedLengths
         );
 
-        $noAdjudicationWeekdaysOptions = new Options([
-            new Option('1', 'Montag', false),
-            new Option('2', 'Dienstag', false),
-            new Option('3', 'Mittwoch', false),
-            new Option('4', 'Donnerstag', false),
-            new Option('5', 'Freitag', false),
-            new Option('6', 'Samstag', false),
-            new Option('0', 'Sonntag', false),
-        ]);
+        $variantInformationOptions = array_map(
+            fn (VariantDto $variantDto) => new SelectOption(
+                (string) $variantDto->id,
+                $variantDto->name,
+                $variantDto->name === 'Standard',
+            ),
+            $variants
+        );
 
-        $startWhenReadyOptions = new Options([
-            new Option('1', 'Das Spiel wird gestartet, sobald genug Spieler beigetreten sind.', true),
-            new Option('0', 'Das Spiel startet erst, wenn das Start-Datum und die Start-Zeit erreicht ist.', false),
-        ]);
+        $noAdjudicationWeekdaysOptions = [
+            new SelectOption('1', 'Montag', false),
+            new SelectOption('2', 'Dienstag', false),
+            new SelectOption('3', 'Mittwoch', false),
+            new SelectOption('4', 'Donnerstag', false),
+            new SelectOption('5', 'Freitag', false),
+            new SelectOption('6', 'Samstag', false),
+            new SelectOption('0', 'Sonntag', false),
+        ];
+
+        $startWhenReadyOptions = [
+            new SelectOption('1', 'Das Spiel wird gestartet, sobald genug Spieler beigetreten sind.', true),
+            new SelectOption('0', 'Das Spiel startet erst, wenn das Start-Datum und die Start-Zeit erreicht ist.', false),
+        ];
+
+        $form = new Form(
+            route('game.store'),
+            'Spiel erstellen',
+            fields: [
+                new TextInput(StoreGameRequest::KEY_NAME, 'Name'),
+                new Select(
+                    StoreGameRequest::PHASE_LENGTH_IN_MINUTES,
+                    'Phasenlänge',
+                    'Wie lange dauert jede Phase?',
+                    $phaseLengthInMinutesOptions
+                ),
+                new Separator(),
+                new Heading('Erweiterte Einstellungen'),
+                new Select(
+                    StoreGameRequest::KEY_VARIANT_ID,
+                    'Variante',
+                    options: $variantInformationOptions
+                ),
+                new NumberInput(StoreGameRequest::KEY_JOIN_LENGTH_IN_DAYS, 'Länge der Beitrittsphase in Tagen', defaultValue: 10, min: 1, max: 365),
+                new Select(
+                    StoreGameRequest::KEY_START_WHEN_READY,
+                    'Spielstart',
+                    'Wann soll das Spiel beginnen?',
+                    $startWhenReadyOptions
+                ),
+            ],
+        );
 
         return new self(
             'Neues Spiel erstellen',
             ' Beginne ein neues Spiel; du entscheidest, wie es heißt, wie lange die Phasen dauern, und was es wert ist.',
-            route('game.store'),
-            'Erweiterte Einstellungen',
-            'Name',
-            'Phasenlänge',
-            'Wie lange dauert jede Phase?',
-            $phaseLengthInMinutesOptions,
-            'Variante',
-            $variantInformationOptions,
-            'Länge der Beitrittsphase in Tagen',
-            10,
-            $startWhenReadyOptions,
-            'Keine Spielauswertung an',
-            'Wähle die Wochentage aus, an denen keine Spielauswertung stattfinden soll.',
-            $noAdjudicationWeekdaysOptions,
-            'Anonyme Befehle',
-            'Zufällige Mächtezuweisungen',
-            'Ausgewählte Macht',
-            'Rangliste',
-            'Spiel erstellen',
+            $form,
         );
     }
 }

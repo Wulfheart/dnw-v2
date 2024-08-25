@@ -38,13 +38,13 @@ class StoreGameRequest extends FormRequest
             self::PHASE_LENGTH_IN_MINUTES => ['required', 'integer', 'min:10', 'max:1440'],
             self::KEY_JOIN_LENGTH_IN_DAYS => ['required', 'integer', 'min:1', 'max:365'],
             self::KEY_START_WHEN_READY => ['required', 'boolean'],
-            self::KEY_VARIANT_ID => ['required', IdRule::class],
-            self::KEY_RANDOM_POWER_ASSIGNMENTS => ['required', 'boolean'],
-            self::KEY_SELECTED_VARIANT_POWER_ID => [IdRule::class, 'required_if_accepted:randomPowerAssignments'],
-            self::KEY_IS_RANKED => ['required', 'boolean'],
-            self::KEY_IS_ANONYMOUS => ['required', 'boolean'],
-            self::KEY_WEEKDAYS_WITHOUT_ADJUDICATION => ['required', 'array', 'max:6'],
-            self::KEY_WEEKDAYS_WITHOUT_ADJUDICATION . '.*' => ['integer', 'min:0', 'max:6'],
+            self::KEY_VARIANT_ID => ['required', new IdRule()],
+            // self::KEY_RANDOM_POWER_ASSIGNMENTS => ['required', 'boolean'],
+            // self::KEY_SELECTED_VARIANT_POWER_ID => ['required_if_accepted:randomPowerAssignments', IdRule::class],
+            // self::KEY_IS_RANKED => ['required', 'boolean'],
+            // self::KEY_IS_ANONYMOUS => ['required', 'boolean'],
+            // self::KEY_WEEKDAYS_WITHOUT_ADJUDICATION => ['required', 'array', 'max:6'],
+            // self::KEY_WEEKDAYS_WITHOUT_ADJUDICATION . '.*' => ['integer', 'min:0', 'max:6'],
         ];
     }
 }

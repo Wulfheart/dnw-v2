@@ -17,10 +17,10 @@ readonly class Player
     public function canParticipateInAnotherGame(): Ruleset
     {
         return new Ruleset(
-            new Rule(
-                PlayerRules::CURRENTLY_IN_TOO_MANY_GAMES,
-                $this->numberOfCurrentlyPlayingGames < 3
-            )
+            // new Rule(
+            //     PlayerRules::CURRENTLY_IN_TOO_MANY_GAMES,
+            //     $this->numberOfCurrentlyPlayingGames < 3
+            // )
         );
     }
 }

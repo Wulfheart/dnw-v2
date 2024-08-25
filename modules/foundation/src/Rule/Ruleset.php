@@ -10,6 +10,7 @@ class Ruleset
     public function __construct(
         RuleInterface ...$rules
     ) {
+        $this->rules = [];
         foreach ($rules as $rule) {
             $rule->calculate();
             $this->rules[] = $rule;

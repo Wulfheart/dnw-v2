@@ -13,6 +13,7 @@ use Dnw\Game\ViewModel\CreateGame\CreateGameFormViewModel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Std\Option;
 
 readonly class CreateGameController
 {
@@ -43,11 +44,11 @@ readonly class CreateGameController
             $request->integer(StoreGameRequest::KEY_JOIN_LENGTH_IN_DAYS),
             $request->boolean(StoreGameRequest::KEY_START_WHEN_READY),
             Id::fromString($request->string(StoreGameRequest::KEY_VARIANT_ID)),
-            $request->boolean(StoreGameRequest::KEY_RANDOM_POWER_ASSIGNMENTS),
-            Id::fromNullable($request->string(StoreGameRequest::KEY_SELECTED_VARIANT_POWER_ID)),
-            $request->boolean(StoreGameRequest::KEY_IS_RANKED),
-            $request->boolean(StoreGameRequest::KEY_IS_ANONYMOUS),
-            $request->input(StoreGameRequest::KEY_WEEKDAYS_WITHOUT_ADJUDICATION),
+            true,
+            Option::none(),
+            true,
+            false,
+            [],
             Id::fromString($user->id),
         );
         /** @var CreateGameResult $result */
@@ -59,6 +60,6 @@ readonly class CreateGameController
             };
         }
 
-        return response()->redirectTo(route(''));
+        return response()->redirectTo('/');
     }
 }

@@ -36,6 +36,8 @@ readonly class CreateGameCommandHandler
     public function handle(
         CreateGameCommand $command
     ): CreateGameResult {
+        // TODO: Automatically append a number to the game name if it already exists
+
         $player = $this->playerRepository->load(PlayerId::fromString($command->creatorId));
         if ($player->canParticipateInAnotherGame()->fails()) {
             $this->logger->warning(

@@ -1,5 +1,8 @@
 <?php
-/** @var \Dnw\Foundation\Form\Fields\Select $vm */
+
+use Dnw\Foundation\Form\Fields\Select;
+
+/** @var Select $vm */
 ?>
 
 <div>
@@ -7,7 +10,7 @@
         <select name="{{ $vm->key }}">
             @foreach ($vm->options as $option)
                 <option value="{{ $option->value }}" @selected($option->value == old($vm->key, $vm->defaultValue))>
-                    {{ $option->label }}
+                    {{ $option->name }}
                 </option>
             @endforeach
         </select>

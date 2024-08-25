@@ -29,7 +29,7 @@ class LaravelVariantRepository implements VariantRepositoryInterface
 
     public function load(VariantId $variantId): LoadVariantResult
     {
-        $variantModel = VariantModel::with('powers')->first(
+        $variantModel = VariantModel::with('powers')->find(
             (string) $variantId,
         );
 
