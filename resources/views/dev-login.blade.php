@@ -6,10 +6,7 @@ use App\ViewModel\DevLogin\DevLoginViewModel;
 ?>
 
 <x-layout>
-    <div class="content-bare content-board-header content-title-header">
-        <div class="pageTitle barAlt1">Dev Login</div>
-        <div class="pageDescription">This should only be used in development mode.</div>
-    </div>
+    <x-display.header title="Dev-Login" description="This should only be visible in dev" />
     <div>
         <div class="content content-follow-on">
             <form action="{{ $viewModel->endpoint }}" method="POST" class="web">

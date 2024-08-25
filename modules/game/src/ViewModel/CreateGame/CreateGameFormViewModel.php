@@ -16,6 +16,7 @@ class CreateGameFormViewModel extends ViewModel
     public function __construct(
         public string $create_game_title,
         public string $create_game_description,
+        public string $endpoint,
         public string $advanced_settings_title,
         public string $name_label,
         public string $phase_length_in_minutes_label,
@@ -103,6 +104,7 @@ class CreateGameFormViewModel extends ViewModel
         return new self(
             'Neues Spiel erstellen',
             ' Beginne ein neues Spiel; du entscheidest, wie es heißt, wie lange die Phasen dauern, und was es wert ist.',
+            route('game.store'),
             'Erweiterte Einstellungen',
             'Name',
             'Phasenlänge',

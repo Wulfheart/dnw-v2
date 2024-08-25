@@ -1,9 +1,9 @@
-@props(['name', 'label'])
+@props(['key', 'label'])
 
 <div>
-    <label for="{{$name}}">{{$label}}</label>
+    <label for="{{$key}}">{{$label}}</label>
     {{ $slot }}
-    @error('userId')
+    @error($key)
     <div class="error">
         {{ $message }}
     </div>

@@ -7,9 +7,12 @@ use Dnw\Foundation\Bus\BusInterface;
 use Dnw\Foundation\Identity\Id;
 use Dnw\Game\Core\Application\Command\CreateGame\CreateGameCommand;
 use Dnw\Game\Core\Application\Command\CreateGame\CreateGameResult;
+use Dnw\Game\Core\Application\Query\GetAllVariants\GetAllVariantsQuery;
+use Dnw\Game\Core\Application\Query\GetAllVariants\GetAllVariantsResult;
+use Dnw\Game\ViewModel\CreateGame\CreateGameFormViewModel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\Response;
 
 readonly class CreateGameController
 {
@@ -17,8 +20,15 @@ readonly class CreateGameController
         private BusInterface $bus,
     ) {}
 
-    public function show(Request $request): void {
-        // TODO: Add a query to determine if a user can create a game
+    public function show(Request $request): Response
+    {
+        // TODO: Add a query to determine if a user can create a game in order to show a hint later
+
+        /** @var GetAllVariantsResult $allVariants */
+        $allVariants = $this->bus->handle(new GetAllVariantsQuery());
+        $vm = CreateGameFormViewModel::fromLaravel($allVariants->variants);
+
+        return response()->view('game::game.create', ['vm' => $vm]);
     }
 
     public function store(StoreGameRequest $request): RedirectResponse
@@ -28,16 +38,16 @@ readonly class CreateGameController
 
         $command = new CreateGameCommand(
             Id::generate(),
-            $request->string('name'),
-            $request->integer('phaseLengthInMinutes'),
-            $request->integer('joinLengthInDays'),
-            $request->boolean('startWhenReady'),
-            Id::fromString($request->string('variantId')),
-            $request->boolean('randomPowerAssignments'),
-            Id::fromNullable($request->string('selectedVariantPowerId')),
-            $request->boolean('isRanked'),
-            $request->boolean('isAnonymous'),
-            $request->input('weekdaysWithoutAdjudication'),
+            $request->string(StoreGameRequest::KEY_NAME),
+            $request->integer(StoreGameRequest::PHASE_LENGTH_IN_MINUTES),
+            $request->integer(StoreGameRequest::KEY_JOIN_LENGTH_IN_DAYS),
+            $request->boolean(StoreGameRequest::KEY_START_WHEN_READY),
+            Id::fromString($request->string(StoreGameRequest::KEY_VARIANT_ID)),
+            $request->boolean(StoreGameRequest::KEY_RANDOM_POWER_ASSIGNMENTS),
+            Id::fromNullable($request->string(StoreGameRequest::KEY_SELECTED_VARIANT_POWER_ID)),
+            $request->boolean(StoreGameRequest::KEY_IS_RANKED),
+            $request->boolean(StoreGameRequest::KEY_IS_ANONYMOUS),
+            $request->input(StoreGameRequest::KEY_WEEKDAYS_WITHOUT_ADJUDICATION),
             Id::fromString($user->id),
         );
         /** @var CreateGameResult $result */
