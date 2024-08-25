@@ -9,6 +9,7 @@ use Dnw\Game\Core\Domain\Game\Repository\Game\GameRepositoryInterface;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Core\Domain\Player\ValueObject\PlayerId;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
+use Psr\Log\LoggerInterface;
 
 readonly class JoinGameCommandHandler
 {
@@ -16,12 +17,15 @@ readonly class JoinGameCommandHandler
         private GameRepositoryInterface $gameRepository,
         private TimeProviderInterface $timeProvider,
         private RandomNumberGeneratorInterface $randomNumberGenerator,
+        private LoggerInterface $logger,
     ) {}
 
     public function handle(JoinGameCommand $command): JoinGameResult
     {
         $gameResult = $this->gameRepository->load(GameId::fromString($command->gameId));
         if ($gameResult->hasErr()) {
+            $this->logger->info('Game not found', ['gameId' => $command->gameId]);
+
             return JoinGameResult::err(JoinGameResult::E_GAME_NOT_FOUND);
         }
         $game = $gameResult->unwrap();

@@ -55,7 +55,7 @@ readonly class CreateGameController
         $result = $this->bus->handle($command);
         if ($result->hasErr()) {
             match ($result->unwrapErr()) {
-                CreateGameResult::E_UNABLE_TO_LOAD_VARIANT => abort(404),
+                CreateGameResult::E_UNABLE_TO_LOAD_VARIANT => abort(Response::HTTP_NOT_FOUND),
                 CreateGameResult::E_NOT_ALLOWED_TO_CREATE_GAME => abort(Response::HTTP_FORBIDDEN),
             };
         }

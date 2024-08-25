@@ -11,7 +11,7 @@ use App\ViewModel\DevLogin\DevLoginViewModel;
         <div class="content content-follow-on">
             <form action="{{ $viewModel->endpoint }}" method="POST" class="web">
                 @csrf
-                <x-input label="User" name="userId">
+                <x-input label="User" key="userId">
                     <select name="userId">
                         <option value=""></option>
                         @foreach($viewModel->users as $user)

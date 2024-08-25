@@ -17,6 +17,7 @@ use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\NewPhaseData;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
 use Dnw\Game\Core\Domain\Variant\Repository\VariantRepositoryInterface;
+use Psr\Log\LoggerInterface;
 
 readonly class AdjudicateGameCommandHandler
 {
@@ -26,17 +27,22 @@ readonly class AdjudicateGameCommandHandler
         private VariantRepositoryInterface $variantRepository,
         private PhaseRepositoryInterface $phaseRepository,
         private TimeProviderInterface $timeProvider,
+        private LoggerInterface $logger,
     ) {}
 
     public function handle(AdjudicateGameCommand $command): AdjudicateGameCommandResult
     {
         $gameResult = $this->gameRepository->load(GameId::fromId($command->gameId));
         if ($gameResult->hasErr()) {
+            $this->logger->info('Game not found', ['gameId' => $command->gameId]);
+
             return AdjudicateGameCommandResult::err(AdjudicateGameCommandResult::E_GAME_NOT_FOUND);
         }
         $game = $gameResult->unwrap();
         $variantResult = $this->variantRepository->load($game->variant->id);
         if ($variantResult->hasErr()) {
+            $this->logger->info('Variant not found', ['variantId' => $game->variant->id]);
+
             return AdjudicateGameCommandResult::err(AdjudicateGameCommandResult::E_VARIANT_NOT_FOUND);
         }
         $variant = $variantResult->unwrap();
