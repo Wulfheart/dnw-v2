@@ -1,0 +1,440 @@
+{
+    "applied_orders": [],
+    "current_state_encoded": "::NEW_ENCODED_STATE::",
+    "phase_long": "SPRING 1901 MOVEMENT",
+    "phase_power_data": [
+        {
+            "home_center_count": 3,
+            "power": "AUSTRIA",
+            "supply_center_count": 3,
+            "unit_count": 3
+        },
+        {
+            "home_center_count": 3,
+            "power": "ENGLAND",
+            "supply_center_count": 3,
+            "unit_count": 3
+        },
+        {
+            "home_center_count": 3,
+            "power": "FRANCE",
+            "supply_center_count": 3,
+            "unit_count": 3
+        },
+        {
+            "home_center_count": 3,
+            "power": "GERMANY",
+            "supply_center_count": 3,
+            "unit_count": 3
+        },
+        {
+            "home_center_count": 3,
+            "power": "ITALY",
+            "supply_center_count": 3,
+            "unit_count": 3
+        },
+        {
+            "home_center_count": 4,
+            "power": "RUSSIA",
+            "supply_center_count": 4,
+            "unit_count": 4
+        },
+        {
+            "home_center_count": 3,
+            "power": "TURKEY",
+            "supply_center_count": 3,
+            "unit_count": 3
+        }
+    ],
+    "phase_short": "S1901M",
+    "phase_type": "M",
+    "possible_orders": [
+        {
+            "power": "AUSTRIA",
+            "units": [
+                {
+                    "possible_orders": [
+                        "A BUD H",
+                        "A BUD S A VIE - TRI",
+                        "A BUD S F SEV - RUM",
+                        "A BUD S A VIE",
+                        "A BUD - SER",
+                        "A BUD S F TRI",
+                        "A BUD - GAL",
+                        "A BUD - VIE",
+                        "A BUD S A WAR - GAL",
+                        "A BUD S A VIE - GAL",
+                        "A BUD - TRI",
+                        "A BUD S A VEN - TRI",
+                        "A BUD - RUM"
+                    ],
+                    "space": "BUD"
+                },
+                {
+                    "possible_orders": [
+                        "F TRI - ADR",
+                        "F TRI S A VEN",
+                        "F TRI - VEN",
+                        "F TRI - ALB",
+                        "F TRI S A ROM - VEN",
+                        "F TRI H"
+                    ],
+                    "space": "TRI"
+                },
+                {
+                    "possible_orders": [
+                        "A VIE S A VEN - TRI",
+                        "A VIE H",
+                        "A VIE - BOH",
+                        "A VIE - TYR",
+                        "A VIE - GAL",
+                        "A VIE S A VEN - TYR",
+                        "A VIE S A BUD - TRI",
+                        "A VIE S A MUN - TYR",
+                        "A VIE S A MUN - BOH",
+                        "A VIE S A BUD - GAL",
+                        "A VIE - BUD",
+                        "A VIE S A BUD",
+                        "A VIE - TRI",
+                        "A VIE S A WAR - GAL",
+                        "A VIE S F TRI"
+                    ],
+                    "space": "VIE"
+                }
+            ]
+        },
+        {
+            "power": "ENGLAND",
+            "units": [
+                {
+                    "possible_orders": [
+                        "F EDI S A LVP - CLY",
+                        "F EDI - CLY",
+                        "F EDI - NTH",
+                        "F EDI H",
+                        "F EDI S A LVP - YOR",
+                        "F EDI S F LON - NTH",
+                        "F EDI - YOR",
+                        "F EDI S F LON - YOR",
+                        "F EDI - NWG"
+                    ],
+                    "space": "EDI"
+                },
+                {
+                    "possible_orders": [
+                        "F LON H",
+                        "F LON S A LVP - WAL",
+                        "F LON - YOR",
+                        "F LON S A LVP - YOR",
+                        "F LON S F EDI - YOR",
+                        "F LON S F BRE - ENG",
+                        "F LON S F EDI - NTH",
+                        "F LON - WAL",
+                        "F LON - ENG",
+                        "F LON - NTH"
+                    ],
+                    "space": "LON"
+                },
+                {
+                    "possible_orders": [
+                        "A LVP S F LON - WAL",
+                        "A LVP S F EDI - CLY",
+                        "A LVP S F EDI",
+                        "A LVP - EDI",
+                        "A LVP H",
+                        "A LVP - CLY",
+                        "A LVP - YOR",
+                        "A LVP S F EDI - YOR",
+                        "A LVP - WAL",
+                        "A LVP S F LON - YOR"
+                    ],
+                    "space": "LVP"
+                }
+            ]
+        },
+        {
+            "power": "FRANCE",
+            "units": [
+                {
+                    "possible_orders": [
+                        "F BRE - PIC",
+                        "F BRE S F LON - ENG",
+                        "F BRE - ENG",
+                        "F BRE H",
+                        "F BRE S A MAR - GAS",
+                        "F BRE - MAO",
+                        "F BRE - GAS",
+                        "F BRE S A PAR - GAS",
+                        "F BRE S A PAR - PIC"
+                    ],
+                    "space": "BRE"
+                },
+                {
+                    "possible_orders": [
+                        "A MAR - SPA",
+                        "A MAR H",
+                        "A MAR S A PAR - BUR",
+                        "A MAR - GAS",
+                        "A MAR - PIE",
+                        "A MAR S F BRE - GAS",
+                        "A MAR S A MUN - BUR",
+                        "A MAR S A VEN - PIE",
+                        "A MAR S A PAR - GAS",
+                        "A MAR - BUR"
+                    ],
+                    "space": "MAR"
+                },
+                {
+                    "possible_orders": [
+                        "A PAR - BRE",
+                        "A PAR S A MAR - BUR",
+                        "A PAR S F BRE - PIC",
+                        "A PAR S F BRE",
+                        "A PAR S F BRE - GAS",
+                        "A PAR S A MAR - GAS",
+                        "A PAR S A MUN - BUR",
+                        "A PAR - GAS",
+                        "A PAR - BUR",
+                        "A PAR H",
+                        "A PAR - PIC"
+                    ],
+                    "space": "PAR"
+                }
+            ]
+        },
+        {
+            "power": "GERMANY",
+            "units": [
+                {
+                    "possible_orders": [
+                        "A BER - PRU",
+                        "A BER H",
+                        "A BER S A MUN - SIL",
+                        "A BER S F KIE",
+                        "A BER S A MUN",
+                        "A BER - KIE",
+                        "A BER S A WAR - PRU",
+                        "A BER - MUN",
+                        "A BER - SIL",
+                        "A BER S A WAR - SIL",
+                        "A BER S A MUN - KIE"
+                    ],
+                    "space": "BER"
+                },
+                {
+                    "possible_orders": [
+                        "F KIE - HOL",
+                        "F KIE H",
+                        "F KIE - HEL",
+                        "F KIE - DEN",
+                        "F KIE - BER",
+                        "F KIE S A BER",
+                        "F KIE - BAL",
+                        "F KIE S A MUN - BER"
+                    ],
+                    "space": "KIE"
+                },
+                {
+                    "possible_orders": [
+                        "A MUN - RUH",
+                        "A MUN S A VEN - TYR",
+                        "A MUN - SIL",
+                        "A MUN S A VIE - TYR",
+                        "A MUN H",
+                        "A MUN S A MAR - BUR",
+                        "A MUN - KIE",
+                        "A MUN - BOH",
+                        "A MUN S F KIE - BER",
+                        "A MUN S A BER",
+                        "A MUN S A VIE - BOH",
+                        "A MUN S A BER - SIL",
+                        "A MUN - TYR",
+                        "A MUN - BER",
+                        "A MUN - BUR",
+                        "A MUN S F KIE",
+                        "A MUN S A WAR - SIL",
+                        "A MUN S A BER - KIE",
+                        "A MUN S A PAR - BUR"
+                    ],
+                    "space": "MUN"
+                }
+            ]
+        },
+        {
+            "power": "ITALY",
+            "units": [
+                {
+                    "possible_orders": [
+                        "F NAP H",
+                        "F NAP - TYS",
+                        "F NAP - ROM",
+                        "F NAP - ION",
+                        "F NAP S A VEN - ROM",
+                        "F NAP - APU",
+                        "F NAP S A ROM - APU",
+                        "F NAP S A VEN - APU",
+                        "F NAP S A ROM"
+                    ],
+                    "space": "NAP"
+                },
+                {
+                    "possible_orders": [
+                        "A ROM - VEN",
+                        "A ROM - NAP",
+                        "A ROM - APU",
+                        "A ROM H",
+                        "A ROM S A VEN",
+                        "A ROM S A VEN - TUS",
+                        "A ROM S A VEN - APU",
+                        "A ROM S F NAP - APU",
+                        "A ROM - TUS",
+                        "A ROM S F TRI - VEN",
+                        "A ROM S F NAP"
+                    ],
+                    "space": "ROM"
+                },
+                {
+                    "possible_orders": [
+                        "A VEN - TUS",
+                        "A VEN - ROM",
+                        "A VEN S A MUN - TYR",
+                        "A VEN S A ROM - TUS",
+                        "A VEN S F NAP - APU",
+                        "A VEN - TYR",
+                        "A VEN - APU",
+                        "A VEN S A BUD - TRI",
+                        "A VEN S A VIE - TYR",
+                        "A VEN S A ROM",
+                        "A VEN - PIE",
+                        "A VEN S A MAR - PIE",
+                        "A VEN S A VIE - TRI",
+                        "A VEN S F TRI",
+                        "A VEN S A ROM - APU",
+                        "A VEN - TRI",
+                        "A VEN S F NAP - ROM",
+                        "A VEN H"
+                    ],
+                    "space": "VEN"
+                }
+            ]
+        },
+        {
+            "power": "RUSSIA",
+            "units": [
+                {
+                    "possible_orders": [
+                        "A MOS S A WAR - UKR",
+                        "A MOS - STP",
+                        "A MOS S F STP/SC - LVN",
+                        "A MOS H",
+                        "A MOS S A WAR",
+                        "A MOS S F STP/SC",
+                        "A MOS - SEV",
+                        "A MOS S F SEV",
+                        "A MOS - WAR",
+                        "A MOS - LVN",
+                        "A MOS S A WAR - LVN",
+                        "A MOS - UKR"
+                    ],
+                    "space": "MOS"
+                },
+                {
+                    "possible_orders": [
+                        "F SEV H",
+                        "F SEV - ARM",
+                        "F SEV - BLA",
+                        "F SEV S A SMY - ARM",
+                        "F SEV S F ANK - BLA",
+                        "F SEV S A BUD - RUM",
+                        "F SEV S F ANK - ARM",
+                        "F SEV - RUM"
+                    ],
+                    "space": "SEV"
+                },
+                {
+                    "possible_orders": [
+                        "F STP/SC S A WAR - LVN",
+                        "F STP/SC - LVN",
+                        "F STP/SC - BOT",
+                        "F STP/SC H",
+                        "F STP/SC - FIN",
+                        "F STP/SC S A MOS - LVN"
+                    ],
+                    "space": "STP"
+                },
+                {
+                    "possible_orders": [
+                        "A WAR - MOS",
+                        "A WAR S A BER - SIL",
+                        "A WAR H",
+                        "A WAR S A BER - PRU",
+                        "A WAR - GAL",
+                        "A WAR - SIL",
+                        "A WAR S F STP/SC - LVN",
+                        "A WAR S A MOS",
+                        "A WAR S A MUN - SIL",
+                        "A WAR - UKR",
+                        "A WAR S A MOS - LVN",
+                        "A WAR - PRU",
+                        "A WAR S A MOS - UKR",
+                        "A WAR S A BUD - GAL",
+                        "A WAR - LVN",
+                        "A WAR S A VIE - GAL"
+                    ],
+                    "space": "WAR"
+                }
+            ]
+        },
+        {
+            "power": "TURKEY",
+            "units": [
+                {
+                    "possible_orders": [
+                        "F ANK - ARM",
+                        "F ANK S A SMY - CON",
+                        "F ANK S F SEV - ARM",
+                        "F ANK S A SMY - ARM",
+                        "F ANK - BLA",
+                        "F ANK S F SEV - BLA",
+                        "F ANK H",
+                        "F ANK - CON",
+                        "F ANK S A CON"
+                    ],
+                    "space": "ANK"
+                },
+                {
+                    "possible_orders": [
+                        "A CON H",
+                        "A CON - SMY",
+                        "A CON S F ANK",
+                        "A CON - ANK",
+                        "A CON - BUL",
+                        "A CON S A SMY",
+                        "A CON S A SMY - ANK"
+                    ],
+                    "space": "CON"
+                },
+                {
+                    "possible_orders": [
+                        "A SMY S A CON",
+                        "A SMY H",
+                        "A SMY - ARM",
+                        "A SMY - SYR",
+                        "A SMY S F ANK",
+                        "A SMY S A CON - ANK",
+                        "A SMY S F ANK - CON",
+                        "A SMY - ANK",
+                        "A SMY S F ANK - ARM",
+                        "A SMY - CON",
+                        "A SMY S F SEV - ARM"
+                    ],
+                    "space": "SMY"
+                }
+            ]
+        }
+    ],
+    "svg_with_orders": "::SVG_WITH_ORDERS::",
+    "svg_adjudicated": "::SVG_ADJUDICATED::",
+    "winners": [],
+    "winning_phase": ""
+}
