@@ -2,7 +2,7 @@
 
 use App\ViewModel\User\UserInfoViewModel;
 
-    /** @var UserInfoViewModel $userInfo */
+/** @var UserInfoViewModel $userInfo */
 ?>
 
 <div id="header">
@@ -16,11 +16,11 @@ use App\ViewModel\User\UserInfoViewModel;
                 @if($userInfo->isAuthenticated)
                     <a href="./userprofile.php?userID=84364">{{ $userInfo->name->unwrap() }}</a>
                     -
-                    <span class="logon">(<a href="logon.php?logoff=on" class="light">Log off</a>)</span>
+                    <span class="logon">(<a href="#" hx-delete="{{ route('logout') }}" class="light">Log off</a>)</span>
                 @else
                     Guest
                     -
-                    <span class="logon">(<a href="{{ route('login') }}" class="light">Login</a>)</span>
+                    <span class="logon"><a href="{{ route('login') }}" class="light">Login</a>)</span>
                 @endif
 
             </div>

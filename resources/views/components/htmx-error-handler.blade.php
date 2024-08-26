@@ -34,5 +34,17 @@
             document.getElementById('htmx-error-modal-content').innerHTML = '';
         }
 
+        document.body.addEventListener('htmx:beforeOnLoad', function (evt) {
+            if (evt.detail.xhr.status >= 400) {
+                let iframe = document.createElement('iframe');
+                document.getElementById('htmx-error-modal-content').appendChild(iframe);
+                iframe.src = 'about:blank';
+                iframe.contentWindow.document.open();
+                iframe.contentWindow.document.write(evt.detail.xhr.responseText);
+                iframe.contentWindow.document.close();
+                document.getElementById('htmx-error-modal-backdrop').style.display = 'block';
+            }
+        });
+
     </script>
 </div>
