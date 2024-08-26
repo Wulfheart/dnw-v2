@@ -4,7 +4,7 @@ namespace Dnw\Foundation\Request;
 
 use Dnw\Foundation\Request\Test\TestRequestFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
-use Tests\TestCase;
+use PHPUnit\Framework\TestCase;
 
 #[CoversClass(RequestFactory::class)]
 class RequestFactoryTest extends TestCase

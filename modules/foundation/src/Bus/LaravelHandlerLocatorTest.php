@@ -4,12 +4,14 @@ namespace Dnw\Foundation\Bus;
 
 use Dnw\Foundation\Bus\Test\SomeAwesomeHandler;
 use Dnw\Foundation\Bus\Test\SomeHandlerInterface;
+use Dnw\Foundation\PHPStan\AllowLaravelTest;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use League\Tactician\Exception\MissingHandlerException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Tests\TestCase;
 
 #[CoversClass(LaravelHandlerLocator::class)]
+#[AllowLaravelTest]
 class LaravelHandlerLocatorTest extends TestCase
 {
     public function test_getHandlerForCommand_throws_if_handler_exists_but_cannot_be_built(): void

@@ -26,8 +26,8 @@ use Dnw\Game\Core\Domain\Variant\Shared\VariantId;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
 use Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
 use Std\Option;
-use Tests\TestCase;
 
 #[CoversClass(Game::class)]
 class GamePregameTest extends TestCase

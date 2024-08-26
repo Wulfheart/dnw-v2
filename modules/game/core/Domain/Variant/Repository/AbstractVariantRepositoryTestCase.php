@@ -2,10 +2,12 @@
 
 namespace Dnw\Game\Core\Domain\Variant\Repository;
 
+use Dnw\Foundation\PHPStan\AllowLaravelTest;
 use Dnw\Game\Core\Domain\Game\Test\Factory\VariantFactory;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantId;
 use Tests\TestCase;
 
+#[AllowLaravelTest]
 abstract class AbstractVariantRepositoryTestCase extends TestCase
 {
     abstract public function buildRepository(): VariantRepositoryInterface;

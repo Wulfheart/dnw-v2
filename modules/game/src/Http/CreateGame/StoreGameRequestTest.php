@@ -3,19 +3,21 @@
 namespace Dnw\Game\Http\CreateGame;
 
 use App\Models\User;
+use Dnw\Foundation\PHPStan\AllowLaravelTest;
 use Dnw\Foundation\Request\RequestFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 #[CoversClass(StoreGameRequest::class)]
+#[AllowLaravelTest]
 class StoreGameRequestTest extends TestCase
 {
     #[DataProvider('validationErrorProvider')]
     public function test_validation_errors(RequestFactory $factory, string $field): void
     {
         $user = User::factory()->create();
-        $response = $this->actingAs($user)->post(route('game.store'), $factory->create());
+        $response = $this->actingAs($user)->post(action([CreateGameController::class, 'store']), $factory->create());
 
         $response->assertInvalid([$field]);
     }

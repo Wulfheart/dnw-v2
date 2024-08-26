@@ -3,6 +3,7 @@
 namespace Dnw\Game\Core\Domain\Player\Repository\Player;
 
 use Dnw\Foundation\DateTime\DateTime;
+use Dnw\Foundation\PHPStan\AllowLaravelTest;
 use Dnw\Game\Core\Domain\Game\Game;
 use Dnw\Game\Core\Domain\Game\Repository\Game\GameRepositoryInterface;
 use Dnw\Game\Core\Domain\Game\StateMachine\GameStates;
@@ -13,6 +14,7 @@ use Dnw\Game\Core\Domain\Player\Player;
 use Dnw\Game\Core\Domain\Player\ValueObject\PlayerId;
 use Tests\TestCase;
 
+#[AllowLaravelTest]
 abstract class AbstractPlayerRepositoryTestCase extends TestCase
 {
     abstract protected function buildPlayerRepo(): PlayerRepositoryInterface;
