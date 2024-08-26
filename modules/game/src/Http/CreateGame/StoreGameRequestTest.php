@@ -3,10 +3,10 @@
 namespace Dnw\Game\Http\CreateGame;
 
 use App\Models\User;
+use Dnw\Foundation\Request\RequestFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
-use Worksome\RequestFactories\RequestFactory;
 
 #[CoversClass(StoreGameRequest::class)]
 class StoreGameRequestTest extends TestCase

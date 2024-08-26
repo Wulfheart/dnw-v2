@@ -11,7 +11,10 @@
 			"Dnw\\Foundation\\Tests\\": "tests/",
 			"Dnw\\Foundation\\Database\\Factories\\": "database/factories/",
 			"Dnw\\Foundation\\Database\\Seeders\\": "database/seeders/"
-		}
+		},
+        "files": [
+            "src/functions.php"
+        ]
 	},
 	"minimum-stability": "stable",
 	"extra": {
