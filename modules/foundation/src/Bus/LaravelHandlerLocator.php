@@ -24,7 +24,7 @@ readonly class LaravelHandlerLocator implements HandlerLocator
         }
 
         $handlerInterface = $commandName . 'HandlerInterface';
-        if ($this->application->has($handlerInterface)) {
+        if (interface_exists($handlerInterface)) {
             return $this->application->make($handlerInterface);
         }
         throw new MissingHandlerException("Handler not found for command $commandName");

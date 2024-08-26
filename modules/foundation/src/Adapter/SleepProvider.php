@@ -4,6 +4,9 @@ namespace Dnw\Foundation\Adapter;
 
 use InvalidArgumentException;
 
+/**
+ * @codeCoverageIgnore
+ */
 class SleepProvider implements SleepProviderInterface
 {
     public function sleep(int $milliseconds): void
