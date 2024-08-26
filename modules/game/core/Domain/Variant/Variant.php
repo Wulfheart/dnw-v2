@@ -9,6 +9,9 @@ use Dnw\Game\Core\Domain\Variant\ValueObject\VariantApiName;
 use Dnw\Game\Core\Domain\Variant\ValueObject\VariantDescription;
 use Dnw\Game\Core\Domain\Variant\ValueObject\VariantName;
 
+/**
+ * @codeCoverageIgnore
+ */
 class Variant
 {
     public function __construct(

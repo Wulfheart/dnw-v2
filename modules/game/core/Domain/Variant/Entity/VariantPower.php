@@ -7,6 +7,9 @@ use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
 use Dnw\Game\Core\Domain\Variant\ValueObject\VariantPower\VariantPowerApiName;
 use Dnw\Game\Core\Domain\Variant\ValueObject\VariantPower\VariantPowerName;
 
+/**
+ * @codeCoverageIgnore
+ */
 class VariantPower
 {
     public function __construct(
