@@ -27,8 +27,4 @@ class GameServiceProvider extends ServiceProvider
         RandomNumberGeneratorInterface::class => RandomNumberGenerator::class,
         GetAllVariantsQueryHandlerInterface::class => GetAllVariantsLaravelQueryHandler::class,
     ];
-
-    public function register() {}
-
-    public function boot(): void {}
 }

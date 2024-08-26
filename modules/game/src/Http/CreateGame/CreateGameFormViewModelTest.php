@@ -5,14 +5,10 @@ namespace Dnw\Game\Http\CreateGame;
 use Dnw\Foundation\Identity\Id;
 use Dnw\Game\Core\Application\Query\GetAllVariants\VariantDto;
 use Dnw\Game\Core\Application\Query\GetAllVariants\VariantPowerDto;
-use Dnw\Game\ViewModel\CreateGame\ViewModel\VariantInformationOption;
-use Dnw\Game\ViewModel\CreateGame\ViewModel\VariantInformationOptions;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Tests\TestCase;
 
 #[CoversClass(CreateGameFormViewModel::class)]
-#[CoversClass(VariantInformationOptions::class)]
-#[CoversClass(VariantInformationOption::class)]
 class CreateGameFormViewModelTest extends TestCase
 {
     public function test_fromLaravel(): void
