@@ -11,6 +11,7 @@ use Tests\TestCase;
 
 /**
  * @implements Rule<Class_>
+ *
  * @codeCoverageIgnore
  */
 class AllowLaravelTestAttributeRule implements Rule
@@ -23,7 +24,7 @@ class AllowLaravelTestAttributeRule implements Rule
     public function processNode(Node $node, Scope $scope): array
     {
         // Check if the class extends Tests\TestCase
-        if (!$node->extends) {
+        if (! $node->extends) {
             return [];
         }
 
@@ -44,7 +45,7 @@ class AllowLaravelTestAttributeRule implements Rule
         }
 
         // If the attribute is not found, return an error
-        if (!$hasAllowLaravelTestAttribute) {
+        if (! $hasAllowLaravelTestAttribute) {
             return [
                 RuleErrorBuilder::message('Classes extending Tests\TestCase must have the #[AllowLaravelTest] attribute.')->build(),
             ];
