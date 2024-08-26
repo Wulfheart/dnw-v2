@@ -10,10 +10,8 @@ class GameStateMachine
     private const array ALLOWED_TRANSITIONS = [
         GameStates::CREATED => [GameStates::PLAYERS_JOINING],
         GameStates::PLAYERS_JOINING => [GameStates::ABANDONED, GameStates::ORDER_SUBMISSION, GameStates::NOT_ENOUGH_PLAYERS_BY_DEADLINE],
-        GameStates::ABANDONED => [GameStates::CREATED],
-        GameStates::ORDER_SUBMISSION => [GameStates::ADJUDICATING, GameStates::ABANDONED],
+        GameStates::ORDER_SUBMISSION => [GameStates::ADJUDICATING],
         GameStates::ADJUDICATING => [GameStates::FINISHED, GameStates::ORDER_SUBMISSION],
-        GameStates::FINISHED => [GameStates::CREATED],
     ];
 
     public function __construct(
@@ -27,7 +25,7 @@ class GameStateMachine
 
     public function transitionTo(string $state): void
     {
-        $allowedTransition = self::ALLOWED_TRANSITIONS[$this->currentState];
+        $allowedTransition = self::ALLOWED_TRANSITIONS[$this->currentState] ?? [];
 
         if (! in_array($state, $allowedTransition)) {
             throw new InvalidTransitionException($this->currentState, $state);
