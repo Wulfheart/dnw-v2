@@ -6,6 +6,7 @@ use Dnw\Foundation\Exception\DomainException;
 use Dnw\Game\Core\Domain\Game\Collection\OrderCollection;
 use Dnw\Game\Core\Domain\Game\Test\Factory\PhasePowerDataFactory;
 use Dnw\Game\Core\Domain\Game\Test\Factory\PowerFactory;
+use Dnw\Game\Core\Domain\Game\ValueObject\Count;
 use Dnw\Game\Core\Domain\Player\ValueObject\PlayerId;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -188,5 +189,58 @@ class PowerTest extends TestCase
 
         $this->assertEquals($newPhaseData, $power->currentPhaseData->unwrap());
         $this->assertEquals($appliedOrders, $power->appliedOrders->unwrap());
+    }
+
+    public function test_persistInitialPhase(): void
+    {
+        $initialPhaseData = PhasePowerDataFactory::build();
+        $power = PowerFactory::build();
+
+        $power->persistInitialPhase($initialPhaseData);
+
+        $this->assertEquals($initialPhaseData, $power->currentPhaseData->unwrap());
+    }
+
+    public function test_isDefeated_returns_true_if_has_0_supply_centers_and_0_units(): void
+    {
+        $power = PowerFactory::build(
+            currentPhaseData: PhasePowerDataFactory::build(
+                supplyCenterCount: Count::fromInt(0),
+                unitCount: Count::fromInt(0),
+            )
+        );
+
+        $this->assertTrue($power->isDefeated());
+    }
+
+    public function test_isDefeated_returns_false_if_no_initial_data_is_there(): void
+    {
+        $power = PowerFactory::build();
+
+        $this->assertFalse($power->isDefeated());
+    }
+
+    public function test_isDefeated_returns_true_if_has_more_than_0_supply_centers(): void
+    {
+        $power = PowerFactory::build(
+            currentPhaseData: PhasePowerDataFactory::build(
+                supplyCenterCount: Count::fromInt(1),
+                unitCount: Count::fromInt(0),
+            )
+        );
+
+        $this->assertFalse($power->isDefeated());
+    }
+
+    public function test_isDefeated_returns_true_if_has_more_than_0_units(): void
+    {
+        $power = PowerFactory::build(
+            currentPhaseData: PhasePowerDataFactory::build(
+                supplyCenterCount: Count::fromInt(0),
+                unitCount: Count::fromInt(1),
+            )
+        );
+
+        $this->assertFalse($power->isDefeated());
     }
 }
