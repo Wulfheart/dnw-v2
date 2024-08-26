@@ -14,6 +14,7 @@ use Dnw\Game\Tests\Asserter\GameAsserter;
 use Dnw\Game\Tests\Factory\GameBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 use Std\Option;
 
 #[CoversClass(JoinGameCommand::class)]
@@ -34,7 +35,8 @@ class JoinGameTest extends TestCase
         $handler = new JoinGameCommandHandler(
             $gameRepository,
             $timeProvider,
-            $randomNumberGenerator
+            $randomNumberGenerator,
+            new NullLogger()
         );
 
         $userId = Id::generate();

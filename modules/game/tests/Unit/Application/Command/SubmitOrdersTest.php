@@ -12,6 +12,7 @@ use Dnw\Game\Tests\Asserter\GameAsserter;
 use Dnw\Game\Tests\Factory\GameBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 
 #[CoversClass(SubmitOrdersCommand::class)]
 #[CoversClass(SubmitOrdersCommandHandler::class)]
@@ -26,7 +27,7 @@ class SubmitOrdersTest extends TestCase
         $power = $game->powerCollection->first();
         $timeProvider = new FakeTimeProvider('2021-01-01 12:00:00');
 
-        $handler = new SubmitOrdersCommandHandler($gameRepository, $timeProvider);
+        $handler = new SubmitOrdersCommandHandler($gameRepository, $timeProvider, new NullLogger());
         $orders = ['A PAR - BUR', 'F LON - NTH'];
 
         $command = new SubmitOrdersCommand(

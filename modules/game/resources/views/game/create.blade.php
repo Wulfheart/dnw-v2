@@ -1,12 +1,11 @@
 <?php
 
-use Dnw\Game\ViewModel\CreateGame\CreateGameFormViewModel;
+use Dnw\Game\Http\CreateGame\CreateGameFormViewModel;
 
 /** @var CreateGameFormViewModel $vm */
-
 ?>
 <x-layout>
-    <x-display.header :title="$vm->create_game_title" :description="$vm->create_game_description" />
+    <x-display.header :title="$vm->create_game_title" :description="$vm->create_game_description"/>
     <div>
         <div class="content content-follow-on">
             {!! $vm->form->render() !!}

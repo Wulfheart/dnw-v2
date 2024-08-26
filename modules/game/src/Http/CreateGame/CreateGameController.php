@@ -9,7 +9,6 @@ use Dnw\Game\Core\Application\Command\CreateGame\CreateGameCommand;
 use Dnw\Game\Core\Application\Command\CreateGame\CreateGameResult;
 use Dnw\Game\Core\Application\Query\GetAllVariants\GetAllVariantsQuery;
 use Dnw\Game\Core\Application\Query\GetAllVariants\GetAllVariantsResult;
-use Dnw\Game\ViewModel\CreateGame\CreateGameFormViewModel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;

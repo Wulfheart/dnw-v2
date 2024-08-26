@@ -15,6 +15,7 @@ use Dnw\Game\Tests\Factory\GameBuilder;
 use Dnw\Game\Tests\Factory\VariantFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 
 #[CoversClass(InitialGameAdjudicationCommand::class)]
 #[CoversClass(InitialGameAdjudicationCommandHandler::class)]
@@ -59,7 +60,8 @@ class InitialGameAdjudicationTest extends TestCase
             $gameRepository,
             $phaseRepository,
             $variantRepository,
-            $timeProvider
+            $timeProvider,
+            new NullLogger()
         );
 
         $command = new InitialGameAdjudicationCommand($game->gameId->toId());

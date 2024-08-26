@@ -1,6 +1,6 @@
 <?php
 
-namespace Dnw\Game\ViewModel\CreateGame;
+namespace Dnw\Game\Http\CreateGame;
 
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
@@ -13,7 +13,6 @@ use Dnw\Foundation\Form\Fields\TextInput;
 use Dnw\Foundation\Form\Form;
 use Dnw\Foundation\ViewModel\ViewModel;
 use Dnw\Game\Core\Application\Query\GetAllVariants\VariantDto;
-use Dnw\Game\Http\CreateGame\StoreGameRequest;
 
 class CreateGameFormViewModel extends ViewModel
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace Dnw\Game\Tests\Unit\Laravel\ViewModel;
+namespace Dnw\Game\Tests\Unit\Laravel\Http\CreateGame;
 
 use Dnw\Foundation\Identity\Id;
 use Dnw\Game\Core\Application\Query\GetAllVariants\VariantDto;
 use Dnw\Game\Core\Application\Query\GetAllVariants\VariantPowerDto;
-use Dnw\Game\ViewModel\CreateGame\CreateGameFormViewModel;
+use Dnw\Game\Http\CreateGame\CreateGameFormViewModel;
 use Dnw\Game\ViewModel\CreateGame\ViewModel\VariantInformationOption;
 use Dnw\Game\ViewModel\CreateGame\ViewModel\VariantInformationOptions;
 use PHPUnit\Framework\Attributes\CoversClass;

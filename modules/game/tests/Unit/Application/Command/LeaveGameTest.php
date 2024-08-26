@@ -10,6 +10,7 @@ use Dnw\Game\Tests\Asserter\GameAsserter;
 use Dnw\Game\Tests\Factory\GameBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 
 #[CoversClass(LeaveGameCommand::class)]
 #[CoversClass(LeaveGameCommandHandler::class)]
@@ -22,7 +23,7 @@ class LeaveGameTest extends TestCase
 
         $gameRepository = new InMemoryGameRepository(new FakeEventDispatcher(), [$game]);
 
-        $handler = new LeaveGameCommandHandler($gameRepository);
+        $handler = new LeaveGameCommandHandler($gameRepository, new NullLogger());
 
         $command = new LeaveGameCommand($game->gameId->toId(), $playerToRemove->toId());
         $handler->handle($command);
