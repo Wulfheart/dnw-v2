@@ -11,7 +11,7 @@ use ReflectionClass;
 use ReflectionMethod;
 use Symfony\Component\Filesystem\Filesystem;
 
-readonly class DomainEventProvider
+readonly class DomainEventProvider implements DomainEventProviderInterface
 {
     public function __construct(
         private string $cachePath,

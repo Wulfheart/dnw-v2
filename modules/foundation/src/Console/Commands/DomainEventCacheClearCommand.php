@@ -2,9 +2,12 @@
 
 namespace Dnw\Foundation\Console\Commands;
 
-use Dnw\Foundation\Event\DomainEventProvider;
+use Dnw\Foundation\Event\DomainEventProviderInterface;
 use Illuminate\Console\Command;
 
+/**
+ * @codeCoverageIgnore Proven by use
+ */
 class DomainEventCacheClearCommand extends Command
 {
     /**
@@ -25,7 +28,7 @@ class DomainEventCacheClearCommand extends Command
      * Execute the console command.
      */
     public function handle(
-        DomainEventProvider $domainEventProvider
+        DomainEventProviderInterface $domainEventProvider
     ): void {
         $domainEventProvider->deleteCachedEvents();
         $this->components->info('Cached domain events cleared successfully.');

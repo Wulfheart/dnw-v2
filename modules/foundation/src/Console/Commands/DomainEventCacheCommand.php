@@ -5,6 +5,9 @@ namespace Dnw\Foundation\Console\Commands;
 use Dnw\Foundation\Event\DomainEventProvider;
 use Illuminate\Console\Command;
 
+/**
+ * @codeCoverageIgnore Proven by use
+ */
 class DomainEventCacheCommand extends Command
 {
     /**

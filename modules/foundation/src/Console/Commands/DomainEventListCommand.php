@@ -6,6 +6,9 @@ use Dnw\Foundation\Event\DomainEventProvider;
 use Dnw\Foundation\Event\ListenerInfo;
 use Illuminate\Console\Command;
 
+/**
+ * @codeCoverageIgnore Proven by use
+ */
 class DomainEventListCommand extends Command
 {
     /**
