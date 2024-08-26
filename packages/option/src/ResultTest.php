@@ -2,4 +2,6 @@
 
 namespace Std;
 
-class ResultTest {}
+use Tests\TestCase;
+
+class ResultTest extends TestCase {}

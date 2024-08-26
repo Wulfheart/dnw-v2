@@ -2,8 +2,8 @@
 
 namespace Dnw\Game\Database\Seeders;
 
+use Dnw\Game\Core\Domain\Game\Test\Factory\VariantFactory;
 use Dnw\Game\Core\Domain\Variant\Repository\VariantRepositoryInterface;
-use Dnw\Game\Tests\Factory\VariantFactory;
 use Illuminate\Database\Seeder;
 
 class VariantSeeder extends Seeder

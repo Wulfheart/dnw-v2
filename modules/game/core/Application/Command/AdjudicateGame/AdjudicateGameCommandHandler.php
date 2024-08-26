@@ -11,7 +11,7 @@ use Dnw\Game\Core\Domain\Adapter\TimeProvider\TimeProviderInterface;
 use Dnw\Game\Core\Domain\Game\Collection\OrderCollection;
 use Dnw\Game\Core\Domain\Game\Dto\AdjudicationPowerDataDto;
 use Dnw\Game\Core\Domain\Game\Repository\Game\GameRepositoryInterface;
-use Dnw\Game\Core\Domain\Game\Repository\PhaseRepositoryInterface;
+use Dnw\Game\Core\Domain\Game\Repository\Phase\PhaseRepositoryInterface;
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\NewPhaseData;
