@@ -30,6 +30,7 @@ abstract class TestCase extends BaseTestCase
         PHPUnitAssert::assertTrue(is_subclass_of($form_request, 'Illuminate\\Foundation\\Http\\FormRequest'), $form_request . ' is not a type of Form Request');
 
         try {
+            // @phpstan-ignore argument.type
             $reflector = new ReflectionClass($controller);
             $action = $reflector->getMethod($method);
         } catch (ReflectionException $exception) {

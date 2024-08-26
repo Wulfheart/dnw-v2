@@ -2,9 +2,10 @@
 
 namespace Dnw\Foundation\User;
 
-use Dnw\Foundation\ViewModel\ViewModel;
-
-class UserViewModel extends ViewModel
+/**
+ * @codeCoverageIgnore
+ */
+class UserViewModel
 {
     public function __construct(
         public bool $isAuthenticated,

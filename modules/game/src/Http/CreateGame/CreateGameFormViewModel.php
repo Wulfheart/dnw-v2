@@ -11,10 +11,9 @@ use Dnw\Foundation\Form\Fields\SelectOption;
 use Dnw\Foundation\Form\Fields\Separator;
 use Dnw\Foundation\Form\Fields\TextInput;
 use Dnw\Foundation\Form\Form;
-use Dnw\Foundation\ViewModel\ViewModel;
 use Dnw\Game\Core\Application\Query\GetAllVariants\VariantDto;
 
-class CreateGameFormViewModel extends ViewModel
+class CreateGameFormViewModel
 {
     public function __construct(
         public string $create_game_title,

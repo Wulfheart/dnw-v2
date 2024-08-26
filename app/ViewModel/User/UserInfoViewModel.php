@@ -2,10 +2,9 @@
 
 namespace App\ViewModel\User;
 
-use Dnw\Foundation\ViewModel\ViewModel;
 use Std\Option;
 
-class UserInfoViewModel extends ViewModel
+class UserInfoViewModel
 {
     public function __construct(
         public bool $isAuthenticated,
