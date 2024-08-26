@@ -3,12 +3,12 @@
 namespace Dnw\Game\Core\Domain\Game\Repository\Phase;
 
 use Dnw\Foundation\Exception\NotFoundException;
-use Dnw\Foundation\PHPStan\AllowLaravelTest;
+use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
 use Dnw\Game\Core\Domain\Game\Exception\AlreadyPresentException;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseId;
 use Tests\TestCase;
 
-#[AllowLaravelTest]
+#[AllowLaravelTestCase]
 abstract class AbstractPhaseRepositoryTestCase extends TestCase
 {
     abstract protected function buildRepository(): PhaseRepositoryInterface;

@@ -5,7 +5,7 @@ namespace Dnw\Game\Http\CreateGame;
 use Dnw\Foundation\Bus\BusInterface;
 use Dnw\Foundation\Bus\FakeBus;
 use Dnw\Foundation\Identity\Id;
-use Dnw\Foundation\PHPStan\AllowLaravelTest;
+use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
 use Dnw\Game\Core\Application\Command\CreateGame\CreateGameCommand;
 use Dnw\Game\Core\Application\Command\CreateGame\CreateGameResult;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -13,7 +13,7 @@ use Std\Option;
 use Tests\TestCase;
 
 #[CoversClass(CreateGameController::class)]
-#[AllowLaravelTest]
+#[AllowLaravelTestCase]
 class CreateGameControllerTest extends TestCase
 {
     public function test_show(): void

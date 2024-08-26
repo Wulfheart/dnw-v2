@@ -3,14 +3,14 @@
 namespace Dnw\Game\Http\CreateGame;
 
 use App\Models\User;
-use Dnw\Foundation\PHPStan\AllowLaravelTest;
+use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
 use Dnw\Foundation\Request\RequestFactory;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
 
 #[CoversClass(StoreGameRequest::class)]
-#[AllowLaravelTest]
+#[AllowLaravelTestCase]
 class StoreGameRequestTest extends TestCase
 {
     #[DataProvider('validationErrorProvider')]

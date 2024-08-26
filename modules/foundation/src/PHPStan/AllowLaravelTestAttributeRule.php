@@ -36,7 +36,7 @@ class AllowLaravelTestAttributeRule implements Rule
         $hasAllowLaravelTestAttribute = false;
         foreach ($node->attrGroups as $attrGroup) {
             foreach ($attrGroup->attrs as $attr) {
-                if ($attr->name->toString() === AllowLaravelTest::class) {
+                if ($attr->name->toString() === AllowLaravelTestCase::class) {
                     $hasAllowLaravelTestAttribute = true;
                     break 2; // Exit both foreach loops
                 }
