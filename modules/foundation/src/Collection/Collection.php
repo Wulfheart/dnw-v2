@@ -105,13 +105,6 @@ abstract class Collection implements IteratorAggregate
         return true;
     }
 
-    public function each(callable $callback): void
-    {
-        foreach ($this->items as $item) {
-            $callback($item);
-        }
-    }
-
     public function getIterator(): Traversable
     {
         return new ArrayIterator($this->items);
