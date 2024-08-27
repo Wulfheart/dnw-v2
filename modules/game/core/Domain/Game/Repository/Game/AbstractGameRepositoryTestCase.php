@@ -2,12 +2,14 @@
 
 namespace Dnw\Game\Core\Domain\Game\Repository\Game;
 
+use Dnw\Foundation\Differ\Differ;
 use Dnw\Foundation\Event\EventDispatcherInterface;
 use Dnw\Foundation\Event\FakeEventDispatcher;
 use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
 use Dnw\Game\Core\Domain\Game\Event\GameCreatedEvent;
 use Dnw\Game\Core\Domain\Game\Test\Factory\GameBuilder;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
+use Dnw\Game\Core\Domain\Player\ValueObject\PlayerId;
 use Tests\TestCase;
 
 #[AllowLaravelTestCase]
@@ -25,7 +27,7 @@ abstract class AbstractGameRepositoryTestCase extends TestCase
 
         $loadedGame = $repository->load($game->gameId)->unwrap();
 
-        $this->assertEquals($game, $loadedGame);
+        Differ::make($game, $loadedGame)->drop('version')->assertEquality();
         $eventDispatcher->assertDispatched(GameCreatedEvent::class, 1);
     }
 
@@ -43,7 +45,7 @@ abstract class AbstractGameRepositoryTestCase extends TestCase
 
         $loadedGame = $repository->load($game->gameId)->unwrap();
 
-        $this->assertEquals($game, $loadedGame);
+        Differ::make($game, $loadedGame)->drop('version')->assertEquality();
     }
 
     public function test_errors_if_cannot_load(): void
@@ -54,5 +56,22 @@ abstract class AbstractGameRepositoryTestCase extends TestCase
         $result = $repository->load(GameId::new());
         $this->assertTrue($result->hasErr());
         $this->assertEquals(LoadGameResult::E_GAME_NOT_FOUND, $result->unwrapErr());
+    }
+
+    public function test_can_increment_version_on_change(): void
+    {
+        $playerId = PlayerId::new();
+        $game = GameBuilder::initialize(playerId: $playerId)->storeInitialAdjudication()->build();
+
+        $eventDispatcher = new FakeEventDispatcher();
+        $repo = $this->buildRepository($eventDispatcher);
+        $repo->save($game);
+
+        $game = $repo->load($game->gameId)->unwrap();
+        $game->leave($playerId);
+
+        $repo->save($game);
+
+        $this->expectNotToPerformAssertions();
     }
 }

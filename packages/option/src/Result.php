@@ -56,6 +56,13 @@ class Result
         return $this->value;
     }
 
+    public function ensure(): void
+    {
+        if ($this->hasErr()) {
+            throw new ResultUnwrapException('Assumed `Ok` value but got `Err` value');
+        }
+    }
+
     /**
      * @throws ResultUnwrapException
      *

@@ -179,7 +179,7 @@ class LaravelGameRepository implements GameRepositoryInterface
         ]);
 
         if ($oldVersion->isInitial()) {
-            $gameModel->version = $game->version->int();
+            $gameModel->version = $game->version->increment()->int();
             $gameModel->save();
         } else {
             $game->version = $oldVersion->increment();

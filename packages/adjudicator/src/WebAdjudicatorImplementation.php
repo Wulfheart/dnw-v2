@@ -11,7 +11,6 @@ use Dnw\Adjudicator\Json\JsonHandlerInterface;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\RequestFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
-use Psr\Http\Message\UriInterface;
 
 readonly class WebAdjudicatorImplementation implements AdjudicatorService
 {
@@ -19,21 +18,22 @@ readonly class WebAdjudicatorImplementation implements AdjudicatorService
         private ClientInterface $client,
         private RequestFactoryInterface $requestFactory,
         private StreamFactoryInterface $streamFactory,
-        private UriInterface $baseUrl,
+        private Uri $baseUrl,
         private JsonHandlerInterface $jsonHandler,
     ) {}
 
     public function getVariants(): VariantsResponse
     {
+        $path = $this->baseUrl->appendToPath('variants');
         $response = $this->client->sendRequest(
             $this->requestFactory->createRequest(
                 'GET',
-                $this->baseUrl->withPath('variants')
+                (string) $path
             )
         );
 
         if ($response->getStatusCode() !== 200) {
-            throw new HttpException('Failed to get variants', $response->getStatusCode());
+            throw new HttpException("Failed to get variants at {$path}", $response->getStatusCode());
         }
 
         $data = $this->jsonHandler->decodeAssociative((string) $response->getBody());
@@ -43,15 +43,16 @@ readonly class WebAdjudicatorImplementation implements AdjudicatorService
 
     public function initializeGame(string $variant): AdjudicateGameResponse
     {
+        $path = $this->baseUrl->appendToPath('adjudicate/' . $variant);
         $response = $this->client->sendRequest(
             $this->requestFactory->createRequest(
                 'GET',
-                $this->baseUrl->withPath('adjudicate/' . $variant)
+                (string) $path
             )
         );
 
         if ($response->getStatusCode() !== 200) {
-            throw new HttpException('Failed to initialize game', $response->getStatusCode());
+            throw new HttpException("Failed to initialize game at {$path}", $response->getStatusCode());
         }
 
         $data = $this->jsonHandler->decodeAssociative((string) $response->getBody());
@@ -66,7 +67,7 @@ readonly class WebAdjudicatorImplementation implements AdjudicatorService
         $response = $this->client->sendRequest(
             $this->requestFactory->createRequest(
                 'POST',
-                $this->baseUrl->withPath('adjudicate')
+                (string) $this->baseUrl->appendToPath('adjudicate')
             )->withBody(
                 $this->streamFactory->createStream($body)
             )
@@ -86,7 +87,7 @@ readonly class WebAdjudicatorImplementation implements AdjudicatorService
         $response = $this->client->sendRequest(
             $this->requestFactory->createRequest(
                 'POST',
-                $this->baseUrl->withPath('dumbbot')
+                (string) $this->baseUrl->appendToPath('dumbbot')
             )->withBody(
                 $this->streamFactory->createStream($this->jsonHandler->encode($request))
             )
