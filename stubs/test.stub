@@ -1,0 +1,17 @@
+<?php
+
+namespace {{ namespace }};
+
+use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use Tests\TestCase;
+
+#[CoversNothing]
+#[AllowLaravelTestCase]
+class {{ class }} extends TestCase
+{
+    public function test(): void
+    {
+
+    }
+}
