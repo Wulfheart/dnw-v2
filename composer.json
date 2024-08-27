@@ -12,7 +12,6 @@
         "dnw/adjudicator": "*",
         "dnw/foundation": "*",
         "dnw/game": "*",
-        "haydenpierce/class-finder": "^0.5.3",
         "internachi/modular": "^2.2",
         "itsgoingd/clockwork": "^5.2",
         "laravel/framework": "^11.0",
