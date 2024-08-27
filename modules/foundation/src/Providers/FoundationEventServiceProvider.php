@@ -4,6 +4,7 @@ namespace Dnw\Foundation\Providers;
 
 use Dnw\Foundation\Event\DomainEventProvider;
 use Dnw\Foundation\Event\EventDispatcherInterface;
+use Dnw\Foundation\Event\FileBasedClassFinder;
 use Dnw\Foundation\Event\LaravelEventDispatcher;
 use Illuminate\Contracts\Queue\Queue;
 use Illuminate\Foundation\Application;
@@ -33,7 +34,9 @@ class FoundationEventServiceProvider extends ServiceProvider
             function (Application $app) {
                 return new DomainEventProvider(
                     $app->bootstrapPath('cache/dnw_events.php'),
-                    $app->make(Filesystem::class)
+                    $app->make(Filesystem::class),
+                    new FileBasedClassFinder(),
+                    $app->basePath('modules')
                 );
             }
         );
