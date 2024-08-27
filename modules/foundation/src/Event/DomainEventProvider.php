@@ -4,7 +4,6 @@ namespace Dnw\Foundation\Event;
 
 use Dnw\Foundation\Event\Attributes\DomainEvent;
 use Dnw\Foundation\Event\Attributes\DomainListener;
-use HaydenPierce\ClassFinder\ClassFinder;
 use Illuminate\Support\Reflector;
 use Illuminate\Support\Str;
 use ReflectionClass;
@@ -13,12 +12,14 @@ use Symfony\Component\Filesystem\Filesystem;
 
 readonly class DomainEventProvider implements DomainEventProviderInterface
 {
+    private const string BASE_MODULE_NAMESPACE = 'Dnw\\';
+
     public function __construct(
         private string $cachePath,
-        private Filesystem $filesystem
+        private Filesystem $filesystem,
+        private ClassFinderInterface $classFinder,
+        private string $rootPath,
     ) {}
-
-    private const string BASE_MODULE_NAMESPACE = 'Dnw\\';
 
     /**
      * @return array<class-string, array<ListenerInfo>>
@@ -70,7 +71,7 @@ readonly class DomainEventProvider implements DomainEventProviderInterface
      */
     private function discoverEvents(): array
     {
-        $classes = ClassFinder::getClassesInNamespace(self::BASE_MODULE_NAMESPACE, ClassFinder::RECURSIVE_MODE);
+        $classes = $this->classFinder->getClassesInPathRecursively($this->rootPath);
 
         /** @var array<class-string> $module_classes */
         $module_classes = array_filter($classes, function ($class) {
