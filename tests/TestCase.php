@@ -29,6 +29,11 @@ abstract class TestCase extends BaseTestCase
         Queue::assertPushed(fn (ListenerJob $job) => $job->displayName() === $listener);
     }
 
+    protected function assertListenerIsNotQueued(string $listener): void
+    {
+        Queue::assertNotPushed(fn (ListenerJob $job) => $job->displayName() === $listener);
+    }
+
     protected function randomUser(): User
     {
         return User::factory()->create();

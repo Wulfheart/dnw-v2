@@ -1,10 +1,10 @@
 <?php
 
-namespace Dnw\Game\Core\Application\Query\GetGame;
+namespace Dnw\Game\Core\Application\Query\GetGameById;
 
 use Dnw\Foundation\Identity\Id;
 
-class GetGameQuery
+class GetGameByIdQuery
 {
     public function __construct(
         public Id $id

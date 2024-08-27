@@ -277,4 +277,15 @@ class LaravelGameRepository implements GameRepositoryInterface
             }
         }
     }
+
+    public function getGameIdByName(GameName $name): Option
+    {
+        $game = GameModel::where('name', (string) $name)->first('id');
+
+        if ($game === null) {
+            return Option::none();
+        }
+
+        return Option::some(GameId::fromString($game->id));
+    }
 }

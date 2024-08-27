@@ -1,11 +1,11 @@
 <?php
 
-namespace Dnw\Game\Core\Application\Query\GetGame;
+namespace Dnw\Game\Core\Application\Query\GetGameById;
 
 use Dnw\Foundation\Identity\Id;
-use Dnw\Game\Core\Application\Query\GetGame\Dto\GameStateEnum;
+use Dnw\Game\Core\Application\Query\GetGameById\Dto\GameStateEnum;
 
-class GetGameQueryResultData
+class GetGameByIdQueryResultData
 {
     public function __construct(
         public Id $id,

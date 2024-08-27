@@ -1,6 +1,6 @@
 <?php
 
-namespace Dnw\Game\Core\Application\Query\GetGame\Dto;
+namespace Dnw\Game\Core\Application\Query\GetGameById\Dto;
 
 enum GameStateEnum: string
 {

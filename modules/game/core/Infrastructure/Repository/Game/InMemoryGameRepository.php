@@ -7,6 +7,8 @@ use Dnw\Game\Core\Domain\Game\Game;
 use Dnw\Game\Core\Domain\Game\Repository\Game\GameRepositoryInterface;
 use Dnw\Game\Core\Domain\Game\Repository\Game\LoadGameResult;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
+use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameName;
+use Std\Option;
 
 class InMemoryGameRepository implements GameRepositoryInterface
 {
@@ -39,6 +41,17 @@ class InMemoryGameRepository implements GameRepositoryInterface
         $events = $game->releaseEvents();
         $this->games[(string) $game->gameId] = $game;
         $this->eventDispatcher->dispatchMultiple($events);
+    }
+
+    public function getGameIdByName(GameName $name): Option
+    {
+        foreach ($this->games as $game) {
+            if ($game->name == $name) {
+                return Option::some($game->gameId);
+            }
+        }
+
+        return Option::none();
     }
 
     /**

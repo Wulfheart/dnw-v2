@@ -3,37 +3,43 @@
 namespace Dnw\Game\Tests\Feature\CreateGame;
 
 use Dnw\Foundation\Bus\BusInterface;
-use Dnw\Foundation\Identity\Id;
 use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
 use Dnw\Game\Core\Application\Listener\GameCreatedListener;
+use Dnw\Game\Core\Application\Query\GetAllVariants\GetAllVariantsQuery;
+use Dnw\Game\Core\Application\Query\GetAllVariants\GetAllVariantsResult;
 use Dnw\Game\Core\Application\Query\GetGameIdByName\GetGameIdByNameQuery;
 use Dnw\Game\Core\Application\Query\GetGameIdByName\GetGameIdByNameQueryResult;
+use Dnw\Game\Database\Seeders\VariantSeeder;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use Std\ResultAsserter;
 use Tests\TestCase;
 
 #[CoversNothing]
 #[AllowLaravelTestCase]
-class CreateGameWithoutAnUnloadableVariantTest extends TestCase
+class CreateGameWorksTest extends TestCase
 {
     public function test(): void
     {
         $bus = $this->bootstrap(BusInterface::class);
+        $this->seed(VariantSeeder::class);
 
-        $response = $this->actingAs($this->randomUser())->post(route('game.store'), [
+        /** @var GetAllVariantsResult $allVariantsResult */
+        $allVariantsResult = $bus->handle(new GetAllVariantsQuery());
+
+        $variantId = $allVariantsResult->variants[0]->id;
+
+        $this->actingAs($this->randomUser())->post(route('game.store'), [
             'name' => 'My Game',
-            'variantId' => Id::generate(),
+            'variantId' => $variantId,
             'phaseLengthInMinutes' => 60,
             'joinLengthInDays' => 7,
             'startWhenReady' => true,
         ]);
 
-        $response->assertNotFound();
-
         /** @var GetGameIdByNameQueryResult $result */
         $result = $bus->handle(new GetGameIdByNameQuery('My Game'));
 
-        ResultAsserter::assertErr($result);
-        $this->assertListenerIsNotQueued(GameCreatedListener::class);
+        ResultAsserter::assertOk($result);
+        $this->assertListenerIsQueued(GameCreatedListener::class);
     }
 }
