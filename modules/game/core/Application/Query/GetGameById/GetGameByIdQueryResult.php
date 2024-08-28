@@ -9,5 +9,5 @@ use Std\Result;
  */
 class GetGameByIdQueryResult extends Result
 {
-    public const E_GAME_NOT_FOUND = 'game_not_found';
+    public const string E_GAME_NOT_FOUND = 'game_not_found';
 }
