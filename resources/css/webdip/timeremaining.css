@@ -1,0 +1,4 @@
+.timeremaining-urgent, .timeremaining-expired {
+        color: red;
+        font-weight: bold;
+    }
