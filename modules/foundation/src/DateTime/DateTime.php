@@ -26,9 +26,9 @@ class DateTime
         return new self('now');
     }
 
-    public function toCarbon(): Carbon
+    public function toCarbonImmutable(): CarbonImmutable
     {
-        return new Carbon($this->dateTime);
+        return $this->dateTime;
     }
 
     public function addDays(int $toDays): self
@@ -54,6 +54,11 @@ class DateTime
     public function toDateTimeString(): string
     {
         return $this->dateTime->toDateTimeString();
+    }
+
+    public function toUnixTime(): int
+    {
+        return $this->dateTime->unix();
     }
 
     public function greaterThan(self $dateTime): bool

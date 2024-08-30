@@ -14,8 +14,11 @@ class GameStartTiming
 
     public function joinLengthExceeded(DateTime $currentTime): bool
     {
-        $endDateTime = $this->startOfJoinPhase->addDays($this->joinLength->toDays());
+        return $currentTime->greaterThan($this->endOfJoinPhase());
+    }
 
-        return $currentTime->greaterThan($endDateTime);
+    public function endOfJoinPhase(): DateTime
+    {
+        return $this->startOfJoinPhase->addDays($this->joinLength->toDays());
     }
 }
