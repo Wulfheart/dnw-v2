@@ -9,5 +9,6 @@ document.body.addEventListener('htmx:configRequest', (event) => {
 })
 
 document.addEventListener('DOMContentLoaded', () => {
-    updateTimers();
+    const config = document.querySelector('meta[name="timer-config"]').content
+    updateTimers(JSON.parse(config));
 });

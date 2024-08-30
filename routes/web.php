@@ -1,12 +1,25 @@
 <?php
 
 use App\Http\DevLogin\DevLoginController;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Mauricius\LaravelHtmx\Http\HtmxResponseClientRedirect;
 
 Route::get('/', function () {
-    return view('welcome');
+    $dates = [
+        now()->addDays(),
+        now()->addDays(2),
+        now()->addMinutes(5)->addSeconds(10),
+        now()->addSeconds(30),
+        now()->addSeconds(5),
+    ];
+
+    $dates = array_map(fn (Carbon $date) => $date->unix(), $dates);
+
+    return view('welcome', [
+        'dates' => $dates,
+    ]);
 });
 
 // TODO: Only in dev mode

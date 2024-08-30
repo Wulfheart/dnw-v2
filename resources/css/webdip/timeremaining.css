@@ -1,4 +1,19 @@
 .timeremaining-urgent, .timeremaining-expired {
-        color: red;
-        font-weight: bold;
+    color: red;
+    font-weight: bold;
+}
+
+.timeremaining-urgent {
+    animation: pulse 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes pulse {
+    0% {
+        transform: scale(1);
     }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}

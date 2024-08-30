@@ -10,5 +10,8 @@ use Tests\TestCase;
 #[AllowLaravelTestCase]
 class CreateGameWhenNotAllowedToCreateNewGameTest extends TestCase
 {
-    public function test_cannot_join_due_to_maximum_number_of_parallel_games(): void {}
+    public function test_cannot_join_due_to_maximum_number_of_parallel_games(): void
+    {
+        $this->markTestSkipped('Not implemented yet.');
+    }
 }

@@ -53,6 +53,7 @@ readonly class GetGameByIdQueryHandler
                     $game->powerCollection->map(
                         function (Power $power) use ($variant) {
                             $variantPower = $variant->variantPowerCollection->getByVariantPowerId($power->variantPowerId);
+
                             return new VariantPowerDataDto(
                                 $power->variantPowerId->toId(),
                                 $power->playerId->mapIntoOption(

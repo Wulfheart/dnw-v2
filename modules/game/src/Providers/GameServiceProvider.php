@@ -20,6 +20,7 @@ use Dnw\Game\Core\Infrastructure\Repository\Game\LaravelGameRepository;
 use Dnw\Game\Core\Infrastructure\Repository\Phase\LaravelPhaseRepository;
 use Dnw\Game\Core\Infrastructure\Repository\Player\LaravelPlayerRepository;
 use Dnw\Game\Core\Infrastructure\Repository\Variant\LaravelVariantRepository;
+use Dnw\Game\Helper\PhaseLengthFormatter;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use Illuminate\Contracts\Foundation\Application;
@@ -50,6 +51,10 @@ class GameServiceProvider extends ServiceProvider
                 new Uri(config('dnw.adjudicator.base_url')),
                 new JsonHandler(),
             );
+        });
+
+        $this->app->bind(PhaseLengthFormatter::class, function (Application $app) {
+            return new PhaseLengthFormatter($app->getLocale());
         });
 
     }

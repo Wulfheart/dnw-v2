@@ -22,7 +22,7 @@ class VariantPowerCollection extends Collection
     public function getByVariantPowerId(VariantPowerId $variantPowerId): VariantPower
     {
         return $this->findBy(
-            fn (VariantPower $variantPower) => $variantPower->id === $variantPowerId
+            fn (VariantPower $variantPower) => $variantPower->id == $variantPowerId
         )->unwrap();
     }
 }

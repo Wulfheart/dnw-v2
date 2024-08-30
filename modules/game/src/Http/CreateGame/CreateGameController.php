@@ -36,8 +36,10 @@ readonly class CreateGameController
         /** @var User $user */
         $user = $request->user();
 
+        $gameId = Id::generate();
+
         $command = new CreateGameCommand(
-            Id::generate(),
+            $gameId,
             $request->string(StoreGameRequest::KEY_NAME),
             $request->integer(StoreGameRequest::PHASE_LENGTH_IN_MINUTES),
             $request->integer(StoreGameRequest::KEY_JOIN_LENGTH_IN_DAYS),
@@ -59,6 +61,6 @@ readonly class CreateGameController
             };
         }
 
-        return response()->redirectTo('/');
+        return response()->redirectTo(route('game.show', [$gameId]));
     }
 }

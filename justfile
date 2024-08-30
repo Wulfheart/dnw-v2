@@ -8,6 +8,6 @@ format-blade:
 analyse:
     ./vendor/bin/phpstan analyse -v
 test:
-    php artisan test
+    php artisan test --parallel
 coverage:
-    XDEBUG_MODE=coverage php artisan test --coverage --coverage-html=build/html
+    XDEBUG_MODE=coverage php artisan test --parallel --coverage --coverage-html=build/html

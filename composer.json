@@ -23,6 +23,7 @@
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.0",
+        "brianium/paratest": "^7.4",
         "fakerphp/faker": "^1.23",
         "jasonmccreary/laravel-test-assertions": "^2.4",
         "larastan/larastan": "^2.0",
