@@ -5,6 +5,7 @@ namespace Dnw\Game\Http\GamePanel;
 use Dnw\Foundation\Bus\BusInterface;
 use Dnw\Foundation\Identity\Id;
 use Dnw\Game\Core\Application\Query\GetGameById\Dto\GameStateEnum;
+use Dnw\Game\Core\Application\Query\GetGameById\Dto\VariantPowerDataDto;
 use Dnw\Game\Core\Application\Query\GetGameById\GetGameByIdQuery;
 use Dnw\Game\Core\Application\Query\GetGameById\GetGameByIdQueryResultData;
 use Dnw\Game\Core\Application\Query\GetGameIdByName\GetGameIdByNameQueryResult;
@@ -34,13 +35,15 @@ class GamePanelController
         /** @var GetGameByIdQueryResultData $data */
         $data = $result->unwrap();
         if ($data->state === GameStateEnum::CREATED) {
+            $currentlyJoined = $data->variantPowerData->filter(fn(VariantPowerDataDto $variantPowerDataDto) => $variantPowerDataDto->playerId->isSome())->count();
+            $totalPlayerCount = $data->variantPowerData->count();
             $gameInfoViewModel = new GameInformationViewModel(
                 $data->name,
                 null,
                 'Pre-game',
                 $data->variantName,
                 'foo',
-                '',
+                "$currentlyJoined/$totalPlayerCount Spieler sind bisher beigetreten",
                 $this->phaseLengthFormatter->formatMinutes($data->phaseLengthInMinutes),
                 'Phase',
                 'Start',
@@ -53,7 +56,29 @@ class GamePanelController
             );
 
             return response()->view('game::game.panel.created', ['vm' => $viewModel]);
+        }
+        if($data->state === GameStateEnum::PLAYERS_JOINING) {
+            $currentlyJoined = $data->variantPowerData->filter(fn(VariantPowerDataDto $variantPowerDataDto) => $variantPowerDataDto->playerId->isSome())->count();
+            $totalPlayerCount = $data->variantPowerData->count();
+            $gameInfoViewModel = new GameInformationViewModel(
+                $data->name,
+                null,
+                'Pre-game',
+                $data->variantName,
+                'foo',
+                "$currentlyJoined/$totalPlayerCount Spieler sind bisher beigetreten",
+                $this->phaseLengthFormatter->formatMinutes($data->phaseLengthInMinutes),
+                'Phase',
+                'Start',
+                (string) $data->nextPhaseStart->toUnixTime(),
+                $this->phaseLengthFormatter->formatDateTime($data->nextPhaseStart)
+            );
+            $viewModel = new GamePanelPlayersJoiningViewModel(
+                $gameInfoViewModel,
+                'Refresh'
+            );
 
+            return response()->view('game::game.panel.players_joining', ['vm' => $viewModel]);
         }
 
         return response();
