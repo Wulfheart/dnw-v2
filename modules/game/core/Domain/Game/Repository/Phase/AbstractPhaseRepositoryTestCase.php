@@ -2,10 +2,10 @@
 
 namespace Dnw\Game\Core\Domain\Game\Repository\Phase;
 
-use Dnw\Foundation\Exception\NotFoundException;
 use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
 use Dnw\Game\Core\Domain\Game\Exception\AlreadyPresentException;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseId;
+use Std\ResultAsserter;
 use Tests\TestCase;
 
 #[AllowLaravelTestCase]
@@ -23,7 +23,9 @@ abstract class AbstractPhaseRepositoryTestCase extends TestCase
         $repository->saveEncodedState($phaseId, $encodedState);
         $loadedEncodedState = $repository->loadEncodedState($phaseId);
 
-        $this->assertSame($encodedState, $loadedEncodedState);
+        ResultAsserter::assertOk($loadedEncodedState);
+
+        $this->assertSame($encodedState, $loadedEncodedState->unwrap());
     }
 
     public function test_cannot_save_encoded_state_twice(): void
@@ -43,8 +45,9 @@ abstract class AbstractPhaseRepositoryTestCase extends TestCase
     {
         $repository = $this->buildRepository();
 
-        $this->expectException(NotFoundException::class);
-        $repository->loadEncodedState(PhaseId::new());
+        $result = $repository->loadEncodedState(PhaseId::new());
+        ResultAsserter::assertErr($result);
+        $this->assertSame(PhaseRepositoryLoadResult::E_NOT_FOUND, $result->unwrapErr());
     }
 
     public function test_can_save_and_load_svg_with_orders(): void
@@ -57,7 +60,7 @@ abstract class AbstractPhaseRepositoryTestCase extends TestCase
         $repository->saveSvgWithOrders($phaseId, $svg);
         $loadedSvg = $repository->loadSvgWithOrders($phaseId);
 
-        $this->assertSame($svg, $loadedSvg);
+        $this->assertSame($svg, $loadedSvg->unwrap());
     }
 
     public function test_cannot_save_svg_with_orders_twice(): void
@@ -77,8 +80,8 @@ abstract class AbstractPhaseRepositoryTestCase extends TestCase
     {
         $repository = $this->buildRepository();
 
-        $this->expectException(NotFoundException::class);
-        $repository->loadSvgWithOrders(PhaseId::new());
+        $result = $repository->loadSvgWithOrders(PhaseId::new());
+        $this->assertEquals(PhaseRepositoryLoadResult::E_NOT_FOUND, $result->unwrapErr());
     }
 
     public function test_can_save_and_load_adjudicated_svg(): void
@@ -91,7 +94,7 @@ abstract class AbstractPhaseRepositoryTestCase extends TestCase
         $repository->saveAdjudicatedSvg($phaseId, $svg);
         $loadedSvg = $repository->loadAdjudicatedSvg($phaseId);
 
-        $this->assertSame($svg, $loadedSvg);
+        $this->assertSame($svg, $loadedSvg->unwrap());
     }
 
     public function test_cannot_save_adjudicated_svg_twice(): void
@@ -111,7 +114,7 @@ abstract class AbstractPhaseRepositoryTestCase extends TestCase
     {
         $repository = $this->buildRepository();
 
-        $this->expectException(NotFoundException::class);
-        $repository->loadAdjudicatedSvg(PhaseId::new());
+        $result = $repository->loadAdjudicatedSvg(PhaseId::new());
+        $this->assertEquals(PhaseRepositoryLoadResult::E_NOT_FOUND, $result->unwrapErr());
     }
 }

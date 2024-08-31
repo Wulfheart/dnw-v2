@@ -2,10 +2,11 @@
 
 namespace Dnw\Game\Core\Infrastructure\Repository\Phase;
 
-use Dnw\Foundation\Exception\NotFoundException;
 use Dnw\Game\Core\Domain\Game\Exception\AlreadyPresentException;
 use Dnw\Game\Core\Domain\Game\Repository\Phase\PhaseRepositoryInterface;
+use Dnw\Game\Core\Domain\Game\Repository\Phase\PhaseRepositoryLoadResult;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseId;
+use Exception;
 
 class InMemoryPhaseRepository implements PhaseRepositoryInterface
 {
@@ -18,9 +19,13 @@ class InMemoryPhaseRepository implements PhaseRepositoryInterface
         private array $adjudicatedSvgs = []
     ) {}
 
-    public function loadEncodedState(PhaseId $phaseId): string
+    public function loadEncodedState(PhaseId $phaseId): PhaseRepositoryLoadResult
     {
-        return $this->encodedStates[(string) $phaseId] ?? throw new NotFoundException();
+        if (! isset($this->encodedStates[(string) $phaseId])) {
+            return PhaseRepositoryLoadResult::err(PhaseRepositoryLoadResult::E_NOT_FOUND);
+        }
+
+        return PhaseRepositoryLoadResult::ok($this->encodedStates[(string) $phaseId]);
     }
 
     public function saveEncodedState(PhaseId $phaseId, string $encodedState): void
@@ -31,9 +36,13 @@ class InMemoryPhaseRepository implements PhaseRepositoryInterface
         $this->encodedStates[(string) $phaseId] = $encodedState;
     }
 
-    public function loadSvgWithOrders(PhaseId $phaseId): string
+    public function loadSvgWithOrders(PhaseId $phaseId): PhaseRepositoryLoadResult
     {
-        return $this->svgsWithOrders[(string) $phaseId] ?? throw new NotFoundException();
+        if (! isset($this->svgsWithOrders[(string) $phaseId])) {
+            return PhaseRepositoryLoadResult::err(PhaseRepositoryLoadResult::E_NOT_FOUND);
+        }
+
+        return PhaseRepositoryLoadResult::ok($this->svgsWithOrders[(string) $phaseId]);
     }
 
     public function saveSvgWithOrders(PhaseId $phaseId, string $svg): void
@@ -44,9 +53,21 @@ class InMemoryPhaseRepository implements PhaseRepositoryInterface
         $this->svgsWithOrders[(string) $phaseId] = $svg;
     }
 
-    public function loadAdjudicatedSvg(PhaseId $phaseId): string
+    /**
+     * @codeCoverageIgnore
+     */
+    public function loadLinkToSvgWithOrders(PhaseId $phaseId): PhaseRepositoryLoadResult
     {
-        return $this->adjudicatedSvgs[(string) $phaseId] ?? throw new NotFoundException();
+        throw new Exception('Not implemented');
+    }
+
+    public function loadAdjudicatedSvg(PhaseId $phaseId): PhaseRepositoryLoadResult
+    {
+        if (! isset($this->adjudicatedSvgs[(string) $phaseId])) {
+            return PhaseRepositoryLoadResult::err(PhaseRepositoryLoadResult::E_NOT_FOUND);
+        }
+
+        return PhaseRepositoryLoadResult::ok($this->adjudicatedSvgs[(string) $phaseId]);
     }
 
     public function saveAdjudicatedSvg(PhaseId $phaseId, string $svg): void
@@ -55,5 +76,13 @@ class InMemoryPhaseRepository implements PhaseRepositoryInterface
             throw new AlreadyPresentException();
         }
         $this->adjudicatedSvgs[(string) $phaseId] = $svg;
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    public function loadLinkToAdjudicatedSvg(PhaseId $phaseId): PhaseRepositoryLoadResult
+    {
+        throw new Exception('Not implemented');
     }
 }

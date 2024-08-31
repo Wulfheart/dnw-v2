@@ -2,29 +2,34 @@
 
 namespace Dnw\Game\Core\Infrastructure\Repository\Phase;
 
-use Dnw\Foundation\Exception\NotFoundException;
 use Dnw\Game\Core\Domain\Game\Exception\AlreadyPresentException;
 use Dnw\Game\Core\Domain\Game\Repository\Phase\PhaseRepositoryInterface;
+use Dnw\Game\Core\Domain\Game\Repository\Phase\PhaseRepositoryLoadResult;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseId;
-use Illuminate\Contracts\Filesystem\Filesystem;
+use Illuminate\Filesystem\FilesystemAdapter;
 
 class LaravelPhaseRepository implements PhaseRepositoryInterface
 {
-    private const ENCODED_STATE_PATTERN = '/%s/encoded_state.json';
+    private const ENCODED_STATE_PATTERN = '%s/encoded_state.json';
 
-    private const SVG_WITH_ORDERS_PATTERN = '/%s/svg_with_orders.svg';
+    private const SVG_WITH_ORDERS_PATTERN = '%s/svg_with_orders.svg';
 
-    private const ADJUDICATED_SVG_PATTERN = '/%s/adjudicated_svg.svg';
+    private const ADJUDICATED_SVG_PATTERN = '%s/adjudicated_svg.svg';
 
     public function __construct(
-        private Filesystem $filesystem,
+        private FilesystemAdapter $filesystem,
     ) {}
 
-    public function loadEncodedState(PhaseId $phaseId): string
+    public function loadEncodedState(PhaseId $phaseId): PhaseRepositoryLoadResult
     {
-        return $this->filesystem->get(
+        $state = $this->filesystem->get(
             sprintf(self::ENCODED_STATE_PATTERN, (string) $phaseId)
-        ) ?? throw new NotFoundException();
+        );
+        if ($state == null) {
+            return PhaseRepositoryLoadResult::err(PhaseRepositoryLoadResult::E_NOT_FOUND);
+        }
+
+        return PhaseRepositoryLoadResult::ok($state);
     }
 
     public function saveEncodedState(PhaseId $phaseId, string $encodedState): void
@@ -40,11 +45,16 @@ class LaravelPhaseRepository implements PhaseRepositoryInterface
         );
     }
 
-    public function loadSvgWithOrders(PhaseId $phaseId): string
+    public function loadSvgWithOrders(PhaseId $phaseId): PhaseRepositoryLoadResult
     {
-        return $this->filesystem->get(
+        $data = $this->filesystem->get(
             sprintf(self::SVG_WITH_ORDERS_PATTERN, (string) $phaseId)
-        ) ?? throw new NotFoundException();
+        );
+        if ($data == null) {
+            return PhaseRepositoryLoadResult::err(PhaseRepositoryLoadResult::E_NOT_FOUND);
+        }
+
+        return PhaseRepositoryLoadResult::ok($data);
     }
 
     public function saveSvgWithOrders(PhaseId $phaseId, string $svg): void
@@ -60,11 +70,27 @@ class LaravelPhaseRepository implements PhaseRepositoryInterface
         );
     }
 
-    public function loadAdjudicatedSvg(PhaseId $phaseId): string
+    public function loadLinkToSvgWithOrders(PhaseId $phaseId): PhaseRepositoryLoadResult
     {
-        return $this->filesystem->get(
+        if (! $this->filesystem->exists(sprintf(self::SVG_WITH_ORDERS_PATTERN, (string) $phaseId))) {
+            return PhaseRepositoryLoadResult::err(PhaseRepositoryLoadResult::E_NOT_FOUND);
+        }
+
+        $url = $this->filesystem->url(sprintf(self::SVG_WITH_ORDERS_PATTERN, (string) $phaseId));
+
+        return PhaseRepositoryLoadResult::ok($url);
+    }
+
+    public function loadAdjudicatedSvg(PhaseId $phaseId): PhaseRepositoryLoadResult
+    {
+        $data = $this->filesystem->get(
             sprintf(self::ADJUDICATED_SVG_PATTERN, (string) $phaseId)
-        ) ?? throw new NotFoundException();
+        );
+        if ($data == null) {
+            return PhaseRepositoryLoadResult::err(PhaseRepositoryLoadResult::E_NOT_FOUND);
+        }
+
+        return PhaseRepositoryLoadResult::ok($data);
 
     }
 
@@ -79,5 +105,16 @@ class LaravelPhaseRepository implements PhaseRepositoryInterface
             sprintf(self::ADJUDICATED_SVG_PATTERN, (string) $phaseId),
             $svg
         );
+    }
+
+    public function loadLinkToAdjudicatedSvg(PhaseId $phaseId): PhaseRepositoryLoadResult
+    {
+        if (! $this->filesystem->exists(sprintf(self::ADJUDICATED_SVG_PATTERN, (string) $phaseId))) {
+            return PhaseRepositoryLoadResult::err(PhaseRepositoryLoadResult::E_NOT_FOUND);
+        }
+
+        $url = $this->filesystem->url(sprintf(self::ADJUDICATED_SVG_PATTERN, (string) $phaseId));
+
+        return PhaseRepositoryLoadResult::ok($url);
     }
 }
