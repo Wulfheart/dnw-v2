@@ -82,6 +82,9 @@ readonly class DomainEventProvider implements DomainEventProviderInterface
         $listener_classes = [];
 
         foreach ($module_classes as $module_class) {
+            if (str_ends_with($module_class, 'Test')) {
+                continue;
+            }
             $reflection = new ReflectionClass($module_class);
             $attributes = $reflection->getAttributes();
 
