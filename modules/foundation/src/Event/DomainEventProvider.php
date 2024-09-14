@@ -85,6 +85,7 @@ readonly class DomainEventProvider implements DomainEventProviderInterface
         foreach ($module_classes as $module_class) {
             try {
                 $reflection = new ReflectionClass($module_class);
+                // @phpstan-ignore catch.neverThrown
             } catch (Throwable $e) {
                 continue;
             }
