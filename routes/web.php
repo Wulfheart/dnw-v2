@@ -22,6 +22,9 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/ping', function () {
+    return "Pong";
+});
 // TODO: Only in dev mode
 Route::get('login', fn () => redirect(route('dev-login.show')))->name('login');
 Route::delete('logout', function () {
