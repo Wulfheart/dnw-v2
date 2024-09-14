@@ -9,4 +9,4 @@ services:
     command: npm run dev
 
   - name: Serve
-    command: php artisan serve
+    command: php artisan octane:start --watch

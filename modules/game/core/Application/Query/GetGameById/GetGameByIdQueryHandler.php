@@ -4,6 +4,7 @@ namespace Dnw\Game\Core\Application\Query\GetGameById;
 
 use Dnw\Foundation\Collection\ArrayCollection;
 use Dnw\Game\Core\Application\Query\GetGameById\Dto\GameStateEnum;
+use Dnw\Game\Core\Application\Query\GetGameById\Dto\PhasesDto;
 use Dnw\Game\Core\Application\Query\GetGameById\Dto\VariantPowerDataDto;
 use Dnw\Game\Core\Domain\Game\Entity\Power;
 use Dnw\Game\Core\Domain\Game\Repository\Game\GameRepositoryInterface;
@@ -64,7 +65,8 @@ readonly class GetGameByIdQueryHandler
                             );
                         }
                     )->toArray()
-                )
+                ),
+                new PhasesDto([]),
             )
         );
     }
