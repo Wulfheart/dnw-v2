@@ -9,7 +9,7 @@ class VariantPowerDataDto
 {
     public function __construct(
         public Id $variantPowerId,
-        /** @var Option<Id> $playerId*/
+        /** @var Option<Id> $playerId */
         public Option $playerId,
         public string $name,
         public string $color,

@@ -38,10 +38,11 @@ use Dnw\Game\Http\ViewModel\GameInformationViewModel;
                     </div>
                     <div>
                         <div class="titleBarLeftSide">
-                            <span class="gamePotType"><a class="light"
-                                    href="{{ $info->variantLink }}">
-                                    {{ $info->variant }}</a>@if ($info->additionalInformation),
-                                {{ $info->additionalInformation }}
+                            <span class="gamePotType"><a class="light" href="{{ $info->variantLink }}">
+                                    {{ $info->variant }}</a>
+                                @if ($info->additionalInformation)
+                                    ,
+                                    {{ $info->additionalInformation }}
                                 @endif
                             </span>
                         </div>

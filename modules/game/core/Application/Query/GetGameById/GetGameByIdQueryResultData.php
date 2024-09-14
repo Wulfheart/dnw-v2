@@ -6,6 +6,7 @@ use Dnw\Foundation\Collection\ArrayCollection;
 use Dnw\Foundation\DateTime\DateTime;
 use Dnw\Foundation\Identity\Id;
 use Dnw\Game\Core\Application\Query\GetGameById\Dto\GameStateEnum;
+use Dnw\Game\Core\Application\Query\GetGameById\Dto\PhasesDto;
 use Dnw\Game\Core\Application\Query\GetGameById\Dto\VariantPowerDataDto;
 
 class GetGameByIdQueryResultData
@@ -20,5 +21,6 @@ class GetGameByIdQueryResultData
         public DateTime $nextPhaseStart,
         /** @var ArrayCollection<VariantPowerDataDto> $variantPowerData */
         public ArrayCollection $variantPowerData,
+        public PhasesDto $phases,
     ) {}
 }

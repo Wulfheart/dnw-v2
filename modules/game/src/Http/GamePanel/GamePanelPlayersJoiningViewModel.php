@@ -5,7 +5,8 @@ namespace Dnw\Game\Http\GamePanel;
 use Dnw\Game\Http\GamePanel\ViewModel\PlayerInfoViewModel;
 use Dnw\Game\Http\ViewModel\GameInformationViewModel;
 
-class GamePanelPlayersJoiningViewModel {
+class GamePanelPlayersJoiningViewModel
+{
     public function __construct(
         public GameInformationViewModel $gameInfo,
         public int $currentPlayerNumber,
@@ -15,8 +16,5 @@ class GamePanelPlayersJoiningViewModel {
         public string $mapLink,
         public bool $canJoin,
         public bool $canLeave,
-    )
-    {
-    }
-
+    ) {}
 }

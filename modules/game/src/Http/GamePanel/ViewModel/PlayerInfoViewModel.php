@@ -2,12 +2,10 @@
 
 namespace Dnw\Game\Http\GamePanel\ViewModel;
 
-class PlayerInfoViewModel {
+class PlayerInfoViewModel
+{
     public function __construct(
         public string $name,
         public string $link,
-    )
-    {
-
-    }
+    ) {}
 }

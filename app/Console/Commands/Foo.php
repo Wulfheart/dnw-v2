@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class Foo extends Command
@@ -24,8 +23,5 @@ class Foo extends Command
     /**
      * Execute the console command.
      */
-    public function handle(): void
-    {
-
-    }
+    public function handle(): void {}
 }
