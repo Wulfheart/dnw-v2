@@ -7,9 +7,9 @@ use Dnw\Foundation\Event\Attributes\DomainListener;
 use Illuminate\Support\Reflector;
 use Illuminate\Support\Str;
 use ReflectionClass;
-use ReflectionException;
 use ReflectionMethod;
 use Symfony\Component\Filesystem\Filesystem;
+use Throwable;
 
 readonly class DomainEventProvider implements DomainEventProviderInterface
 {
@@ -85,7 +85,7 @@ readonly class DomainEventProvider implements DomainEventProviderInterface
         foreach ($module_classes as $module_class) {
             try {
                 $reflection = new ReflectionClass($module_class);
-            } catch (ReflectionException $e) {
+            } catch (Throwable $e) {
                 continue;
             }
             $attributes = $reflection->getAttributes();
