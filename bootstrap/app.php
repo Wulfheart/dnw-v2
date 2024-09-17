@@ -10,9 +10,7 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__ . '/../routes/console.php',
         health: '/up',
     )
-    ->withEvents([
-        __DIR__ . '/../modules/game/src/Some/Other/',
-    ])
+    ->withEvents()
     ->withMiddleware(function (Middleware $middleware) {
         //
     })
