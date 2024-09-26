@@ -2,7 +2,7 @@
 
 namespace Dnw\Game\Core\Domain\Game\Repository\Phase;
 
-use Wulfeart\Option\Result;
+use Wulfheart\Option\Result;
 
 /**
  * @extends Result<string, self::E_*>

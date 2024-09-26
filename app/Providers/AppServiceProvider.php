@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\View;
-use Wulfeart\Option\Option;
+use Wulfheart\Option\Option;
 
 class AppServiceProvider extends ServiceProvider
 {

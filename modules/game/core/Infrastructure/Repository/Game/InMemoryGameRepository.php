@@ -8,7 +8,7 @@ use Dnw\Game\Core\Domain\Game\Repository\Game\GameRepositoryInterface;
 use Dnw\Game\Core\Domain\Game\Repository\Game\LoadGameResult;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameName;
-use Wulfeart\Option\Option;
+use Wulfheart\Option\Option;
 
 class InMemoryGameRepository implements GameRepositoryInterface
 {

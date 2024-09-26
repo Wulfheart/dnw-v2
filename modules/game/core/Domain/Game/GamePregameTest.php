@@ -27,7 +27,7 @@ use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
 use Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Wulfeart\Option\Option;
+use Wulfheart\Option\Option;
 
 #[CoversClass(Game::class)]
 class GamePregameTest extends TestCase

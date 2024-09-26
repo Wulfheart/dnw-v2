@@ -10,7 +10,7 @@ use Dnw\Game\Core\Infrastructure\Repository\Variant\InMemoryVariantRepository;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
-use Wulfeart\Option\ResultAsserter;
+use Wulfheart\Option\ResultAsserter;
 
 #[CoversClass(GetGameByIdQueryHandler::class)]
 class GetGameByIdQueryHandlerTest extends TestCase

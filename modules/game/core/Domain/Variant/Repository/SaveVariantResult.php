@@ -2,7 +2,7 @@
 
 namespace Dnw\Game\Core\Domain\Variant\Repository;
 
-use Wulfeart\Option\Result;
+use Wulfheart\Option\Result;
 
 /**
  * @extends Result<void, SaveVariantResult::E_*>

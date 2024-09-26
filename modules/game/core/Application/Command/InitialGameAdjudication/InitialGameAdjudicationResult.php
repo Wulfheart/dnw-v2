@@ -2,7 +2,7 @@
 
 namespace Dnw\Game\Core\Application\Command\InitialGameAdjudication;
 
-use Wulfeart\Option\Result;
+use Wulfheart\Option\Result;
 
 /**
  * @extends Result<void, self::E_*>

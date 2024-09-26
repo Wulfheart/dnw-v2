@@ -4,7 +4,7 @@ namespace Dnw\Game\Core\Domain\Game\ValueObject\Phase;
 
 use Dnw\Game\Core\Domain\Game\Collection\OrderCollection;
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
-use Wulfeart\Option\Option;
+use Wulfheart\Option\Option;
 
 class PhasePowerData
 {

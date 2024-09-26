@@ -12,7 +12,7 @@ use Dnw\Game\Core\Application\Query\GetAllVariants\GetAllVariantsResult;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Wulfeart\Option\Option;
+use Wulfheart\Option\Option;
 
 readonly class CreateGameController
 {

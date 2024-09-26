@@ -15,7 +15,7 @@ use Dnw\Game\Core\Infrastructure\Repository\Variant\InMemoryVariantRepository;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
-use Wulfeart\Option\Option;
+use Wulfheart\Option\Option;
 
 #[CoversClass(CreateGameCommand::class)]
 #[CoversClass(CreateGameCommandHandler::class)]

@@ -3,7 +3,7 @@
 namespace Dnw\Game\Core\Application\Query\GetGameById\Dto;
 
 use Dnw\Foundation\DateTime\DateTime;
-use Wulfeart\Option\Option;
+use Wulfheart\Option\Option;
 
 class PhaseDto
 {

@@ -13,7 +13,7 @@ use Dnw\Game\Core\Infrastructure\Repository\Game\InMemoryGameRepository;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
-use Wulfeart\Option\Option;
+use Wulfheart\Option\Option;
 
 #[CoversClass(JoinGameCommand::class)]
 #[CoversClass(JoinGameCommandHandler::class)]

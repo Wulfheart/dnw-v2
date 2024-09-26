@@ -23,7 +23,7 @@ use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
 use Dnw\Game\Core\Domain\Variant\Variant;
 use Dnw\Game\Core\Infrastructure\Adapter\RandomNumberGenerator;
 use Exception;
-use Wulfeart\Option\Option;
+use Wulfheart\Option\Option;
 
 /**
  * @codeCoverageIgnore

@@ -11,8 +11,8 @@ use Dnw\Game\Core\Application\Query\GetGameIdByName\GetGameIdByNameQuery;
 use Dnw\Game\Core\Application\Query\GetGameIdByName\GetGameIdByNameQueryResult;
 use Dnw\Game\Database\Seeders\VariantSeeder;
 use PHPUnit\Framework\Attributes\CoversNothing;
-use Wulfeart\Option\ResultAsserter;
 use Tests\TestCase;
+use Wulfheart\Option\ResultAsserter;
 
 #[CoversNothing]
 #[AllowLaravelTestCase]

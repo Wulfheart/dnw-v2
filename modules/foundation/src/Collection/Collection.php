@@ -6,7 +6,7 @@ use ArrayIterator;
 use Dnw\Foundation\Exception\NotFoundException;
 use IteratorAggregate;
 use Traversable;
-use Wulfeart\Option\Option;
+use Wulfheart\Option\Option;
 
 /**
  * @template T

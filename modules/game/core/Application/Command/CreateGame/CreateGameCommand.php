@@ -3,7 +3,7 @@
 namespace Dnw\Game\Core\Application\Command\CreateGame;
 
 use Dnw\Foundation\Identity\Id;
-use Wulfeart\Option\Option;
+use Wulfheart\Option\Option;
 
 readonly class CreateGameCommand
 {

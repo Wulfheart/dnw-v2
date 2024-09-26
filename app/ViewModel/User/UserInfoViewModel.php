@@ -2,7 +2,7 @@
 
 namespace App\ViewModel\User;
 
-use Wulfeart\Option\Option;
+use Wulfheart\Option\Option;
 
 class UserInfoViewModel
 {

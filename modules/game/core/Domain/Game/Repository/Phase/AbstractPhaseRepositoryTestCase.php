@@ -5,8 +5,8 @@ namespace Dnw\Game\Core\Domain\Game\Repository\Phase;
 use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
 use Dnw\Game\Core\Domain\Game\Exception\AlreadyPresentException;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseId;
-use Wulfeart\Option\ResultAsserter;
 use Tests\TestCase;
+use Wulfheart\Option\ResultAsserter;
 
 #[AllowLaravelTestCase]
 abstract class AbstractPhaseRepositoryTestCase extends TestCase

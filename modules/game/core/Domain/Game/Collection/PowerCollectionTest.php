@@ -7,7 +7,7 @@ use Dnw\Game\Core\Domain\Player\ValueObject\PlayerId;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Wulfeart\Option\Option;
+use Wulfheart\Option\Option;
 
 #[CoversClass(PowerCollection::class)]
 class PowerCollectionTest extends TestCase

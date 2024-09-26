@@ -8,7 +8,7 @@ use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhasePowerData;
 use Dnw\Game\Core\Domain\Game\ValueObject\Power\PowerId;
 use Dnw\Game\Core\Domain\Player\ValueObject\PlayerId;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
-use Wulfeart\Option\Option;
+use Wulfheart\Option\Option;
 
 /**
  * @codeCoverageIgnore

@@ -3,7 +3,7 @@
 namespace Dnw\Game\Core\Domain\Game\Repository\Game;
 
 use Dnw\Game\Core\Domain\Game\Game;
-use Wulfeart\Option\Result;
+use Wulfheart\Option\Result;
 
 /**
  * @extends Result<Game, self::E_>

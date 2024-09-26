@@ -2,7 +2,7 @@
 
 namespace Dnw\Game\Core\Application\Query\GetGameIdByName;
 
-use Wulfeart\Option\Result;
+use Wulfheart\Option\Result;
 
 /**
  * @extends Result<string, self::E_*>

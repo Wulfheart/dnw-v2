@@ -5,7 +5,7 @@ namespace Dnw\Game\Core\Domain\Game\Test\Factory;
 use Dnw\Game\Core\Domain\Game\Collection\OrderCollection;
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhasePowerData;
-use Wulfeart\Option\Option;
+use Wulfheart\Option\Option;
 
 /**
  * @codeCoverageIgnore
