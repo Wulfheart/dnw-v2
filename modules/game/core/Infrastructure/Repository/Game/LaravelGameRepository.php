@@ -37,7 +37,7 @@ use Dnw\Game\Core\Infrastructure\Model\Game\PhaseModel;
 use Dnw\Game\Core\Infrastructure\Model\Game\PhasePowerDataModel;
 use Dnw\Game\Core\Infrastructure\Model\Game\PowerModel;
 use Illuminate\Database\DatabaseManager;
-use Std\Option;
+use Wulfeart\Option\Option;
 
 class LaravelGameRepository implements GameRepositoryInterface
 {

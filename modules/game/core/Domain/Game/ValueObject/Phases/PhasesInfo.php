@@ -5,7 +5,7 @@ namespace Dnw\Game\Core\Domain\Game\ValueObject\Phases;
 use Dnw\Game\Core\Domain\Game\Entity\Phase;
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseId;
-use Std\Option;
+use Wulfeart\Option\Option;
 
 class PhasesInfo
 {

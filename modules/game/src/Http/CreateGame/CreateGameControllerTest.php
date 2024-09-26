@@ -9,7 +9,7 @@ use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
 use Dnw\Game\Core\Application\Command\CreateGame\CreateGameCommand;
 use Dnw\Game\Core\Application\Command\CreateGame\CreateGameResult;
 use PHPUnit\Framework\Attributes\CoversClass;
-use Std\Option;
+use Wulfeart\Option\Option;
 use Tests\TestCase;
 
 #[CoversClass(CreateGameController::class)]

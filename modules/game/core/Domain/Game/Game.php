@@ -46,7 +46,7 @@ use Dnw\Game\Core\Domain\Game\ValueObject\Phases\PhasesInfo;
 use Dnw\Game\Core\Domain\Game\ValueObject\Variant\GameVariantData;
 use Dnw\Game\Core\Domain\Player\ValueObject\PlayerId;
 use Dnw\Game\Core\Domain\Variant\Shared\VariantPowerId;
-use Std\Option;
+use Wulfeart\Option\Option;
 
 class Game
 {

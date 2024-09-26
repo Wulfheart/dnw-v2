@@ -3,7 +3,7 @@
 namespace Dnw\Game\Core\Application\Query\GetGameById\Dto;
 
 use Dnw\Foundation\Identity\Id;
-use Std\Option;
+use Wulfeart\Option\Option;
 
 class VariantPowerDataDto
 {

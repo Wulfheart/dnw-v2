@@ -2,7 +2,7 @@
 
 namespace Dnw\Game\Core\Application\Command\CreateGame;
 
-use Std\Result;
+use Wulfeart\Option\Result;
 
 /**
  * @extends Result<void, CreateGameResult::E_*>

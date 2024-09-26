@@ -2,8 +2,8 @@
 
 namespace Dnw\Foundation\Identity;
 
-use Std\Option;
 use Symfony\Component\Uid\Ulid;
+use Wulfeart\Option\Option;
 
 readonly class Id
 {

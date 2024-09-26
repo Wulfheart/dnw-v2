@@ -2,7 +2,7 @@
 
 namespace Dnw\Game\Core\Application\Command\JoinGame;
 
-use Std\Result;
+use Wulfeart\Option\Result;
 
 /**
  * @extends Result<void, self::E_*>

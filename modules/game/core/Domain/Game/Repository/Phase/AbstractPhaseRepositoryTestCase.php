@@ -5,7 +5,7 @@ namespace Dnw\Game\Core\Domain\Game\Repository\Phase;
 use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
 use Dnw\Game\Core\Domain\Game\Exception\AlreadyPresentException;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseId;
-use Std\ResultAsserter;
+use Wulfeart\Option\ResultAsserter;
 use Tests\TestCase;
 
 #[AllowLaravelTestCase]

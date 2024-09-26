@@ -7,7 +7,7 @@ use Dnw\Game\Core\Domain\Game\Test\Factory\PhaseFactory;
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Std\Option;
+use Wulfeart\Option\Option;
 
 #[CoversClass(PhasesInfo::class)]
 class PhasesInfoTest extends TestCase

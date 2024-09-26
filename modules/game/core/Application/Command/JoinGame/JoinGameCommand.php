@@ -3,7 +3,7 @@
 namespace Dnw\Game\Core\Application\Command\JoinGame;
 
 use Dnw\Foundation\Identity\Id;
-use Std\Option;
+use Wulfeart\Option\Option;
 
 class JoinGameCommand
 {

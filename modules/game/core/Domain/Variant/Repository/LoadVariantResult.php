@@ -3,7 +3,7 @@
 namespace Dnw\Game\Core\Domain\Variant\Repository;
 
 use Dnw\Game\Core\Domain\Variant\Variant;
-use Std\Result;
+use Wulfeart\Option\Result;
 
 /**
  * @extends Result<Variant, LoadVariantResult::E_*>

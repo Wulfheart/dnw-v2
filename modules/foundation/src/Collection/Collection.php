@@ -5,8 +5,8 @@ namespace Dnw\Foundation\Collection;
 use ArrayIterator;
 use Dnw\Foundation\Exception\NotFoundException;
 use IteratorAggregate;
-use Std\Option;
 use Traversable;
+use Wulfeart\Option\Option;
 
 /**
  * @template T

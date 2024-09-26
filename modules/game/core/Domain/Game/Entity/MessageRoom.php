@@ -9,7 +9,7 @@ use Dnw\Game\Core\Domain\Game\Entity\Message\SystemMessage;
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
 use Dnw\Game\Core\Domain\Game\ValueObject\MessageRoom\MessageRoomId;
 use Dnw\Game\Core\Domain\Game\ValueObject\MessageRoom\MessageRoomName;
-use Std\Option;
+use Wulfeart\Option\Option;
 
 class MessageRoom
 {

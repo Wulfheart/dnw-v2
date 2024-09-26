@@ -5,7 +5,7 @@ namespace Dnw\Game\Core\Domain\Game\Repository\Game;
 use Dnw\Game\Core\Domain\Game\Game;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Game\GameName;
-use Std\Option;
+use Wulfeart\Option\Option;
 
 interface GameRepositoryInterface
 {

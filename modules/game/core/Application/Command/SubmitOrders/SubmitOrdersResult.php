@@ -2,7 +2,7 @@
 
 namespace Dnw\Game\Core\Application\Command\SubmitOrders;
 
-use Std\Result;
+use Wulfeart\Option\Result;
 
 /**
  * @extends Result<void, self::E_*>

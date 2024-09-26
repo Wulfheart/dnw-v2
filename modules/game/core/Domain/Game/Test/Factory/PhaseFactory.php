@@ -6,7 +6,7 @@ use Dnw\Foundation\DateTime\DateTime;
 use Dnw\Game\Core\Domain\Game\Entity\Phase;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseId;
 use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
-use Std\Option;
+use Wulfeart\Option\Option;
 
 /**
  * @codeCoverageIgnore

@@ -8,7 +8,7 @@ use Dnw\Game\Core\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Std\Option;
+use Wulfeart\Option\Option;
 
 #[CoversClass(Phase::class)]
 class PhaseTest extends TestCase

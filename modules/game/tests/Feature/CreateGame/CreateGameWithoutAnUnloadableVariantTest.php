@@ -9,7 +9,7 @@ use Dnw\Game\Core\Application\Listener\GameCreatedListener;
 use Dnw\Game\Core\Application\Query\GetGameIdByName\GetGameIdByNameQuery;
 use Dnw\Game\Core\Application\Query\GetGameIdByName\GetGameIdByNameQueryResult;
 use PHPUnit\Framework\Attributes\CoversNothing;
-use Std\ResultAsserter;
+use Wulfeart\Option\ResultAsserter;
 use Tests\TestCase;
 
 #[CoversNothing]

@@ -3,7 +3,7 @@
 namespace Dnw\Game\Core\Domain\Game\ValueObject\EndConditions;
 
 use Dnw\Game\Core\Domain\Game\ValueObject\Count;
-use Std\Option;
+use Wulfeart\Option\Option;
 
 class EndConditions
 {
