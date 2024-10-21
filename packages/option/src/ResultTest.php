@@ -1,6 +1,6 @@
 <?php
 
-namespace Std;
+namespace Wulfheart\Option;
 
 use Tests\TestCase;
 

@@ -66,7 +66,7 @@ class CreateGameControllerTest extends TestCase
                 ->startWhenReady(true)
                 ->variantId((string) $variantId)
                 ->create()
-        )->assertRedirect('/');
+        )->assertRedirect('/games/' . $gameId);
     }
 
     public function test_store_throws_404_if_variant_cannot_be_loaded(): void
