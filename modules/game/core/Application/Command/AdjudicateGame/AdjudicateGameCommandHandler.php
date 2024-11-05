@@ -62,8 +62,9 @@ readonly class AdjudicateGameCommandHandler
             );
         }
 
+        // Todo: Error Handling
         $adjudicateGameRequest = new AdjudicateGameRequest(
-            $encodedState,
+            $encodedState->unwrap(),
             $orders,
             $game->calculateSupplyCenterCountForWinning()->int()
         );

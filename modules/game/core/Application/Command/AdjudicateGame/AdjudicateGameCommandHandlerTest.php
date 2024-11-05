@@ -79,10 +79,10 @@ class AdjudicateGameCommandHandlerTest extends TestCase
             ->hasNotCurrentPhaseId($previousPhaseId);
 
         $currentPhaseId = $gameToPerformAssertionsOn->phasesInfo->currentPhase->unwrap()->phaseId;
-        $newEncodedState = $phaseRepository->loadEncodedState($currentPhaseId);
+        $newEncodedState = $phaseRepository->loadEncodedState($currentPhaseId)->unwrap();
         $this->assertEquals(self::NEW_ENCODED_STATE, $newEncodedState);
 
-        $this->assertEquals(self::SVG_WITH_ORDERS, $phaseRepository->loadSvgWithOrders($previousPhaseId));
-        $this->assertEquals(self::SVG_ADJUDICATED, $phaseRepository->loadAdjudicatedSvg($currentPhaseId));
+        $this->assertEquals(self::SVG_WITH_ORDERS, $phaseRepository->loadSvgWithOrders($previousPhaseId)->unwrap());
+        $this->assertEquals(self::SVG_ADJUDICATED, $phaseRepository->loadAdjudicatedSvg($currentPhaseId)->unwrap());
     }
 }
