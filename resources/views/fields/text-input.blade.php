@@ -1,5 +1,8 @@
 <?php
-/** @var \App\Web\Form\Fields\TextInput $vm */
+
+use App\Web\Form\Fields\TextInput;
+
+/** @var TextInput $vm */
 ?>
 
 <div>

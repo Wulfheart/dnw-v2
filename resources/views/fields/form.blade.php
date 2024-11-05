@@ -1,5 +1,8 @@
 <?php
-/** @var \App\Web\Form\Form $vm */
+
+use App\Web\Form\Form;
+
+/** @var Form $vm */
 ?>
 
 <form action="{{ $vm->action }}" method="POST" class="web">

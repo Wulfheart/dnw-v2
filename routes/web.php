@@ -25,7 +25,7 @@ Route::get('/', function () {
 });
 
 Route::get('/ping', function () {
-    return "Pong";
+    return 'Pong';
 });
 // TODO: Only in dev mode
 Route::get('login', fn () => redirect(route('dev-login.show')))->name('login');
@@ -39,11 +39,8 @@ Route::get('/dev-login', [DevLoginController::class, 'show'])->name('dev-login.s
 Route::post('/dev-login', [DevLoginController::class, 'login'])->name('dev-login.login');
 
 /**
- *
  * GAME
- *
  */
-
 Route::prefix('games/')
     ->middleware(['web', 'auth:web'])
     ->name('game.')->group(function () {
@@ -51,4 +48,3 @@ Route::prefix('games/')
         Route::post('create', [CreateGameController::class, 'store'])->name('store');
         Route::get('{id}', [GamePanelController::class, 'show'])->name('show');
     });
-

@@ -3,7 +3,6 @@
 use App\Web\Form\Fields\Select;
 
 /** @var Select $vm */
-
 ?>
 
 <div>
