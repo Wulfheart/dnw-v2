@@ -29,7 +29,8 @@
         "laravel/sail": "^1.26",
         "nunomaduro/collision": "^8.0",
         "phpstan/phpstan": "^1.10",
-        "phpunit/phpunit": "^10.5"
+        "phpunit/phpunit": "^10.5",
+        "technically/callable-reflection": "^0.4.1"
     },
     "autoload": {
         "psr-4": {

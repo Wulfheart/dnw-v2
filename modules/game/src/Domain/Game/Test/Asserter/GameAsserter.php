@@ -11,6 +11,8 @@ use Dnw\Game\Domain\Game\ValueObject\Power\PowerId;
 use Dnw\Game\Domain\Player\ValueObject\PlayerId;
 use InvalidArgumentException;
 use PHPUnit\Framework\Assert;
+use Technically\CallableReflection\CallableReflection;
+use Technically\CallableReflection\Parameters\TypeReflection;
 
 /**
  * @codeCoverageIgnore
