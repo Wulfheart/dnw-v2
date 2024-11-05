@@ -12,12 +12,12 @@
         "dnw/adjudicator": "*",
         "dnw/foundation": "*",
         "dnw/game": "*",
-        "internachi/modular": "^2.2",
         "laravel/framework": "^11.0",
         "laravel/octane": "^2.5",
         "laravel/tinker": "^2.9",
         "league/tactician": "^1.1",
         "mauricius/laravel-htmx": "^0.6.0",
+        "spatie/php-structure-discoverer": "^2.2",
         "wulfheart/option": "dev-main"
     },
     "require-dev": {
