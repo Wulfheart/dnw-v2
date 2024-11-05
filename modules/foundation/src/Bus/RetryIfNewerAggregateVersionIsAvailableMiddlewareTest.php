@@ -7,14 +7,11 @@ use Dnw\Foundation\Aggregate\NewerAggregateVersionAvailableException;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use SEEC\PhpUnit\Helper\ConsecutiveParams;
 use stdClass;
 
 #[CoversClass(RetryIfNewerAggregateVersionIsAvailableMiddleware::class)]
 class RetryIfNewerAggregateVersionIsAvailableMiddlewareTest extends TestCase
 {
-    use ConsecutiveParams;
-
     public function test_does_not_have_any_backoff_if_command_works(): void
     {
         $sleepProviderMock = $this->createMock(SleepProviderInterface::class);
@@ -45,12 +42,10 @@ class RetryIfNewerAggregateVersionIsAvailableMiddlewareTest extends TestCase
         $sleepProviderMock->expects($this->exactly(4))
             ->method('sleep')
             ->with(
-                ... $this->withConsecutive(
-                    [10],
-                    [10],
-                    [20],
-                    [100]
-                )
+                [10],
+                [10],
+                [20],
+                [100]
             );
 
         $middleware = new RetryIfNewerAggregateVersionIsAvailableMiddleware($sleepProviderMock);
