@@ -6,6 +6,6 @@ class PhasesDto
 {
     public function __construct(
         /** @var array<PhaseDto> $phases */
-        private array $phases,
+        public array $phases,
     ) {}
 }

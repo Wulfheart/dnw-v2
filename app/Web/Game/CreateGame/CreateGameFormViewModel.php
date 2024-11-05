@@ -11,7 +11,7 @@ use App\Web\Form\Fields\TextInput;
 use App\Web\Form\Form;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterface;
-use Dnw\Game\Core\Application\Query\GetAllVariants\VariantDto;
+use Dnw\Game\Application\Query\GetAllVariants\VariantDto;
 
 class CreateGameFormViewModel
 {

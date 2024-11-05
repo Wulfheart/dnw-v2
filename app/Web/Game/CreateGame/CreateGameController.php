@@ -5,7 +5,10 @@ namespace App\Web\Game\CreateGame;
 use App\Models\User;
 use Dnw\Foundation\Bus\BusInterface;
 use Dnw\Foundation\Identity\Id;
-use Dnw\Game\Core\Application\Command\CreateGame\CreateGameResult;
+use Dnw\Game\Application\Command\CreateGame\CreateGameCommand;
+use Dnw\Game\Application\Command\CreateGame\CreateGameResult;
+use Dnw\Game\Application\Query\GetAllVariants\GetAllVariantsQuery;
+use Dnw\Game\Application\Query\GetAllVariants\GetAllVariantsResult;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -21,8 +24,8 @@ readonly class CreateGameController
     {
         // TODO: Add a query to determine if a user can create a game in order to show a hint later
 
-        /** @var \Dnw\Game\Application\Query\GetAllVariants\GetAllVariantsResult $allVariants */
-        $allVariants = $this->bus->handle(new \App\Web\Game\Http\CreateGame\GetAllVariantsQuery());
+        /** @var GetAllVariantsResult $allVariants */
+        $allVariants = $this->bus->handle(new GetAllVariantsQuery());
         $vm = CreateGameFormViewModel::fromLaravel($allVariants->variants);
 
         return response()->view('game::game.create', ['vm' => $vm]);
@@ -35,7 +38,7 @@ readonly class CreateGameController
 
         $gameId = Id::generate();
 
-        $command = new \App\Web\Game\Http\CreateGame\CreateGameCommand(
+        $command = new CreateGameCommand(
             $gameId,
             $request->string(StoreGameRequest::KEY_NAME),
             $request->integer(StoreGameRequest::PHASE_LENGTH_IN_MINUTES),

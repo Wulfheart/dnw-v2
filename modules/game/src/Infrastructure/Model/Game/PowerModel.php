@@ -13,7 +13,7 @@ class PowerModel extends Model
     public $table = 'game_powers';
 
     /**
-     * @return BelongsTo<GameModel, self>
+     * @return BelongsTo<GameModel, $this>
      */
     public function game(): BelongsTo
     {

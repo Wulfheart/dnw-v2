@@ -61,10 +61,8 @@ class RetryIfNewerAggregateVersionIsAvailableMiddlewareTest extends TestCase
         $sleepProviderMock->expects($this->exactly(2))
             ->method('sleep')
             ->with(
-                ... $this->withConsecutive(
-                    [10],
-                    [10],
-                )
+                [10],
+                [10],
             );
 
         $command = new class() {

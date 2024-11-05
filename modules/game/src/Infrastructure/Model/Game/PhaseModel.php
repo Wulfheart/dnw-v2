@@ -15,7 +15,7 @@ class PhaseModel extends Model
     protected $casts = [];
 
     /**
-     * @return HasMany<PhasePowerDataModel>
+     * @return HasMany<PhasePowerDataModel, $this>
      */
     public function powerData(): HasMany
     {

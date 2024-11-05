@@ -9,7 +9,8 @@ use Dnw\Game\Application\Query\GetAllVariants\GetAllVariantsQuery;
 use Dnw\Game\Application\Query\GetAllVariants\GetAllVariantsResult;
 use Dnw\Game\Application\Query\GetGameIdByName\GetGameIdByNameQuery;
 use Dnw\Game\Application\Query\GetGameIdByName\GetGameIdByNameQueryResult;
-use Dnw\Game\Database\Seeders\VariantSeeder;
+use Dnw\Game\Domain\Game\Test\Factory\VariantFactory;
+use Dnw\Game\Domain\Variant\Repository\VariantRepositoryInterface;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use Tests\TestCase;
 use Wulfheart\Option\ResultAsserter;
@@ -22,7 +23,12 @@ class CreateGameWorksTest extends TestCase
     {
         $bus = $this->bootstrap(BusInterface::class);
 
-        $this->seed(VariantSeeder::class);
+        $variant = VariantFactory::standard();
+        $colonial = VariantFactory::colonial();
+
+        $variantRepo = $this->bootstrap(VariantRepositoryInterface::class);
+        $variantRepo->save($variant);
+        $variantRepo->save($colonial);
 
         /** @var GetAllVariantsResult $allVariantsResult */
         $allVariantsResult = $bus->handle(new GetAllVariantsQuery());

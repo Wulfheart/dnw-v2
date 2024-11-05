@@ -13,7 +13,7 @@ class VariantModel extends Model
     protected $table = 'game_variants';
 
     /**
-     * @return HasMany<VariantPowerModel>
+     * @return HasMany<VariantPowerModel, $this>
      */
     public function powers(): HasMany
     {

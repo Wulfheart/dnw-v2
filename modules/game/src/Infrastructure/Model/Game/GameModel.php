@@ -25,7 +25,7 @@ class GameModel extends Model
     ];
 
     /**
-     * @return HasMany<PhaseModel>
+     * @return HasMany<PhaseModel, $this>
      */
     public function phases(): HasMany
     {
@@ -33,7 +33,7 @@ class GameModel extends Model
     }
 
     /**
-     * @return HasOne<PhaseModel>
+     * @return HasOne<PhaseModel, $this>
      */
     public function currentPhase(): HasOne
     {
@@ -42,7 +42,7 @@ class GameModel extends Model
     }
 
     /**
-     * @return HasOne<PhaseModel>
+     * @return HasOne<PhaseModel, $this>
      */
     public function lastPhase(): HasOne
     {
@@ -53,7 +53,7 @@ class GameModel extends Model
     }
 
     /**
-     * @return HasMany<PowerModel>
+     * @return HasMany<PowerModel, $this>
      */
     public function powers(): HasMany
     {

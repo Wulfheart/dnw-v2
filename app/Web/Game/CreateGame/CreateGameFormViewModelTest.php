@@ -4,8 +4,8 @@ namespace App\Web\Game\CreateGame;
 
 use Dnw\Foundation\Identity\Id;
 use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
-use Dnw\Game\Core\Application\Query\GetAllVariants\VariantDto;
-use Dnw\Game\Core\Application\Query\GetAllVariants\VariantPowerDto;
+use Dnw\Game\Application\Query\GetAllVariants\VariantDto;
+use Dnw\Game\Application\Query\GetAllVariants\VariantPowerDto;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Tests\TestCase;
 
