@@ -1,6 +1,6 @@
 <?php
 
-namespace Dnw\Game\Tests\Feature\CreateGame;
+namespace Dnw\Game\Feature\CreateGame;
 
 use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
 use PHPUnit\Framework\Attributes\CoversNothing;

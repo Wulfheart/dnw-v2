@@ -3,7 +3,7 @@ includes:
 
 parameters:
     databaseMigrationsPath: [
-        modules/game/database/migrations,
+        modules/game/migrations,
         database/migrations
     ]
     level: 8

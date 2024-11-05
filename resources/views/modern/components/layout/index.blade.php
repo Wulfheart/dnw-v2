@@ -1,6 +1,6 @@
 @props(['active' => null])
 
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
@@ -27,11 +27,12 @@
 
 <body class="antialiased min-h-screen">
 <?php
-use Dnw\Foundation\User\UserViewModel;
+
+use App\Web\User\ViewModel\UserViewModel;
 
 /** @var UserViewModel $user */ ?>
 @if($user->isAuthenticated)
-<x-nav.index :active="$active"/>
+    <x-nav.index :active="$active"/>
 @endif
 {{ $slot }}
 

@@ -1,14 +1,14 @@
 <?php
 
-namespace Dnw\Game\Tests\Feature\CreateGame;
+namespace Dnw\Game\Test\Feature\CreateGame;
 
 use Dnw\Foundation\Bus\BusInterface;
 use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
-use Dnw\Game\Core\Application\Listener\GameCreatedListener;
-use Dnw\Game\Core\Application\Query\GetAllVariants\GetAllVariantsQuery;
-use Dnw\Game\Core\Application\Query\GetAllVariants\GetAllVariantsResult;
-use Dnw\Game\Core\Application\Query\GetGameIdByName\GetGameIdByNameQuery;
-use Dnw\Game\Core\Application\Query\GetGameIdByName\GetGameIdByNameQueryResult;
+use Dnw\Game\Application\Listener\GameCreatedListener;
+use Dnw\Game\Application\Query\GetAllVariants\GetAllVariantsQuery;
+use Dnw\Game\Application\Query\GetAllVariants\GetAllVariantsResult;
+use Dnw\Game\Application\Query\GetGameIdByName\GetGameIdByNameQuery;
+use Dnw\Game\Application\Query\GetGameIdByName\GetGameIdByNameQueryResult;
 use Dnw\Game\Database\Seeders\VariantSeeder;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use Tests\TestCase;
@@ -21,6 +21,7 @@ class CreateGameWorksTest extends TestCase
     public function test(): void
     {
         $bus = $this->bootstrap(BusInterface::class);
+
         $this->seed(VariantSeeder::class);
 
         /** @var GetAllVariantsResult $allVariantsResult */

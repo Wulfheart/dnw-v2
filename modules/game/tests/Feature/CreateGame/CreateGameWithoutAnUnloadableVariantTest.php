@@ -1,13 +1,13 @@
 <?php
 
-namespace Dnw\Game\Tests\Feature\CreateGame;
+namespace Dnw\Game\Feature\CreateGame;
 
 use Dnw\Foundation\Bus\BusInterface;
 use Dnw\Foundation\Identity\Id;
 use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
-use Dnw\Game\Core\Application\Listener\GameCreatedListener;
-use Dnw\Game\Core\Application\Query\GetGameIdByName\GetGameIdByNameQuery;
-use Dnw\Game\Core\Application\Query\GetGameIdByName\GetGameIdByNameQueryResult;
+use Dnw\Game\Application\Listener\GameCreatedListener;
+use Dnw\Game\Application\Query\GetGameIdByName\GetGameIdByNameQuery;
+use Dnw\Game\Application\Query\GetGameIdByName\GetGameIdByNameQueryResult;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use Tests\TestCase;
 use Wulfheart\Option\ResultAsserter;
