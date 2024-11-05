@@ -8,6 +8,6 @@ class Separator implements FieldInterface
 {
     public function render(): View
     {
-        return view('foundation::fields.separator', []);
+        return view('fields.separator', []);
     }
 }

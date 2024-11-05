@@ -16,6 +16,6 @@ class Form
 
     public function render(): View
     {
-        return view('foundation::fields.form', ['vm' => $this]);
+        return view('fields.form', ['vm' => $this]);
     }
 }

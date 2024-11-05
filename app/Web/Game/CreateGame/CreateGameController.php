@@ -28,7 +28,7 @@ readonly class CreateGameController
         $allVariants = $this->bus->handle(new GetAllVariantsQuery());
         $vm = CreateGameFormViewModel::fromLaravel($allVariants->variants);
 
-        return response()->view('game::game.create', ['vm' => $vm]);
+        return response()->view('game.create', ['vm' => $vm]);
     }
 
     public function store(StoreGameRequest $request): RedirectResponse

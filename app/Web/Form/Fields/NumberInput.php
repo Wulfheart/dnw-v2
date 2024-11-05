@@ -17,6 +17,6 @@ readonly class NumberInput implements FieldInterface
 
     public function render(): View
     {
-        return view('foundation::fields.number-input', ['vm' => $this]);
+        return view('fields.number-input', ['vm' => $this]);
     }
 }

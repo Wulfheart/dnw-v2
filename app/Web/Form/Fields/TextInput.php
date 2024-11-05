@@ -15,6 +15,6 @@ readonly class TextInput implements FieldInterface
 
     public function render(): View
     {
-        return view('foundation::fields.text-input', ['vm' => $this]);
+        return view('fields.text-input', ['vm' => $this]);
     }
 }

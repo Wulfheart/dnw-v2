@@ -70,8 +70,8 @@ class InitialGameAdjudicationCommandHandlerTest extends TestCase
 
         $currentPhaseId = $gameToPerformAssertionsOn->phasesInfo->currentPhase->unwrap()->phaseId;
         $newEncodedState = $phaseRepository->loadEncodedState($currentPhaseId);
-        $this->assertEquals(self::NEW_ENCODED_STATE, $newEncodedState);
+        $this->assertEquals(self::NEW_ENCODED_STATE, $newEncodedState->unwrap());
 
-        $this->assertEquals(self::SVG_ADJUDICATED, $phaseRepository->loadAdjudicatedSvg($currentPhaseId));
+        $this->assertEquals(self::SVG_ADJUDICATED, $phaseRepository->loadAdjudicatedSvg($currentPhaseId)->unwrap());
     }
 }

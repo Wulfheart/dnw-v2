@@ -2,7 +2,7 @@
 
 namespace Dnw\Foundation\Bus;
 
-use Dnw\Foundation\Adapter\SleepProviderInterface;
+use Dnw\Foundation\Adapter\FakeSleepProvider;
 use Dnw\Foundation\Aggregate\NewerAggregateVersionAvailableException;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -14,22 +14,20 @@ class RetryIfNewerAggregateVersionIsAvailableMiddlewareTest extends TestCase
 {
     public function test_does_not_have_any_backoff_if_command_works(): void
     {
-        $sleepProviderMock = $this->createMock(SleepProviderInterface::class);
+        $sleepProvider = new FakeSleepProvider();
 
-        $sleepProviderMock->expects($this->never())->method('sleep');
-
-        $middleware = new RetryIfNewerAggregateVersionIsAvailableMiddleware($sleepProviderMock);
+        $middleware = new RetryIfNewerAggregateVersionIsAvailableMiddleware($sleepProvider);
 
         $middleware->execute(new stdClass(), fn ($command) => $command);
+
+        $this->expectNotToPerformAssertions();
     }
 
     public function test_does_not_have_any_backoff_on_unrelated_exception(): void
     {
-        $sleepProviderMock = $this->createMock(SleepProviderInterface::class);
+        $sleepProvider = new FakeSleepProvider();
 
-        $sleepProviderMock->expects($this->never())->method('sleep');
-
-        $middleware = new RetryIfNewerAggregateVersionIsAvailableMiddleware($sleepProviderMock);
+        $middleware = new RetryIfNewerAggregateVersionIsAvailableMiddleware($sleepProvider);
 
         $this->expectException(InvalidArgumentException::class);
         $middleware->execute(new stdClass(), fn ($command) => throw new InvalidArgumentException());
@@ -37,18 +35,9 @@ class RetryIfNewerAggregateVersionIsAvailableMiddlewareTest extends TestCase
 
     public function test_has_n_tries_with_backoff_before_throwing_exception(): void
     {
-        $sleepProviderMock = $this->createMock(SleepProviderInterface::class);
+        $fakeSleepProvider = new FakeSleepProvider(10, 10, 20, 100);
 
-        $sleepProviderMock->expects($this->exactly(4))
-            ->method('sleep')
-            ->with(
-                [10],
-                [10],
-                [20],
-                [100]
-            );
-
-        $middleware = new RetryIfNewerAggregateVersionIsAvailableMiddleware($sleepProviderMock);
+        $middleware = new RetryIfNewerAggregateVersionIsAvailableMiddleware($fakeSleepProvider);
 
         $this->expectException(NewerAggregateVersionAvailableException::class);
         $middleware->execute(new stdClass(), fn ($command) => throw new NewerAggregateVersionAvailableException());
@@ -56,20 +45,13 @@ class RetryIfNewerAggregateVersionIsAvailableMiddlewareTest extends TestCase
 
     public function test_stops_when_command_works(): void
     {
-        $sleepProviderMock = $this->createMock(SleepProviderInterface::class);
-
-        $sleepProviderMock->expects($this->exactly(2))
-            ->method('sleep')
-            ->with(
-                [10],
-                [10],
-            );
+        $sleepProvider = new FakeSleepProvider(10, 10);
 
         $command = new class() {
             public int $i = 0;
         };
 
-        $middleware = new RetryIfNewerAggregateVersionIsAvailableMiddleware($sleepProviderMock);
+        $middleware = new RetryIfNewerAggregateVersionIsAvailableMiddleware($sleepProvider);
 
         $middleware->execute($command, function ($command) {
             if ($command->i === 2) {

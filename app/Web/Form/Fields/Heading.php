@@ -12,6 +12,6 @@ class Heading implements FieldInterface
 
     public function render(): View
     {
-        return view('foundation::fields.heading', ['vm' => $this]);
+        return view('fields.heading', ['vm' => $this]);
     }
 }

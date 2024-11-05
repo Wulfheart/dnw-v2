@@ -24,6 +24,6 @@ class Select implements FieldInterface
 
     public function render(): View
     {
-        return view('foundation::fields.select', ['vm' => $this]);
+        return view('fields.select', ['vm' => $this]);
     }
 }
