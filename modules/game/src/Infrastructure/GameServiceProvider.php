@@ -26,6 +26,9 @@ use GuzzleHttp\Psr7\HttpFactory;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 
+/**
+ * @codeCoverageIgnore
+ */
 class GameServiceProvider extends ServiceProvider
 {
     /** @var array<class-string, class-string> */
