@@ -23,11 +23,7 @@
         <exclude>
             <directory suffix="Test.php">./</directory>
             <directory suffix="TestCase.php">./</directory>
-            <!-- Doing this until https://github.com/sebastianbergmann/php-file-iterator/pull/83 gets merged -->
-            <directory>./modules/*/*/Test</directory>
-            <directory>./modules/*/*/*/Test</directory>
-            <directory>./modules/*/*/*/*/Test</directory>
-            <directory>./modules/*/*/*/*/*/Test</directory>
+            <directory>./modules/**/Test</directory>
         </exclude>
     </source>
     <php>
