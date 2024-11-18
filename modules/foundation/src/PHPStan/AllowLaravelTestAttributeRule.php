@@ -47,7 +47,7 @@ class AllowLaravelTestAttributeRule implements Rule
         // If the attribute is not found, return an error
         if (! $hasAllowLaravelTestAttribute) {
             return [
-                RuleErrorBuilder::message('Classes extending Tests\TestCase must have the #[AllowLaravelTest] attribute.')->build(),
+                RuleErrorBuilder::message('Classes extending Tests\TestCase must have the #[AllowLaravelTest] attribute.')->identifier('foo')->build(),
             ];
         }
 

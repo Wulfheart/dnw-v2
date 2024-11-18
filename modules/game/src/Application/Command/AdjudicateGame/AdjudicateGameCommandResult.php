@@ -5,7 +5,7 @@ namespace Dnw\Game\Application\Command\AdjudicateGame;
 use Wulfheart\Option\Result;
 
 /**
- * @extends Result<void, self::E_>
+ * @extends Result<void, self::E_*>
  */
 class AdjudicateGameCommandResult extends Result
 {

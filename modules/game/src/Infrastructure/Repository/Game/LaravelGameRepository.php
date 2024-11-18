@@ -14,6 +14,7 @@ use Dnw\Game\Domain\Game\Entity\Power;
 use Dnw\Game\Domain\Game\Game;
 use Dnw\Game\Domain\Game\Repository\Game\GameRepositoryInterface;
 use Dnw\Game\Domain\Game\Repository\Game\LoadGameResult;
+use Dnw\Game\Domain\Game\Repository\Game\SaveGameResult;
 use Dnw\Game\Domain\Game\StateMachine\GameStateMachine;
 use Dnw\Game\Domain\Game\ValueObject\AdjudicationTiming\AdjudicationTiming;
 use Dnw\Game\Domain\Game\ValueObject\AdjudicationTiming\NoAdjudicationWeekdayCollection;
@@ -147,7 +148,7 @@ class LaravelGameRepository implements GameRepositoryInterface
 
     }
 
-    public function save(Game $game): void
+    public function save(Game $game): SaveGameResult
     {
         $this->databaseManager->transaction(function () use ($game) {
             $this->saveOrUpdateGame($game);
@@ -156,6 +157,8 @@ class LaravelGameRepository implements GameRepositoryInterface
         });
 
         $this->eventDispatcher->dispatchMultiple($game->releaseEvents());
+
+        return SaveGameResult::ok();
     }
 
     private function saveOrUpdateGame(Game $game): void

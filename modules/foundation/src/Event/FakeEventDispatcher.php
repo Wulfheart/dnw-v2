@@ -50,6 +50,6 @@ class FakeEventDispatcher implements EventDispatcherInterface
 
     public function assertNothingDispatched(): void
     {
-        Assert::assertEmpty($this->events, 'Expected no events to be dispatched, but some events were dispatched.');
+        Assert::assertTrue($this->events->isEmpty(), 'Expected no events to be dispatched, but some events were dispatched.');
     }
 }

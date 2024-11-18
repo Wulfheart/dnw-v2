@@ -5,6 +5,6 @@ namespace Dnw\Game\Domain\Variant\Repository;
 use Wulfheart\Option\Result;
 
 /**
- * @extends Result<void, SaveVariantResult::E_*>
+ * @extends Result<void, void>
  */
 class SaveVariantResult extends Result {}

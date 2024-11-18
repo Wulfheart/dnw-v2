@@ -34,11 +34,13 @@ class InMemoryGameRepository implements GameRepositoryInterface
         return LoadGameResult::ok($this->games[(string) $gameId]);
     }
 
-    public function save(Game $game): void
+    public function save(Game $game): SaveGameResult
     {
         $events = $game->releaseEvents();
         $this->games[(string) $game->gameId] = $game;
         $this->eventDispatcher->dispatchMultiple($events);
+
+        return SaveGameResult::ok();
     }
 
     public function getGameIdByName(GameName $name): Option
