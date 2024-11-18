@@ -2,11 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Dnw\Game\Domain\Game\Test\Factory\VariantFactory;
 use Dnw\Game\Domain\Variant\Repository\VariantRepositoryInterface;
+use Dnw\User\Infrastructure\UserModel;
 use Illuminate\Database\Seeder;
+
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,7 +16,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->count(10)->create();
+        UserModel::factory()->count(10)->create();
 
         $variant = VariantFactory::standard();
         $colonial = VariantFactory::colonial();

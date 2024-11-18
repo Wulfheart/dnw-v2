@@ -2,11 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Models\User;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 

@@ -2,9 +2,9 @@
 
 namespace Tests;
 
-use App\Models\User;
 use Dnw\Foundation\Event\ListenerJob;
 use Dnw\Foundation\Identity\Id;
+use Dnw\User\Infrastructure\UserModel;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Queue;
@@ -34,14 +34,14 @@ abstract class TestCase extends BaseTestCase
         Queue::assertNotPushed(fn (ListenerJob $job) => $job->displayName() === $listener);
     }
 
-    protected function randomUser(): User
+    protected function randomUser(): UserModel
     {
-        return User::factory()->create();
+        return UserModel::factory()->create();
     }
 
-    protected function userWithId(Id $id): User
+    protected function userWithId(Id $id): UserModel
     {
-        return User::factory()->create(['id' => $id]);
+        return UserModel::factory()->create(['id' => $id]);
     }
 
     public function assertActionUsesFormRequest(string $controller, string $method, string $form_request): void

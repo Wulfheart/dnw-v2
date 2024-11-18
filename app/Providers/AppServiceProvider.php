@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use App\Models\User;
 use App\ViewModel\User\UserInfoViewModel;
 use Auth;
+use Dnw\User\Infrastructure\UserModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades;
 use Illuminate\Support\ServiceProvider;
@@ -37,7 +37,7 @@ class AppServiceProvider extends ServiceProvider
                     id: Option::none(),
                 );
             } else {
-                /** @var User $authUser */
+                /** @var UserModel $authUser */
                 $authUser = Auth::user();
                 $user = new UserInfoViewModel(
                     isAuthenticated: true,

@@ -2,10 +2,10 @@
 
 namespace Dnw\Foundation\Providers;
 
-use App\Models\User;
 use App\Web\User\ViewModel\UserViewModel;
 use Dnw\Foundation\Event\DomainEventProvider;
 use Dnw\Foundation\Event\DomainEventProviderInterface;
+use Dnw\User\Infrastructure\UserModel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -24,7 +24,7 @@ class FoundationServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('*', function ($view) {
-            /** @var ?User $user */
+            /** @var ?UserModel $user */
             $user = Auth::user();
 
             $isAuthenticated = Auth::check();

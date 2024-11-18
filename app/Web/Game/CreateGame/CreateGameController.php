@@ -2,13 +2,13 @@
 
 namespace App\Web\Game\CreateGame;
 
-use App\Models\User;
 use Dnw\Foundation\Bus\BusInterface;
 use Dnw\Foundation\Identity\Id;
 use Dnw\Game\Application\Command\CreateGame\CreateGameCommand;
 use Dnw\Game\Application\Command\CreateGame\CreateGameResult;
 use Dnw\Game\Application\Query\GetAllVariants\GetAllVariantsQuery;
 use Dnw\Game\Application\Query\GetAllVariants\GetAllVariantsResult;
+use Dnw\User\Infrastructure\UserModel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -33,7 +33,7 @@ readonly class CreateGameController
 
     public function store(StoreGameRequest $request): RedirectResponse
     {
-        /** @var User $user */
+        /** @var UserModel $user */
         $user = $request->user();
 
         $gameId = Id::generate();

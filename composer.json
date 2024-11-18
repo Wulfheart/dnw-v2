@@ -38,14 +38,16 @@
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
             "Dnw\\Foundation\\": "modules/foundation/src/",
-            "Dnw\\Game\\": "modules/game/src/"
+            "Dnw\\Game\\": "modules/game/src/",
+            "Dnw\\User\\": "modules/user/src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "Tests\\": "tests/",
             "Dnw\\Foundation\\Test\\": "modules/foundation/tests/",
-            "Dnw\\Game\\Test\\": "modules/game/tests/"
+            "Dnw\\Game\\Test\\": "modules/game/tests/",
+            "Dnw\\User\\Test\\": "modules/user/tests/"
         }
     },
     "scripts": {

@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Models;
+namespace Dnw\User\Infrastructure;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class UserModel extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory;
@@ -49,5 +48,12 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    protected $table = 'user_users';
+
+    protected static function newFactory(): UserFactory
+    {
+        return UserFactory::new();
     }
 }

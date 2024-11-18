@@ -4,7 +4,8 @@ includes:
 parameters:
     databaseMigrationsPath: [
         modules/game/migrations,
-        database/migrations
+        database/migrations,
+        modules/user/migrations,
     ]
     level: 8
     paths:
