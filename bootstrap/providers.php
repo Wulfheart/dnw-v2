@@ -2,18 +2,18 @@
 
 use App\Providers\AppServiceProvider;
 use App\Providers\ModuleProvider;
+use App\Providers\SoloServiceProvider;
+use Dnw\Foundation\Providers\FoundationBusServiceProvider;
 use Dnw\Foundation\Providers\FoundationEventServiceProvider;
-use Illuminate\Support\ServiceProvider;
-use Spatie\StructureDiscoverer\Discover;
-
-$discovered = Discover::in(base_path('modules'))
-    ->classes()
-    ->extending(ServiceProvider::class)
-    ->get();
+use Dnw\Foundation\Providers\FoundationServiceProvider;
+use Dnw\Game\Infrastructure\GameServiceProvider;
 
 return [
     AppServiceProvider::class,
     ModuleProvider::class,
+    SoloServiceProvider::class,
+    FoundationBusServiceProvider::class,
     FoundationEventServiceProvider::class,
-    ...$discovered,
+    FoundationServiceProvider::class,
+    GameServiceProvider::class,
 ];

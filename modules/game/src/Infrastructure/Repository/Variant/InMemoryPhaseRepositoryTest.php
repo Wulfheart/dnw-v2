@@ -2,9 +2,9 @@
 
 namespace Dnw\Game\Infrastructure\Repository\Variant;
 
+use Dnw\Game\Domain\Game\Repository\Phase\InMemoryPhaseRepository;
 use Dnw\Game\Domain\Variant\Repository\AbstractVariantRepositoryTestCase;
 use Dnw\Game\Domain\Variant\Repository\VariantRepositoryInterface;
-use Dnw\Game\Infrastructure\Repository\Phase\InMemoryPhaseRepository;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(InMemoryPhaseRepository::class)]

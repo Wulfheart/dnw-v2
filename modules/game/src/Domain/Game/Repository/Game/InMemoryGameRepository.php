@@ -1,11 +1,9 @@
 <?php
 
-namespace Dnw\Game\Infrastructure\Repository\Game;
+namespace Dnw\Game\Domain\Game\Repository\Game;
 
 use Dnw\Foundation\Event\EventDispatcherInterface;
 use Dnw\Game\Domain\Game\Game;
-use Dnw\Game\Domain\Game\Repository\Game\GameRepositoryInterface;
-use Dnw\Game\Domain\Game\Repository\Game\LoadGameResult;
 use Dnw\Game\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Domain\Game\ValueObject\Game\GameName;
 use Wulfheart\Option\Option;

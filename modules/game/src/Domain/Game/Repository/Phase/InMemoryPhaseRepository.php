@@ -1,10 +1,7 @@
 <?php
 
-namespace Dnw\Game\Infrastructure\Repository\Phase;
+namespace Dnw\Game\Domain\Game\Repository\Phase;
 
-use Dnw\Game\Domain\Game\Exception\AlreadyPresentException;
-use Dnw\Game\Domain\Game\Repository\Phase\PhaseRepositoryInterface;
-use Dnw\Game\Domain\Game\Repository\Phase\PhaseRepositoryLoadResult;
 use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseId;
 use Exception;
 
@@ -28,12 +25,14 @@ class InMemoryPhaseRepository implements PhaseRepositoryInterface
         return PhaseRepositoryLoadResult::ok($this->encodedStates[(string) $phaseId]);
     }
 
-    public function saveEncodedState(PhaseId $phaseId, string $encodedState): void
+    public function saveEncodedState(PhaseId $phaseId, string $encodedState): PhaseRepositorySaveResult
     {
         if (isset($this->encodedStates[(string) $phaseId])) {
-            throw new AlreadyPresentException();
+            return PhaseRepositorySaveResult::err(PhaseRepositorySaveResult::E_ALREADY_PRESENT);
         }
         $this->encodedStates[(string) $phaseId] = $encodedState;
+
+        return PhaseRepositorySaveResult::ok();
     }
 
     public function loadSvgWithOrders(PhaseId $phaseId): PhaseRepositoryLoadResult
@@ -45,12 +44,14 @@ class InMemoryPhaseRepository implements PhaseRepositoryInterface
         return PhaseRepositoryLoadResult::ok($this->svgsWithOrders[(string) $phaseId]);
     }
 
-    public function saveSvgWithOrders(PhaseId $phaseId, string $svg): void
+    public function saveSvgWithOrders(PhaseId $phaseId, string $svg): PhaseRepositorySaveResult
     {
         if (isset($this->svgsWithOrders[(string) $phaseId])) {
-            throw new AlreadyPresentException();
+            return PhaseRepositorySaveResult::err(PhaseRepositorySaveResult::E_ALREADY_PRESENT);
         }
         $this->svgsWithOrders[(string) $phaseId] = $svg;
+
+        return PhaseRepositorySaveResult::ok();
     }
 
     /**
@@ -70,12 +71,14 @@ class InMemoryPhaseRepository implements PhaseRepositoryInterface
         return PhaseRepositoryLoadResult::ok($this->adjudicatedSvgs[(string) $phaseId]);
     }
 
-    public function saveAdjudicatedSvg(PhaseId $phaseId, string $svg): void
+    public function saveAdjudicatedSvg(PhaseId $phaseId, string $svg): PhaseRepositorySaveResult
     {
         if (isset($this->adjudicatedSvgs[(string) $phaseId])) {
-            throw new AlreadyPresentException();
+            return PhaseRepositorySaveResult::err(PhaseRepositorySaveResult::E_ALREADY_PRESENT);
         }
         $this->adjudicatedSvgs[(string) $phaseId] = $svg;
+
+        return PhaseRepositorySaveResult::ok();
     }
 
     /**

@@ -2,19 +2,19 @@
 
 namespace Dnw\Game\Infrastructure\Repository\Phase;
 
-use Dnw\Game\Domain\Game\Exception\AlreadyPresentException;
 use Dnw\Game\Domain\Game\Repository\Phase\PhaseRepositoryInterface;
 use Dnw\Game\Domain\Game\Repository\Phase\PhaseRepositoryLoadResult;
+use Dnw\Game\Domain\Game\Repository\Phase\PhaseRepositorySaveResult;
 use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseId;
 use Illuminate\Filesystem\FilesystemAdapter;
 
 class LaravelPhaseRepository implements PhaseRepositoryInterface
 {
-    private const ENCODED_STATE_PATTERN = '%s/encoded_state.json';
+    private const string ENCODED_STATE_PATTERN = '%s/encoded_state.json';
 
-    private const SVG_WITH_ORDERS_PATTERN = '%s/svg_with_orders.svg';
+    private const string SVG_WITH_ORDERS_PATTERN = '%s/svg_with_orders.svg';
 
-    private const ADJUDICATED_SVG_PATTERN = '%s/adjudicated_svg.svg';
+    private const string ADJUDICATED_SVG_PATTERN = '%s/adjudicated_svg.svg';
 
     public function __construct(
         private FilesystemAdapter $filesystem,
@@ -32,17 +32,19 @@ class LaravelPhaseRepository implements PhaseRepositoryInterface
         return PhaseRepositoryLoadResult::ok($state);
     }
 
-    public function saveEncodedState(PhaseId $phaseId, string $encodedState): void
+    public function saveEncodedState(PhaseId $phaseId, string $encodedState): PhaseRepositorySaveResult
     {
         $path = sprintf(self::ENCODED_STATE_PATTERN, (string) $phaseId);
         if ($this->filesystem->exists($path)) {
-            throw new AlreadyPresentException($path);
+            return PhaseRepositorySaveResult::err(PhaseRepositorySaveResult::E_ALREADY_PRESENT);
         }
 
         $this->filesystem->put(
             sprintf(self::ENCODED_STATE_PATTERN, (string) $phaseId),
             $encodedState
         );
+
+        return PhaseRepositorySaveResult::ok();
     }
 
     public function loadSvgWithOrders(PhaseId $phaseId): PhaseRepositoryLoadResult
@@ -57,17 +59,19 @@ class LaravelPhaseRepository implements PhaseRepositoryInterface
         return PhaseRepositoryLoadResult::ok($data);
     }
 
-    public function saveSvgWithOrders(PhaseId $phaseId, string $svg): void
+    public function saveSvgWithOrders(PhaseId $phaseId, string $svg): PhaseRepositorySaveResult
     {
         $path = sprintf(self::SVG_WITH_ORDERS_PATTERN, (string) $phaseId);
         if ($this->filesystem->exists($path)) {
-            throw new AlreadyPresentException($path);
+            return PhaseRepositorySaveResult::err(PhaseRepositorySaveResult::E_ALREADY_PRESENT);
         }
 
         $this->filesystem->put(
             sprintf(self::SVG_WITH_ORDERS_PATTERN, (string) $phaseId),
             $svg
         );
+
+        return PhaseRepositorySaveResult::ok();
     }
 
     public function loadLinkToSvgWithOrders(PhaseId $phaseId): PhaseRepositoryLoadResult
@@ -94,17 +98,19 @@ class LaravelPhaseRepository implements PhaseRepositoryInterface
 
     }
 
-    public function saveAdjudicatedSvg(PhaseId $phaseId, string $svg): void
+    public function saveAdjudicatedSvg(PhaseId $phaseId, string $svg): PhaseRepositorySaveResult
     {
         $path = sprintf(self::ADJUDICATED_SVG_PATTERN, (string) $phaseId);
         if ($this->filesystem->exists($path)) {
-            throw new AlreadyPresentException($path);
+            return PhaseRepositorySaveResult::err(PhaseRepositorySaveResult::E_ALREADY_PRESENT);
         }
 
         $this->filesystem->put(
             sprintf(self::ADJUDICATED_SVG_PATTERN, (string) $phaseId),
             $svg
         );
+
+        return PhaseRepositorySaveResult::ok();
     }
 
     public function loadLinkToAdjudicatedSvg(PhaseId $phaseId): PhaseRepositoryLoadResult

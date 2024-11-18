@@ -1,10 +1,8 @@
 <?php
 
-namespace Dnw\Game\Infrastructure\Repository\Game;
+namespace Dnw\Game\Domain\Game\Repository\Game;
 
 use Dnw\Foundation\Event\EventDispatcherInterface;
-use Dnw\Game\Domain\Game\Repository\Game\AbstractGameRepositoryTestCase;
-use Dnw\Game\Domain\Game\Repository\Game\GameRepositoryInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(InMemoryGameRepository::class)]

@@ -7,4 +7,7 @@ use Wulfheart\Option\Result;
 /**
  * @extends Result<null, self::E_*>
  */
-final class PhaseRepositorySaveResult extends Result {}
+final class PhaseRepositorySaveResult extends Result
+{
+    public const string E_ALREADY_PRESENT = 'already_present';
+}

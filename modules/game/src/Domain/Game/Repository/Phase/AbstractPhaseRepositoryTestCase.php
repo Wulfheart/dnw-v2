@@ -3,7 +3,6 @@
 namespace Dnw\Game\Domain\Game\Repository\Phase;
 
 use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
-use Dnw\Game\Domain\Game\Exception\AlreadyPresentException;
 use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseId;
 use Tests\TestCase;
 use Wulfheart\Option\ResultAsserter;
@@ -37,8 +36,9 @@ abstract class AbstractPhaseRepositoryTestCase extends TestCase
 
         $repository->saveEncodedState($phaseId, $encodedState);
 
-        $this->expectException(AlreadyPresentException::class);
-        $repository->saveEncodedState($phaseId, $encodedState);
+        $result = $repository->saveEncodedState($phaseId, $encodedState);
+
+        $this->assertEquals(PhaseRepositorySaveResult::E_ALREADY_PRESENT, $result->unwrapErr());
     }
 
     public function test_errors_if_cannot_load_encoded_state(): void
@@ -72,8 +72,8 @@ abstract class AbstractPhaseRepositoryTestCase extends TestCase
 
         $repository->saveSvgWithOrders($phaseId, $svg);
 
-        $this->expectException(AlreadyPresentException::class);
-        $repository->saveSvgWithOrders($phaseId, $svg);
+        $result = $repository->saveSvgWithOrders($phaseId, $svg);
+        $this->assertEquals(PhaseRepositorySaveResult::E_ALREADY_PRESENT, $result->unwrapErr());
     }
 
     public function test_errors_if_cannot_load_svg_with_orders(): void
@@ -106,8 +106,8 @@ abstract class AbstractPhaseRepositoryTestCase extends TestCase
 
         $repository->saveAdjudicatedSvg($phaseId, $svg);
 
-        $this->expectException(AlreadyPresentException::class);
-        $repository->saveAdjudicatedSvg($phaseId, $svg);
+        $result = $repository->saveAdjudicatedSvg($phaseId, $svg);
+        $this->assertEquals(PhaseRepositorySaveResult::E_ALREADY_PRESENT, $result->unwrapErr());
     }
 
     public function test_errors_if_cannot_load_adjudicated_svg(): void

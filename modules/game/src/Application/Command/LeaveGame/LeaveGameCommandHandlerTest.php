@@ -3,9 +3,9 @@
 namespace Dnw\Game\Application\Command\LeaveGame;
 
 use Dnw\Foundation\Event\FakeEventDispatcher;
+use Dnw\Game\Domain\Game\Repository\Game\InMemoryGameRepository;
 use Dnw\Game\Domain\Game\Test\Asserter\GameAsserter;
 use Dnw\Game\Domain\Game\Test\Factory\GameBuilder;
-use Dnw\Game\Infrastructure\Repository\Game\InMemoryGameRepository;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;

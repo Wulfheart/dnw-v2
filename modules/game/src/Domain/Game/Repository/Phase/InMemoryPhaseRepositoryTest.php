@@ -1,9 +1,7 @@
 <?php
 
-namespace Dnw\Game\Infrastructure\Repository\Phase;
+namespace Dnw\Game\Domain\Game\Repository\Phase;
 
-use Dnw\Game\Domain\Game\Repository\Phase\AbstractPhaseRepositoryTestCase;
-use Dnw\Game\Domain\Game\Repository\Phase\PhaseRepositoryInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(InMemoryPhaseRepository::class)]
