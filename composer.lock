@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a46e38e15f8eb8a8bc5ecfeaab14de54",
+    "content-hash": "a0cc6efb5ddf73b183238c996bbb1480",
     "packages": [
         {
             "name": "amphp/amp",
@@ -8294,6 +8294,47 @@
                 "source": "https://github.com/mockery/mockery"
             },
             "time": "2024-05-16T03:13:13+00:00"
+        },
+        {
+            "name": "mohammedmanssour/form-request-tester",
+            "version": "1.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mohammedmanssour/form-request-tester.git",
+                "reference": "aee6f954e6668949e49f6f674a4c66c576225271"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mohammedmanssour/form-request-tester/zipball/aee6f954e6668949e49f6f674a4c66c576225271",
+                "reference": "aee6f954e6668949e49f6f674a4c66c576225271",
+                "shasum": ""
+            },
+            "require-dev": {
+                "orchestra/testbench": "~6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "MohammedManssour\\FormRequestTester\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mohammed Manssour",
+                    "email": "manssour.mohammed@gmail.com",
+                    "homepage": "https://mohammedmanssour.me"
+                }
+            ],
+            "description": "a collection of test helpers that help with testing form requests",
+            "support": {
+                "issues": "https://github.com/mohammedmanssour/form-request-tester/issues",
+                "source": "https://github.com/mohammedmanssour/form-request-tester/tree/1.2.2"
+            },
+            "time": "2024-01-05T07:56:13+00:00"
         },
         {
             "name": "myclabs/deep-copy",

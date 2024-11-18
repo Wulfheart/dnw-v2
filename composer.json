@@ -27,6 +27,7 @@
         "laravel/pail": "^1.1",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.26",
+        "mohammedmanssour/form-request-tester": "^1.2",
         "nunomaduro/collision": "^8.0",
         "phpstan/phpstan": "^2.0",
         "phpunit/phpunit": "^10.5",

@@ -4,7 +4,7 @@ namespace App\Web\Game\CreateGame;
 
 use App\Foundation\Request\RequestFactory;
 use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
-use Dnw\User\Infrastructure\UserModel;
+use MohammedManssour\FormRequestTester\TestsFormRequests;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use Tests\TestCase;
@@ -13,13 +13,13 @@ use Tests\TestCase;
 #[AllowLaravelTestCase]
 class StoreGameRequestTest extends TestCase
 {
+    use TestsFormRequests;
+
     #[DataProvider('validationErrorProvider')]
     public function test_validation_errors(RequestFactory $factory, string $field): void
     {
-        $user = UserModel::factory()->create();
-        $response = $this->actingAs($user)->post(action([CreateGameController::class, 'store']), $factory->create());
+        $this->formRequest(StoreGameRequest::class, $factory->create())->assertValidationErrors([$field]);
 
-        $response->assertInvalid([$field]);
     }
 
     /**
