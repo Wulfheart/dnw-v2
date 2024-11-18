@@ -23,4 +23,12 @@ class GetGameByIdQueryResultData
         public ArrayCollection $variantPowerData,
         public PhasesDto $phases,
     ) {}
+
+    /**
+     * @return list<Id>
+     */
+    public function getPlayerIds(): array
+    {
+        return $this->variantPowerData->map(fn (VariantPowerDataDto $variantPowerDataDto) => $variantPowerDataDto->playerId->unwrap())->toArray();
+    }
 }

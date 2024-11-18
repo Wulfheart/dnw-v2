@@ -17,14 +17,16 @@ use Wulfheart\Option\Option;
  */
 abstract class Collection implements IteratorAggregate
 {
+    /** @var list<T> */
+    private array $items = [];
+
     /**
      * @param  array<T>  $items
      */
     public function __construct(
-        /** @var array<T> */
-        private array $items = [],
+        array $items = [],
     ) {
-        $this->items = array_values($this->items);
+        $this->items = array_values($items);
     }
 
     public static function empty(): static
@@ -121,7 +123,7 @@ abstract class Collection implements IteratorAggregate
     }
 
     /**
-     * @return array<T>
+     * @return list<T>
      */
     public function toArray(): array
     {
