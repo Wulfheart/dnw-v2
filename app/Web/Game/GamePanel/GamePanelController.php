@@ -2,31 +2,38 @@
 
 namespace App\Web\Game\GamePanel;
 
+use App\Web\Game\GamePanel\ViewModel\PlayerInfoViewModel;
+use App\Web\Game\Helper\PhaseLengthFormatter;
 use App\Web\Game\ViewModel\GameInformationViewModel;
 use Dnw\Foundation\Bus\BusInterface;
+use Dnw\Foundation\Collection\ArrayCollection;
 use Dnw\Foundation\Identity\Id;
 use Dnw\Game\Application\Query\GetGameById\Dto\GameStateEnum;
 use Dnw\Game\Application\Query\GetGameById\Dto\VariantPowerDataDto;
 use Dnw\Game\Application\Query\GetGameById\GetGameByIdQuery;
 use Dnw\Game\Application\Query\GetGameById\GetGameByIdQueryResult;
-use Dnw\Game\Helper\PhaseLengthFormatter;
+use Dnw\User\Application\Query\GetUsersByIds\GetUsersByIdsQuery;
+use Dnw\User\Application\Query\GetUsersByIds\GetUsersByIdsQueryResult;
+use Dnw\User\Application\Query\GetUsersByIds\UserData;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Psr\Log\LoggerInterface;
 
 class GamePanelController
 {
     public function __construct(
         private BusInterface $bus,
-        private PhaseLengthFormatter $phaseLengthFormatter
+        private PhaseLengthFormatter $phaseLengthFormatter,
+        private LoggerInterface $logger
     ) {}
 
     public function show(Request $request, string $id): Application|Response|ResponseFactory
     {
         /** @var GetGameByIdQueryResult $result */
         $result = $this->bus->handle(
-            new GetGameByIdQuery(Id::fromString(strtoupper($id)))
+            new GetGameByIdQuery(Id::fromString(strtoupper($id)), Id::fromString($request->user()->id))
         );
         if ($result->hasErr()) {
             return abort(404);
@@ -54,22 +61,42 @@ class GamePanelController
                 'Refresh'
             );
 
-            return response()->view('game::game.panel.created', ['vm' => $viewModel]);
+            return response()->view('game.panel.created', ['vm' => $viewModel]);
         }
+
+        $playerIds = $data->variantPowerData
+            ->filter(fn (VariantPowerDataDto $power) => $power->playerId->isSome())
+            ->map(fn (VariantPowerDataDto $power) => $power->playerId->unwrap())
+            ->toArray();
+        /** @var GetUsersByIdsQueryResult $userDataResult */
+        $userDataResult = $this->bus->handle(new GetUsersByIdsQuery($playerIds));
+        if ($userDataResult->hasErr()) {
+            $this->logger->error('Failed to get user data', ['error' => $userDataResult->unwrapErr()]);
+
+            return abort(404);
+        }
+        /** @var ArrayCollection<UserData> $userData */
+        $userData = $userDataResult->unwrap();
+
+        $playerInfoViewModels = $userData->map(fn (UserData $user) => new PlayerInfoViewModel(
+            $user->name,
+            // TODO
+            '#'
+        ))->toArray();
+
         if ($data->state === GameStateEnum::PLAYERS_JOINING) {
-            /** @var array<Id> $userIds */
-            $userIds = $data->variantPowerData
-                ->filter(fn (VariantPowerDataDto $power) => $power->playerId->isSome())
-                ->map(fn (VariantPowerDataDto $power) => $power->playerId->unwrap())
-                ->toArray();
 
             $viewModel = new GamePanelPlayersJoiningViewModel(
                 $gameInfoViewModel,
                 $currentlyJoined,
                 $totalPlayerCount,
+                $playerInfoViewModels,
+                $data->phases->getCurrentPhase()->unwrap()->linkToAdjudicatedSvg->unwrap(),
+                $data->canJoin,
+                $data->canLeave
             );
 
-            return response()->view('game::game.panel.players_joining', ['vm' => $viewModel]);
+            return response()->view('game.panel.players_joining', ['vm' => $viewModel]);
         }
 
         return response();

@@ -166,14 +166,6 @@ class Game
     {
         return new Ruleset(
             new Rule(
-                GameRules::EXPECTS_STATE_PLAYERS_JOINING,
-                $this->gameStateMachine->currentStateIsNot(GameStates::PLAYERS_JOINING),
-            ),
-            new Rule(
-                GameRules::PLAYER_ALREADY_JOINED,
-                $this->powerCollection->containsPlayer($playerId),
-            ),
-            new Rule(
                 GameRules::POWER_ALREADY_FILLED,
                 ! $this->randomPowerAssignments
                 && $variantPowerId->mapOr(
@@ -181,16 +173,28 @@ class Game
                     false
                 ),
             ),
+            ...$this->canBeJoined($playerId, $currentTime)->rules()
+        );
+    }
+
+    public function canBeJoined(PlayerId $playerId, DateTime $currentTime): Ruleset
+    {
+        return new Ruleset(
             new Rule(
                 GameRules::JOIN_LENGTH_IS_EXCEEDED,
                 $this->gameStartTiming->joinLengthExceeded($currentTime),
+            ),
+            new Rule(
+                GameRules::PLAYER_ALREADY_JOINED,
+                $this->powerCollection->containsPlayer($playerId),
+            ),
+            new Rule(
+                GameRules::EXPECTS_STATE_PLAYERS_JOINING,
+                $this->gameStateMachine->currentStateIsNot(GameStates::PLAYERS_JOINING),
             )
         );
     }
 
-    /**
-     * @throws DomainException
-     */
     public function leave(PlayerId $playerId): void
     {
         RulesetHandler::throwConditionally(

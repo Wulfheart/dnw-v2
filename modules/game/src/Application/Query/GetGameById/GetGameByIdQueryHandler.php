@@ -4,8 +4,9 @@ namespace Dnw\Game\Application\Query\GetGameById;
 
 use Dnw\Foundation\Collection\ArrayCollection;
 use Dnw\Game\Application\Query\GetGameById\Dto\GameStateEnum;
-use Dnw\Game\Application\Query\GetGameById\Dto\PhasesDto;
+use Dnw\Game\Application\Query\GetGameById\Dto\PhasesInDescendingOrderDto;
 use Dnw\Game\Application\Query\GetGameById\Dto\VariantPowerDataDto;
+use Dnw\Game\Domain\Adapter\TimeProvider\TimeProviderInterface;
 use Dnw\Game\Domain\Game\Entity\Power;
 use Dnw\Game\Domain\Game\Repository\Game\GameRepositoryInterface;
 use Dnw\Game\Domain\Game\ValueObject\Game\GameId;
@@ -19,6 +20,7 @@ readonly class GetGameByIdQueryHandler
     public function __construct(
         private GameRepositoryInterface $gameRepository,
         private VariantRepositoryInterface $variantRepository,
+        private TimeProviderInterface $timeProvider,
         private LoggerInterface $logger
     ) {}
 
@@ -66,7 +68,9 @@ readonly class GetGameByIdQueryHandler
                         }
                     )->toArray()
                 ),
-                new PhasesDto([]),
+                new PhasesInDescendingOrderDto([]),
+                $game->canBeJoined(PlayerId::fromId($query->actor), $this->timeProvider->getCurrentTime())->passes(),
+                $game->canLeave(PlayerId::fromId($query->actor))->passes(),
             )
         );
     }

@@ -2,6 +2,7 @@
 
 namespace Dnw\Game\Infrastructure;
 
+use App\Web\Game\Helper\PhaseLengthFormatter;
 use Dnw\Adjudicator\AdjudicatorService;
 use Dnw\Adjudicator\Json\JsonHandler;
 use Dnw\Adjudicator\Uri;
@@ -13,7 +14,6 @@ use Dnw\Game\Domain\Game\Repository\Game\GameRepositoryInterface;
 use Dnw\Game\Domain\Game\Repository\Phase\PhaseRepositoryInterface;
 use Dnw\Game\Domain\Player\Repository\Player\PlayerRepositoryInterface;
 use Dnw\Game\Domain\Variant\Repository\VariantRepositoryInterface;
-use Dnw\Game\Helper\PhaseLengthFormatter;
 use Dnw\Game\Infrastructure\Adapter\LaravelTimeProvider;
 use Dnw\Game\Infrastructure\Adapter\RandomNumberGenerator;
 use Dnw\Game\Infrastructure\Query\GetAllVariants\GetAllVariantsLaravelQueryHandler;

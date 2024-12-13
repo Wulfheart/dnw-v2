@@ -1,6 +1,6 @@
 <?php
 
-namespace Dnw\Game\Feature\CreateGame;
+namespace Dnw\Game\Test\Feature\CreateGame;
 
 use Dnw\Foundation\Bus\BusInterface;
 use Dnw\Foundation\Identity\Id;
@@ -9,6 +9,7 @@ use Dnw\Game\Application\Listener\GameCreatedListener;
 use Dnw\Game\Application\Query\GetGameIdByName\GetGameIdByNameQuery;
 use Dnw\Game\Application\Query\GetGameIdByName\GetGameIdByNameQueryResult;
 use PHPUnit\Framework\Attributes\CoversNothing;
+use Tests\FakeQueue;
 use Tests\TestCase;
 use Wulfheart\Option\ResultAsserter;
 
@@ -16,6 +17,8 @@ use Wulfheart\Option\ResultAsserter;
 #[AllowLaravelTestCase]
 class CreateGameWithoutAnUnloadableVariantTest extends TestCase
 {
+    use FakeQueue;
+
     public function test(): void
     {
         $bus = $this->bootstrap(BusInterface::class);

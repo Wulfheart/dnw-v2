@@ -7,6 +7,7 @@ use Dnw\Foundation\Identity\Id;
 class GetGameByIdQuery
 {
     public function __construct(
-        public Id $id
+        public Id $id,
+        public Id $actor,
     ) {}
 }

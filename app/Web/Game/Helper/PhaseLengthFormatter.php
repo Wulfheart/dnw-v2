@@ -1,6 +1,6 @@
 <?php
 
-namespace Dnw\Game\Helper;
+namespace App\Web\Game\Helper;
 
 use Carbon\CarbonImmutable;
 use Dnw\Foundation\DateTime\DateTime;

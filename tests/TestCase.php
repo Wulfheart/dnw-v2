@@ -2,12 +2,10 @@
 
 namespace Tests;
 
-use Dnw\Foundation\Event\ListenerJob;
 use Dnw\Foundation\Identity\Id;
 use Dnw\User\Infrastructure\UserModel;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Assert as PHPUnitAssert;
 use ReflectionClass;
 use ReflectionException;
@@ -20,18 +18,6 @@ abstract class TestCase extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
-
-        Queue::fake();
-    }
-
-    protected function assertListenerIsQueued(string $listener): void
-    {
-        Queue::assertPushed(fn (ListenerJob $job) => $job->displayName() === $listener);
-    }
-
-    protected function assertListenerIsNotQueued(string $listener): void
-    {
-        Queue::assertNotPushed(fn (ListenerJob $job) => $job->displayName() === $listener);
     }
 
     protected function randomUser(): UserModel

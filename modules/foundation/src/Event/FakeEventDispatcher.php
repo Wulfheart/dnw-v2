@@ -35,7 +35,7 @@ class FakeEventDispatcher implements EventDispatcherInterface
      * @param  class-string  $event
      * @param  int<0, max>  $expectedCount
      */
-    public function assertDispatched(string $event, int $expectedCount = 0): void
+    public function assertDispatched(string $event, int $expectedCount = 1): void
     {
         $filteredEvents = $this->events->filter(
             fn (object $eventObject): bool => $eventObject instanceof $event

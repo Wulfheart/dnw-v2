@@ -6,7 +6,7 @@ use Dnw\Game\Domain\Game\Repository\Phase\PhaseRepositoryInterface;
 use Dnw\Game\Domain\Game\Repository\Phase\PhaseRepositoryLoadResult;
 use Dnw\Game\Domain\Game\Repository\Phase\PhaseRepositorySaveResult;
 use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseId;
-use Illuminate\Filesystem\FilesystemAdapter;
+use Illuminate\Filesystem\Filesystem;
 
 class LaravelPhaseRepository implements PhaseRepositoryInterface
 {
@@ -17,7 +17,7 @@ class LaravelPhaseRepository implements PhaseRepositoryInterface
     private const string ADJUDICATED_SVG_PATTERN = '%s/adjudicated_svg.svg';
 
     public function __construct(
-        private FilesystemAdapter $filesystem,
+        private Filesystem $filesystem,
     ) {}
 
     public function loadEncodedState(PhaseId $phaseId): PhaseRepositoryLoadResult
@@ -119,7 +119,8 @@ class LaravelPhaseRepository implements PhaseRepositoryInterface
             return PhaseRepositoryLoadResult::err(PhaseRepositoryLoadResult::E_NOT_FOUND);
         }
 
-        $url = $this->filesystem->url(sprintf(self::ADJUDICATED_SVG_PATTERN, (string) $phaseId));
+        // $url = $this->filesystem->url(sprintf(self::ADJUDICATED_SVG_PATTERN, (string) $phaseId));
+        $url = sprintf(self::ADJUDICATED_SVG_PATTERN, (string) $phaseId);
 
         return PhaseRepositoryLoadResult::ok($url);
     }

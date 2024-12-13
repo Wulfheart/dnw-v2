@@ -17,6 +17,14 @@ class Ruleset
         }
     }
 
+    /**
+     * @return array<RuleInterface>
+     */
+    public function rules(): array
+    {
+        return $this->rules;
+    }
+
     public function passes(): bool
     {
         foreach ($this->rules as $rule) {
