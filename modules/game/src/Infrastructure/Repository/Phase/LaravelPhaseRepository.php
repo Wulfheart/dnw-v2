@@ -6,7 +6,7 @@ use Dnw\Game\Domain\Game\Repository\Phase\PhaseRepositoryInterface;
 use Dnw\Game\Domain\Game\Repository\Phase\PhaseRepositoryLoadResult;
 use Dnw\Game\Domain\Game\Repository\Phase\PhaseRepositorySaveResult;
 use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseId;
-use Illuminate\Filesystem\Filesystem;
+use Illuminate\Contracts\Filesystem\Filesystem;
 
 class LaravelPhaseRepository implements PhaseRepositoryInterface
 {
@@ -80,7 +80,8 @@ class LaravelPhaseRepository implements PhaseRepositoryInterface
             return PhaseRepositoryLoadResult::err(PhaseRepositoryLoadResult::E_NOT_FOUND);
         }
 
-        $url = $this->filesystem->url(sprintf(self::SVG_WITH_ORDERS_PATTERN, (string) $phaseId));
+        // $url = $this->filesystem->url(sprintf(self::SVG_WITH_ORDERS_PATTERN, (string) $phaseId));
+        $url = sprintf(self::SVG_WITH_ORDERS_PATTERN, (string) $phaseId);
 
         return PhaseRepositoryLoadResult::ok($url);
     }

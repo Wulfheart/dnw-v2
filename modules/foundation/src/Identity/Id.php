@@ -17,7 +17,7 @@ readonly class Id
 
     public static function fromString(string $value): self
     {
-        return new self($value);
+        return new self(strtoupper($value));
     }
 
     /**

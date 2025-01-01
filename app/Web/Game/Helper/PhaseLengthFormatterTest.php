@@ -1,6 +1,6 @@
 <?php
 
-namespace Dnw\Game\Helper;
+namespace App\Web\Game\Helper;
 
 use Dnw\Foundation\DateTime\DateTime;
 use PHPUnit\Framework\Attributes\CoversClass;

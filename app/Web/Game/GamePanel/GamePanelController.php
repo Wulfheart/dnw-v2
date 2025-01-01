@@ -15,6 +15,7 @@ use Dnw\Game\Application\Query\GetGameById\GetGameByIdQueryResult;
 use Dnw\User\Application\Query\GetUsersByIds\GetUsersByIdsQuery;
 use Dnw\User\Application\Query\GetUsersByIds\GetUsersByIdsQueryResult;
 use Dnw\User\Application\Query\GetUsersByIds\UserData;
+use Dnw\User\Infrastructure\UserModel;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
@@ -29,11 +30,11 @@ class GamePanelController
         private LoggerInterface $logger
     ) {}
 
-    public function show(Request $request, string $id): Application|Response|ResponseFactory
+    public function show(Request $request, UserModel $user, string $id): Application|Response|ResponseFactory
     {
         /** @var GetGameByIdQueryResult $result */
         $result = $this->bus->handle(
-            new GetGameByIdQuery(Id::fromString(strtoupper($id)), Id::fromString($request->user()->id))
+            new GetGameByIdQuery(Id::fromString($id), Id::fromString($user->id))
         );
         if ($result->hasErr()) {
             return abort(404);

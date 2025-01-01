@@ -11,7 +11,8 @@ trait FakeQueue
     #[Before]
     protected function setupFakeQueue(): void
     {
-        Queue::fake();
+        // Queue::fake();
+
     }
 
     protected function assertListenerIsQueued(string $listener): void
