@@ -2,6 +2,7 @@
 
 namespace Dnw\Game\Domain\Game\Test\Asserter;
 
+use Closure;
 use Dnw\Foundation\Collection\ArrayCollection;
 use Dnw\Game\Domain\Game\Collection\OrderCollection;
 use Dnw\Game\Domain\Game\Game;
@@ -11,8 +12,8 @@ use Dnw\Game\Domain\Game\ValueObject\Power\PowerId;
 use Dnw\Game\Domain\Player\ValueObject\PlayerId;
 use InvalidArgumentException;
 use PHPUnit\Framework\Assert;
-use Technically\CallableReflection\CallableReflection;
-use Technically\CallableReflection\Parameters\TypeReflection;
+use ReflectionFunction;
+use ReflectionNamedType;
 
 /**
  * @codeCoverageIgnore
@@ -40,22 +41,26 @@ readonly class GameAsserter
                 fn (object $eventObject): bool => $eventObject instanceof $event
             );
             $count = $filteredEvents->count();
-            $stringEventTypes = [$event];
+            $stringEventType = $event;
 
         } else {
-            $reflection = CallableReflection::fromCallable($event);
+            $reflection = new ReflectionFunction(Closure::fromCallable($event));
             $firstParameter = $reflection->getParameters()[0]
                 ?? throw new InvalidArgumentException('The given callable has no parameters.');
-            $eventTypes = $firstParameter->getTypes();
+            if ($firstParameter->getType() == null) {
+                throw new InvalidArgumentException('The given callable has no type hint on the first parameter.');
+            }
+            $type = $firstParameter->getType();
+            if (! $type instanceof ReflectionNamedType) {
+                throw new InvalidArgumentException('The given callable has no single class type hint on the first parameter.');
+            }
 
-            $stringEventTypes = array_map(fn (TypeReflection $type) => $type->getType(), $eventTypes);
+            $eventType = $type->getName();
 
             $filteredEvents = $events->filter(
-                function (object $eventObject) use ($eventTypes): bool {
-                    foreach ($eventTypes as $parameterType) {
-                        if ($eventObject::class === $parameterType->getType()) {
-                            return true;
-                        }
+                function (object $eventObject) use ($eventType): bool {
+                    if ($eventObject::class === $eventType) {
+                        return true;
                     }
 
                     return false;
@@ -69,12 +74,13 @@ readonly class GameAsserter
                     $count++;
                 }
             }
+
+            $stringEventType = $eventType;
         }
 
-        $events = implode(', ', $stringEventTypes);
         Assert::assertTrue(
             $count === $expectedCount,
-            "Expected to dispatch events [$events] $expectedCount times, but dispatched $count times."
+            "Expected to dispatch event $stringEventType $expectedCount times, but dispatched $count times."
         );
 
         return $this;

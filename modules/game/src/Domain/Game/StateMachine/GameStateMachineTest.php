@@ -26,7 +26,7 @@ class GameStateMachineTest extends TestCase
      */
     public static function allowedTransitionsProvider(): array
     {
-        return [
+        $transitions = [
             [GameStates::CREATED, GameStates::PLAYERS_JOINING],
             [GameStates::PLAYERS_JOINING, GameStates::ABANDONED],
             [GameStates::PLAYERS_JOINING, GameStates::ORDER_SUBMISSION],
@@ -35,6 +35,14 @@ class GameStateMachineTest extends TestCase
             [GameStates::ADJUDICATING, GameStates::FINISHED],
             [GameStates::ADJUDICATING, GameStates::ORDER_SUBMISSION],
         ];
+
+        $transformedData = [];
+        foreach ($transitions as $transition) {
+            $key = implode(' -> ', $transition);
+            $transformedData[$key] = $transition;
+        }
+
+        return $transformedData;
     }
 
     #[DataProvider('disallowedTransitionsProvider')]
@@ -51,7 +59,7 @@ class GameStateMachineTest extends TestCase
      */
     public static function disallowedTransitionsProvider(): array
     {
-        return [
+        $transitions = [
             [GameStates::CREATED, GameStates::CREATED],
             [GameStates::CREATED, GameStates::ABANDONED],
             [GameStates::CREATED, GameStates::ORDER_SUBMISSION],
@@ -94,6 +102,14 @@ class GameStateMachineTest extends TestCase
             [GameStates::NOT_ENOUGH_PLAYERS_BY_DEADLINE, GameStates::NOT_ENOUGH_PLAYERS_BY_DEADLINE],
 
         ];
+
+        $transformedData = [];
+        foreach ($transitions as $transition) {
+            $key = implode(' -> ', $transition);
+            $transformedData[$key] = $transition;
+        }
+
+        return $transformedData;
     }
 
     public function test_initialize(): void
