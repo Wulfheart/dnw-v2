@@ -5,9 +5,8 @@ namespace App\Web\Game\CreateGame;
 use Dnw\Foundation\Bus\BusInterface;
 use Dnw\Foundation\Identity\Id;
 use Dnw\Game\Application\Command\CreateGame\CreateGameCommand;
-use Dnw\Game\Application\Command\CreateGame\CreateGameResult;
+use Dnw\Game\Application\Command\CreateGame\CreateGameCommandResult;
 use Dnw\Game\Application\Query\GetAllVariants\GetAllVariantsQuery;
-use Dnw\Game\Application\Query\GetAllVariants\GetAllVariantsResult;
 use Dnw\User\Infrastructure\UserModel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -24,7 +23,6 @@ readonly class CreateGameController
     {
         // TODO: Add a query to determine if a user can create a game in order to show a hint later
 
-        /** @var GetAllVariantsResult $allVariants */
         $allVariants = $this->bus->handle(new GetAllVariantsQuery());
         $vm = CreateGameFormViewModel::fromLaravel($allVariants->variants);
 
@@ -52,12 +50,11 @@ readonly class CreateGameController
             [],
             Id::fromString($user->id),
         );
-        /** @var CreateGameResult $result */
         $result = $this->bus->handle($command);
         if ($result->hasErr()) {
             match ($result->unwrapErr()) {
-                CreateGameResult::E_UNABLE_TO_LOAD_VARIANT => abort(Response::HTTP_NOT_FOUND),
-                CreateGameResult::E_NOT_ALLOWED_TO_CREATE_GAME => abort(Response::HTTP_FORBIDDEN),
+                CreateGameCommandResult::E_UNABLE_TO_LOAD_VARIANT => abort(Response::HTTP_NOT_FOUND),
+                CreateGameCommandResult::E_NOT_ALLOWED_TO_CREATE_GAME => abort(Response::HTTP_FORBIDDEN),
             };
         }
 

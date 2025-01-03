@@ -1,3 +1,1 @@
 - Add Actor in Controller Methods
-- Queue::fake in before is not working
-- Commands and Queries may know their result so better type hinting can be provided

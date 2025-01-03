@@ -20,13 +20,13 @@ readonly class JoinGameCommandHandler
         private LoggerInterface $logger,
     ) {}
 
-    public function handle(JoinGameCommand $command): JoinGameResult
+    public function handle(JoinGameCommand $command): JoinGameCommandResult
     {
         $gameResult = $this->gameRepository->load(GameId::fromString($command->gameId));
         if ($gameResult->hasErr()) {
             $this->logger->info('Game not found', ['gameId' => $command->gameId]);
 
-            return JoinGameResult::err(JoinGameResult::E_GAME_NOT_FOUND);
+            return JoinGameCommandResult::err(JoinGameCommandResult::E_GAME_NOT_FOUND);
         }
         $game = $gameResult->unwrap();
 
@@ -39,6 +39,6 @@ readonly class JoinGameCommandHandler
 
         $this->gameRepository->save($game);
 
-        return JoinGameResult::ok();
+        return JoinGameCommandResult::ok();
     }
 }

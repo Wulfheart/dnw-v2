@@ -11,9 +11,7 @@ use Dnw\Foundation\Identity\Id;
 use Dnw\Game\Application\Query\GetGameById\Dto\GameStateEnum;
 use Dnw\Game\Application\Query\GetGameById\Dto\VariantPowerDataDto;
 use Dnw\Game\Application\Query\GetGameById\GetGameByIdQuery;
-use Dnw\Game\Application\Query\GetGameById\GetGameByIdQueryResult;
 use Dnw\User\Application\Query\GetUsersByIds\GetUsersByIdsQuery;
-use Dnw\User\Application\Query\GetUsersByIds\GetUsersByIdsQueryResult;
 use Dnw\User\Application\Query\GetUsersByIds\UserData;
 use Dnw\User\Infrastructure\UserModel;
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -32,7 +30,6 @@ class GamePanelController
 
     public function show(Request $request, UserModel $user, string $id): Application|Response|ResponseFactory
     {
-        /** @var GetGameByIdQueryResult $result */
         $result = $this->bus->handle(
             new GetGameByIdQuery(Id::fromString($id), Id::fromString($user->id))
         );
@@ -69,7 +66,6 @@ class GamePanelController
             ->filter(fn (VariantPowerDataDto $power) => $power->playerId->isSome())
             ->map(fn (VariantPowerDataDto $power) => $power->playerId->unwrap())
             ->toArray();
-        /** @var GetUsersByIdsQueryResult $userDataResult */
         $userDataResult = $this->bus->handle(new GetUsersByIdsQuery($playerIds));
         if ($userDataResult->hasErr()) {
             $this->logger->error('Failed to get user data', ['error' => $userDataResult->unwrapErr()]);

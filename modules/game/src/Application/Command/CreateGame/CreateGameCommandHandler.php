@@ -35,7 +35,7 @@ readonly class CreateGameCommandHandler
 
     public function handle(
         CreateGameCommand $command
-    ): CreateGameResult {
+    ): CreateGameCommandResult {
         // TODO: Automatically append a number to the game name if it already exists
 
         $player = $this->playerRepository->load(PlayerId::fromString($command->creatorId));
@@ -45,7 +45,7 @@ readonly class CreateGameCommandHandler
                 ['playerId' => $command->creatorId]
             );
 
-            return CreateGameResult::err(CreateGameResult::E_NOT_ALLOWED_TO_CREATE_GAME);
+            return CreateGameCommandResult::err(CreateGameCommandResult::E_NOT_ALLOWED_TO_CREATE_GAME);
         }
 
         $adjudicationTiming = new AdjudicationTiming(
@@ -67,7 +67,7 @@ readonly class CreateGameCommandHandler
                 ['variantId' => $command->variantId, 'error' => $variantResult->unwrapErr()]
             );
 
-            return CreateGameResult::err(CreateGameResult::E_UNABLE_TO_LOAD_VARIANT);
+            return CreateGameCommandResult::err(CreateGameCommandResult::E_UNABLE_TO_LOAD_VARIANT);
         }
 
         $variant = $variantResult->unwrap();
@@ -95,6 +95,6 @@ readonly class CreateGameCommandHandler
 
         $this->logger->info('Game created', ['gameId' => $command->gameId, '']);
 
-        return CreateGameResult::ok();
+        return CreateGameCommandResult::ok();
     }
 }

@@ -5,9 +5,9 @@ namespace Dnw\Game\Application\Command\CreateGame;
 use Wulfheart\Option\Result;
 
 /**
- * @extends Result<void, CreateGameResult::E_*>
+ * @extends Result<void, CreateGameCommandResult::E_*>
  */
-class CreateGameResult extends Result
+class CreateGameCommandResult extends Result
 {
     public const string E_UNABLE_TO_LOAD_VARIANT = 'unable_to_load_variant';
 

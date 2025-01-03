@@ -7,9 +7,7 @@ use Dnw\Foundation\Identity\Id;
 use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
 use Dnw\Game\Application\Command\CreateGame\CreateGameCommand;
 use Dnw\Game\Application\Query\GetAllVariants\GetAllVariantsQuery;
-use Dnw\Game\Application\Query\GetAllVariants\GetAllVariantsResult;
 use Dnw\Game\Application\Query\GetGameIdByName\GetGameIdByNameQuery;
-use Dnw\Game\Application\Query\GetGameIdByName\GetGameIdByNameQueryResult;
 use Dnw\Game\Domain\Game\Event\GameCreatedEvent;
 use Dnw\Game\Domain\Game\Test\Factory\VariantFactory;
 use Dnw\Game\Domain\Variant\Repository\VariantRepositoryInterface;
@@ -36,7 +34,6 @@ class CreateGameWorksTest extends TestCase
         $variantRepo->save($variant);
         $variantRepo->save($colonial);
 
-        /** @var GetAllVariantsResult $allVariantsResult */
         $allVariantsResult = $bus->handle(new GetAllVariantsQuery());
 
         $variantId = $allVariantsResult->variants[0]->id;
@@ -58,7 +55,6 @@ class CreateGameWorksTest extends TestCase
 
         ResultAsserter::assertOk($result);
 
-        /** @var GetGameIdByNameQueryResult $result */
         $result = $bus->handle(new GetGameIdByNameQuery('My Game'));
 
         ResultAsserter::assertOk($result);

@@ -14,19 +14,19 @@ readonly class LeaveGameCommandHandler
         private LoggerInterface $logger,
     ) {}
 
-    public function handle(LeaveGameCommand $command): LeaveGameResult
+    public function handle(LeaveGameCommand $command): LeaveGameCommandResult
     {
         $gameResult = $this->gameRepository->load(GameId::fromString($command->gameId));
         if ($gameResult->hasErr()) {
             $this->logger->info('Game not found', ['gameId' => $command->gameId]);
 
-            return LeaveGameResult::err(LeaveGameResult::E_GAME_NOT_FOUND);
+            return LeaveGameCommandResult::err(LeaveGameCommandResult::E_GAME_NOT_FOUND);
         }
         $game = $gameResult->unwrap();
 
         $game->leave(PlayerId::fromString($command->userId));
         $this->gameRepository->save($game);
 
-        return LeaveGameResult::ok();
+        return LeaveGameCommandResult::ok();
     }
 }

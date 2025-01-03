@@ -2,7 +2,7 @@
 
 namespace Dnw\Game\Application\Query\GetAllVariants;
 
-class GetAllVariantsResult
+class GetAllVariantsQueryResult
 {
     public function __construct(
         /** @var array<VariantDto> $variants */

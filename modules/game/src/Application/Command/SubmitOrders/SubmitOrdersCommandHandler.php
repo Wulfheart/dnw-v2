@@ -17,13 +17,13 @@ class SubmitOrdersCommandHandler
         private LoggerInterface $logger,
     ) {}
 
-    public function handle(SubmitOrdersCommand $command): SubmitOrdersResult
+    public function handle(SubmitOrdersCommand $command): SubmitOrdersCommandResult
     {
         $gameResult = $this->gameRepository->load(GameId::fromId($command->gameId));
         if ($gameResult->hasErr()) {
             $this->logger->info('Game not found', ['gameId' => $command->gameId]);
 
-            return SubmitOrdersResult::err(SubmitOrdersResult::E_GAME_NOT_FOUND);
+            return SubmitOrdersCommandResult::err(SubmitOrdersCommandResult::E_GAME_NOT_FOUND);
         }
         $game = $gameResult->unwrap();
 
@@ -38,6 +38,6 @@ class SubmitOrdersCommandHandler
 
         $this->gameRepository->save($game);
 
-        return SubmitOrdersResult::ok();
+        return SubmitOrdersCommandResult::ok();
     }
 }

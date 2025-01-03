@@ -2,9 +2,13 @@
 
 namespace Dnw\Game\Application\Query\GetGameById;
 
+use Dnw\Foundation\Bus\Interface\Query;
 use Dnw\Foundation\Identity\Id;
 
-class GetGameByIdQuery
+/**
+ * @implements Query<GetGameByIdQueryResult>
+ */
+class GetGameByIdQuery implements Query
 {
     public function __construct(
         public Id $id,

@@ -28,13 +28,13 @@ readonly class InitialGameAdjudicationCommandHandler
         private LoggerInterface $logger,
     ) {}
 
-    public function handle(InitialGameAdjudicationCommand $command): InitialGameAdjudicationResult
+    public function handle(InitialGameAdjudicationCommand $command): InitialGameAdjudicationCommandResult
     {
         $gameResult = $this->gameRepository->load(GameId::fromId($command->gameId));
         if ($gameResult->hasErr()) {
             $this->logger->info('Game not found', ['gameId' => $command->gameId]);
 
-            return InitialGameAdjudicationResult::err(InitialGameAdjudicationResult::E_GAME_NOT_FOUND);
+            return InitialGameAdjudicationCommandResult::err(InitialGameAdjudicationCommandResult::E_GAME_NOT_FOUND);
         }
         $game = $gameResult->unwrap();
 
@@ -42,7 +42,7 @@ readonly class InitialGameAdjudicationCommandHandler
         if ($variantResult->hasErr()) {
             $this->logger->info('Variant not found', ['variantId' => $game->variant->id]);
 
-            return InitialGameAdjudicationResult::err(InitialGameAdjudicationResult::E_VARIANT_NOT_FOUND);
+            return InitialGameAdjudicationCommandResult::err(InitialGameAdjudicationCommandResult::E_VARIANT_NOT_FOUND);
         }
         $variant = $variantResult->unwrap();
 
@@ -90,6 +90,6 @@ readonly class InitialGameAdjudicationCommandHandler
 
         $this->gameRepository->save($game);
 
-        return InitialGameAdjudicationResult::ok();
+        return InitialGameAdjudicationCommandResult::ok();
     }
 }

@@ -2,9 +2,13 @@
 
 namespace Dnw\Game\Application\Command\LeaveGame;
 
+use Dnw\Foundation\Bus\Interface\Command;
 use Dnw\Foundation\Identity\Id;
 
-class LeaveGameCommand
+/**
+ * @implements Command<LeaveGameCommandResult>
+ */
+class LeaveGameCommand implements Command
 {
     public function __construct(
         public Id $gameId,

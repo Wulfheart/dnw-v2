@@ -7,7 +7,7 @@ use Dnw\Foundation\Bus\FakeBus;
 use Dnw\Foundation\Identity\Id;
 use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
 use Dnw\Game\Application\Command\CreateGame\CreateGameCommand;
-use Dnw\Game\Application\Command\CreateGame\CreateGameResult;
+use Dnw\Game\Application\Command\CreateGame\CreateGameCommandResult;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Tests\TestCase;
 use Wulfheart\Option\Option;
@@ -53,7 +53,7 @@ class CreateGameControllerTest extends TestCase
                     unset($expected['gameId'], $actual['gameId']);
 
                     return $expected == $actual;
-                }, CreateGameResult::ok()],
+                }, CreateGameCommandResult::ok()],
         );
         $this->instance(BusInterface::class, $fakeBus);
 
@@ -74,7 +74,7 @@ class CreateGameControllerTest extends TestCase
         $fakeBus = new FakeBus(
             [
                 CreateGameCommand::class,
-                CreateGameResult::err(CreateGameResult::E_UNABLE_TO_LOAD_VARIANT),
+                CreateGameCommandResult::err(CreateGameCommandResult::E_UNABLE_TO_LOAD_VARIANT),
             ],
         );
         $this->instance(BusInterface::class, $fakeBus);
@@ -88,7 +88,7 @@ class CreateGameControllerTest extends TestCase
     public function test_store_throws_403_if_user_cannot_create_game(): void
     {
         $fakeBus = new FakeBus(
-            [CreateGameCommand::class, CreateGameResult::err(CreateGameResult::E_NOT_ALLOWED_TO_CREATE_GAME)],
+            [CreateGameCommand::class, CreateGameCommandResult::err(CreateGameCommandResult::E_NOT_ALLOWED_TO_CREATE_GAME)],
         );
         $this->instance(BusInterface::class, $fakeBus);
 

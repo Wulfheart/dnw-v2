@@ -2,10 +2,14 @@
 
 namespace Dnw\Game\Application\Command\JoinGame;
 
+use Dnw\Foundation\Bus\Interface\Command;
 use Dnw\Foundation\Identity\Id;
 use Wulfheart\Option\Option;
 
-class JoinGameCommand
+/**
+ * @implements Command<JoinGameCommandResult>
+ */
+class JoinGameCommand implements Command
 {
     public function __construct(
         public Id $gameId,

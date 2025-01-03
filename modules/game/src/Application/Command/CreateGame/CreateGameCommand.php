@@ -2,10 +2,14 @@
 
 namespace Dnw\Game\Application\Command\CreateGame;
 
+use Dnw\Foundation\Bus\Interface\Command;
 use Dnw\Foundation\Identity\Id;
 use Wulfheart\Option\Option;
 
-readonly class CreateGameCommand
+/**
+ * @implements Command<CreateGameCommandResult>
+ */
+readonly class CreateGameCommand implements Command
 {
     public function __construct(
         public Id $gameId,

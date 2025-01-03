@@ -7,7 +7,6 @@ use Dnw\Foundation\Identity\Id;
 use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
 use Dnw\Game\Application\Listener\GameCreatedListener;
 use Dnw\Game\Application\Query\GetGameIdByName\GetGameIdByNameQuery;
-use Dnw\Game\Application\Query\GetGameIdByName\GetGameIdByNameQueryResult;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use Tests\FakeQueue;
 use Tests\TestCase;
@@ -33,7 +32,6 @@ class CreateGameWithoutAnUnloadableVariantTest extends TestCase
 
         $response->assertNotFound();
 
-        /** @var GetGameIdByNameQueryResult $result */
         $result = $bus->handle(new GetGameIdByNameQuery('My Game'));
 
         ResultAsserter::assertErr($result);

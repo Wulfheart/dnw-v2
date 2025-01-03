@@ -8,7 +8,6 @@ use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
 use Dnw\Game\Application\Command\CreateGame\CreateGameCommand;
 use Dnw\Game\Application\Listener\GameCreatedListener;
 use Dnw\Game\Application\Query\GetAllVariants\GetAllVariantsQuery;
-use Dnw\Game\Application\Query\GetAllVariants\GetAllVariantsResult;
 use Dnw\Game\Domain\Game\Event\GameCreatedEvent;
 use Dnw\Game\Domain\Game\Test\Factory\VariantFactory;
 use Dnw\Game\Domain\Variant\Repository\VariantRepositoryInterface;
@@ -52,7 +51,6 @@ final class GameCreatedListenerWorksTest extends TestCase
         $variantRepo->save($variant);
         $variantRepo->save($colonial);
 
-        /** @var GetAllVariantsResult $allVariantsResult */
         $allVariantsResult = $bus->handle(new GetAllVariantsQuery());
 
         $variantId = $variant->id;
