@@ -10,6 +10,7 @@ use PHPUnit\Framework\Assert as PHPUnitAssert;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionNamedType;
+use Tests\Attribute\Setup;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -18,6 +19,14 @@ abstract class TestCase extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        $reflectionClass = new ReflectionClass($this);
+
+        foreach ($reflectionClass->getMethods() as $method) {
+            if ($method->getAttributes(Setup::class)) {
+                $method->invoke($this);
+            }
+        }
     }
 
     protected function randomUser(): UserModel

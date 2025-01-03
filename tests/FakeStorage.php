@@ -3,11 +3,11 @@
 namespace Tests;
 
 use Illuminate\Support\Facades\Storage;
-use PHPUnit\Framework\Attributes\Before;
+use Tests\Attribute\Setup;
 
 trait FakeStorage
 {
-    #[Before]
+    #[Setup]
     protected function setupFakeStorage(): void
     {
         Storage::fake();

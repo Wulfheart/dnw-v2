@@ -4,15 +4,14 @@ namespace Tests;
 
 use Dnw\Foundation\Event\ListenerJob;
 use Illuminate\Support\Facades\Queue;
-use PHPUnit\Framework\Attributes\Before;
+use Tests\Attribute\Setup;
 
 trait FakeQueue
 {
-    #[Before]
+    #[Setup]
     protected function setupFakeQueue(): void
     {
-        // Queue::fake();
-
+        Queue::fake();
     }
 
     protected function assertListenerIsQueued(string $listener): void

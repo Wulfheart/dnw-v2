@@ -3,13 +3,13 @@
 namespace Tests;
 
 use Dnw\Foundation\Event\EventDispatcherInterface;
-use PHPUnit\Framework\Attributes\Before;
+use Tests\Attribute\Setup;
 
 trait FakeEventDispatcher
 {
     private \Dnw\Foundation\Event\FakeEventDispatcher $fakeEventDispatcher;
 
-    #[Before]
+    #[Setup]
     protected function setupFakeEventDispatcher(): void
     {
         app()->singleton(EventDispatcherInterface::class, \Dnw\Foundation\Event\FakeEventDispatcher::class);
