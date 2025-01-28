@@ -17,6 +17,7 @@
         "mauricius/laravel-htmx": "^0.6.0",
         "spatie/php-structure-discoverer": "^2.2",
         "symfony/filesystem": "^7.1",
+        "tempest/discovery": "dev-main",
         "wulfheart/option": "dev-main"
     },
     "require-dev": {
@@ -83,11 +84,10 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
-            "pestphp/pest-plugin": true,
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true,
     "repositories": [
         {
