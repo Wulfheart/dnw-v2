@@ -7,6 +7,9 @@
         <testsuite name="Feature">
             <directory>tests/Feature</directory>
         </testsuite>
+        <testsuite name="Web">
+            <directory suffix="Test.php">./app</directory>
+        </testsuite>
         <testsuite name="Modules">
             <directory suffix="Test.php">./modules</directory>
         </testsuite>

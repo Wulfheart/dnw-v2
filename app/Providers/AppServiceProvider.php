@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Foundation\Auth\AuthInterface;
+use App\Foundation\Auth\LaravelAuthProvider;
+use App\Foundation\Id\IdGeneratorInterface;
+use App\Foundation\Id\LaravelIdGenerator;
 use App\ViewModel\User\UserInfoViewModel;
 use Auth;
 use Dnw\User\Infrastructure\UserModel;
@@ -39,14 +43,25 @@ class AppServiceProvider extends ServiceProvider
             } else {
                 /** @var UserModel $authUser */
                 $authUser = Auth::user();
+                /** @var string $authUserId */
+                $authUserId = $authUser->id;
                 $user = new UserInfoViewModel(
                     isAuthenticated: true,
                     name: Option::some($authUser->name),
-                    id: Option::some($authUser->id),
+                    id: Option::some($authUserId),
                 );
             }
             $view->with('userInfo', $user);
         });
+
+        $this->app->bind(
+            AuthInterface::class,
+            LaravelAuthProvider::class,
+        );
+        $this->app->bind(
+            IdGeneratorInterface::class,
+            LaravelIdGenerator::class
+        );
 
     }
 }

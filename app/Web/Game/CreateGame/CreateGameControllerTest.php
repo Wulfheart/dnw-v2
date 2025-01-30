@@ -9,6 +9,7 @@ use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
 use Dnw\Game\Application\Command\CreateGame\CreateGameCommand;
 use Dnw\Game\Application\Command\CreateGame\CreateGameCommandResult;
 use PHPUnit\Framework\Attributes\CoversClass;
+use Tests\FakeIdGenerator;
 use Tests\TestCase;
 use Wulfheart\Option\Option;
 
@@ -16,6 +17,8 @@ use Wulfheart\Option\Option;
 #[AllowLaravelTestCase]
 class CreateGameControllerTest extends TestCase
 {
+    use FakeIdGenerator;
+
     public function test_show(): void
     {
         $response = $this->actingAs($this->randomUser())->get(route('game.create'));
@@ -27,6 +30,9 @@ class CreateGameControllerTest extends TestCase
         $gameId = Id::generate();
         $variantId = Id::generate();
         $userId = Id::generate();
+
+        $this->useFakeIdGenerator();
+        $this->addFakeId($gameId);
 
         $this->assertActionUsesFormRequest(CreateGameController::class, 'store', StoreGameRequest::class);
 
@@ -46,14 +52,9 @@ class CreateGameControllerTest extends TestCase
         );
         $fakeBus = new FakeBus(
             [
-                function (CreateGameCommand $c) use ($command): bool {
-                    $expected = (array) $command;
-                    $actual = (array) $c;
-
-                    unset($expected['gameId'], $actual['gameId']);
-
-                    return $expected == $actual;
-                }, CreateGameCommandResult::ok()],
+                $command,
+                CreateGameCommandResult::ok(),
+            ],
         );
         $this->instance(BusInterface::class, $fakeBus);
 

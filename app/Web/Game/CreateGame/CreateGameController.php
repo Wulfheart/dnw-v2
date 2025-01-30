@@ -2,12 +2,13 @@
 
 namespace App\Web\Game\CreateGame;
 
+use App\Foundation\Auth\AuthInterface;
+use App\Foundation\Id\IdGeneratorInterface;
 use Dnw\Foundation\Bus\BusInterface;
 use Dnw\Foundation\Identity\Id;
 use Dnw\Game\Application\Command\CreateGame\CreateGameCommand;
 use Dnw\Game\Application\Command\CreateGame\CreateGameCommandResult;
 use Dnw\Game\Application\Query\GetAllVariants\GetAllVariantsQuery;
-use Dnw\User\Infrastructure\UserModel;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -17,6 +18,8 @@ readonly class CreateGameController
 {
     public function __construct(
         private BusInterface $bus,
+        private AuthInterface $auth,
+        private IdGeneratorInterface $idGenerator,
     ) {}
 
     public function show(Request $request): Response
@@ -31,10 +34,9 @@ readonly class CreateGameController
 
     public function store(StoreGameRequest $request): RedirectResponse
     {
-        /** @var UserModel $user */
-        $user = $request->user();
+        $creatorId = $this->auth->getUserId();
 
-        $gameId = Id::generate();
+        $gameId = $this->idGenerator->generate();
 
         $command = new CreateGameCommand(
             $gameId,
@@ -48,7 +50,7 @@ readonly class CreateGameController
             true,
             false,
             [],
-            Id::fromString($user->id),
+            $creatorId,
         );
         $result = $this->bus->handle($command);
         if ($result->hasErr()) {
