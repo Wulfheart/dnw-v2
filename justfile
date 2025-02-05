@@ -13,3 +13,5 @@ test:
     php artisan test --parallel
 coverage:
     XDEBUG_MODE=coverage php artisan test --parallel --coverage --coverage-html=build/html
+dev:
+    composer run dev
