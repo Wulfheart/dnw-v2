@@ -3,17 +3,18 @@
 namespace Dnw\Game\Application\Command\SubmitOrders;
 
 use Dnw\Foundation\Event\FakeEventDispatcher;
+use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
 use Dnw\Game\Domain\Adapter\TimeProvider\FakeTimeProvider;
 use Dnw\Game\Domain\Game\Collection\OrderCollection;
 use Dnw\Game\Domain\Game\Repository\Game\InMemoryGameRepository;
 use Dnw\Game\Domain\Game\Test\Asserter\GameAsserter;
 use Dnw\Game\Domain\Game\Test\Factory\GameBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
+use Tests\TestCase;
 
-#[CoversClass(SubmitOrdersCommand::class)]
 #[CoversClass(SubmitOrdersCommandHandler::class)]
+#[AllowLaravelTestCase]
 class SubmitOrdersCommandHandlerTest extends TestCase
 {
     public function test_handle(): void

@@ -14,6 +14,9 @@ trait FakeIdGenerator
 
     protected function addFakeId(Id $id): void
     {
-        app(IdGeneratorInterface::class)->addId($id);
+        /** @var \App\Foundation\Id\FakeIdGenerator $idGenerator */
+        $idGenerator = app(IdGeneratorInterface::class);
+
+        $idGenerator->addId($id);
     }
 }

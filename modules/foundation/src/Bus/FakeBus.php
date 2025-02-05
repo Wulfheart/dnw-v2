@@ -2,17 +2,19 @@
 
 namespace Dnw\Foundation\Bus;
 
+use Dnw\Foundation\Bus\Interface\Command;
+use Dnw\Foundation\Bus\Interface\Query;
 use Exception;
 
 class FakeBus implements BusInterface
 {
     /**
-     * @var array<array{string|object|callable(mixed): bool, mixed}>
+     * @var array<array{string|Command<mixed>|Query<mixed>|callable(Command<mixed>|Query<mixed>): bool, mixed} >
      */
     private array $handledCommands = [];
 
     /**
-     * @param  array{string|object|callable(mixed): bool, mixed}  $commands
+     * @param  array{string|Command<mixed>|Query<mixed>|callable(mixed): bool, mixed}  $commands
      */
     public function __construct(
         array ...$commands,
@@ -20,7 +22,10 @@ class FakeBus implements BusInterface
         $this->handledCommands = $commands;
     }
 
-    public function handle(mixed $command): mixed
+    /**
+     * {@inheritDoc}
+     */
+    public function handle(Query|Command $command): mixed
     {
         foreach ($this->handledCommands as $registeredCommand) {
             [$handledCommand, $result] = $registeredCommand;
