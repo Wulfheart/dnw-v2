@@ -1,1 +1,16 @@
-- Add Actor in Controller Methods
+- Make designated game info dto game queries (based on https://webdiplomacy.net/board.php?gameID=63723#gamePanel)
+    - name
+    - variant
+    - anonymous yes/no
+    - state
+    - phase length
+    - timestamp
+    - game end state
+    - winner
+
+    - variant power data:
+        - name
+        - playerId
+        - num-centers
+        - num-units
+        - status (enum: won, survived, drawn, defeated)
