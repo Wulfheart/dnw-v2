@@ -12,7 +12,7 @@ use Wulfheart\Option\Option;
 #[CoversClass(PowerCollection::class)]
 class PowerCollectionTest extends TestCase
 {
-    public function test_create_from_variant_power_collection(): void
+    public function test_createFromVariantPowerCollection(): void
     {
         $variantPowerIdCollection = VariantPowerIdCollection::build(VariantPowerId::new(), VariantPowerId::new());
 
@@ -27,7 +27,7 @@ class PowerCollectionTest extends TestCase
 
     }
 
-    public function test_get_unassigned_powers(): void
+    public function test_getUnassignedPowers(): void
     {
         $unassignedPower = PowerFactory::unassigned();
         $assignedPower = PowerFactory::assigned();
@@ -40,7 +40,7 @@ class PowerCollectionTest extends TestCase
         $this->assertEquals($unassignedPower, $unassignedPowers->getOffset(0));
     }
 
-    public function test_has_available_powers(): void
+    public function test_hasAvailablePowers(): void
     {
         $unassignedPower = PowerFactory::unassigned();
         $assignedPower = PowerFactory::assigned();
@@ -50,7 +50,7 @@ class PowerCollectionTest extends TestCase
         $this->assertTrue($powerCollection->hasAvailablePowers());
     }
 
-    public function test_contains_player_and_does_not_contain_player(): void
+    public function test_containsPlayer_and_doesNotContainPlayer(): void
     {
         $unassignedPower = PowerFactory::unassigned();
         $assignedPower = PowerFactory::assigned();
@@ -64,7 +64,7 @@ class PowerCollectionTest extends TestCase
         $this->assertTrue($powerCollection->doesNotContainPlayer(PlayerId::new()));
     }
 
-    public function test_has_power_filled(): void
+    public function test_hasPowerFilled(): void
     {
         $unassignedPower = PowerFactory::unassigned();
         $assignedPower = PowerFactory::assigned();
@@ -75,14 +75,14 @@ class PowerCollectionTest extends TestCase
         $this->assertFalse($powerCollection->hasPowerFilled($unassignedPower->variantPowerId));
     }
 
-    public function test_has_no_assigned_powers_returns_true(): void
+    public function test_hasNoAssignedPowers_returns_true(): void
     {
         $powerCollection = new PowerCollection([PowerFactory::unassigned(), PowerFactory::unassigned()]);
 
         $this->assertTrue($powerCollection->hasNoAssignedPowers());
     }
 
-    public function test_has_no_assigned_powers_returns_false(): void
+    public function test_hasNoAssignedPowers_returns_false(): void
     {
         $unassignedPower = PowerFactory::unassigned();
         $assignedPower = PowerFactory::assigned();
@@ -92,7 +92,7 @@ class PowerCollectionTest extends TestCase
         $this->assertFalse($powerCollection->hasNoAssignedPowers());
     }
 
-    public function test_get_power_by_player_id(): void
+    public function test_getPowerByPlayerId(): void
     {
         $unassignedPower = PowerFactory::unassigned();
         $assignedPower = PowerFactory::assigned();
@@ -102,7 +102,7 @@ class PowerCollectionTest extends TestCase
         $this->assertEquals($assignedPower, $powerCollection->getByPlayerId($assignedPower->playerId->unwrap()));
     }
 
-    public function test_get_by_power_id(): void
+    public function test_getByPowerId(): void
     {
         $unassignedPower = PowerFactory::unassigned();
         $assignedPower = PowerFactory::assigned();
@@ -112,7 +112,7 @@ class PowerCollectionTest extends TestCase
         $this->assertEquals($assignedPower, $powerCollection->getByPowerId($assignedPower->powerId));
     }
 
-    public function test_get_by_variant_power_id(): void
+    public function test_getByVariantPowerId(): void
     {
         $unassignedPower = PowerFactory::unassigned();
         $assignedPower = PowerFactory::assigned();

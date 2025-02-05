@@ -17,7 +17,7 @@ class PhaseTest extends TestCase
      * @param  Option<DateTime>  $adjudicationTime
      */
     #[DataProvider('adjudicationTimeIsExpiredDataProvider')]
-    public function test_adjudication_time_is_expired(DateTime $currentTime, Option $adjudicationTime, bool $expectedResult): void
+    public function test_adjudicationTimeIsExpired(DateTime $currentTime, Option $adjudicationTime, bool $expectedResult): void
     {
         $phase = new Phase(
             PhaseId::new(),

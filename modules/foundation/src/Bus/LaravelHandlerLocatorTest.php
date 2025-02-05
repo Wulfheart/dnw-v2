@@ -14,28 +14,28 @@ use Tests\TestCase;
 #[AllowLaravelTestCase]
 class LaravelHandlerLocatorTest extends TestCase
 {
-    public function test_get_handler_for_command_throws_if_handler_exists_but_cannot_be_built(): void
+    public function test_getHandlerForCommand_throws_if_handler_exists_but_cannot_be_built(): void
     {
         $locator = new LaravelHandlerLocator($this->app);
         $this->expectException(BindingResolutionException::class);
         $locator->getHandlerForCommand('Dnw\Foundation\Bus\Test\SomeNotWorking');
     }
 
-    public function test_get_handler_for_command_builds_if_handler_exists(): void
+    public function test_getHandlerForCommand_builds_if_handler_exists(): void
     {
         $locator = new LaravelHandlerLocator($this->app);
         $handler = $locator->getHandlerForCommand('Dnw\Foundation\Bus\Test\SomeAwesome');
         $this->assertInstanceOf(SomeAwesomeHandler::class, $handler);
     }
 
-    public function test_get_handler_for_command_throws_if_handler_interface_exists_but_cannot_be_built(): void
+    public function test_getHandlerForCommand_throws_if_handler_interface_exists_but_cannot_be_built(): void
     {
         $locator = new LaravelHandlerLocator($this->app);
         $this->expectException(BindingResolutionException::class);
         $locator->getHandlerForCommand('Dnw\Foundation\Bus\Test\Some');
     }
 
-    public function test_get_handler_for_command_builds_if_handler_interface_exists(): void
+    public function test_getHandlerForCommand_builds_if_handler_interface_exists(): void
     {
         $this->instance(SomeHandlerInterface::class, new SomeAwesomeHandler());
         $locator = new LaravelHandlerLocator($this->app);
@@ -43,7 +43,7 @@ class LaravelHandlerLocatorTest extends TestCase
         $this->assertInstanceOf(SomeAwesomeHandler::class, $handler);
     }
 
-    public function test_get_handler_for_command_throws_if_it_cannot_guess_a_handler(): void
+    public function test_getHandlerForCommand_throws_if_it_cannot_guess_a_handler(): void
     {
         $locator = new LaravelHandlerLocator($this->app);
         $this->expectException(MissingHandlerException::class);

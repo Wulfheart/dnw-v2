@@ -17,7 +17,7 @@ class OrderCollectionTest extends TestCase
         $this->assertEquals($orders, $orderCollection->toStringArray());
     }
 
-    public function test_has_same_contents(): void
+    public function test_hasSameContents(): void
     {
         $orders = ['order1', 'order2', 'order3'];
 

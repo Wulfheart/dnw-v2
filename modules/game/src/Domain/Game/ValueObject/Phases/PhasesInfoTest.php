@@ -20,7 +20,7 @@ class PhasesInfoTest extends TestCase
         $this->assertTrue($phasesInfo->lastPhaseId->isNone());
     }
 
-    public function test_initial_phase_exists(): void
+    public function test_initialPhaseExists(): void
     {
         $phasesInfo = PhasesInfo::initialize();
         $this->assertFalse($phasesInfo->initialPhaseExists());
@@ -30,7 +30,7 @@ class PhasesInfoTest extends TestCase
         $this->assertTrue($phasesInfo->initialPhaseExists());
     }
 
-    public function test_has_been_started(): void
+    public function test_hasBeenStarted(): void
     {
         $phasesInfo = PhasesInfo::initialize();
         $this->assertFalse($phasesInfo->hasBeenStarted());
@@ -40,7 +40,7 @@ class PhasesInfoTest extends TestCase
         $this->assertTrue($phasesInfo->hasBeenStarted());
     }
 
-    public function test_proceed_to_new_phase(): void
+    public function test_proceedToNewPhase(): void
     {
         $phase = PhaseFactory::build(adjudicationTime: new DateTime());
         $phasesInfo = new PhasesInfo(Count::fromInt(3), Option::some($phase), Option::none());
@@ -52,7 +52,7 @@ class PhasesInfoTest extends TestCase
         $this->assertEquals($phase->phaseId, $phasesInfo->lastPhaseId->unwrap());
     }
 
-    public function test_set_initial_phase(): void
+    public function test_setInitialPhase(): void
     {
         $phasesInfo = PhasesInfo::initialize();
         $phase = PhaseFactory::build();

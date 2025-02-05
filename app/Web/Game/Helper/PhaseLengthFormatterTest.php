@@ -18,7 +18,7 @@ class PhaseLengthFormatterTest extends TestCase
         parent::setUp();
     }
 
-    public function test_format_minutes_de(): void
+    public function test_formatMinutes_de(): void
     {
         $formatter = new PhaseLengthFormatter('de');
 
@@ -27,7 +27,7 @@ class PhaseLengthFormatterTest extends TestCase
         $this->assertEquals('1 Tag', $formatter->formatMinutes(self::MINUTES_PER_HOUR * self::HOURS_PER_DAY));
     }
 
-    public function test_format_minutes_en(): void
+    public function test_formatMinutes_en(): void
     {
         $formatter = new PhaseLengthFormatter('en');
 
@@ -36,7 +36,7 @@ class PhaseLengthFormatterTest extends TestCase
         $this->assertEquals('1 day', $formatter->formatMinutes(self::MINUTES_PER_HOUR * self::HOURS_PER_DAY));
     }
 
-    public function test_format_date_time_de(): void
+    public function test_formatDateTime_de(): void
     {
         $formatter = new PhaseLengthFormatter('de');
         $dateTime = new DateTime('1998-12-11 12:45:00');
@@ -44,7 +44,7 @@ class PhaseLengthFormatterTest extends TestCase
         $this->assertEquals('Fr. 11. Dez 1998 12:45', $formatter->formatDateTime($dateTime));
     }
 
-    public function test_format_date_time_en(): void
+    public function test_formatDateTime_en(): void
     {
         $formatter = new PhaseLengthFormatter('en');
         $dateTime = new DateTime('1998-12-11 12:45:00');

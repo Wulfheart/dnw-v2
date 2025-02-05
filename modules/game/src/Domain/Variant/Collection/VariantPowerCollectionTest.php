@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(VariantPowerCollection::class)]
 class VariantPowerCollectionTest extends TestCase
 {
-    public function test_get_by_power_api_name(): void
+    public function test_getByPowerApiName(): void
     {
         $collection = VariantFactory::standard()->variantPowerCollection;
 
@@ -19,7 +19,7 @@ class VariantPowerCollectionTest extends TestCase
         $this->assertEquals($collection->getOffset(0), $power);
     }
 
-    public function test_get_by_variant_power_id(): void
+    public function test_getByVariantPowerId(): void
     {
         $collection = VariantFactory::standard()->variantPowerCollection;
 

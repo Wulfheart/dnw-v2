@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(VariantPowerIdCollection::class)]
 class VariantPowerIdCollectionTest extends TestCase
 {
-    public function test_contains_variant_power_id(): void
+    public function test_containsVariantPowerId(): void
     {
         $id = VariantPowerId::new();
 

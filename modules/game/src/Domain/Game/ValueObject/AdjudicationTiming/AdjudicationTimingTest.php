@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(AdjudicationTiming::class)]
 class AdjudicationTimingTest extends TestCase
 {
-    public function test_calculate_next_adjudication_skips_non_adjudicating_days(): void
+    public function test_calculateNextAdjudication_skips_non_adjudicating_days(): void
     {
         $phaseLength = PhaseLength::fromMinutes(
             CarbonInterface::HOURS_PER_DAY * CarbonInterface::MINUTES_PER_HOUR
@@ -29,7 +29,7 @@ class AdjudicationTimingTest extends TestCase
         );
     }
 
-    public function test_calculate_next_adjudication_adds_minutes(): void
+    public function test_calculateNextAdjudication_adds_minutes(): void
     {
         $phaseLength = PhaseLength::fromMinutes(10);
         $currentTime = new DateTime('2021-01-01 00:00:00');

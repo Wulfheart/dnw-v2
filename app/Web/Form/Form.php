@@ -2,7 +2,6 @@
 
 namespace App\Web\Form;
 
-use App\Web\Form\Fields\FieldInterface;
 use Illuminate\View\View;
 
 class Form
@@ -11,7 +10,7 @@ class Form
         public string $action,
         public string $submitText,
         public FormMethodEnum $method = FormMethodEnum::POST,
-        /** @var array<FieldInterface> */
+        /** @var array<\App\Web\Form\Fields\FieldInterface> */
         public array $fields = [],
     ) {}
 
