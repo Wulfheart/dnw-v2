@@ -1,6 +1,9 @@
 - Make designated game info dto game queries (based on https://webdiplomacy.net/board.php?gameID=63723#gamePanel)
     - name
-    - variant
+    - variantId
+    - current phase name (string, can be (not limited to): spring, summer, autumn, winter)
+    - current phase type (enum: movement, retreat, build)
+    - current phase year
     - anonymous yes/no
     - state
     - phase length
