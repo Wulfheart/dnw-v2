@@ -1,10 +1,12 @@
+set shell := ["zsh", "-cu"]
+
 format: format-php format-blade
 
 
 format-php:
     ./vendor/bin/pint
 format-blade:
-    npx blade-formatter --write --wrap=120 modules/**/*.blade.php
+    npx blade-formatter --write --wrap=120 resources/**/*.blade.php
 analyse:
     ./vendor/bin/phpstan analyse -v
 test:

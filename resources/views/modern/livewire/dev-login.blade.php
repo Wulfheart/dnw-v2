@@ -1,6 +1,6 @@
-{{--<x-container>--}}
-{{--    <form wire:submit="login">--}}
-{{--        {{ $this->form }}--}}
+{{-- <x-container> --}}
+{{--    <form wire:submit="login"> --}}
+{{--        {{ $this->form }} --}}
 
-{{--    </form>--}}
-{{--</x-container>--}}
+{{--    </form> --}}
+{{-- </x-container> --}}

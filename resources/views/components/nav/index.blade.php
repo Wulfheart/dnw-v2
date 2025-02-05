@@ -13,10 +13,11 @@ use App\ViewModel\User\UserInfoViewModel;
         <div>
             <div id="header-welcome">
                 Welcome,
-                @if($userInfo->isAuthenticated)
+                @if ($userInfo->isAuthenticated)
                     <a href="./userprofile.php?userID=84364">{{ $userInfo->name->unwrap() }}</a>
                     -
-                    <span class="logon">(<a href="#" hx-delete="{{ route('logout') }}" class="light">Log off</a>)</span>
+                    <span class="logon">(<a href="#" hx-delete="{{ route('logout') }}" class="light">Log
+                            off</a>)</span>
                 @else
                     Guest
                     -
@@ -28,7 +29,7 @@ use App\ViewModel\User\UserInfoViewModel;
                 <div class="nav-wrap">
                     <div class="nav-tab"><a href="/" title="See what's happening">Home</a></div>
                     <div class="nav-tab"><a href="/"
-                                            title="The forum; chat, get help, help others, arrange games, discuss strategies">Forum</a>
+                            title="The forum; chat, get help, help others, arrange games, discuss strategies">Forum</a>
                     </div>
                     <div id="navSubMenu" class="clickable nav-tab">Search ▼
                         <div id="nav-drop">
@@ -39,13 +40,12 @@ use App\ViewModel\User\UserInfoViewModel;
                     </div>
                     <div id="navSubMenu" class="clickable nav-tab">Games ▼
                         <div id="nav-drop">
-                            <a href="#"
-                               title="Game listings; a searchable list of the games on this server">New Games</a>
-                            <a href="#"
-                               title="Open positions dropped by other players, free to claim">Open Games</a>
+                            <a href="#" title="Game listings; a searchable list of the games on this server">New
+                                Games</a>
+                            <a href="#" title="Open positions dropped by other players, free to claim">Open
+                                Games</a>
                             <a href="{{ route('game.create') }}" title="Start up a new game">Start a New Game</a>
-                            <a href="#"
-                               title="View/Spectate games currently running">Active Games</a>
+                            <a href="#" title="View/Spectate games currently running">Active Games</a>
                             <!-- <a href="ghostRatings.php" title="Ghost Ratings Information">Ghost Ratings</a> -->
                             <a href="#" title="Information about tournaments on webDiplomacy">Hall of
                                 Fame</a>

@@ -1,7 +1,8 @@
 @props(['active' => null])
 
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
 
@@ -26,23 +27,25 @@
 </head>
 
 <body class="antialiased min-h-screen">
-<?php
+    <?php
 
-use App\Web\User\ViewModel\UserViewModel;
+    use App\Web\User\ViewModel\UserViewModel;
 
-/** @var UserViewModel $user */ ?>
-@if($user->isAuthenticated)
-    <x-nav.index :active="$active"/>
-@endif
-{{ $slot }}
+    /** @var UserViewModel $user */
+    ?>
+    @if ($user->isAuthenticated)
+        <x-nav.index :active="$active" />
+    @endif
+    {{ $slot }}
 
-@filamentScripts
-@livewireScripts
-@vite('resources/js/app.js')
+    @filamentScripts
+    @livewireScripts
+    @vite('resources/js/app.js')
 
-@if(config('app.debug'))
-    <script src="https://cdn.jsdelivr.net/gh/underground-works/clockwork-browser@1/dist/toolbar.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/underground-works/clockwork-browser@1/dist/metrics.js"></script>
-@endif
+    @if (config('app.debug'))
+        <script src="https://cdn.jsdelivr.net/gh/underground-works/clockwork-browser@1/dist/toolbar.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/underground-works/clockwork-browser@1/dist/metrics.js"></script>
+    @endif
 </body>
+
 </html>

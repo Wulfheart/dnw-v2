@@ -16,7 +16,7 @@ use App\Web\Game\ViewModel\GameInformationViewModel;
                         <span class="gameTimeRemainingNextPhase">{{ $info->nextText }}:</span>
                         <span class="timeremaining" data-unixtime="{{ $info->nextAsUnixTime }}"></span>
                         <span class="timestampGamesWrapper"> (<span
-                                    class="timestampGames">{{ $info->nextAsDateTime }}</span>) </span>
+                                class="timestampGames">{{ $info->nextAsDateTime }}</span>) </span>
                     </span>
                     <div style="clear:both"></div>
                 </div>

@@ -14,7 +14,7 @@ use App\ViewModel\DevLogin\DevLoginViewModel;
                 <x-input label="User" key="userId">
                     <select name="userId">
                         <option value=""></option>
-                        @foreach($viewModel->users as $user)
+                        @foreach ($viewModel->users as $user)
                             <option value="{{ $user->id }}">{{ $user->name }}</option>
                         @endforeach
                     </select>
@@ -27,4 +27,3 @@ use App\ViewModel\DevLogin\DevLoginViewModel;
 
 
 </x-layout>
-
