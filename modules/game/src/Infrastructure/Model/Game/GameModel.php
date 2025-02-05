@@ -49,7 +49,6 @@ class GameModel extends Model
      */
     public function lastPhase(): HasOne
     {
-        // @phpstan-ignore-next-line
         return $this->hasOne(PhaseModel::class, 'game_id')
             ->orderByDesc('ordinal_number')
             ->offset(1)
