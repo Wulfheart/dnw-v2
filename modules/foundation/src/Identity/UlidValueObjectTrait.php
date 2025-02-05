@@ -51,4 +51,9 @@ trait UlidValueObjectTrait
     {
         return Id::fromString((string) $this);
     }
+
+    public function clone(): self
+    {
+        return self::fromString((string) $this);
+    }
 }

@@ -25,7 +25,7 @@ abstract class AbstractPlayerRepositoryTestCase extends TestCase
     {
         $repo = $this->buildPlayerRepo();
         $result = $repo->load(PlayerId::new());
-        $this->assertEquals(0, $result->numberOfCurrentlyPlayingGames);
+        $this->assertEquals(0, $result->unwrap()->numberOfCurrentlyPlayingGames);
     }
 
     public function test_load(): void
@@ -56,7 +56,7 @@ abstract class AbstractPlayerRepositoryTestCase extends TestCase
         ];
         foreach ($players as $expectedPlayer) {
             $result = $repo->load($expectedPlayer->playerId);
-            $this->assertEquals($expectedPlayer, $result);
+            $this->assertEquals($expectedPlayer, $result->unwrap());
         }
     }
 
