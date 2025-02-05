@@ -5,6 +5,9 @@ namespace Dnw\Game\Infrastructure\Model\Game;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property string $id
+ */
 class PhasePowerDataModel extends Model
 {
     use HasUlids;
