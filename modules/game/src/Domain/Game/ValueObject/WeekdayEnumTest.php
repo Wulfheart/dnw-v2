@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(WeekdayEnum::class)]
 class WeekdayEnumTest extends TestCase
 {
-    public function test_fromCarbon(): void
+    public function test_from_carbon(): void
     {
         $this->assertEquals(WeekdayEnum::MONDAY, WeekdayEnum::fromCarbon(new DateTime('2021-08-02')));
     }

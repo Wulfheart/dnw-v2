@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(ArrayCollection::class)]
 class ArrayCollectionTest extends TestCase
 {
-    public function test_fromArray(): void
+    public function test_from_array(): void
     {
         $data = [1, 2, 3];
         $collection = ArrayCollection::fromArray($data);

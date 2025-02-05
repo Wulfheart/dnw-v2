@@ -28,7 +28,7 @@ class NoAdjudicationWeekdayCollectionTest extends TestCase
         NoAdjudicationWeekdayCollection::fromWeekdaysArray([1, 1, 1, 2, 3, 4, 5, 6, 0]);
     }
 
-    public function test_adjudicatesOnWeekday(): void
+    public function test_adjudicates_on_weekday(): void
     {
 
         $collection = NoAdjudicationWeekdayCollection::fromWeekdaysArray([1, 1, 1, 2, 3, 4, 5, 6]);

@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(GameStartTiming::class)]
 class GameStartTimingTest extends TestCase
 {
-    public function test_joinLengthExceeded(): void
+    public function test_join_length_exceeded(): void
     {
         $startOfJoinPhase = new DateTime('2021-01-01');
         $timing = new GameStartTiming($startOfJoinPhase, JoinLength::fromDays(2), false);

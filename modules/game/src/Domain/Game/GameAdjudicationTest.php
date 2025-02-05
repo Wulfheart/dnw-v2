@@ -32,14 +32,14 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Game::class)]
 class GameAdjudicationTest extends TestCase
 {
-    public function test_calculateSupplyCenterCountForWinning(): void
+    public function test_calculate_supply_center_count_for_winning(): void
     {
         $game = GameBuilder::initialize()->build();
 
         $this->assertEquals(18, $game->calculateSupplyCenterCountForWinning()->int());
     }
 
-    public function test_canSubmitOrders_unexpected_status(): void
+    public function test_can_submit_orders_unexpected_status(): void
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->build();
         $ruleset = $game->canSubmitOrders(
@@ -50,7 +50,7 @@ class GameAdjudicationTest extends TestCase
         $this->assertTrue($ruleset->containsViolation(GameRules::EXPECTS_STATE_ORDER_SUBMISSION));
     }
 
-    public function test_canSubmitOrders_player_is_not_in_game(): void
+    public function test_can_submit_orders_player_is_not_in_game(): void
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->build();
         $ruleset = $game->canSubmitOrders(
@@ -61,7 +61,7 @@ class GameAdjudicationTest extends TestCase
         $this->assertTrue($ruleset->containsViolation(GameRules::PLAYER_NOT_IN_GAME));
     }
 
-    public function test_canSubmitOrders_player_does_not_need_to_submit_orders(): void
+    public function test_can_submit_orders_player_does_not_need_to_submit_orders(): void
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->build();
 
@@ -76,7 +76,7 @@ class GameAdjudicationTest extends TestCase
         $this->assertTrue($ruleset->containsViolation(GameRules::POWER_DOES_NOT_NEED_TO_SUBMIT_ORDERS));
     }
 
-    public function test_canSubmitOrders_player_has_orders_already_marked_as_ready(): void
+    public function test_can_submit_orders_player_has_orders_already_marked_as_ready(): void
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->markOnePowerAsReady()->build();
         $ruleset = $game->canSubmitOrders(
@@ -87,7 +87,7 @@ class GameAdjudicationTest extends TestCase
         $this->assertTrue($ruleset->containsViolation(GameRules::ORDERS_ALREADY_MARKED_AS_READY));
     }
 
-    public function test_canSubmitOrders_fails_if_adjudication_time_is_expired(): void
+    public function test_can_submit_orders_fails_if_adjudication_time_is_expired(): void
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->markOnePowerAsReady()->build();
         $time = $game->phasesInfo->currentPhase->unwrap()->adjudicationTime->unwrap()->addMinute();
@@ -99,14 +99,14 @@ class GameAdjudicationTest extends TestCase
         $this->assertTrue($ruleset->containsViolation(GameRules::GAME_PHASE_TIME_EXCEEDED));
     }
 
-    public function test_submitOrders_throws_exception_if_orders_cannot_be_submitted(): void
+    public function test_submit_orders_throws_exception_if_orders_cannot_be_submitted(): void
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->build();
         $this->expectException(DomainException::class);
         $game->submitOrders(PlayerId::new(), new OrderCollection(), false, new DateTime());
     }
 
-    public function test_submitOrders_throws_exception_if_the_orders_have_not_changed(): void
+    public function test_submit_orders_throws_exception_if_the_orders_have_not_changed(): void
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->build();
         $powerToTest = $game->powerCollection->findBy(fn ($power) => $power->ordersNeeded())->unwrap();
@@ -116,7 +116,7 @@ class GameAdjudicationTest extends TestCase
         $game->submitOrders($powerToTest->playerId->unwrap(), new OrderCollection(), true, new DateTime());
     }
 
-    public function test_submitOrders_does_not_allow_resubmission_of_the_exact_same_orders(): void
+    public function test_submit_orders_does_not_allow_resubmission_of_the_exact_same_orders(): void
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->build();
         $powerToTest = $game->powerCollection->findBy(fn ($power) => $power->ordersNeeded())->unwrap();
@@ -131,7 +131,7 @@ class GameAdjudicationTest extends TestCase
 
     }
 
-    public function test_submitOrders_does_not_adjudicate_game_if_not_ready(): void
+    public function test_submit_orders_does_not_adjudicate_game_if_not_ready(): void
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->build();
         $powerToTest = $game->powerCollection->findBy(fn ($power) => $power->ordersNeeded())->unwrap();
@@ -148,7 +148,7 @@ class GameAdjudicationTest extends TestCase
             ->hasNotEvent(GameReadyForAdjudicationEvent::class);
     }
 
-    public function test_submitOrders_adjudicates_game_if_ready(): void
+    public function test_submit_orders_adjudicates_game_if_ready(): void
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->markAllButOnePowerAsReady()->build();
         $powerToTest = $game->powerCollection->findBy(fn (Power $power) => ! $power->ordersMarkedAsReady())->unwrap();
@@ -165,7 +165,7 @@ class GameAdjudicationTest extends TestCase
             ->hasEvent(GameReadyForAdjudicationEvent::class);
     }
 
-    public function test_canMarkOrderStatus_player_not_in_game(): void
+    public function test_can_mark_order_status_player_not_in_game(): void
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->build();
         $ruleset = $game->canMarkOrderStatus(
@@ -176,7 +176,7 @@ class GameAdjudicationTest extends TestCase
         $this->assertTrue($ruleset->containsViolation(GameRules::PLAYER_NOT_IN_GAME));
     }
 
-    public function test_canMarkOrderStatus_player_does_not_need_to_submit_orders(): void
+    public function test_can_mark_order_status_player_does_not_need_to_submit_orders(): void
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->build();
 
@@ -191,7 +191,7 @@ class GameAdjudicationTest extends TestCase
         $this->assertTrue($ruleset->containsViolation(GameRules::POWER_DOES_NOT_NEED_TO_SUBMIT_ORDERS));
     }
 
-    public function test_canMarkOrderStatus_wrong_state(): void
+    public function test_can_mark_order_status_wrong_state(): void
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->build();
         $ruleset = $game->canMarkOrderStatus(
@@ -202,7 +202,7 @@ class GameAdjudicationTest extends TestCase
         $this->assertTrue($ruleset->containsViolation(GameRules::EXPECTS_STATE_ORDER_SUBMISSION));
     }
 
-    public function test_markOrderStatus_throws_exception_if_cannot_perform_action(): void
+    public function test_mark_order_status_throws_exception_if_cannot_perform_action(): void
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->build();
 
@@ -210,7 +210,7 @@ class GameAdjudicationTest extends TestCase
         $game->markOrderStatus(PlayerId::new(), true, new DateTime());
     }
 
-    public function test_markOrderStatus_throws_exception_if_status_has_not_been_changed(): void
+    public function test_mark_order_status_throws_exception_if_status_has_not_been_changed(): void
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->build();
         $powerToTest = $game->powerCollection->findBy(fn ($power) => $power->ordersNeeded())->unwrap();
@@ -220,7 +220,7 @@ class GameAdjudicationTest extends TestCase
         $game->markOrderStatus($powerToTest->playerId->unwrap(), false, new DateTime());
     }
 
-    public function test_markOrderStatus_marks_orders_as_ready(): void
+    public function test_mark_order_status_marks_orders_as_ready(): void
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->build();
         $powerToTest = $game->powerCollection->findBy(fn ($power) => $power->ordersNeeded())->unwrap();
@@ -235,7 +235,7 @@ class GameAdjudicationTest extends TestCase
             ->hasState(GameStates::ORDER_SUBMISSION);
     }
 
-    public function test_markOrderStatus_marks_orders_as_not_ready(): void
+    public function test_mark_order_status_marks_orders_as_not_ready(): void
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->build();
         $powerToTest = $game->powerCollection->findBy(fn ($power) => $power->ordersNeeded())->unwrap();
@@ -251,7 +251,7 @@ class GameAdjudicationTest extends TestCase
             ->hasState(GameStates::ORDER_SUBMISSION);
     }
 
-    public function test_markOrderStatus_transitions_state_to_adjudicating_if_is_ready(): void
+    public function test_mark_order_status_transitions_state_to_adjudicating_if_is_ready(): void
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->markAllButOnePowerAsReady()->build();
         $powerToTest = $game->powerCollection->findBy(fn ($power) => ! $power->ordersMarkedAsReady())->unwrap();
@@ -266,7 +266,7 @@ class GameAdjudicationTest extends TestCase
             ->hasState(GameStates::ADJUDICATING);
     }
 
-    public function test_canAdjudicate_expects_state(): void
+    public function test_can_adjudicate_expects_state(): void
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->build();
         $ruleset = $game->canAdjudicate(new DateTime());
@@ -274,7 +274,7 @@ class GameAdjudicationTest extends TestCase
         $this->assertTrue($ruleset->containsViolation(GameRules::EXPECTS_STATE_ADJUDICATING));
     }
 
-    public function test_applyAdjudication_throws_exception_if_it_is_not_permitted(): void
+    public function test_apply_adjudication_throws_exception_if_it_is_not_permitted(): void
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->build();
 
@@ -282,7 +282,7 @@ class GameAdjudicationTest extends TestCase
         $game->applyAdjudication(PhaseTypeEnum::MOVEMENT, new ArrayCollection(), new DateTime());
     }
 
-    public function test_applyAdjudication_without_winners(): void
+    public function test_apply_adjudication_without_winners(): void
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->transitionToAdjudicating()->build();
 
@@ -326,7 +326,7 @@ class GameAdjudicationTest extends TestCase
             ->hasState(GameStates::ORDER_SUBMISSION);
     }
 
-    public function test_applyAdjudication_with_winners(): void
+    public function test_apply_adjudication_with_winners(): void
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->transitionToAdjudicating()->build();
 
@@ -355,7 +355,7 @@ class GameAdjudicationTest extends TestCase
             ->hasState(GameStates::FINISHED);
     }
 
-    public function test_canApplyInitialAdjudication_needs_correct_state(): void
+    public function test_can_apply_initial_adjudication_needs_correct_state(): void
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->build();
         $ruleset = $game->canApplyInitialAdjudication();
@@ -363,7 +363,7 @@ class GameAdjudicationTest extends TestCase
         $this->assertTrue($ruleset->containsViolation(GameRules::EXPECTS_STATE_CREATED));
     }
 
-    public function test_applyInitialAdjudication_throws_exception_if_not_permitted(): void
+    public function test_apply_initial_adjudication_throws_exception_if_not_permitted(): void
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->build();
 
@@ -371,7 +371,7 @@ class GameAdjudicationTest extends TestCase
         $game->applyInitialAdjudication(PhaseTypeEnum::MOVEMENT, new ArrayCollection(), new DateTime());
     }
 
-    public function test_applyInitialAdjudication_happy_path(): void
+    public function test_apply_initial_adjudication_happy_path(): void
     {
         $game = GameBuilder::initialize()->build();
 

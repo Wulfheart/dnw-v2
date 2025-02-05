@@ -52,7 +52,7 @@ class PowerTest extends TestCase
         $this->assertTrue($power->playerId->isNone());
     }
 
-    public function test_markOrderStatus_throws_exception_if_no_current_phase_data(): void
+    public function test_mark_order_status_throws_exception_if_no_current_phase_data(): void
     {
         $power = PowerFactory::unassigned();
 
@@ -60,7 +60,7 @@ class PowerTest extends TestCase
         $power->markOrderStatus(true);
     }
 
-    public function test_markOrderStatus(): void
+    public function test_mark_order_status(): void
     {
         $power = PowerFactory::build(
             currentPhaseData: PhasePowerDataFactory::build(
@@ -73,7 +73,7 @@ class PowerTest extends TestCase
         $this->assertTrue($power->currentPhaseData->unwrap()->markedAsReady);
     }
 
-    public function test_submitOrders(): void
+    public function test_submit_orders(): void
     {
         $orderCollection = new OrderCollection();
         $power = PowerFactory::build(
@@ -88,7 +88,7 @@ class PowerTest extends TestCase
         $this->assertTrue($power->currentPhaseData->unwrap()->markedAsReady);
     }
 
-    public function test_submitOrders_throws_exception_if_readyForAdjudication(): void
+    public function test_submit_orders_throws_exception_if_ready_for_adjudication(): void
     {
         $orderCollection = new OrderCollection();
         $power = PowerFactory::build(
@@ -102,7 +102,7 @@ class PowerTest extends TestCase
 
     }
 
-    public function test_ordersNeeded(): void
+    public function test_orders_needed(): void
     {
         $power = PowerFactory::build(
             currentPhaseData: PhasePowerDataFactory::build(
@@ -123,7 +123,7 @@ class PowerTest extends TestCase
         $this->assertFalse($power->ordersNeeded());
     }
 
-    public function test_ordersMarkedAsReady(): void
+    public function test_orders_marked_as_ready(): void
     {
         $power = PowerFactory::build(
             currentPhaseData: PhasePowerDataFactory::build(
@@ -144,7 +144,7 @@ class PowerTest extends TestCase
         $this->assertFalse($power->ordersMarkedAsReady());
     }
 
-    public function test_readyForAdjudication(): void
+    public function test_ready_for_adjudication(): void
     {
         $power = PowerFactory::build(
             currentPhaseData: PhasePowerDataFactory::build(
@@ -179,7 +179,7 @@ class PowerTest extends TestCase
         $this->assertTrue($power->readyForAdjudication());
     }
 
-    public function test_proceedToNextPhase(): void
+    public function test_proceed_to_next_phase(): void
     {
         $newPhaseData = PhasePowerDataFactory::build();
         $appliedOrders = new OrderCollection();
@@ -191,7 +191,7 @@ class PowerTest extends TestCase
         $this->assertEquals($appliedOrders, $power->appliedOrders->unwrap());
     }
 
-    public function test_persistInitialPhase(): void
+    public function test_persist_initial_phase(): void
     {
         $initialPhaseData = PhasePowerDataFactory::build();
         $power = PowerFactory::build();
@@ -201,7 +201,7 @@ class PowerTest extends TestCase
         $this->assertEquals($initialPhaseData, $power->currentPhaseData->unwrap());
     }
 
-    public function test_isDefeated_returns_true_if_has_0_supply_centers_and_0_units(): void
+    public function test_is_defeated_returns_true_if_has_0_supply_centers_and_0_units(): void
     {
         $power = PowerFactory::build(
             currentPhaseData: PhasePowerDataFactory::build(
@@ -213,14 +213,14 @@ class PowerTest extends TestCase
         $this->assertTrue($power->isDefeated());
     }
 
-    public function test_isDefeated_returns_false_if_no_initial_data_is_there(): void
+    public function test_is_defeated_returns_false_if_no_initial_data_is_there(): void
     {
         $power = PowerFactory::build();
 
         $this->assertFalse($power->isDefeated());
     }
 
-    public function test_isDefeated_returns_true_if_has_more_than_0_supply_centers(): void
+    public function test_is_defeated_returns_true_if_has_more_than_0_supply_centers(): void
     {
         $power = PowerFactory::build(
             currentPhaseData: PhasePowerDataFactory::build(
@@ -232,7 +232,7 @@ class PowerTest extends TestCase
         $this->assertFalse($power->isDefeated());
     }
 
-    public function test_isDefeated_returns_true_if_has_more_than_0_units(): void
+    public function test_is_defeated_returns_true_if_has_more_than_0_units(): void
     {
         $power = PowerFactory::build(
             currentPhaseData: PhasePowerDataFactory::build(

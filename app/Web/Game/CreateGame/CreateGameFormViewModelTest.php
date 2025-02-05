@@ -13,7 +13,7 @@ use Tests\TestCase;
 #[AllowLaravelTestCase]
 class CreateGameFormViewModelTest extends TestCase
 {
-    public function test_fromLaravel(): void
+    public function test_from_laravel(): void
     {
         $variants = [
             new VariantDto(

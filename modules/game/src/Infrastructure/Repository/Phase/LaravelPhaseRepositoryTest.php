@@ -22,7 +22,7 @@ class LaravelPhaseRepositoryTest extends AbstractPhaseRepositoryTestCase
         );
     }
 
-    public function test_loadLinkToSvgWithOrders_returns_url(): void
+    public function test_load_link_to_svg_with_orders_returns_url(): void
     {
         $repo = $this->buildRepository();
 
@@ -35,7 +35,7 @@ class LaravelPhaseRepositoryTest extends AbstractPhaseRepositoryTestCase
         // $this->assertEquals("/storage/{$phaseId}/svg_with_orders.svg", $result->unwrap());
     }
 
-    public function test_loadLinkToSvgWithOrders_returns_not_found_error(): void
+    public function test_load_link_to_svg_with_orders_returns_not_found_error(): void
     {
         $repo = $this->buildRepository();
 
@@ -46,7 +46,7 @@ class LaravelPhaseRepositoryTest extends AbstractPhaseRepositoryTestCase
         $this->assertEquals(PhaseRepositoryLoadResult::E_NOT_FOUND, $result->unwrapErr());
     }
 
-    public function test_loadLinkToAdjudicatedSvg_returns_url(): void
+    public function test_load_link_to_adjudicated_svg_returns_url(): void
     {
         $repo = $this->buildRepository();
 
@@ -59,7 +59,7 @@ class LaravelPhaseRepositoryTest extends AbstractPhaseRepositoryTestCase
         // $this->assertEquals("/storage/{$phaseId}/adjudicated_svg.svg", $result->unwrap());
     }
 
-    public function test_loadLinkToAdjudicatedSvg_returns_not_found_error(): void
+    public function test_load_link_to_adjudicated_svg_returns_not_found_error(): void
     {
         $repo = $this->buildRepository();
 

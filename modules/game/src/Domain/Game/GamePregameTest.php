@@ -96,7 +96,7 @@ class GamePregameTest extends TestCase
             ->hasState(GameStates::CREATED);
     }
 
-    public function test_canJoin_player_already_joined(): void
+    public function test_can_join_player_already_joined(): void
     {
         $game = GameBuilder::initialize(true)->storeInitialAdjudication()->join()->build();
         $ruleset = $game->canJoin(
@@ -108,7 +108,7 @@ class GamePregameTest extends TestCase
         $this->assertTrue($ruleset->containsViolation(GameRules::PLAYER_ALREADY_JOINED));
     }
 
-    public function test_canJoin_if_desired_power_is_already_filled(): void
+    public function test_can_join_if_desired_power_is_already_filled(): void
     {
         $game = GameBuilder::initialize(false)->storeInitialAdjudication()->join()->build();
         $ruleset = $game->canJoin(
@@ -120,7 +120,7 @@ class GamePregameTest extends TestCase
         $this->assertTrue($ruleset->containsViolation(GameRules::POWER_ALREADY_FILLED));
     }
 
-    public function test_canJoin_if_state_is_incorrect(): void
+    public function test_can_join_if_state_is_incorrect(): void
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->build();
         $ruleset = $game->canJoin(
@@ -132,7 +132,7 @@ class GamePregameTest extends TestCase
         $this->assertTrue($ruleset->containsViolation(GameRules::EXPECTS_STATE_PLAYERS_JOINING));
     }
 
-    public function test_canJoin_fails_if_join_length_is_exceeded(): void
+    public function test_can_join_fails_if_join_length_is_exceeded(): void
     {
         $game = GameBuilder::initialize(true, false)->storeInitialAdjudication()->fillUntilOnePowerLeft()->build();
 
@@ -203,7 +203,7 @@ class GamePregameTest extends TestCase
 
     }
 
-    public function test_canLeave_player_is_not_in_game(): void
+    public function test_can_leave_player_is_not_in_game(): void
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->build();
         $ruleset = $game->canLeave(
@@ -213,7 +213,7 @@ class GamePregameTest extends TestCase
         $this->assertTrue($ruleset->containsViolation(GameRules::PLAYER_NOT_IN_GAME));
     }
 
-    public function test_canLeave_has_unexpected_state(): void
+    public function test_can_leave_has_unexpected_state(): void
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->build();
         $ruleset = $game->canLeave(
@@ -247,7 +247,7 @@ class GamePregameTest extends TestCase
             ->hasNotEvent(GameAbandonedEvent::class);
     }
 
-    public function test_leave_sends_GameAbandonedEvent_if_no_players_are_left(): void
+    public function test_leave_sends_game_abandoned_event_if_no_players_are_left(): void
     {
         $game = GameBuilder::initialize()->storeInitialAdjudication()->build();
 
@@ -259,7 +259,7 @@ class GamePregameTest extends TestCase
             ->hasEvent(GameAbandonedEvent::class);
     }
 
-    public function test_handleGameJoinLengthExceeded_starts_game_if_time_is_right_and_game_full(): void
+    public function test_handle_game_join_length_exceeded_starts_game_if_time_is_right_and_game_full(): void
     {
         $game = GameBuilder::initialize(startWhenReady: false)->storeInitialAdjudication()->makeFull()->build();
 
@@ -274,7 +274,7 @@ class GamePregameTest extends TestCase
         $this->assertTrue($game->phasesInfo->currentPhase->unwrap()->adjudicationTime->isSome());
     }
 
-    public function test_handleGameJoinLengthExceeded_does_not_start_game_if_time_is_not_right_and_game_full(): void
+    public function test_handle_game_join_length_exceeded_does_not_start_game_if_time_is_not_right_and_game_full(): void
     {
         $game = GameBuilder::initialize(startWhenReady: false)->storeInitialAdjudication()->makeFull()->build();
 
@@ -287,7 +287,7 @@ class GamePregameTest extends TestCase
         $this->assertTrue($game->phasesInfo->currentPhase->unwrap()->adjudicationTime->isNone());
     }
 
-    public function test_handleGameJoinLengthExceeded_abandons_game_if_join_length_is_exceeded_and_game_not_full(): void
+    public function test_handle_game_join_length_exceeded_abandons_game_if_join_length_is_exceeded_and_game_not_full(): void
     {
         $game = GameBuilder::initialize(startWhenReady: false)->storeInitialAdjudication()->build();
 
