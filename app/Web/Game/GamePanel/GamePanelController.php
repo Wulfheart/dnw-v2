@@ -2,6 +2,7 @@
 
 namespace App\Web\Game\GamePanel;
 
+use App\Foundation\Auth\AuthInterface;
 use App\Web\Game\GamePanel\ViewModel\PlayerInfoViewModel;
 use App\Web\Game\Helper\PhaseLengthFormatter;
 use App\Web\Game\ViewModel\GameInformationViewModel;
@@ -13,25 +14,25 @@ use Dnw\Game\Application\Query\GetGameById\Dto\VariantPowerDataDto;
 use Dnw\Game\Application\Query\GetGameById\GetGameByIdQuery;
 use Dnw\User\Application\Query\GetUsersByIds\GetUsersByIdsQuery;
 use Dnw\User\Application\Query\GetUsersByIds\UserData;
-use Dnw\User\Infrastructure\UserModel;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Psr\Log\LoggerInterface;
 
-class GamePanelController
+final readonly class GamePanelController
 {
     public function __construct(
         private BusInterface $bus,
         private PhaseLengthFormatter $phaseLengthFormatter,
-        private LoggerInterface $logger
+        private LoggerInterface $logger,
+        private AuthInterface $auth
     ) {}
 
-    public function show(Request $request, UserModel $user, string $id): Application|Response|ResponseFactory
+    public function show(Request $request, string $id): Application|Response|ResponseFactory
     {
         $result = $this->bus->handle(
-            new GetGameByIdQuery(Id::fromString($id), Id::fromString($user->id))
+            new GetGameByIdQuery(Id::fromString($id), $this->auth->getUserId())
         );
         if ($result->hasErr()) {
             return abort(404);
