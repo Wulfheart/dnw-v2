@@ -39,7 +39,7 @@ readonly class CreateGameCommandHandler
         // TODO: Automatically append a number to the game name if it already exists
 
         $player = $this->playerRepository->load(PlayerId::fromString($command->creatorId));
-        if ($player->canParticipateInAnotherGame()->fails()) {
+        if ($player->unwrap()->canParticipateInAnotherGame()->fails()) {
             $this->logger->warning(
                 'Player cannot participate in another game',
                 ['playerId' => $command->creatorId]
