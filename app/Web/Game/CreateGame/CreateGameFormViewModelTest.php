@@ -38,7 +38,7 @@ class CreateGameFormViewModelTest extends TestCase
             ),
         ];
 
-        $vm = CreateGameFormViewModel::fromLaravel($variants);
+        $vm = CreateGameFormViewModel::fromLaravel($variants, false);
 
         $this->expectNotToPerformAssertions();
     }

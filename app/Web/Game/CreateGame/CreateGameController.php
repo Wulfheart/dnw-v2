@@ -8,6 +8,7 @@ use Dnw\Foundation\Bus\BusInterface;
 use Dnw\Foundation\Identity\Id;
 use Dnw\Game\Application\Command\CreateGame\CreateGameCommand;
 use Dnw\Game\Application\Command\CreateGame\CreateGameCommandResult;
+use Dnw\Game\Application\Query\CanParticipateInAnotherGame\CanParticipateInAnotherGameQuery;
 use Dnw\Game\Application\Query\GetAllVariants\GetAllVariantsQuery;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -24,10 +25,10 @@ readonly class CreateGameController
 
     public function show(Request $request): Response
     {
-        // TODO: Add a query to determine if a user can create a game in order to show a hint later
+        $canParticipateInAnotherGame = $this->bus->handle(new CanParticipateInAnotherGameQuery($this->auth->getUserId()));
 
         $allVariants = $this->bus->handle(new GetAllVariantsQuery());
-        $vm = CreateGameFormViewModel::fromLaravel($allVariants->variants);
+        $vm = CreateGameFormViewModel::fromLaravel($allVariants->variants, $canParticipateInAnotherGame);
 
         return response()->view('game.create', ['vm' => $vm]);
     }

@@ -18,6 +18,7 @@ class CreateGameFormViewModel
     public function __construct(
         public string $create_game_title,
         public string $create_game_description,
+        public bool $canParticipateInAnotherGame,
         public Form $form,
     ) {}
 
@@ -26,6 +27,7 @@ class CreateGameFormViewModel
      */
     public static function fromLaravel(
         array $variants,
+        bool $canParticipateInAnotherGame,
     ): self {
         $allowedLengths = [5, 10, 15, 20, 30, 60, 120, 240, 360, 480, 600, 720, 840, 960, 1080, 1200, 1320, 1440, 2160, 2880, 4320, 5760, 7200, 8640, 10080, 14400];
 
@@ -101,6 +103,7 @@ class CreateGameFormViewModel
         return new self(
             'Neues Spiel erstellen',
             ' Beginne ein neues Spiel; du entscheidest, wie es heißt, wie lange die Phasen dauern, und was es wert ist.',
+            $canParticipateInAnotherGame,
             $form,
         );
     }
