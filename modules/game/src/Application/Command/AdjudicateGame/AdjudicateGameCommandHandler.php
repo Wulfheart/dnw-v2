@@ -15,6 +15,7 @@ use Dnw\Game\Domain\Game\Repository\Phase\PhaseRepositoryInterface;
 use Dnw\Game\Domain\Game\ValueObject\Count;
 use Dnw\Game\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Domain\Game\ValueObject\Phase\NewPhaseData;
+use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseName;
 use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
 use Dnw\Game\Domain\Variant\Repository\VariantRepositoryInterface;
 use Psr\Log\LoggerInterface;
@@ -105,8 +106,11 @@ readonly class AdjudicateGameCommandHandler
             $adjudicationPowerDataCollection->push($adjudicationPowerData);
         }
 
+        $phaseName = PhaseName::fromString($adjudicationGameResult->phase_long);
+
         $game->applyAdjudication(
             $phaseType,
+            $phaseName,
             $adjudicationPowerDataCollection,
             $this->timeProvider->getCurrentTime()
         );

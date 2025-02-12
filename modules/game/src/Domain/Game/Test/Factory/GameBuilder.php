@@ -16,6 +16,7 @@ use Dnw\Game\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Domain\Game\ValueObject\Game\GameName;
 use Dnw\Game\Domain\Game\ValueObject\GameStartTiming\GameStartTiming;
 use Dnw\Game\Domain\Game\ValueObject\Phase\NewPhaseData;
+use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseName;
 use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
 use Dnw\Game\Domain\Game\ValueObject\Power\PowerId;
 use Dnw\Game\Domain\Player\ValueObject\PlayerId;
@@ -94,6 +95,7 @@ class GameBuilder
 
         $this->game->applyInitialAdjudication(
             PhaseTypeEnum::MOVEMENT,
+            PhaseName::fromString('Spring 1901'),
             $c,
             new DateTime(),
         );
@@ -271,7 +273,12 @@ class GameBuilder
         $defeatedPhasePowerData = $adjudicationPowerDataCollection->findBy(fn (AdjudicationPowerDataDto $adjudicationPowerData) => $adjudicationPowerData->powerId === $powerWhichWillWin->powerId)->unwrap();
         $defeatedPhasePowerData->newPhaseData->isWinner = true;
 
-        $this->game->applyAdjudication(PhaseTypeEnum::MOVEMENT, $adjudicationPowerDataCollection, new DateTime());
+        $this->game->applyAdjudication(
+            PhaseTypeEnum::MOVEMENT,
+            PhaseName::fromString('Spring 1901'),
+            $adjudicationPowerDataCollection,
+            new DateTime()
+        );
 
         return $this;
     }

@@ -6,7 +6,7 @@ use Dnw\Foundation\Bus\Interface\Query;
 use Dnw\Foundation\Identity\Id;
 
 /**
- * @implements Query<bool>
+ * @implements Query<CanParticipateInAnotherGameQueryResult>
  */
 final class CanParticipateInAnotherGameQuery implements Query
 {

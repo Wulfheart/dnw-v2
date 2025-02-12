@@ -12,6 +12,7 @@ use Dnw\Game\Domain\Game\Repository\Phase\PhaseRepositoryInterface;
 use Dnw\Game\Domain\Game\ValueObject\Count;
 use Dnw\Game\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Domain\Game\ValueObject\Phase\NewPhaseData;
+use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseName;
 use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
 use Dnw\Game\Domain\Variant\Repository\VariantRepositoryInterface;
 use Dnw\Game\Domain\Variant\ValueObject\VariantPower\VariantPowerApiName;
@@ -51,6 +52,7 @@ readonly class InitialGameAdjudicationCommandHandler
         );
 
         $phaseType = PhaseTypeEnum::from($adjudicationGameResult->phase_type);
+        $phaseName = PhaseName::fromString($adjudicationGameResult->phase_long);
 
         /** @var Collection<InitialAdjudicationPowerDataDto> $phasePowerCollection */
         $phasePowerCollection = new ArrayCollection();
@@ -74,6 +76,7 @@ readonly class InitialGameAdjudicationCommandHandler
 
         $game->applyInitialAdjudication(
             $phaseType,
+            $phaseName,
             $phasePowerCollection,
             $this->timeProvider->getCurrentTime()
         );

@@ -25,8 +25,8 @@ use Dnw\Game\Domain\Game\ValueObject\Game\GameName;
 use Dnw\Game\Domain\Game\ValueObject\GameStartTiming\GameStartTiming;
 use Dnw\Game\Domain\Game\ValueObject\GameStartTiming\JoinLength;
 use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseId;
+use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseName;
 use Dnw\Game\Domain\Game\ValueObject\Phase\PhasePowerData;
-use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
 use Dnw\Game\Domain\Game\ValueObject\Phases\PhasesInfo;
 use Dnw\Game\Domain\Game\ValueObject\Power\PowerId;
 use Dnw\Game\Domain\Game\ValueObject\Variant\GameVariantData;
@@ -87,7 +87,8 @@ class LaravelGameRepository implements GameRepositoryInterface
         $currentPhase = Option::fromNullable($game->currentPhase)->mapIntoOption(
             fn (PhaseModel $phase) => new Phase(
                 PhaseId::fromString($phase->id),
-                PhaseTypeEnum::from($phase->type),
+                $phase->type,
+                PhaseName::fromString($phase->name),
                 Option::fromNullable($phase->adjudication_time)->mapIntoOption(fn (string $adjudicationTime) => new DateTime($adjudicationTime)),
             ),
         );

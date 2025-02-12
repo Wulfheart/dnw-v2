@@ -11,10 +11,12 @@ final readonly class CanParticipateInAnotherGameQueryHandler
         private PlayerRepositoryInterface $playerRepository
     ) {}
 
-    public function handle(CanParticipateInAnotherGameQuery $query): bool
+    public function handle(CanParticipateInAnotherGameQuery $query): CanParticipateInAnotherGameQueryResult
     {
         $player = $this->playerRepository->load(PlayerId::fromId($query->playerId));
 
-        return $player->unwrap()->canParticipateInAnotherGame()->passes();
+        $canParticipateInAnotherGame = $player->unwrap()->canParticipateInAnotherGame()->passes();
+
+        return CanParticipateInAnotherGameQueryResult::ok($canParticipateInAnotherGame);
     }
 }

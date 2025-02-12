@@ -2,6 +2,7 @@
 
 namespace Dnw\Game\Infrastructure\Model\Game;
 
+use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -15,7 +16,9 @@ class PhaseModel extends Model
 
     public $table = 'game_phases';
 
-    protected $casts = [];
+    protected $casts = [
+        'type' => PhaseTypeEnum::class,
+    ];
 
     /**
      * @return HasMany<PhasePowerDataModel, $this>

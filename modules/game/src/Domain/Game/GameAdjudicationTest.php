@@ -24,6 +24,7 @@ use Dnw\Game\Domain\Game\Test\Factory\GameBuilder;
 use Dnw\Game\Domain\Game\ValueObject\Count;
 use Dnw\Game\Domain\Game\ValueObject\Order\Order;
 use Dnw\Game\Domain\Game\ValueObject\Phase\NewPhaseData;
+use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseName;
 use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
 use Dnw\Game\Domain\Player\ValueObject\PlayerId;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -279,7 +280,12 @@ class GameAdjudicationTest extends TestCase
         $game = GameBuilder::initialize()->storeInitialAdjudication()->start()->build();
 
         $this->expectException(DomainException::class);
-        $game->applyAdjudication(PhaseTypeEnum::MOVEMENT, new ArrayCollection(), new DateTime());
+        $game->applyAdjudication(
+            PhaseTypeEnum::MOVEMENT,
+            PhaseName::fromString('Spring 1901'),
+            new ArrayCollection(),
+            new DateTime()
+        );
     }
 
     public function test_applyAdjudication_without_winners(): void
@@ -316,7 +322,12 @@ class GameAdjudicationTest extends TestCase
         $powerWhichWillBeDefeatedPhasePowerData->newPhaseData->unitCount = Count::fromInt(0);
         $powerWhichWillBeDefeatedPhasePowerData->newPhaseData->ordersNeeded = false;
 
-        $game->applyAdjudication(PhaseTypeEnum::MOVEMENT, $adjudicationPowerDataCollection, new DateTime());
+        $game->applyAdjudication(
+            PhaseTypeEnum::MOVEMENT,
+            PhaseName::fromString('Spring 1901'),
+            $adjudicationPowerDataCollection,
+            new DateTime()
+        );
 
         GameAsserter::assertThat($game)
             ->hasEvent(GameAdjudicatedEvent::class)
@@ -347,7 +358,12 @@ class GameAdjudicationTest extends TestCase
         $defeatedPhasePowerData = $adjudicationPowerDataCollection->findBy(fn (AdjudicationPowerDataDto $adjudicationPowerData) => $adjudicationPowerData->powerId === $powerWhichWillWin->powerId)->unwrap();
         $defeatedPhasePowerData->newPhaseData->isWinner = true;
 
-        $game->applyAdjudication(PhaseTypeEnum::MOVEMENT, $adjudicationPowerDataCollection, new DateTime());
+        $game->applyAdjudication(
+            PhaseTypeEnum::MOVEMENT,
+            PhaseName::fromString('Spring 1901'),
+            $adjudicationPowerDataCollection,
+            new DateTime()
+        );
 
         GameAsserter::assertThat($game)
             ->hasEvent(GameAdjudicatedEvent::class)
@@ -368,7 +384,12 @@ class GameAdjudicationTest extends TestCase
         $game = GameBuilder::initialize()->storeInitialAdjudication()->build();
 
         $this->expectException(DomainException::class);
-        $game->applyInitialAdjudication(PhaseTypeEnum::MOVEMENT, new ArrayCollection(), new DateTime());
+        $game->applyInitialAdjudication(
+            PhaseTypeEnum::MOVEMENT,
+            PhaseName::fromString('Spring 1901'),
+            new ArrayCollection(),
+            new DateTime()
+        );
     }
 
     public function test_applyInitialAdjudication_happy_path(): void
@@ -380,7 +401,12 @@ class GameAdjudicationTest extends TestCase
             new NewPhaseData(true, false, Count::fromInt(1), Count::fromInt(1)),
         ));
 
-        $game->applyInitialAdjudication(PhaseTypeEnum::MOVEMENT, $initialAdjudicationPowerData, new DateTime());
+        $game->applyInitialAdjudication(
+            PhaseTypeEnum::MOVEMENT,
+            PhaseName::fromString('Spring 1901'),
+            $initialAdjudicationPowerData,
+            new DateTime()
+        );
 
         GameAsserter::assertThat($game)
             ->hasState(GameStates::PLAYERS_JOINING)

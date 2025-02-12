@@ -4,6 +4,7 @@ namespace Dnw\Game\Domain\Game\Entity;
 
 use Dnw\Foundation\DateTime\DateTime;
 use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseId;
+use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseName;
 use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -22,6 +23,7 @@ class PhaseTest extends TestCase
         $phase = new Phase(
             PhaseId::new(),
             PhaseTypeEnum::MOVEMENT,
+            PhaseName::fromString('Spring 1901'),
             $adjudicationTime
         );
 

@@ -5,9 +5,9 @@ namespace Dnw\Game\Application\Query\GetGameById;
 use Dnw\Foundation\Collection\ArrayCollection;
 use Dnw\Foundation\DateTime\DateTime;
 use Dnw\Foundation\Identity\Id;
-use Dnw\Game\Application\Query\GetGameById\Dto\GameStateEnum;
 use Dnw\Game\Application\Query\GetGameById\Dto\PhasesInDescendingOrderDto;
 use Dnw\Game\Application\Query\GetGameById\Dto\VariantPowerDataDto;
+use Dnw\Game\Application\Query\Shared\Game\GameInfo\GameStateEnum;
 
 class GetGameByIdQueryResultData
 {

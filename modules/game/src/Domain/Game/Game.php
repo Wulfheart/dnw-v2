@@ -40,6 +40,7 @@ use Dnw\Game\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Domain\Game\ValueObject\Game\GameName;
 use Dnw\Game\Domain\Game\ValueObject\GameStartTiming\GameStartTiming;
 use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseId;
+use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseName;
 use Dnw\Game\Domain\Game\ValueObject\Phase\PhasePowerData;
 use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
 use Dnw\Game\Domain\Game\ValueObject\Phases\PhasesInfo;
@@ -403,6 +404,7 @@ class Game
      */
     public function applyAdjudication(
         PhaseTypeEnum $phaseType,
+        PhaseName $phaseName,
         Collection $adjudicationPowerDataCollection,
         DateTime $currentTime
     ): void {
@@ -416,6 +418,7 @@ class Game
         $newPhase = new Phase(
             PhaseId::new(),
             $phaseType,
+            $phaseName,
             Option::some($nextAdjudication),
         );
 
@@ -479,6 +482,7 @@ class Game
      */
     public function applyInitialAdjudication(
         PhaseTypeEnum $phaseType,
+        PhaseName $phaseName,
         Collection $phasePowerCollection,
         DateTime $currentTime
     ): void {
@@ -490,6 +494,7 @@ class Game
         $newPhase = new Phase(
             PhaseId::new(),
             $phaseType,
+            $phaseName,
             Option::none(),
         );
 

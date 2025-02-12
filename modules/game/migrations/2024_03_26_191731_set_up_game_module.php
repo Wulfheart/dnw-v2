@@ -37,6 +37,8 @@ return new class() extends Migration {
             $table->ulid('game_id');
             $table->unsignedInteger('ordinal_number');
             $table->string('type');
+            $table->string('name');
+            $table->string('year');
             $table->dateTime('adjudication_time')->nullable();
             $table->timestamps();
         });

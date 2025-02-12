@@ -3,9 +3,9 @@
 namespace Dnw\Game\Application\Query\GetGameById;
 
 use Dnw\Foundation\Collection\ArrayCollection;
-use Dnw\Game\Application\Query\GetGameById\Dto\GameStateEnum;
 use Dnw\Game\Application\Query\GetGameById\Dto\PhasesInDescendingOrderDto;
 use Dnw\Game\Application\Query\GetGameById\Dto\VariantPowerDataDto;
+use Dnw\Game\Application\Query\Shared\Game\GameInfo\GameStateEnum;
 use Dnw\Game\Domain\Adapter\TimeProvider\TimeProviderInterface;
 use Dnw\Game\Domain\Game\Entity\Power;
 use Dnw\Game\Domain\Game\Repository\Game\GameRepositoryInterface;
