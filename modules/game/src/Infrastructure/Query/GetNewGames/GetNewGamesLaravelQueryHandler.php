@@ -44,7 +44,6 @@ final readonly class GetNewGamesLaravelQueryHandler implements GetNewGamesQueryH
                 Id::fromString($game->id),
                 Id::fromString($game->variant_data_variant_id),
                 $game->name,
-                // TODO
                 $currentPhase->name,
                 PhaseTypeEnum::fromDomain($currentPhase->type),
                 false,

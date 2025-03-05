@@ -28,7 +28,7 @@ readonly class CreateGameController
         $canParticipateInAnotherGame = $this->bus->handle(new CanParticipateInAnotherGameQuery($this->auth->getUserId()));
 
         $allVariants = $this->bus->handle(new GetAllVariantsQuery());
-        $vm = CreateGameFormViewModel::fromLaravel($allVariants->variants, $canParticipateInAnotherGame);
+        $vm = CreateGameFormViewModel::fromLaravel($allVariants->variants, $canParticipateInAnotherGame->unwrap());
 
         return response()->view('game.create', ['vm' => $vm]);
     }

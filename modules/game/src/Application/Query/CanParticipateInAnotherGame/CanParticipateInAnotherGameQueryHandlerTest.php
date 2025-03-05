@@ -17,7 +17,9 @@ class CanParticipateInAnotherGameQueryHandlerTest extends TestCase
 
         $handler = new CanParticipateInAnotherGameQueryHandler($repo);
 
-        $this->assertTrue($handler->handle(new CanParticipateInAnotherGameQuery($player->playerId->toId())));
+        $result = $handler->handle(new CanParticipateInAnotherGameQuery($player->playerId->toId()));
+
+        $this->assertTrue($result->unwrap());
     }
 
     public function test_if_player_can_join_returns_false(): void
@@ -27,6 +29,8 @@ class CanParticipateInAnotherGameQueryHandlerTest extends TestCase
 
         $handler = new CanParticipateInAnotherGameQueryHandler($repo);
 
-        $this->assertFalse($handler->handle(new CanParticipateInAnotherGameQuery($player->playerId->toId())));
+        $result = $handler->handle(new CanParticipateInAnotherGameQuery($player->playerId->toId()));
+
+        $this->assertFalse($result->unwrap());
     }
 }

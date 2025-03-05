@@ -199,13 +199,6 @@ class LaravelGameRepository implements GameRepositoryInterface
     {
         if ($game->phasesInfo->currentPhase->isSome()) {
             $phase = $game->phasesInfo->currentPhase->unwrap();
-            $phaseModel = new PhaseModel([
-                'id' => (string) $phase->phaseId,
-                'game_id' => (string) $game->gameId,
-                'type' => $phase->phaseType->value,
-                'adjudication_time' => $phase->adjudicationTime->mapOr(fn (DateTime $adjudicationTime) => $adjudicationTime->toDateTimeString(), null),
-                'ordinal_number' => $game->phasesInfo->count->int(),
-            ]);
 
             PhaseModel::updateOrCreate(
                 [
@@ -213,6 +206,7 @@ class LaravelGameRepository implements GameRepositoryInterface
                 ],
                 [
                     'id' => (string) $phase->phaseId,
+                    'name' => (string) $phase->phaseName,
                     'game_id' => (string) $game->gameId,
                     'type' => $phase->phaseType->value,
                     'adjudication_time' => $phase->adjudicationTime->mapOr(fn (DateTime $adjudicationTime) => $adjudicationTime->toDateTimeString(), null),
