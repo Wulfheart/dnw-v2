@@ -1,0 +1,4 @@
+- [ ] Page "New Games" with pagination
+- [ ] Can join a game
+- [ ] Page "Finished Games" with pagination
+- [ ] Page "Active Games" with pagination

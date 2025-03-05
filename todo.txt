@@ -2,8 +2,8 @@
     - name
     - variantId
     - current phase name (string, can be (not limited to): spring, summer, autumn, winter)
-    - current phase type (enum: movement, retreat, build)
-    - current phase year
+    - current phase type (enum: movement, retreat, adjustment)
+    - current phase year (as string)
     - anonymous yes/no
     - state
     - phase length
@@ -17,3 +17,5 @@
         - num-centers
         - num-units
         - status (enum: won, survived, drawn, defeated)
+
+- Add Phase name to the game phase
