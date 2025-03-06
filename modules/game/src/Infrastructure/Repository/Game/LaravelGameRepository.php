@@ -63,12 +63,12 @@ class LaravelGameRepository implements GameRepositoryInterface
         $gameName = GameName::fromString($game->name);
         $gameStateMachine = new GameStateMachine($game->current_state);
         $adjudicationTiming = new AdjudicationTiming(
-            PhaseLength::fromMinutes($game->adjudication_timing_phase_length),
+            PhaseLength::fromMinutes($game->adjudication_timing_phase_length_in_minutes),
             NoAdjudicationWeekdayCollection::fromWeekdaysArray($game->adjudication_timing_no_adjudication_weekdays),
         );
         $gameStartTiming = new GameStartTiming(
             new DateTime($game->game_start_timing_start_of_join_phase),
-            JoinLength::fromDays($game->game_start_timing_join_length),
+            JoinLength::fromDays($game->game_start_timing_join_length_in_days),
             $game->game_start_timing_start_when_ready,
         );
         $arr = $game->variant_data_variant_power_ids->map(
@@ -174,11 +174,11 @@ class LaravelGameRepository implements GameRepositoryInterface
                 fn (VariantPowerId $variantPowerId) => (string) $variantPowerId
             )->toArray(),
             'variant_data_default_supply_centers_to_win_count' => $game->variant->defaultSupplyCentersToWinCount->int(),
-            'adjudication_timing_phase_length' => $game->adjudicationTiming->phaseLength->minutes(),
+            'adjudication_timing_phase_length_in_minutes' => $game->adjudicationTiming->phaseLength->minutes(),
             'adjudication_timing_no_adjudication_weekdays' => $game->adjudicationTiming->noAdjudicationWeekdays->toArray(),
             'random_power_assignments' => $game->randomPowerAssignments,
             'game_start_timing_start_of_join_phase' => $game->gameStartTiming->startOfJoinPhase->toDateTimeString(),
-            'game_start_timing_join_length' => $game->gameStartTiming->joinLength->toDays(),
+            'game_start_timing_join_length_in_days' => $game->gameStartTiming->joinLength->toDays(),
             'game_start_timing_start_when_ready' => $game->gameStartTiming->startWhenReady,
         ]);
 

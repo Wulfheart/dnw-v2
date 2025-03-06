@@ -11,10 +11,10 @@ return new class() extends Migration {
             $table->ulid('id')->primary();
             $table->string('name');
             $table->string('current_state');
-            $table->unsignedInteger('adjudication_timing_phase_length');
+            $table->unsignedInteger('adjudication_timing_phase_length_in_minutes');
             $table->json('adjudication_timing_no_adjudication_weekdays');
             $table->timestamp('game_start_timing_start_of_join_phase');
-            $table->unsignedInteger('game_start_timing_join_length');
+            $table->unsignedInteger('game_start_timing_join_length_in_days');
             $table->boolean('game_start_timing_start_when_ready');
             $table->boolean('random_power_assignments');
             $table->ulid('variant_data_variant_id');
