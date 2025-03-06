@@ -12,10 +12,10 @@ use Dnw\Game\Domain\Game\ValueObject\GameStartTiming\GameStartTiming;
 use Dnw\Game\Domain\Game\ValueObject\GameStartTiming\JoinLength;
 use Dnw\Game\Domain\Player\Player;
 use Dnw\Game\Domain\Player\ValueObject\PlayerId;
-use Tests\TestCase;
+use Tests\LaravelTestCase;
 
 #[AllowLaravelTestCase]
-abstract class AbstractPlayerRepositoryTestCase extends TestCase
+abstract class AbstractPlayerRepositoryTestCase extends LaravelTestCase
 {
     abstract protected function buildPlayerRepo(): PlayerRepositoryInterface;
 

@@ -12,7 +12,7 @@ use ReflectionException;
 use ReflectionNamedType;
 use Tests\Attribute\Setup;
 
-abstract class TestCase extends BaseTestCase
+abstract class LaravelTestCase extends BaseTestCase
 {
     use LazilyRefreshDatabase;
 

@@ -10,11 +10,11 @@ use Dnw\User\Application\Query\GetUsersByIds\GetUsersByIdsQueryResult;
 use Dnw\User\Application\Query\GetUsersByIds\UserData;
 use Dnw\User\Infrastructure\UserModel;
 use PHPUnit\Framework\Attributes\CoversClass;
-use Tests\TestCase;
+use Tests\LaravelTestCase;
 
 #[CoversClass(GetUsersByIdsLaravelQueryHandler::class)]
 #[AllowLaravelTestCase]
-class GetUsersByIdsLaravelQueryHandlerTest extends TestCase
+class GetUsersByIdsLaravelQueryHandlerTest extends LaravelTestCase
 {
     public function test_no_results_in_error(): void
     {

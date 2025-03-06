@@ -7,11 +7,11 @@ use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
 use MohammedManssour\FormRequestTester\TestsFormRequests;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Tests\TestCase;
+use Tests\LaravelTestCase;
 
 #[CoversClass(StoreGameRequest::class)]
 #[AllowLaravelTestCase]
-class StoreGameRequestTest extends TestCase
+class StoreGameRequestTest extends LaravelTestCase
 {
     use TestsFormRequests;
 

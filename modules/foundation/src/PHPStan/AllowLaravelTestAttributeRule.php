@@ -7,7 +7,6 @@ use PhpParser\Node\Stmt\Class_;
 use PHPStan\Analyser\Scope;
 use PHPStan\Rules\Rule;
 use PHPStan\Rules\RuleErrorBuilder;
-use Tests\TestCase;
 
 /**
  * @implements Rule<Class_>

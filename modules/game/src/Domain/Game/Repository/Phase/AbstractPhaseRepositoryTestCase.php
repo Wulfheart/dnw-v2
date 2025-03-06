@@ -4,11 +4,11 @@ namespace Dnw\Game\Domain\Game\Repository\Phase;
 
 use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
 use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseId;
-use Tests\TestCase;
+use Tests\LaravelTestCase;
 use Wulfheart\Option\ResultAsserter;
 
 #[AllowLaravelTestCase]
-abstract class AbstractPhaseRepositoryTestCase extends TestCase
+abstract class AbstractPhaseRepositoryTestCase extends LaravelTestCase
 {
     abstract protected function buildRepository(): PhaseRepositoryInterface;
 

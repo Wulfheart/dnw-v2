@@ -11,11 +11,11 @@ use Dnw\Game\Domain\Game\Test\Asserter\GameAsserter;
 use Dnw\Game\Domain\Game\Test\Factory\GameBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Psr\Log\NullLogger;
-use Tests\TestCase;
+use Tests\LaravelTestCase;
 
 #[CoversClass(SubmitOrdersCommandHandler::class)]
 #[AllowLaravelTestCase]
-class SubmitOrdersCommandHandlerTest extends TestCase
+class SubmitOrdersCommandHandlerTest extends LaravelTestCase
 {
     public function test_handle(): void
     {

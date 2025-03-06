@@ -10,10 +10,10 @@ use Dnw\Game\Domain\Game\Event\GameCreatedEvent;
 use Dnw\Game\Domain\Game\Test\Factory\GameBuilder;
 use Dnw\Game\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Domain\Player\ValueObject\PlayerId;
-use Tests\TestCase;
+use Tests\LaravelTestCase;
 
 #[AllowLaravelTestCase]
-abstract class AbstractGameRepositoryTestCase extends TestCase
+abstract class AbstractGameRepositoryTestCase extends LaravelTestCase
 {
     abstract public function buildRepository(EventDispatcherInterface $eventDispatcher): GameRepositoryInterface;
 

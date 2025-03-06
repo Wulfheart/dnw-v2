@@ -14,12 +14,12 @@ use Dnw\Game\Domain\Game\Test\Factory\VariantFactory;
 use Dnw\Game\Infrastructure\Repository\Variant\InMemoryVariantRepository;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Psr\Log\NullLogger;
-use Tests\TestCase;
+use Tests\LaravelTestCase;
 use Wulfheart\Option\ResultAsserter;
 
 #[CoversClass(GetGameByIdQueryHandler::class)]
 #[AllowLaravelTestCase]
-class GetGameByIdQueryHandlerTest extends TestCase
+class GetGameByIdQueryHandlerTest extends LaravelTestCase
 {
     public function test_handle_game_created(): void
     {

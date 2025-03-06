@@ -14,13 +14,13 @@ use Dnw\Game\Domain\Variant\Repository\VariantRepositoryInterface;
 use Dnw\Game\Test\Feature\Fake\FakeWebDipAdjudicatorImplementation;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use Tests\FakeEventDispatcher;
-use Tests\TestCase;
+use Tests\LaravelTestCase;
 use Wulfheart\Option\Option;
 use Wulfheart\Option\ResultAsserter;
 
 #[CoversNothing]
 #[AllowLaravelTestCase]
-final class GameCreatedListenerWorksTest extends TestCase
+final class GameCreatedListenerWorksTest extends LaravelTestCase
 {
     use FakeEventDispatcher;
     use FakeWebDipAdjudicatorImplementation;
