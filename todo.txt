@@ -1,9 +1,15 @@
+- Build GameCommandBuilder for testing purposes (with standard variant by default) - create and fill game
+    default for standard variant
+- Try diplicity games for orders (try it in cli)
+- Implement Adjudicator for testing purposes which also caches the responses and therefore can be used for testing (maybe use __FUNCTION__ for context)
+- Implement the rest (like make game full, etc.)
+
+
 - Make designated game info dto game queries (based on https://webdiplomacy.net/board.php?gameID=63723#gamePanel)
     - name
     - variantId
-    - current phase name (string, can be (not limited to): spring, summer, autumn, winter)
+    - current phase name (string, like Winter 2023)
     - current phase type (enum: movement, retreat, adjustment)
-    - current phase year (as string)
     - anonymous yes/no
     - state
     - phase length
