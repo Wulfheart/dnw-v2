@@ -14,7 +14,7 @@ class SubmitOrdersCommand implements Command
 {
     public function __construct(
         public Id $gameId,
-        public Id $userId,
+        public Id $playerId,
         public bool $markedAsReady,
         /** @var array<string> $orders */
         public array $orders,

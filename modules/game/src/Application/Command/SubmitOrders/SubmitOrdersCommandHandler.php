@@ -30,7 +30,7 @@ class SubmitOrdersCommandHandler
         $orderCollection = OrderCollection::fromStringArray($command->orders);
 
         $game->submitOrders(
-            PlayerId::fromId($command->userId),
+            PlayerId::fromId($command->playerId),
             $orderCollection,
             $command->markedAsReady,
             $this->timeProvider->getCurrentTime()
