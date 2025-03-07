@@ -6,6 +6,7 @@ use Dnw\Game\Domain\Variant\Repository\LoadVariantResult;
 use Dnw\Game\Domain\Variant\Repository\SaveVariantResult;
 use Dnw\Game\Domain\Variant\Repository\VariantRepositoryInterface;
 use Dnw\Game\Domain\Variant\Shared\VariantId;
+use Dnw\Game\Domain\Variant\ValueObject\VariantName;
 use Dnw\Game\Domain\Variant\Variant;
 
 class InMemoryVariantRepository implements VariantRepositoryInterface
@@ -29,6 +30,17 @@ class InMemoryVariantRepository implements VariantRepositoryInterface
         $variant = $this->variants[(string) $variantId] ?? null;
         if (isset($variant)) {
             return LoadVariantResult::ok($variant);
+        }
+
+        return LoadVariantResult::err(LoadVariantResult::E_VARIANT_NOT_FOUND);
+    }
+
+    public function loadByName(VariantName $variantName): LoadVariantResult
+    {
+        foreach ($this->variants as $variant) {
+            if ($variant->name == $variantName) {
+                return LoadVariantResult::ok($variant);
+            }
         }
 
         return LoadVariantResult::err(LoadVariantResult::E_VARIANT_NOT_FOUND);

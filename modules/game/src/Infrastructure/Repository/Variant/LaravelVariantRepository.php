@@ -37,6 +37,28 @@ class LaravelVariantRepository implements VariantRepositoryInterface
             return LoadVariantResult::err(LoadVariantResult::E_VARIANT_NOT_FOUND);
         }
 
+        $variant = $this->translateFromModel($variantModel);
+
+        return LoadVariantResult::ok($variant);
+    }
+
+    public function loadByName(VariantName $variantName): LoadVariantResult
+    {
+        $variantModel = VariantModel::with('powers')
+            ->where('name', (string) $variantName)
+            ->first();
+
+        if ($variantModel === null) {
+            return LoadVariantResult::err(LoadVariantResult::E_VARIANT_NOT_FOUND);
+        }
+
+        $variant = $this->translateFromModel($variantModel);
+
+        return LoadVariantResult::ok($variant);
+    }
+
+    private function translateFromModel(VariantModel $variantModel): Variant
+    {
         $variantPowerCollection = new VariantPowerCollection(
             $variantModel->powers->map(fn (VariantPowerModel $power) => new VariantPower(
                 VariantPowerId::fromString($power->id),
@@ -46,7 +68,7 @@ class LaravelVariantRepository implements VariantRepositoryInterface
             ))->toArray()
         );
 
-        $variant =  new Variant(
+        return new Variant(
             VariantId::fromString($variantModel->id),
             VariantName::fromString($variantModel->name),
             VariantApiName::fromString($variantModel->api_name),
@@ -55,8 +77,6 @@ class LaravelVariantRepository implements VariantRepositoryInterface
             Count::fromInt($variantModel->default_supply_centers_to_win_count),
             Count::fromInt($variantModel->total_supply_center_count)
         );
-
-        return LoadVariantResult::ok($variant);
     }
 
     public function save(Variant $variant): SaveVariantResult
