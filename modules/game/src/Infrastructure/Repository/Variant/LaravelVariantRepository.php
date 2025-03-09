@@ -61,7 +61,7 @@ class LaravelVariantRepository implements VariantRepositoryInterface
     {
         $variantPowerCollection = new VariantPowerCollection(
             $variantModel->powers->map(fn (VariantPowerModel $power) => new VariantPower(
-                VariantPowerId::fromString($power->id),
+                VariantPowerId::new($power->id),
                 VariantPowerName::fromString($power->name),
                 VariantPowerApiName::fromString($power->api_name),
                 Color::fromString($power->color)

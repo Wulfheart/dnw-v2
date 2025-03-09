@@ -2,6 +2,7 @@
 
 namespace Dnw\Game\Domain\Game\Test\Factory;
 
+use Dnw\Foundation\Identity\Id;
 use Dnw\Game\Domain\Game\Collection\OrderCollection;
 use Dnw\Game\Domain\Game\Entity\Power;
 use Dnw\Game\Domain\Game\ValueObject\Phase\PhasePowerData;
@@ -20,7 +21,7 @@ class PowerFactory
         return new Power(
             PowerId::new(),
             Option::none(),
-            VariantPowerId::new(),
+            VariantPowerId::new(Id::generate()),
             Option::none(),
             Option::none(),
         );
@@ -31,7 +32,7 @@ class PowerFactory
         return new Power(
             PowerId::new(),
             Option::some(PlayerId::new()),
-            VariantPowerId::new(),
+            VariantPowerId::new(Id::generate()),
             Option::none(),
             Option::none(),
         );
@@ -48,7 +49,7 @@ class PowerFactory
         return new Power(
             $id ?? PowerId::new(),
             Option::fromNullable($playerId),
-            $variantPowerId ?? VariantPowerId::new(),
+            $variantPowerId ?? VariantPowerId::new(Id::generate()),
             Option::fromNullable($currentPhaseData),
             Option::fromNullable($appliedOrders),
         );

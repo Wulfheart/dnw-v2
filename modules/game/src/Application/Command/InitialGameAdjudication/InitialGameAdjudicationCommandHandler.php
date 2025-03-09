@@ -58,7 +58,9 @@ readonly class InitialGameAdjudicationCommandHandler
         $phasePowerCollection = new ArrayCollection();
 
         foreach ($adjudicationGameResult->phase_power_data as $phasePowerData) {
-            $variantPower = $variant->variantPowerCollection->getByPowerApiName(VariantPowerApiName::fromString($phasePowerData->power));
+            $variantPower = $variant->variantPowerCollection->getByPowerApiName(
+                VariantPowerApiName::fromString($phasePowerData->power)
+            );
             $powerId = $game->powerCollection->getByVariantPowerId($variantPower->id)->powerId;
 
             $possibleOrders = $adjudicationGameResult->getPossibleOrdersByPowerName($phasePowerData->power);

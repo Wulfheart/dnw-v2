@@ -4,6 +4,7 @@ namespace Dnw\Game\Domain\Game;
 
 use Dnw\Foundation\DateTime\DateTime;
 use Dnw\Foundation\Exception\DomainException;
+use Dnw\Foundation\Identity\Id;
 use Dnw\Game\Domain\Game\Collection\VariantPowerIdCollection;
 use Dnw\Game\Domain\Game\Event\GameAbandonedEvent;
 use Dnw\Game\Domain\Game\Event\GameCreatedEvent;
@@ -34,10 +35,10 @@ class GamePregameTest extends TestCase
 {
     public function test_create_random_assignment(): void
     {
-        $firstId = VariantPowerId::new();
-        $secondId = VariantPowerId::new();
+        $firstId = VariantPowerId::new(Id::generate());
+        $secondId = VariantPowerId::new(Id::generate());
         $gameVariantData = new GameVariantData(
-            VariantId::new(),
+            VariantId::fromString(Id::generate()),
             VariantPowerIdCollection::build($firstId, $secondId),
             Count::fromInt(4)
         );
@@ -66,10 +67,10 @@ class GamePregameTest extends TestCase
 
     public function test_create_non_random_assignment(): void
     {
-        $firstId = VariantPowerId::new();
-        $secondId = VariantPowerId::new();
+        $firstId = VariantPowerId::new(Id::generate());
+        $secondId = VariantPowerId::new(Id::generate());
         $gameVariantData = new GameVariantData(
-            VariantId::new(),
+            VariantId::fromString(Id::generate()),
             VariantPowerIdCollection::build($firstId, $secondId),
             Count::fromInt(4)
         );

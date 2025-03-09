@@ -47,9 +47,9 @@ readonly class GetGameByIdQueryHandler
             new GetGameByIdQueryResultData(
                 $query->id,
                 GameStateEnum::fromGameState($game->gameStateMachine->currentState()),
-                (string) $game->name,
-                (string) $variant->name,
-                $game->variant->id->toId(),
+                $game->name,
+                $variant->name,
+                $game->variant->id,
                 $game->adjudicationTiming->phaseLength->minutes(),
                 $game->gameStartTiming->endOfJoinPhase(),
                 new ArrayCollection(
@@ -58,7 +58,7 @@ readonly class GetGameByIdQueryHandler
                             $variantPower = $variant->variantPowerCollection->getByVariantPowerId($power->variantPowerId);
 
                             return new VariantPowerDataDto(
-                                $power->variantPowerId->toId(),
+                                $power->variantPowerId,
                                 $power->playerId->mapIntoOption(
                                     fn (PlayerId $id) => $id->toId()
                                 ),

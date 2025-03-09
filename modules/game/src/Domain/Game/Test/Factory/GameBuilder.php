@@ -4,7 +4,6 @@ namespace Dnw\Game\Domain\Game\Test\Factory;
 
 use Dnw\Foundation\DateTime\DateTime;
 use Dnw\Game\Domain\Game\Collection\OrderCollection;
-use Dnw\Game\Domain\Game\Collection\VariantPowerIdCollection;
 use Dnw\Game\Domain\Game\Dto\AdjudicationPowerDataDto;
 use Dnw\Game\Domain\Game\Dto\InitialAdjudicationPowerDataDto;
 use Dnw\Game\Domain\Game\Entity\Power;
@@ -20,7 +19,6 @@ use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseName;
 use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
 use Dnw\Game\Domain\Game\ValueObject\Power\PowerId;
 use Dnw\Game\Domain\Player\ValueObject\PlayerId;
-use Dnw\Game\Domain\Variant\Shared\VariantPowerId;
 use Dnw\Game\Domain\Variant\Variant;
 use Dnw\Game\Infrastructure\Adapter\RandomNumberGenerator;
 use Exception;
@@ -45,19 +43,7 @@ class GameBuilder
         ?PlayerId $playerId = null,
     ): self {
         if ($variant === null) {
-            $variantData = GameVariantDataFactory::build(
-                variantPowerIdCollection: VariantPowerIdCollection::build(
-                    VariantPowerId::new(),
-                    VariantPowerId::new(),
-                    VariantPowerId::new(),
-                    VariantPowerId::new(),
-                    VariantPowerId::new(),
-                    VariantPowerId::new(),
-                    VariantPowerId::new(),
-                    VariantPowerId::new(),
-                ),
-                defaultSupplyCenterCountToWin: Count::fromInt(18),
-            );
+            $variantData = GameVariantDataFactory::fromVariant(VariantFactory::standard());
         } else {
             $variantData = GameVariantDataFactory::fromVariant($variant);
         }

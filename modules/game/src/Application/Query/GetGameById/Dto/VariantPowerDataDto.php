@@ -8,7 +8,7 @@ use Wulfheart\Option\Option;
 class VariantPowerDataDto
 {
     public function __construct(
-        public Id $variantPowerId,
+        public string $variantPowerId,
         /** @var Option<Id> $playerId */
         public Option $playerId,
         public string $name,

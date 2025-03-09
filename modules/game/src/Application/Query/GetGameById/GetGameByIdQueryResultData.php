@@ -16,7 +16,7 @@ class GetGameByIdQueryResultData
         public GameStateEnum $state,
         public string $name,
         public string $variantName,
-        public Id $variantId,
+        public string $variantId,
         public int $phaseLengthInMinutes,
         public DateTime $nextPhaseStart,
         /** @var ArrayCollection<VariantPowerDataDto> $variantPowerData */

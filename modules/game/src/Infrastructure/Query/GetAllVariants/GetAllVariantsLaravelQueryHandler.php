@@ -2,7 +2,6 @@
 
 namespace Dnw\Game\Infrastructure\Query\GetAllVariants;
 
-use Dnw\Foundation\Identity\Id;
 use Dnw\Game\Application\Query\GetAllVariants\GetAllVariantsQuery;
 use Dnw\Game\Application\Query\GetAllVariants\GetAllVariantsQueryHandlerInterface;
 use Dnw\Game\Application\Query\GetAllVariants\GetAllVariantsQueryResult;
@@ -18,11 +17,11 @@ class GetAllVariantsLaravelQueryHandler implements GetAllVariantsQueryHandlerInt
 
         return new GetAllVariantsQueryResult(
             $variants->map(fn (VariantModel $variantModel) => new VariantDto(
-                Id::fromString($variantModel->id),
+                $variantModel->id,
                 $variantModel->name,
                 $variantModel->description,
                 $variantModel->powers->map(fn ($power) => new VariantPowerDto(
-                    Id::fromString($power->id),
+                    $power->id,
                     $power->name,
                 ))->toArray(),
             ))->toArray()

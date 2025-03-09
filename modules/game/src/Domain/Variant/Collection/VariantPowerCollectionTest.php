@@ -23,7 +23,9 @@ class VariantPowerCollectionTest extends TestCase
     {
         $collection = VariantFactory::standard()->variantPowerCollection;
 
-        $power = $collection->getByVariantPowerId(VariantPowerId::fromId($collection->getOffset(1)->id->toId()));
+        $power = $collection->getByVariantPowerId(
+            VariantPowerId::new($collection->getOffset(1)->id)
+        );
 
         $this->assertEquals($collection->getOffset(1), $power);
     }

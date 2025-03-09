@@ -30,7 +30,7 @@ abstract class AbstractVariantRepositoryTestCase extends LaravelTestCase
     public function test_load_not_found(): void
     {
         $repository = $this->buildRepository();
-        $result = $repository->load(VariantId::new());
+        $result = $repository->load(VariantId::fromString('::NON_EXISTENT::'));
         $this->assertTrue($result->hasErr());
         $this->assertEquals(LoadVariantResult::E_VARIANT_NOT_FOUND, $result->unwrapErr());
 

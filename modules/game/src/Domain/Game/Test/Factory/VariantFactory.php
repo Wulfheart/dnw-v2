@@ -24,43 +24,43 @@ class VariantFactory
     {
         $variantPowerCollection = new VariantPowerCollection([
             new VariantPower(
-                VariantPowerId::new(),
+                VariantPowerId::new('austria'),
                 VariantPowerName::fromString('Austria'),
                 VariantPowerApiName::fromString('AUSTRIA'),
                 Color::fromString('red')
             ),
             new VariantPower(
-                VariantPowerId::new(),
+                VariantPowerId::new('greatbritain'),
                 VariantPowerName::fromString('Great Britain'),
                 VariantPowerApiName::fromString('ENGLAND'),
                 Color::fromString('pink')
             ),
             new VariantPower(
-                VariantPowerId::new(),
+                VariantPowerId::new('germany'),
                 VariantPowerName::fromString('Germany'),
                 VariantPowerApiName::fromString('GERMANY'),
                 Color::fromString('brown')
             ),
             new VariantPower(
-                VariantPowerId::new(),
+                VariantPowerId::new('russia'),
                 VariantPowerName::fromString('Russia'),
                 VariantPowerApiName::fromString('RUSSIA'),
                 Color::fromString('violet')
             ),
             new VariantPower(
-                VariantPowerId::new(),
+                VariantPowerId::new('italy'),
                 VariantPowerName::fromString('Italy'),
                 VariantPowerApiName::fromString('ITALY'),
                 Color::fromString('green')
             ),
             new VariantPower(
-                VariantPowerId::new(),
+                VariantPowerId::new('france'),
                 VariantPowerName::fromString('France'),
                 VariantPowerApiName::fromString('FRANCE'),
                 Color::fromString('blue')
             ),
             new VariantPower(
-                VariantPowerId::new(),
+                VariantPowerId::new('turkey'),
                 VariantPowerName::fromString('Turkey'),
                 VariantPowerApiName::fromString('TURKEY'),
                 Color::fromString('yellow')
@@ -68,7 +68,7 @@ class VariantFactory
         ]);
 
         return new Variant(
-            VariantId::new(),
+            VariantId::fromString('standard'),
             VariantName::fromString('Standard'),
             VariantApiName::fromString('standard'),
             VariantDescription::fromString('The standard variant of Diplomacy'),
@@ -82,43 +82,43 @@ class VariantFactory
     {
         $variantPowerCollection = new VariantPowerCollection([
             new VariantPower(
-                VariantPowerId::new(),
+                VariantPowerId::new('austria'),
                 VariantPowerName::fromString('China'),
                 VariantPowerApiName::fromString('AUSTRIA'),
                 Color::fromString('red')
             ),
             new VariantPower(
-                VariantPowerId::new(),
+                VariantPowerId::new('greatbritain'),
                 VariantPowerName::fromString('Great Britain'),
                 VariantPowerApiName::fromString('ENGLAND'),
                 Color::fromString('pink')
             ),
             new VariantPower(
-                VariantPowerId::new(),
+                VariantPowerId::new('japan'),
                 VariantPowerName::fromString('Japan'),
                 VariantPowerApiName::fromString('JAPAN'),
                 Color::fromString('brown')
             ),
             new VariantPower(
-                VariantPowerId::new(),
+                VariantPowerId::new('russia'),
                 VariantPowerName::fromString('Russia'),
                 VariantPowerApiName::fromString('RUSSIA'),
                 Color::fromString('violet')
             ),
             new VariantPower(
-                VariantPowerId::new(),
+                VariantPowerId::new('holland'),
                 VariantPowerName::fromString('Holland'),
                 VariantPowerApiName::fromString('ITALY'),
                 Color::fromString('green')
             ),
             new VariantPower(
-                VariantPowerId::new(),
+                VariantPowerId::new('france'),
                 VariantPowerName::fromString('France'),
                 VariantPowerApiName::fromString('FRANCE'),
                 Color::fromString('blue')
             ),
             new VariantPower(
-                VariantPowerId::new(),
+                VariantPowerId::new('turkey'),
                 VariantPowerName::fromString('Turkey'),
                 VariantPowerApiName::fromString('TURKEY'),
                 Color::fromString('yellow')
@@ -126,7 +126,7 @@ class VariantFactory
         ]);
 
         return new Variant(
-            VariantId::new(),
+            VariantId::fromString('colonial'),
             VariantName::fromString('Colonial'),
             VariantApiName::fromString('colonial'),
             VariantDescription::fromString('Colonial diplomacy'),

@@ -17,7 +17,7 @@ readonly class CreateGameCommand implements Command
         public int $phaseLengthInMinutes,
         public int $joinLengthInDays,
         public bool $startWhenReady,
-        public Id $variantId,
+        public string $variantId,
         public bool $randomPowerAssignments,
         /** @var Option<Id> */
         public Option $selectedVariantPowerId,

@@ -72,13 +72,13 @@ class LaravelGameRepository implements GameRepositoryInterface
             $game->game_start_timing_start_when_ready,
         );
         $arr = $game->variant_data_variant_power_ids->map(
-            fn (string $variantPowerId) => VariantPowerId::fromString($variantPowerId)
+            fn (string $variantPowerId) => VariantPowerId::new($variantPowerId)
         );
         $variantData = new GameVariantData(
             VariantId::fromString($game->variant_data_variant_id),
             VariantPowerIdCollection::build(
                 ...$game->variant_data_variant_power_ids->map(
-                    fn (string $variantPowerId) => VariantPowerId::fromString($variantPowerId)
+                    fn (string $variantPowerId) => VariantPowerId::new($variantPowerId)
                 )->toArray()
             ),
             Count::fromInt($game->variant_data_default_supply_centers_to_win_count),
@@ -108,7 +108,7 @@ class LaravelGameRepository implements GameRepositoryInterface
                 Option::fromNullable($power->player_id)->mapIntoOption(
                     fn (string $playerId) => PlayerId::fromString($playerId)
                 ),
-                VariantPowerId::fromString($power->variant_power_id),
+                VariantPowerId::new($power->variant_power_id),
                 Option::fromNullable($game->currentPhase)->mapIntoOption(function (PhaseModel $phase) use ($power) {
                     /** @var PhasePowerDataModel $powerData */
                     $powerData = $phase->powerData->where('power_id', $power->id)->firstOrFail();

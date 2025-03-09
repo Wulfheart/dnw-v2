@@ -2,10 +2,26 @@
 
 namespace Dnw\Game\Domain\Variant\Shared;
 
-use Dnw\Foundation\Identity\UlidValueObjectTrait;
+use Exception;
 use Stringable;
 
-class VariantPowerId implements Stringable
+final readonly class VariantPowerId implements Stringable
 {
-    use UlidValueObjectTrait;
+    private function __construct(
+        private string $id
+    ) {
+        if (empty($id)) {
+            throw new Exception('VariantId must not be empty');
+        }
+    }
+
+    public static function new(string $id): self
+    {
+        return new self($id);
+    }
+
+    public function __toString(): string
+    {
+        return $this->id;
+    }
 }
