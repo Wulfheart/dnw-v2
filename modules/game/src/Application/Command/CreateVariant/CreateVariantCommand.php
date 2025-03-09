@@ -18,7 +18,7 @@ final readonly class CreateVariantCommand implements Command
         public string $description,
         public int $defaultSupplyCentersToWinCount,
         public int $totalSupplyCenterCount,
-        /** @var ArrayCollection<VariantPowerInfo> */
+        /** @var ArrayCollection<VariantPowerInfo> $powers */
         public ArrayCollection $powers,
     ) {}
 }
