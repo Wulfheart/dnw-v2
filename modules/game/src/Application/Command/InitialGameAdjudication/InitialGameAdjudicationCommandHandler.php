@@ -15,7 +15,7 @@ use Dnw\Game\Domain\Game\ValueObject\Phase\NewPhaseData;
 use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseName;
 use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
 use Dnw\Game\Domain\Variant\Repository\VariantRepositoryInterface;
-use Dnw\Game\Domain\Variant\ValueObject\VariantPower\VariantPowerApiName;
+use Dnw\Game\Domain\Variant\Shared\VariantPowerId;
 use Psr\Log\LoggerInterface;
 
 readonly class InitialGameAdjudicationCommandHandler
@@ -48,7 +48,7 @@ readonly class InitialGameAdjudicationCommandHandler
         $variant = $variantResult->unwrap();
 
         $adjudicationGameResult = $this->adjudicatorService->initializeGame(
-            $variant->apiName,
+            $variant->id,
         );
 
         $phaseType = PhaseTypeEnum::from($adjudicationGameResult->phase_type);
@@ -58,8 +58,8 @@ readonly class InitialGameAdjudicationCommandHandler
         $phasePowerCollection = new ArrayCollection();
 
         foreach ($adjudicationGameResult->phase_power_data as $phasePowerData) {
-            $variantPower = $variant->variantPowerCollection->getByPowerApiName(
-                VariantPowerApiName::fromString($phasePowerData->power)
+            $variantPower = $variant->variantPowerCollection->getByVariantPowerId(
+                VariantPowerId::fromString($phasePowerData->power)
             );
             $powerId = $game->powerCollection->getByVariantPowerId($variantPower->id)->powerId;
 

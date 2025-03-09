@@ -15,8 +15,8 @@ class PowerCollectionTest extends TestCase
     public function test_createFromVariantPowerCollection(): void
     {
         $variantPowerIdCollection = VariantPowerIdCollection::build(
-            VariantPowerId::new('First'),
-            VariantPowerId::new('Second')
+            VariantPowerId::fromString('First'),
+            VariantPowerId::fromString('Second')
         );
 
         $powerCollection = PowerCollection::createFromVariantPowerIdCollection($variantPowerIdCollection);

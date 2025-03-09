@@ -15,7 +15,7 @@ final readonly class VariantPowerId implements Stringable
         }
     }
 
-    public static function new(string $id): self
+    public static function fromString(string $id): self
     {
         return new self($id);
     }

@@ -11,11 +11,11 @@ class VariantPowerIdCollectionTest extends TestCase
 {
     public function test_containsVariantPowerId(): void
     {
-        $id = VariantPowerId::new('::ID::');
+        $id = VariantPowerId::fromString('::ID::');
 
-        $collection = new VariantPowerIdCollection([VariantPowerId::new('::OTHER_ID::'), $id]);
+        $collection = new VariantPowerIdCollection([VariantPowerId::fromString('::OTHER_ID::'), $id]);
 
         $this->assertTrue($collection->containsVariantPowerId($id));
-        $this->assertFalse($collection->containsVariantPowerId(VariantPowerId::new('::ID::')));
+        $this->assertFalse($collection->containsVariantPowerId(VariantPowerId::fromString('::ID::')));
     }
 }

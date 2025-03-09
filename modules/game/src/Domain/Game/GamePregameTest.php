@@ -35,8 +35,8 @@ class GamePregameTest extends TestCase
 {
     public function test_create_random_assignment(): void
     {
-        $firstId = VariantPowerId::new(Id::generate());
-        $secondId = VariantPowerId::new(Id::generate());
+        $firstId = VariantPowerId::fromString(Id::generate());
+        $secondId = VariantPowerId::fromString(Id::generate());
         $gameVariantData = new GameVariantData(
             VariantId::fromString(Id::generate()),
             VariantPowerIdCollection::build($firstId, $secondId),
@@ -67,8 +67,8 @@ class GamePregameTest extends TestCase
 
     public function test_create_non_random_assignment(): void
     {
-        $firstId = VariantPowerId::new(Id::generate());
-        $secondId = VariantPowerId::new(Id::generate());
+        $firstId = VariantPowerId::fromString(Id::generate());
+        $secondId = VariantPowerId::fromString(Id::generate());
         $gameVariantData = new GameVariantData(
             VariantId::fromString(Id::generate()),
             VariantPowerIdCollection::build($firstId, $secondId),

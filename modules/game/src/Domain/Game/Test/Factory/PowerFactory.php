@@ -21,7 +21,7 @@ class PowerFactory
         return new Power(
             PowerId::new(),
             Option::none(),
-            VariantPowerId::new(Id::generate()),
+            VariantPowerId::fromString(Id::generate()),
             Option::none(),
             Option::none(),
         );
@@ -32,7 +32,7 @@ class PowerFactory
         return new Power(
             PowerId::new(),
             Option::some(PlayerId::new()),
-            VariantPowerId::new(Id::generate()),
+            VariantPowerId::fromString(Id::generate()),
             Option::none(),
             Option::none(),
         );
@@ -49,7 +49,7 @@ class PowerFactory
         return new Power(
             $id ?? PowerId::new(),
             Option::fromNullable($playerId),
-            $variantPowerId ?? VariantPowerId::new(Id::generate()),
+            $variantPowerId ?? VariantPowerId::fromString(Id::generate()),
             Option::fromNullable($currentPhaseData),
             Option::fromNullable($appliedOrders),
         );

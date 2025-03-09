@@ -45,7 +45,7 @@ class InitialGameAdjudicationCommandHandlerTest extends TestCase
             [$game]
         );
         $adjudicatorService = new FakeAdjudicatorService(
-            initializeGameResponses: [(string) $variant->apiName => $adjudicateGameResponse]
+            initializeGameResponses: [(string) $variant->id => $adjudicateGameResponse]
         );
         $variantRepository = new InMemoryVariantRepository([$variant]);
 

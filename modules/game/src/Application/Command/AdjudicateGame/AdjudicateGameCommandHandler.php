@@ -52,7 +52,7 @@ readonly class AdjudicateGameCommandHandler
 
         $orders = [];
         foreach ($game->powerCollection as $power) {
-            $powerApiName = $variant->variantPowerCollection->getByVariantPowerId($power->variantPowerId)->apiName;
+            $powerApiName = $variant->variantPowerCollection->getByVariantPowerId($power->variantPowerId)->id;
 
             $orders[] = new AdjudicatorOrder(
                 $powerApiName,
@@ -81,7 +81,7 @@ readonly class AdjudicateGameCommandHandler
 
         foreach ($game->powerCollection as $power) {
 
-            $powerApiName = $variant->variantPowerCollection->getByVariantPowerId($power->variantPowerId)->apiName;
+            $powerApiName = $variant->variantPowerCollection->getByVariantPowerId($power->variantPowerId)->id;
 
             $phasePowerData = $adjudicationGameResult->getPhasePowerDataByPowerName($powerApiName);
             $possibleOrders = $adjudicationGameResult->getPossibleOrdersByPowerName($powerApiName);
