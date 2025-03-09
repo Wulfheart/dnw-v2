@@ -17,7 +17,7 @@ return new class() extends Migration {
             $table->unsignedInteger('game_start_timing_join_length_in_days');
             $table->boolean('game_start_timing_start_when_ready');
             $table->boolean('random_power_assignments');
-            $table->ulid('variant_data_variant_id');
+            $table->ulid('variant_data_variant_key');
             $table->json('variant_data_variant_power_ids');
             $table->unsignedInteger('variant_data_default_supply_centers_to_win_count');
             $table->unsignedInteger('version');

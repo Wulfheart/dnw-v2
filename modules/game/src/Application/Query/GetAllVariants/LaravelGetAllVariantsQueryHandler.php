@@ -4,7 +4,7 @@ namespace Dnw\Game\Application\Query\GetAllVariants;
 
 use Dnw\Game\Domain\Variant\Repository\Impl\LaravelVariantRepository\VariantModel;
 
-class GetAllVariantsLaravelQueryHandler implements GetAllVariantsQueryHandlerInterface
+class LaravelGetAllVariantsQueryHandler implements GetAllVariantsQueryHandlerInterface
 {
     public function handle(GetAllVariantsQuery $query): GetAllVariantsQueryResult
     {

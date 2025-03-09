@@ -7,8 +7,10 @@ use Dnw\Adjudicator\AdjudicatorService;
 use Dnw\Adjudicator\Json\JsonHandler;
 use Dnw\Adjudicator\Uri;
 use Dnw\Adjudicator\WebAdjudicatorImplementation;
-use Dnw\Game\Application\Query\GetAllVariants\GetAllVariantsLaravelQueryHandler;
 use Dnw\Game\Application\Query\GetAllVariants\GetAllVariantsQueryHandlerInterface;
+use Dnw\Game\Application\Query\GetAllVariants\LaravelGetAllVariantsQueryHandler;
+use Dnw\Game\Application\Query\GetNewGames\GetNewGamesLaravelQueryHandler;
+use Dnw\Game\Application\Query\GetNewGames\GetNewGamesQueryHandlerInterface;
 use Dnw\Game\Domain\Adapter\RandomNumberGenerator\RandomNumberGenerator;
 use Dnw\Game\Domain\Adapter\RandomNumberGenerator\RandomNumberGeneratorInterface;
 use Dnw\Game\Domain\Adapter\TimeProvider\LaravelTimeProvider;
@@ -39,7 +41,8 @@ class GameServiceProvider extends ServiceProvider
         PhaseRepositoryInterface::class => LaravelPhaseRepository::class,
         TimeProviderInterface::class => LaravelTimeProvider::class,
         RandomNumberGeneratorInterface::class => RandomNumberGenerator::class,
-        GetAllVariantsQueryHandlerInterface::class => GetAllVariantsLaravelQueryHandler::class,
+        GetAllVariantsQueryHandlerInterface::class => LaravelGetAllVariantsQueryHandler::class,
+        GetNewGamesQueryHandlerInterface::class => GetNewGamesLaravelQueryHandler::class,
     ];
 
     public function register()

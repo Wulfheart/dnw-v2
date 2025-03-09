@@ -4,7 +4,7 @@ namespace Dnw\Game\Application\Query\GetNewGames;
 
 use Dnw\Foundation\Collection\ArrayCollection;
 
-final readonly class GetNewGamesQueryResult
+final class GetNewGamesQueryResult
 {
     public function __construct(
         /** @var ArrayCollection<NewGameInfo> $games */

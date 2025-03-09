@@ -41,6 +41,7 @@ class GameBuilder
         ?GameStartTiming $gameStartTiming = null,
         ?Variant $variant = null,
         ?PlayerId $playerId = null,
+        ?GameId $gameId = null,
     ): self {
         if ($variant === null) {
             $variantData = GameVariantDataFactory::fromVariant(VariantFactory::standard());
@@ -50,7 +51,7 @@ class GameBuilder
 
         $rng = new RandomNumberGenerator();
         $game = Game::create(
-            GameId::new(),
+            $gameId ?? GameId::new(),
             GameName::fromString('Test Game'),
             $adjudicationTiming ?? AdjudicationTimingFactory::build(),
             $gameStartTiming ?? GameStartTimingFactory::build(startWhenReady: $startWhenReady),
@@ -91,6 +92,9 @@ class GameBuilder
 
     public function join(?PlayerId $playerId = null): self
     {
+        if (! $this->game->gameStateMachine->hasCurrentState(GameStates::PLAYERS_JOINING)) {
+            $this->storeInitialAdjudication();
+        }
         $powerToJoin = $this->game->powerCollection->getUnassignedPowers()->getOffset(0);
 
         $this->game->join(
@@ -105,6 +109,9 @@ class GameBuilder
 
     public function makeFull(): self
     {
+        if (! $this->game->gameStateMachine->hasCurrentState(GameStates::PLAYERS_JOINING)) {
+            $this->storeInitialAdjudication();
+        }
         while ($this->game->powerCollection->hasAvailablePowers()) {
             $this->join();
         }
@@ -193,6 +200,9 @@ class GameBuilder
 
     public function transitionToAdjudicating(): self
     {
+        if (! $this->game->gameStateMachine->hasCurrentState(GameStates::ORDER_SUBMISSION)) {
+            $this->start();
+        }
         $this->markAllPowersAsReady();
         if ($this->game->gameStateMachine->currentStateIsNot(GameStates::ADJUDICATING)) {
             throw new Exception('Game is not in the correct state to transition to adjudicating');
@@ -242,6 +252,9 @@ class GameBuilder
 
     public function finish(): self
     {
+        if (! $this->game->gameStateMachine->hasCurrentState(GameStates::ADJUDICATING)) {
+            $this->transitionToAdjudicating();
+        }
         $this->game->powerCollection->map(fn (Power $power) => new AdjudicationPowerDataDto(
             $power->powerId,
             new NewPhaseData(true, false, Count::fromInt(1), Count::fromInt(1)),

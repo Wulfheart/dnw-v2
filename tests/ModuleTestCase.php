@@ -3,6 +3,9 @@
 namespace Tests;
 
 use Dnw\Foundation\Bus\BusInterface;
+use Dnw\Foundation\Identity\Id;
+use Dnw\Foundation\UserContext\UserContext;
+use Wulfheart\Option\Option;
 
 class ModuleTestCase extends LaravelTestCase
 {
@@ -13,6 +16,15 @@ class ModuleTestCase extends LaravelTestCase
         parent::setUp();
 
         $this->bus = $this->app->make(BusInterface::class);
+        $this->app->bind(UserContext::class, fn () => new UserContext(Option::none()));
+    }
+
+    /**
+     * @param  array<string>  $permissions
+     */
+    public function bindUser(Id $id, array $permissions = []): void
+    {
+        $this->app->bind(UserContext::class, fn () => new UserContext(Option::some($id), $permissions));
     }
 
     /**

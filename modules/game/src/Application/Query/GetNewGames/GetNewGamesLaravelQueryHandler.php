@@ -5,6 +5,7 @@ namespace Dnw\Game\Application\Query\GetNewGames;
 use Dnw\Foundation\Collection\ArrayCollection;
 use Dnw\Foundation\DateTime\DateTime;
 use Dnw\Foundation\Identity\Id;
+use Dnw\Foundation\UserContext\UserContext;
 use Dnw\Game\Application\Query\Shared\Game\GameInfo\GameInfoDto;
 use Dnw\Game\Application\Query\Shared\Game\GameInfo\GameStateEnum;
 use Dnw\Game\Application\Query\Shared\Game\GameInfo\PhaseTypeEnum;
@@ -12,9 +13,14 @@ use Dnw\Game\Domain\Game\Repository\Game\Impl\Laravel\GameModel;
 use Dnw\Game\Domain\Game\Repository\Game\Impl\Laravel\PowerModel;
 use Dnw\Game\Domain\Game\Repository\Phase\Impl\Laravel\PhaseModel;
 use Dnw\Game\Domain\Game\StateMachine\GameStates;
+use Illuminate\Database\Eloquent\Builder;
 
 final readonly class GetNewGamesLaravelQueryHandler implements GetNewGamesQueryHandlerInterface
 {
+    public function __construct(
+        private UserContext $user,
+    ) {}
+
     public function handle(GetNewGamesQuery $query): GetNewGamesQueryResult
     {
         $baseQuery =  GameModel::query()
@@ -25,6 +31,14 @@ final readonly class GetNewGamesLaravelQueryHandler implements GetNewGamesQueryH
                 'currentPhase',
                 'powers',
             ])
+            ->when(
+                $this->user->getId()->isSome(),
+                fn (Builder $query) => $query->whereDoesntHave(
+                    'powers',
+                    fn (Builder $query) => $query->where('player_id', (string) $this->user->getId()->unwrap())
+                )
+            )
+
             ->offset($query->offset)
             ->limit($query->limit)
             ->get();
@@ -47,7 +61,7 @@ final readonly class GetNewGamesLaravelQueryHandler implements GetNewGamesQueryH
             $newGameInfo = new NewGameInfo(
                 new GameInfoDto(
                     Id::fromString($game->id),
-                    Id::fromString($game->variant_data_variant_id),
+                    $game->variant_data_variant_key,
                     $game->name,
                     $currentPhase->name,
                     PhaseTypeEnum::fromDomain($currentPhase->type),
@@ -56,7 +70,7 @@ final readonly class GetNewGamesLaravelQueryHandler implements GetNewGamesQueryH
                 ),
                 DateTime::fromCarbon($game->game_start_timing_start_of_join_phase),
                 $game->game_start_timing_start_when_ready,
-                $game->powers_count,
+                $game->powers->count(),
                 ArrayCollection::fromArray($players),
             );
             $games->push($newGameInfo);

@@ -10,7 +10,7 @@ use Dnw\Game\Domain\Game\Repository\Game\Impl\InMemory\InMemoryGameRepository;
 use Dnw\Game\Domain\Game\Test\Factory\GameBuilder;
 use Dnw\Game\Domain\Game\Test\Factory\GameStartTimingFactory;
 use Dnw\Game\Domain\Game\Test\Factory\VariantFactory;
-use Dnw\Game\Infrastructure\Repository\Variant\InMemoryVariantRepository;
+use Dnw\Game\Domain\Variant\Repository\Impl\InMemory\InMemoryVariantRepository;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Psr\Log\NullLogger;
 use Tests\LaravelTestCase;
@@ -22,7 +22,6 @@ class GetGameByIdQueryHandlerTest extends LaravelTestCase
 {
     public function test_handle_game_created(): void
     {
-        $this->markTestSkipped('Need to refactor');
         $variant = VariantFactory::standard();
 
         $dateTime = new DateTime('2024-12-12 19:03');

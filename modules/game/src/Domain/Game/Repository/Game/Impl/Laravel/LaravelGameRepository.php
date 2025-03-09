@@ -73,7 +73,7 @@ class LaravelGameRepository implements GameRepositoryInterface
             fn (string $variantPowerId) => VariantPowerKey::fromString($variantPowerId)
         );
         $variantData = new GameVariantData(
-            VariantKey::fromString($game->variant_data_variant_id),
+            VariantKey::fromString($game->variant_data_variant_key),
             VariantPowerIdCollection::build(
                 ...$game->variant_data_variant_power_ids->map(
                     fn (string $variantPowerId) => VariantPowerKey::fromString($variantPowerId)
@@ -167,7 +167,7 @@ class LaravelGameRepository implements GameRepositoryInterface
             'id' => (string) $game->gameId,
             'name' => (string) $game->name,
             'current_state' => $game->gameStateMachine->currentState(),
-            'variant_data_variant_id' => (string) $game->variant->id,
+            'variant_data_variant_key' => (string) $game->variant->id,
             'variant_data_variant_power_ids' => $game->variant->variantPowerIdCollection->map(
                 fn (VariantPowerKey $variantPowerId) => (string) $variantPowerId
             )->toArray(),
