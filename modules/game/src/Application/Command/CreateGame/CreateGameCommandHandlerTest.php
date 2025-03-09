@@ -5,13 +5,13 @@ namespace Dnw\Game\Application\Command\CreateGame;
 use Dnw\Foundation\Event\FakeEventDispatcher;
 use Dnw\Game\Domain\Adapter\RandomNumberGenerator\FakeRandomNumberGenerator;
 use Dnw\Game\Domain\Adapter\TimeProvider\FakeTimeProvider;
-use Dnw\Game\Domain\Game\Repository\Game\InMemoryGameRepository;
+use Dnw\Game\Domain\Game\Repository\Game\Impl\InMemory\InMemoryGameRepository;
 use Dnw\Game\Domain\Game\Test\Asserter\GameAsserter;
 use Dnw\Game\Domain\Game\Test\Factory\VariantFactory;
 use Dnw\Game\Domain\Game\ValueObject\Game\GameId;
+use Dnw\Game\Domain\Player\Repository\Player\Impl\InMemoryPlayerRepository;
 use Dnw\Game\Domain\Player\ValueObject\PlayerId;
-use Dnw\Game\Infrastructure\Repository\Player\InMemoryPlayerRepository;
-use Dnw\Game\Infrastructure\Repository\Variant\InMemoryVariantRepository;
+use Dnw\Game\Domain\Variant\Repository\Impl\InMemory\InMemoryVariantRepository;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
@@ -37,7 +37,7 @@ class CreateGameCommandHandlerTest extends TestCase
             60,
             5,
             true,
-            $variant->id->toId(),
+            $variant->key,
             true,
             Option::none(),
             true,

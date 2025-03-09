@@ -11,7 +11,7 @@ use Dnw\Game\Domain\Game\Repository\Phase\Impl\InMemory\InMemoryPhaseRepository;
 use Dnw\Game\Domain\Game\Test\Asserter\GameAsserter;
 use Dnw\Game\Domain\Game\Test\Factory\GameBuilder;
 use Dnw\Game\Domain\Game\Test\Factory\VariantFactory;
-use Dnw\Game\Infrastructure\Repository\Variant\InMemoryVariantRepository;
+use Dnw\Game\Domain\Variant\Repository\Impl\InMemory\InMemoryVariantRepository;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
@@ -28,7 +28,6 @@ class AdjudicateGameCommandHandlerTest extends TestCase
 
     public function test_handle(): void
     {
-        $this->markTestSkipped('Refactor');
         $variant = VariantFactory::standard();
         $game = GameBuilder::initialize(variant: $variant)->storeInitialAdjudication()->start()->submitOrders(true)->build();
 
