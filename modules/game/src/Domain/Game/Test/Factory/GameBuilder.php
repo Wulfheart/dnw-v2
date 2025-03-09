@@ -3,6 +3,7 @@
 namespace Dnw\Game\Domain\Game\Test\Factory;
 
 use Dnw\Foundation\DateTime\DateTime;
+use Dnw\Game\Domain\Adapter\RandomNumberGenerator\RandomNumberGenerator;
 use Dnw\Game\Domain\Game\Collection\OrderCollection;
 use Dnw\Game\Domain\Game\Dto\AdjudicationPowerDataDto;
 use Dnw\Game\Domain\Game\Dto\InitialAdjudicationPowerDataDto;
@@ -20,7 +21,6 @@ use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
 use Dnw\Game\Domain\Game\ValueObject\Power\PowerId;
 use Dnw\Game\Domain\Player\ValueObject\PlayerId;
 use Dnw\Game\Domain\Variant\Variant;
-use Dnw\Game\Infrastructure\Adapter\RandomNumberGenerator;
 use Exception;
 use Wulfheart\Option\Option;
 

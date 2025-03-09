@@ -2,8 +2,8 @@
 
 namespace Dnw\Game\Application\Query\CanParticipateInAnotherGame;
 
+use Dnw\Game\Domain\Player\Repository\Player\Impl\SimpleInMemoryPlayerRepository;
 use Dnw\Game\Domain\Player\Test\PlayerBuilder;
-use Dnw\Game\Infrastructure\Repository\Player\SimpleInMemoryPlayerRepository;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 

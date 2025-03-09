@@ -3,7 +3,7 @@
 namespace Dnw\Game\Application\Command\LeaveGame;
 
 use Dnw\Foundation\Event\FakeEventDispatcher;
-use Dnw\Game\Domain\Game\Repository\Game\InMemoryGameRepository;
+use Dnw\Game\Domain\Game\Repository\Game\Impl\InMemory\InMemoryGameRepository;
 use Dnw\Game\Domain\Game\Test\Asserter\GameAsserter;
 use Dnw\Game\Domain\Game\Test\Factory\GameBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;

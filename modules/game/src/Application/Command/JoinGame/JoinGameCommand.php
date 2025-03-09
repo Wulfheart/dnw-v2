@@ -14,7 +14,7 @@ class JoinGameCommand implements Command
     public function __construct(
         public Id $gameId,
         public Id $userId,
-        /** @var Option<Id> $variantPowerId */
-        public Option $variantPowerId,
+        /** @var Option<string> $variantPowerKey */
+        public Option $variantPowerKey,
     ) {}
 }

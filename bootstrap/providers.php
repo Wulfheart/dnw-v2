@@ -5,7 +5,7 @@ use App\Providers\ModuleProvider;
 use Dnw\Foundation\Providers\FoundationBusServiceProvider;
 use Dnw\Foundation\Providers\FoundationEventServiceProvider;
 use Dnw\Foundation\Providers\FoundationServiceProvider;
-use Dnw\Game\Infrastructure\GameServiceProvider;
+use Dnw\Game\GameServiceProvider;
 use Dnw\User\Infrastructure\UserServiceProvider;
 
 return [

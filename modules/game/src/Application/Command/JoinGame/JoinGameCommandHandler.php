@@ -2,7 +2,6 @@
 
 namespace Dnw\Game\Application\Command\JoinGame;
 
-use Dnw\Foundation\Identity\Id;
 use Dnw\Game\Domain\Adapter\RandomNumberGenerator\RandomNumberGeneratorInterface;
 use Dnw\Game\Domain\Adapter\TimeProvider\TimeProviderInterface;
 use Dnw\Game\Domain\Game\Repository\Game\GameRepositoryInterface;
@@ -32,7 +31,9 @@ readonly class JoinGameCommandHandler
 
         $game->join(
             PlayerId::fromId($command->userId),
-            $command->variantPowerId->mapIntoOption(fn (Id $id) => VariantPowerKey::fromId($id)),
+            $command->variantPowerKey->mapIntoOption(
+                fn (string $key) => VariantPowerKey::fromString($key)
+            ),
             $this->timeProvider->getCurrentTime(),
             $this->randomNumberGenerator->generate(...)
         );

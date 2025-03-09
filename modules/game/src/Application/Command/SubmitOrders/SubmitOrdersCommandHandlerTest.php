@@ -5,7 +5,7 @@ namespace Dnw\Game\Application\Command\SubmitOrders;
 use Dnw\Foundation\Event\FakeEventDispatcher;
 use Dnw\Game\Domain\Adapter\TimeProvider\FakeTimeProvider;
 use Dnw\Game\Domain\Game\Collection\OrderCollection;
-use Dnw\Game\Domain\Game\Repository\Game\InMemoryGameRepository;
+use Dnw\Game\Domain\Game\Repository\Game\Impl\InMemory\InMemoryGameRepository;
 use Dnw\Game\Domain\Game\Test\Asserter\GameAsserter;
 use Dnw\Game\Domain\Game\Test\Factory\GameBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;

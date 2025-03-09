@@ -6,7 +6,7 @@ use Dnw\Foundation\Event\FakeEventDispatcher;
 use Dnw\Foundation\Identity\Id;
 use Dnw\Game\Domain\Adapter\RandomNumberGenerator\FakeRandomNumberGenerator;
 use Dnw\Game\Domain\Adapter\TimeProvider\FakeTimeProvider;
-use Dnw\Game\Domain\Game\Repository\Game\InMemoryGameRepository;
+use Dnw\Game\Domain\Game\Repository\Game\Impl\InMemory\InMemoryGameRepository;
 use Dnw\Game\Domain\Game\Test\Asserter\GameAsserter;
 use Dnw\Game\Domain\Game\Test\Factory\GameBuilder;
 use Dnw\Game\Domain\Player\ValueObject\PlayerId;
