@@ -13,6 +13,3 @@ parameters:
         - app
         - database
         - tests
-    excludePaths:
-        - '**/*Test.php'
-        - '**/tests/**'
