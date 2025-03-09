@@ -34,7 +34,7 @@ final readonly class GamePanelController
         $result = $this->bus->handle(
             new GetGameByIdQuery(Id::fromString($id), $this->auth->getUserId())
         );
-        if ($result->hasErr()) {
+        if ($result->isErr()) {
             return abort(404);
         }
         $data = $result->unwrap();
@@ -68,7 +68,7 @@ final readonly class GamePanelController
             ->map(fn (VariantPowerDataDto $power) => $power->playerId->unwrap())
             ->toArray();
         $userDataResult = $this->bus->handle(new GetUsersByIdsQuery($playerIds));
-        if ($userDataResult->hasErr()) {
+        if ($userDataResult->isErr()) {
             $this->logger->error('Failed to get user data', ['error' => $userDataResult->unwrapErr()]);
 
             return abort(404);

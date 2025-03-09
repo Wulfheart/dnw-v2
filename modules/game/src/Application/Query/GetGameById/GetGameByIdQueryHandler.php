@@ -27,13 +27,13 @@ readonly class GetGameByIdQueryHandler
     public function handle(GetGameByIdQuery $query): GetGameByIdQueryResult
     {
         $gameResult = $this->gameRepository->load(GameId::fromId($query->id));
-        if ($gameResult->hasErr()) {
+        if ($gameResult->isErr()) {
             return GetGameByIdQueryResult::err(GetGameByIdQueryResult::E_GAME_NOT_FOUND);
         }
         $game = $gameResult->unwrap();
 
         $variantResult = $this->variantRepository->load($game->variant->id);
-        if ($variantResult->hasErr()) {
+        if ($variantResult->isErr()) {
             // ERROR: There should be no occurrence of a non-existent variant when a game is found
             $this->logger->error('Variant not found for game', [
                 'gameId' => $query->id,

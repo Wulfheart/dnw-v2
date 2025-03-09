@@ -6,7 +6,7 @@ use Dnw\Foundation\Collection\Collection;
 use Dnw\Game\Domain\Game\Entity\Power;
 use Dnw\Game\Domain\Game\ValueObject\Power\PowerId;
 use Dnw\Game\Domain\Player\ValueObject\PlayerId;
-use Dnw\Game\Domain\Variant\Shared\VariantPowerId;
+use Dnw\Game\Domain\Variant\Shared\VariantPowerKey;
 use Wulfheart\Option\Option;
 
 /**
@@ -73,7 +73,7 @@ class PowerCollection extends Collection
         return $this->findByPlayerId($playerId)->isNone();
     }
 
-    public function hasPowerFilled(VariantPowerId $variantPowerId): bool
+    public function hasPowerFilled(VariantPowerKey $variantPowerId): bool
     {
         return $this->findBy(
             fn (Power $power) => $power->variantPowerId == $variantPowerId
@@ -103,7 +103,7 @@ class PowerCollection extends Collection
         )->unwrap();
     }
 
-    public function getByVariantPowerId(VariantPowerId $variantPowerId): Power
+    public function getByVariantPowerId(VariantPowerKey $variantPowerId): Power
     {
         return $this->findBy(
             fn (Power $power) => $power->variantPowerId == $variantPowerId

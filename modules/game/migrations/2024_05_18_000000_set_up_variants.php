@@ -8,7 +8,7 @@ return new class() extends Migration {
     public function up(): void
     {
         Schema::create('game_variants', function (Blueprint $table) {
-            $table->string('id')->primary();
+            $table->string('key')->primary();
             $table->string('name');
             $table->string('description');
             $table->unsignedInteger('default_supply_centers_to_win_count');
@@ -17,14 +17,14 @@ return new class() extends Migration {
         });
 
         Schema::create('game_variant_powers', function (Blueprint $table) {
-            $table->string('id');
-            $table->string('variant_id')->index();
+            $table->string('key');
+            $table->string('variant_key')->index();
             $table->string('name');
             $table->string('color');
             $table->timestamps();
 
-            $table->foreign('variant_id')->references('id')->on('game_variants');
-            $table->primary(['id', 'variant_id']);
+            $table->foreign('variant_key')->references('key')->on('game_variants');
+            $table->primary(['key', 'variant_key']);
 
         });
     }

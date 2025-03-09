@@ -52,7 +52,7 @@ abstract class AbstractGameRepositoryTestCase extends LaravelTestCase
 
         $repository = $this->buildRepository($eventDispatcher);
         $result = $repository->load(GameId::new());
-        $this->assertTrue($result->hasErr());
+        $this->assertTrue($result->isErr());
         $this->assertEquals(LoadGameResult::E_GAME_NOT_FOUND, $result->unwrapErr());
     }
 

@@ -50,7 +50,7 @@ class CreateGameFormViewModel
 
         $variantInformationOptions = array_map(
             fn (VariantDto $variantDto) => new SelectOption(
-                (string) $variantDto->id,
+                (string) $variantDto->key,
                 $variantDto->name,
                 $variantDto->name === 'Standard',
             ),

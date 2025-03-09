@@ -17,7 +17,7 @@ readonly class LeaveGameCommandHandler
     public function handle(LeaveGameCommand $command): LeaveGameCommandResult
     {
         $gameResult = $this->gameRepository->load(GameId::fromString($command->gameId));
-        if ($gameResult->hasErr()) {
+        if ($gameResult->isErr()) {
             $this->logger->info('Game not found', ['gameId' => $command->gameId]);
 
             return LeaveGameCommandResult::err(LeaveGameCommandResult::E_GAME_NOT_FOUND);

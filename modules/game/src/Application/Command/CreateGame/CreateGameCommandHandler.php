@@ -18,8 +18,8 @@ use Dnw\Game\Domain\Game\ValueObject\Variant\GameVariantData;
 use Dnw\Game\Domain\Player\Repository\Player\PlayerRepositoryInterface;
 use Dnw\Game\Domain\Player\ValueObject\PlayerId;
 use Dnw\Game\Domain\Variant\Repository\VariantRepositoryInterface;
-use Dnw\Game\Domain\Variant\Shared\VariantId;
-use Dnw\Game\Domain\Variant\Shared\VariantPowerId;
+use Dnw\Game\Domain\Variant\Shared\VariantKey;
+use Dnw\Game\Domain\Variant\Shared\VariantPowerKey;
 use Psr\Log\LoggerInterface;
 
 readonly class CreateGameCommandHandler
@@ -59,9 +59,9 @@ readonly class CreateGameCommandHandler
             $command->startWhenReady,
         );
 
-        $variantResult = $this->variantRepository->load(VariantId::fromString($command->variantId));
+        $variantResult = $this->variantRepository->load(VariantKey::fromString($command->variantId));
 
-        if ($variantResult->hasErr()) {
+        if ($variantResult->isErr()) {
             $this->logger->warning(
                 'Unable to load variant',
                 ['variantId' => $command->variantId, 'error' => $variantResult->unwrapErr()]
@@ -72,9 +72,9 @@ readonly class CreateGameCommandHandler
 
         $variant = $variantResult->unwrap();
         $variantData = new GameVariantData(
-            $variant->id,
+            $variant->key,
             VariantPowerIdCollection::fromCollection($variant->variantPowerCollection->map(
-                fn ($variantPower) => $variantPower->id
+                fn ($variantPower) => $variantPower->key
             )),
             $variant->defaultSupplyCentersToWinCount
         );
@@ -87,7 +87,7 @@ readonly class CreateGameCommandHandler
             $variantData,
             $command->randomPowerAssignments,
             PlayerId::fromString($command->creatorId),
-            $command->selectedVariantPowerId->mapIntoOption(fn ($id) => VariantPowerId::fromString($id)),
+            $command->selectedVariantPowerId->mapIntoOption(fn ($id) => VariantPowerKey::fromString($id)),
             $this->randomNumberGenerator->generate(...)
         );
 

@@ -46,7 +46,7 @@ use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
 use Dnw\Game\Domain\Game\ValueObject\Phases\PhasesInfo;
 use Dnw\Game\Domain\Game\ValueObject\Variant\GameVariantData;
 use Dnw\Game\Domain\Player\ValueObject\PlayerId;
-use Dnw\Game\Domain\Variant\Shared\VariantPowerId;
+use Dnw\Game\Domain\Variant\Shared\VariantPowerKey;
 use Wulfheart\Option\Option;
 
 class Game
@@ -74,7 +74,7 @@ class Game
 
     /**
      * @param  callable(int $lower, int $upper): int  $randomNumberGenerator
-     * @param  Option<VariantPowerId>  $variantPowerId
+     * @param  Option<VariantPowerKey>  $variantPowerId
      */
     public static function create(
         GameId $gameId,
@@ -121,7 +121,7 @@ class Game
     }
 
     /**
-     * @param  Option<VariantPowerId>  $variantPowerId
+     * @param  Option<VariantPowerKey>  $variantPowerId
      * @param  callable(int $lower, int $upper): int  $randomNumberGenerator
      *
      * @throws DomainException
@@ -161,7 +161,7 @@ class Game
     }
 
     /**
-     * @param  Option<VariantPowerId>  $variantPowerId
+     * @param  Option<VariantPowerKey>  $variantPowerId
      */
     public function canJoin(PlayerId $playerId, Option $variantPowerId, DateTime $currentTime): Ruleset
     {
@@ -170,7 +170,7 @@ class Game
                 GameRules::POWER_ALREADY_FILLED,
                 ! $this->randomPowerAssignments
                 && $variantPowerId->mapOr(
-                    fn (VariantPowerId $variantPowerId) => $this->powerCollection->hasPowerFilled($variantPowerId),
+                    fn (VariantPowerKey $variantPowerId) => $this->powerCollection->hasPowerFilled($variantPowerId),
                     false
                 ),
             ),

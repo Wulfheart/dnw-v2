@@ -20,7 +20,7 @@ class SubmitOrdersCommandHandler
     public function handle(SubmitOrdersCommand $command): SubmitOrdersCommandResult
     {
         $gameResult = $this->gameRepository->load(GameId::fromId($command->gameId));
-        if ($gameResult->hasErr()) {
+        if ($gameResult->isErr()) {
             $this->logger->info('Game not found', ['gameId' => $command->gameId]);
 
             return SubmitOrdersCommandResult::err(SubmitOrdersCommandResult::E_GAME_NOT_FOUND);

@@ -9,12 +9,12 @@ use Dnw\Game\Application\Command\CreateGame\CreateGameCommand;
 use Dnw\Game\Application\Command\CreateGame\CreateGameCommandResult;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Tests\FakeIdGenerator;
-use Tests\LaravelTestCase;
+use Tests\HttpTestCase;
 use Wulfheart\Option\Option;
 
 #[CoversClass(CreateGameController::class)]
 
-class CreateGameControllerTest extends LaravelTestCase
+class CreateGameControllerTest extends HttpTestCase
 {
     use FakeIdGenerator;
 

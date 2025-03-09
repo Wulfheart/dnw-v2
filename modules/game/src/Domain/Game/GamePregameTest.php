@@ -23,8 +23,8 @@ use Dnw\Game\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Domain\Game\ValueObject\Game\GameName;
 use Dnw\Game\Domain\Game\ValueObject\Variant\GameVariantData;
 use Dnw\Game\Domain\Player\ValueObject\PlayerId;
-use Dnw\Game\Domain\Variant\Shared\VariantId;
-use Dnw\Game\Domain\Variant\Shared\VariantPowerId;
+use Dnw\Game\Domain\Variant\Shared\VariantKey;
+use Dnw\Game\Domain\Variant\Shared\VariantPowerKey;
 use Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -35,10 +35,10 @@ class GamePregameTest extends TestCase
 {
     public function test_create_random_assignment(): void
     {
-        $firstId = VariantPowerId::fromString(Id::generate());
-        $secondId = VariantPowerId::fromString(Id::generate());
+        $firstId = VariantPowerKey::fromString(Id::generate());
+        $secondId = VariantPowerKey::fromString(Id::generate());
         $gameVariantData = new GameVariantData(
-            VariantId::fromString(Id::generate()),
+            VariantKey::fromString(Id::generate()),
             VariantPowerIdCollection::build($firstId, $secondId),
             Count::fromInt(4)
         );
@@ -67,10 +67,10 @@ class GamePregameTest extends TestCase
 
     public function test_create_non_random_assignment(): void
     {
-        $firstId = VariantPowerId::fromString(Id::generate());
-        $secondId = VariantPowerId::fromString(Id::generate());
+        $firstId = VariantPowerKey::fromString(Id::generate());
+        $secondId = VariantPowerKey::fromString(Id::generate());
         $gameVariantData = new GameVariantData(
-            VariantId::fromString(Id::generate()),
+            VariantKey::fromString(Id::generate()),
             VariantPowerIdCollection::build($firstId, $secondId),
             Count::fromInt(4)
         );

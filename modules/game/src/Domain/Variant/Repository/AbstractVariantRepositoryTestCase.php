@@ -3,10 +3,10 @@
 namespace Dnw\Game\Domain\Variant\Repository;
 
 use Dnw\Game\Domain\Game\Test\Factory\VariantFactory;
-use Dnw\Game\Domain\Variant\Shared\VariantId;
-use Tests\LaravelTestCase;
+use Dnw\Game\Domain\Variant\Shared\VariantKey;
+use Tests\ModuleTestCase;
 
-abstract class AbstractVariantRepositoryTestCase extends LaravelTestCase
+abstract class AbstractVariantRepositoryTestCase extends ModuleTestCase
 {
     abstract public function buildRepository(): VariantRepositoryInterface;
 
@@ -17,21 +17,26 @@ abstract class AbstractVariantRepositoryTestCase extends LaravelTestCase
         $saveResult = $repository->save($variant);
         $this->assertTrue($saveResult->isOk());
 
-        $loadedVariant = $repository->load($variant->id->clone());
+        $loadedVariant = $repository->load($variant->key->clone());
         $this->assertEquals($variant, $loadedVariant->unwrap());
-
-        $ladedVariant = $repository->loadByName(VariantName::fromString((string) $variant->name));
-        $this->assertEquals($variant, $ladedVariant->unwrap());
     }
 
     public function test_load_not_found(): void
     {
         $repository = $this->buildRepository();
-        $result = $repository->load(VariantId::fromString('::NON_EXISTENT::'));
-        $this->assertTrue($result->hasErr());
+        $result = $repository->load(VariantKey::fromString('::NON_EXISTENT::'));
+        $this->assertTrue($result->isErr());
         $this->assertEquals(LoadVariantResult::E_VARIANT_NOT_FOUND, $result->unwrapErr());
+    }
 
-        $result = $repository->loadByName(VariantFactory::standard()->name);
-        $this->assertEquals(LoadVariantResult::E_VARIANT_NOT_FOUND, $result->unwrapErr());
+    public function test_keyExists(): void
+    {
+        $repository = $this->buildRepository();
+        $variant = VariantFactory::standard();
+        $repository->save($variant);
+
+        $this->assertTrue($repository->keyExists($variant->key->clone()));
+        $this->assertFalse($repository->keyExists(VariantKey::fromString('::NON_EXISTENT::')));
+
     }
 }

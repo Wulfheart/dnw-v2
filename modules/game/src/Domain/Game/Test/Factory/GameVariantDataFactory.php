@@ -14,9 +14,9 @@ class GameVariantDataFactory
     public static function fromVariant(Variant $variant): GameVariantData
     {
         return new GameVariantData(
-            $variant->id,
+            $variant->key,
             VariantPowerIdCollection::fromCollection(
-                $variant->variantPowerCollection->map(fn ($variantPower) => $variantPower->id)
+                $variant->variantPowerCollection->map(fn ($variantPower) => $variantPower->key)
             ),
             $variant->defaultSupplyCentersToWinCount
         );

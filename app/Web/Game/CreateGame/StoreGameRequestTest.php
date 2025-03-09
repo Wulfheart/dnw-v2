@@ -6,11 +6,10 @@ use App\Foundation\Request\RequestFactory;
 use MohammedManssour\FormRequestTester\TestsFormRequests;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
-use Tests\LaravelTestCase;
+use Tests\HttpTestCase;
 
 #[CoversClass(StoreGameRequest::class)]
-
-class StoreGameRequestTest extends LaravelTestCase
+class StoreGameRequestTest extends HttpTestCase
 {
     use TestsFormRequests;
 

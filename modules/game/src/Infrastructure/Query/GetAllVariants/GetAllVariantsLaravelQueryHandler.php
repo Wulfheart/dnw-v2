@@ -17,11 +17,11 @@ class GetAllVariantsLaravelQueryHandler implements GetAllVariantsQueryHandlerInt
 
         return new GetAllVariantsQueryResult(
             $variants->map(fn (VariantModel $variantModel) => new VariantDto(
-                $variantModel->id,
+                $variantModel->key,
                 $variantModel->name,
                 $variantModel->description,
                 $variantModel->powers->map(fn ($power) => new VariantPowerDto(
-                    $power->id,
+                    $power->key,
                     $power->name,
                 ))->toArray(),
             ))->toArray()

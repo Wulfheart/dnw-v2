@@ -4,7 +4,7 @@ namespace Dnw\Game\Domain\Variant;
 
 use Dnw\Game\Domain\Game\ValueObject\Count;
 use Dnw\Game\Domain\Variant\Collection\VariantPowerCollection;
-use Dnw\Game\Domain\Variant\Shared\VariantId;
+use Dnw\Game\Domain\Variant\Shared\VariantKey;
 use Dnw\Game\Domain\Variant\ValueObject\VariantDescription;
 use Dnw\Game\Domain\Variant\ValueObject\VariantName;
 
@@ -14,7 +14,7 @@ use Dnw\Game\Domain\Variant\ValueObject\VariantName;
 class Variant
 {
     public function __construct(
-        public VariantId $id,
+        public VariantKey $key,
         public VariantName $name,
         public VariantDescription $description,
         public VariantPowerCollection $variantPowerCollection,

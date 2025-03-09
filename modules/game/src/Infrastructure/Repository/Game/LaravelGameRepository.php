@@ -31,8 +31,8 @@ use Dnw\Game\Domain\Game\ValueObject\Phases\PhasesInfo;
 use Dnw\Game\Domain\Game\ValueObject\Power\PowerId;
 use Dnw\Game\Domain\Game\ValueObject\Variant\GameVariantData;
 use Dnw\Game\Domain\Player\ValueObject\PlayerId;
-use Dnw\Game\Domain\Variant\Shared\VariantId;
-use Dnw\Game\Domain\Variant\Shared\VariantPowerId;
+use Dnw\Game\Domain\Variant\Shared\VariantKey;
+use Dnw\Game\Domain\Variant\Shared\VariantPowerKey;
 use Dnw\Game\Infrastructure\Model\Game\GameModel;
 use Dnw\Game\Infrastructure\Model\Game\PhaseModel;
 use Dnw\Game\Infrastructure\Model\Game\PhasePowerDataModel;
@@ -72,13 +72,13 @@ class LaravelGameRepository implements GameRepositoryInterface
             $game->game_start_timing_start_when_ready,
         );
         $arr = $game->variant_data_variant_power_ids->map(
-            fn (string $variantPowerId) => VariantPowerId::fromString($variantPowerId)
+            fn (string $variantPowerId) => VariantPowerKey::fromString($variantPowerId)
         );
         $variantData = new GameVariantData(
-            VariantId::fromString($game->variant_data_variant_id),
+            VariantKey::fromString($game->variant_data_variant_id),
             VariantPowerIdCollection::build(
                 ...$game->variant_data_variant_power_ids->map(
-                    fn (string $variantPowerId) => VariantPowerId::fromString($variantPowerId)
+                    fn (string $variantPowerId) => VariantPowerKey::fromString($variantPowerId)
                 )->toArray()
             ),
             Count::fromInt($game->variant_data_default_supply_centers_to_win_count),
@@ -108,7 +108,7 @@ class LaravelGameRepository implements GameRepositoryInterface
                 Option::fromNullable($power->player_id)->mapIntoOption(
                     fn (string $playerId) => PlayerId::fromString($playerId)
                 ),
-                VariantPowerId::fromString($power->variant_power_id),
+                VariantPowerKey::fromString($power->variant_power_key),
                 Option::fromNullable($game->currentPhase)->mapIntoOption(function (PhaseModel $phase) use ($power) {
                     /** @var PhasePowerDataModel $powerData */
                     $powerData = $phase->powerData->where('power_id', $power->id)->firstOrFail();
@@ -171,7 +171,7 @@ class LaravelGameRepository implements GameRepositoryInterface
             'current_state' => $game->gameStateMachine->currentState(),
             'variant_data_variant_id' => (string) $game->variant->id,
             'variant_data_variant_power_ids' => $game->variant->variantPowerIdCollection->map(
-                fn (VariantPowerId $variantPowerId) => (string) $variantPowerId
+                fn (VariantPowerKey $variantPowerId) => (string) $variantPowerId
             )->toArray(),
             'variant_data_default_supply_centers_to_win_count' => $game->variant->defaultSupplyCentersToWinCount->int(),
             'adjudication_timing_phase_length_in_minutes' => $game->adjudicationTiming->phaseLength->minutes(),
@@ -225,24 +225,13 @@ class LaravelGameRepository implements GameRepositoryInterface
                 ],
                 [
                     'game_id' => (string) $game->gameId,
-                    'variant_power_id' => (string) $power->variantPowerId,
+                    'variant_power_key' => (string) $power->variantPowerId,
                     'player_id' => $power->playerId->mapOr(fn (PlayerId $playerId) => (string) $playerId, null),
                 ]
             );
 
             if ($power->currentPhaseData->isSome()) {
                 $phasePowerData = $power->currentPhaseData->unwrap();
-                $phasePowerDataModel = new PhasePowerDataModel([
-                    'phase_id' => (string) $game->phasesInfo->currentPhase->unwrap()->phaseId,
-                    'power_id' => (string) $power->powerId,
-                    'orders_needed' => $phasePowerData->ordersNeeded,
-                    'marked_as_ready' => $phasePowerData->markedAsReady,
-                    'is_winner' => $phasePowerData->isWinner,
-                    'supply_center_count' => $phasePowerData->supplyCenterCount->int(),
-                    'unit_count' => $phasePowerData->unitCount->int(),
-                    'order_collection' => $phasePowerData->orderCollection->mapOr(fn (OrderCollection $orderCollection) => $orderCollection->toStringArray(), null),
-                    'applied_orders' => null,
-                ]);
 
                 PhasePowerDataModel::updateOrCreate(
                     [

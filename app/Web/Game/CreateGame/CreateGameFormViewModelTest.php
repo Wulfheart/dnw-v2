@@ -6,11 +6,10 @@ use Dnw\Foundation\Identity\Id;
 use Dnw\Game\Application\Query\GetAllVariants\VariantDto;
 use Dnw\Game\Application\Query\GetAllVariants\VariantPowerDto;
 use PHPUnit\Framework\Attributes\CoversClass;
-use Tests\LaravelTestCase;
+use Tests\HttpTestCase;
 
 #[CoversClass(CreateGameFormViewModel::class)]
-
-class CreateGameFormViewModelTest extends LaravelTestCase
+class CreateGameFormViewModelTest extends HttpTestCase
 {
     public function test_fromLaravel(): void
     {

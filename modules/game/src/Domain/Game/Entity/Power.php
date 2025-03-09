@@ -7,7 +7,7 @@ use Dnw\Game\Domain\Game\Collection\OrderCollection;
 use Dnw\Game\Domain\Game\ValueObject\Phase\PhasePowerData;
 use Dnw\Game\Domain\Game\ValueObject\Power\PowerId;
 use Dnw\Game\Domain\Player\ValueObject\PlayerId;
-use Dnw\Game\Domain\Variant\Shared\VariantPowerId;
+use Dnw\Game\Domain\Variant\Shared\VariantPowerKey;
 use Wulfheart\Option\Option;
 
 class Power
@@ -16,7 +16,7 @@ class Power
         public PowerId $powerId,
         /** @var Option<PlayerId> $playerId */
         public Option $playerId,
-        public VariantPowerId $variantPowerId,
+        public VariantPowerKey $variantPowerId,
         /** @var Option<PhasePowerData> $currentPhaseData */
         public Option $currentPhaseData,
         /** @var Option<OrderCollection> $appliedOrders */

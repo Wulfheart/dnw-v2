@@ -28,7 +28,7 @@ return new class() extends Migration {
             $table->ulid('id')->primary();
             $table->ulid('player_id')->nullable();
             $table->ulid('game_id');
-            $table->ulid('variant_power_id');
+            $table->string('variant_power_key');
             $table->timestamps();
         });
 

@@ -4,7 +4,7 @@ namespace Dnw\Game\Domain\Game\Collection;
 
 use Dnw\Game\Domain\Game\Test\Factory\PowerFactory;
 use Dnw\Game\Domain\Player\ValueObject\PlayerId;
-use Dnw\Game\Domain\Variant\Shared\VariantPowerId;
+use Dnw\Game\Domain\Variant\Shared\VariantPowerKey;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Wulfheart\Option\Option;
@@ -15,8 +15,8 @@ class PowerCollectionTest extends TestCase
     public function test_createFromVariantPowerCollection(): void
     {
         $variantPowerIdCollection = VariantPowerIdCollection::build(
-            VariantPowerId::fromString('First'),
-            VariantPowerId::fromString('Second')
+            VariantPowerKey::fromString('First'),
+            VariantPowerKey::fromString('Second')
         );
 
         $powerCollection = PowerCollection::createFromVariantPowerIdCollection($variantPowerIdCollection);

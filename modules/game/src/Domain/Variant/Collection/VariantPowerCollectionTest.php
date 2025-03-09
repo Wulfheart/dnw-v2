@@ -3,7 +3,7 @@
 namespace Dnw\Game\Domain\Variant\Collection;
 
 use Dnw\Game\Domain\Game\Test\Factory\VariantFactory;
-use Dnw\Game\Domain\Variant\Shared\VariantPowerId;
+use Dnw\Game\Domain\Variant\Shared\VariantPowerKey;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -15,7 +15,7 @@ class VariantPowerCollectionTest extends TestCase
         $collection = VariantFactory::standard()->variantPowerCollection;
 
         $power = $collection->getByVariantPowerId(
-            VariantPowerId::fromString($collection->getOffset(1)->id)
+            VariantPowerKey::fromString($collection->getOffset(1)->key)
         );
 
         $this->assertEquals($collection->getOffset(1), $power);

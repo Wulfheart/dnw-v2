@@ -20,7 +20,7 @@ class GetUsersByIdsLaravelQueryHandlerTest extends LaravelTestCase
         $query = new GetUsersByIdsQuery([Id::generate()]);
         $handler = new GetUsersByIdsLaravelQueryHandler();
         $result = $handler->handle($query);
-        $this->assertTrue($result->hasErr());
+        $this->assertTrue($result->isErr());
         $this->assertEquals(GetUsersByIdsQueryResult::E_USER_NOT_FOUND, $result->unwrapErr());
     }
 
@@ -41,7 +41,7 @@ class GetUsersByIdsLaravelQueryHandlerTest extends LaravelTestCase
 
         $result = $handler->handle($query);
 
-        $this->assertTrue($result->hasErr());
+        $this->assertTrue($result->isErr());
         $this->assertEquals(GetUsersByIdsQueryResult::E_USER_NOT_FOUND, $result->unwrapErr());
 
     }

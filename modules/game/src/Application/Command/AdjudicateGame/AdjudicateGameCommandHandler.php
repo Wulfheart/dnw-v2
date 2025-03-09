@@ -34,14 +34,14 @@ readonly class AdjudicateGameCommandHandler
     public function handle(AdjudicateGameCommand $command): AdjudicateGameCommandResult
     {
         $gameResult = $this->gameRepository->load(GameId::fromId($command->gameId));
-        if ($gameResult->hasErr()) {
+        if ($gameResult->isErr()) {
             $this->logger->info('Game not found', ['gameId' => $command->gameId]);
 
             return AdjudicateGameCommandResult::err(AdjudicateGameCommandResult::E_GAME_NOT_FOUND);
         }
         $game = $gameResult->unwrap();
         $variantResult = $this->variantRepository->load($game->variant->id);
-        if ($variantResult->hasErr()) {
+        if ($variantResult->isErr()) {
             $this->logger->info('Variant not found', ['variantId' => $game->variant->id]);
 
             return AdjudicateGameCommandResult::err(AdjudicateGameCommandResult::E_VARIANT_NOT_FOUND);
@@ -52,7 +52,7 @@ readonly class AdjudicateGameCommandHandler
 
         $orders = [];
         foreach ($game->powerCollection as $power) {
-            $powerApiName = $variant->variantPowerCollection->getByVariantPowerId($power->variantPowerId)->id;
+            $powerApiName = $variant->variantPowerCollection->getByVariantPowerId($power->variantPowerId)->key;
 
             $orders[] = new AdjudicatorOrder(
                 $powerApiName,
@@ -81,7 +81,7 @@ readonly class AdjudicateGameCommandHandler
 
         foreach ($game->powerCollection as $power) {
 
-            $powerApiName = $variant->variantPowerCollection->getByVariantPowerId($power->variantPowerId)->id;
+            $powerApiName = $variant->variantPowerCollection->getByVariantPowerId($power->variantPowerId)->key;
 
             $phasePowerData = $adjudicationGameResult->getPhasePowerDataByPowerName($powerApiName);
             $possibleOrders = $adjudicationGameResult->getPossibleOrdersByPowerName($powerApiName);

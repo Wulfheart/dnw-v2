@@ -3,15 +3,15 @@
 namespace Dnw\Game\Domain\Game\Collection;
 
 use Dnw\Foundation\Collection\Collection;
-use Dnw\Game\Domain\Variant\Shared\VariantPowerId;
+use Dnw\Game\Domain\Variant\Shared\VariantPowerKey;
 
 /**
- * @extends Collection<VariantPowerId>
+ * @extends Collection<VariantPowerKey>
  */
 class VariantPowerIdCollection extends Collection
 {
-    public function containsVariantPowerId(VariantPowerId $variantPowerId): bool
+    public function containsVariantPowerId(VariantPowerKey $variantPowerId): bool
     {
-        return $this->contains(fn (VariantPowerId $id) => $id === $variantPowerId);
+        return $this->contains(fn (VariantPowerKey $id) => $id === $variantPowerId);
     }
 }

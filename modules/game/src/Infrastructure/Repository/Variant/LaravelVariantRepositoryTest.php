@@ -11,6 +11,6 @@ class LaravelVariantRepositoryTest extends AbstractVariantRepositoryTestCase
 {
     public function buildRepository(): VariantRepositoryInterface
     {
-        return $this->app->make(LaravelVariantRepository::class);
+        return $this->bootstrap(LaravelVariantRepository::class);
     }
 }

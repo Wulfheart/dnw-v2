@@ -4,11 +4,10 @@ namespace App\Web\Game\GamePanel;
 
 use Dnw\Foundation\Identity\Id;
 use PHPUnit\Framework\Attributes\CoversNothing;
-use Tests\LaravelTestCase;
+use Tests\HttpTestCase;
 
 #[CoversNothing]
-
-class GamePanelControllerTest extends LaravelTestCase
+class GamePanelControllerTest extends HttpTestCase
 {
     public function test_shows_created_view(): void
     {

@@ -8,7 +8,7 @@ use Dnw\Game\Domain\Game\Entity\Power;
 use Dnw\Game\Domain\Game\ValueObject\Phase\PhasePowerData;
 use Dnw\Game\Domain\Game\ValueObject\Power\PowerId;
 use Dnw\Game\Domain\Player\ValueObject\PlayerId;
-use Dnw\Game\Domain\Variant\Shared\VariantPowerId;
+use Dnw\Game\Domain\Variant\Shared\VariantPowerKey;
 use Wulfheart\Option\Option;
 
 /**
@@ -21,7 +21,7 @@ class PowerFactory
         return new Power(
             PowerId::new(),
             Option::none(),
-            VariantPowerId::fromString(Id::generate()),
+            VariantPowerKey::fromString(Id::generate()),
             Option::none(),
             Option::none(),
         );
@@ -32,7 +32,7 @@ class PowerFactory
         return new Power(
             PowerId::new(),
             Option::some(PlayerId::new()),
-            VariantPowerId::fromString(Id::generate()),
+            VariantPowerKey::fromString(Id::generate()),
             Option::none(),
             Option::none(),
         );
@@ -41,7 +41,7 @@ class PowerFactory
     public static function build(
         ?PowerId $id = null,
         ?PlayerId $playerId = null,
-        ?VariantPowerId $variantPowerId = null,
+        ?VariantPowerKey $variantPowerId = null,
         ?PhasePowerData $currentPhaseData = null,
         ?OrderCollection $appliedOrders = null,
     ): Power {
@@ -49,7 +49,7 @@ class PowerFactory
         return new Power(
             $id ?? PowerId::new(),
             Option::fromNullable($playerId),
-            $variantPowerId ?? VariantPowerId::fromString(Id::generate()),
+            $variantPowerId ?? VariantPowerKey::fromString(Id::generate()),
             Option::fromNullable($currentPhaseData),
             Option::fromNullable($appliedOrders),
         );

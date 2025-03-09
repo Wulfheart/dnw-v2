@@ -15,7 +15,7 @@ use Dnw\Game\Domain\Game\ValueObject\Phase\NewPhaseData;
 use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseName;
 use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseTypeEnum;
 use Dnw\Game\Domain\Variant\Repository\VariantRepositoryInterface;
-use Dnw\Game\Domain\Variant\Shared\VariantPowerId;
+use Dnw\Game\Domain\Variant\Shared\VariantPowerKey;
 use Psr\Log\LoggerInterface;
 
 readonly class InitialGameAdjudicationCommandHandler
@@ -32,7 +32,7 @@ readonly class InitialGameAdjudicationCommandHandler
     public function handle(InitialGameAdjudicationCommand $command): InitialGameAdjudicationCommandResult
     {
         $gameResult = $this->gameRepository->load(GameId::fromId($command->gameId));
-        if ($gameResult->hasErr()) {
+        if ($gameResult->isErr()) {
             $this->logger->info('Game not found', ['gameId' => $command->gameId]);
 
             return InitialGameAdjudicationCommandResult::err(InitialGameAdjudicationCommandResult::E_GAME_NOT_FOUND);
@@ -40,7 +40,7 @@ readonly class InitialGameAdjudicationCommandHandler
         $game = $gameResult->unwrap();
 
         $variantResult = $this->variantRepository->load($game->variant->id);
-        if ($variantResult->hasErr()) {
+        if ($variantResult->isErr()) {
             $this->logger->info('Variant not found', ['variantId' => $game->variant->id]);
 
             return InitialGameAdjudicationCommandResult::err(InitialGameAdjudicationCommandResult::E_VARIANT_NOT_FOUND);
@@ -48,7 +48,7 @@ readonly class InitialGameAdjudicationCommandHandler
         $variant = $variantResult->unwrap();
 
         $adjudicationGameResult = $this->adjudicatorService->initializeGame(
-            $variant->id,
+            $variant->key,
         );
 
         $phaseType = PhaseTypeEnum::from($adjudicationGameResult->phase_type);
@@ -59,9 +59,9 @@ readonly class InitialGameAdjudicationCommandHandler
 
         foreach ($adjudicationGameResult->phase_power_data as $phasePowerData) {
             $variantPower = $variant->variantPowerCollection->getByVariantPowerId(
-                VariantPowerId::fromString($phasePowerData->power)
+                VariantPowerKey::fromString($phasePowerData->power)
             );
-            $powerId = $game->powerCollection->getByVariantPowerId($variantPower->id)->powerId;
+            $powerId = $game->powerCollection->getByVariantPowerId($variantPower->key)->powerId;
 
             $possibleOrders = $adjudicationGameResult->getPossibleOrdersByPowerName($phasePowerData->power);
 
