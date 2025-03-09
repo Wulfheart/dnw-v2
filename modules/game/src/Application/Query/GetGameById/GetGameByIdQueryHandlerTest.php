@@ -5,7 +5,6 @@ namespace Dnw\Game\Application\Query\GetGameById;
 use Dnw\Foundation\DateTime\DateTime;
 use Dnw\Foundation\Event\FakeEventDispatcher;
 use Dnw\Foundation\Identity\Id;
-use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
 use Dnw\Game\Domain\Adapter\TimeProvider\FakeTimeProvider;
 use Dnw\Game\Domain\Game\Repository\Game\InMemoryGameRepository;
 use Dnw\Game\Domain\Game\Test\Factory\GameBuilder;
@@ -18,7 +17,7 @@ use Tests\LaravelTestCase;
 use Wulfheart\Option\ResultAsserter;
 
 #[CoversClass(GetGameByIdQueryHandler::class)]
-#[AllowLaravelTestCase]
+
 class GetGameByIdQueryHandlerTest extends LaravelTestCase
 {
     public function test_handle_game_created(): void

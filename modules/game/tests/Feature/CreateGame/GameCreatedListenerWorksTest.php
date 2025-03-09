@@ -4,7 +4,6 @@ namespace Dnw\Game\Test\Feature\CreateGame;
 
 use Dnw\Foundation\Bus\BusInterface;
 use Dnw\Foundation\Identity\Id;
-use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
 use Dnw\Game\Application\Command\CreateGame\CreateGameCommand;
 use Dnw\Game\Application\Listener\GameCreatedListener;
 use Dnw\Game\Application\Query\GetAllVariants\GetAllVariantsQuery;
@@ -19,7 +18,7 @@ use Wulfheart\Option\Option;
 use Wulfheart\Option\ResultAsserter;
 
 #[CoversNothing]
-#[AllowLaravelTestCase]
+
 final class GameCreatedListenerWorksTest extends LaravelTestCase
 {
     use FakeEventDispatcher;

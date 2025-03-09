@@ -2,12 +2,11 @@
 
 namespace Dnw\Game\Test\Feature\CreateGame;
 
-use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use Tests\LaravelTestCase;
 
 #[CoversNothing]
-#[AllowLaravelTestCase]
+
 class CanRenderCreateGameFormTest extends LaravelTestCase
 {
     public function test_authenticated(): void

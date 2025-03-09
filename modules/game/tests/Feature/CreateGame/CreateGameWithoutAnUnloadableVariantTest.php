@@ -4,7 +4,6 @@ namespace Dnw\Game\Test\Feature\CreateGame;
 
 use Dnw\Foundation\Bus\BusInterface;
 use Dnw\Foundation\Identity\Id;
-use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
 use Dnw\Game\Application\Listener\GameCreatedListener;
 use Dnw\Game\Application\Query\GetGameIdByName\GetGameIdByNameQuery;
 use PHPUnit\Framework\Attributes\CoversNothing;
@@ -13,7 +12,7 @@ use Tests\LaravelTestCase;
 use Wulfheart\Option\ResultAsserter;
 
 #[CoversNothing]
-#[AllowLaravelTestCase]
+
 class CreateGameWithoutAnUnloadableVariantTest extends LaravelTestCase
 {
     use FakeQueue;

@@ -3,7 +3,6 @@
 namespace Dnw\Game\Application\Command\SubmitOrders;
 
 use Dnw\Foundation\Event\FakeEventDispatcher;
-use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
 use Dnw\Game\Domain\Adapter\TimeProvider\FakeTimeProvider;
 use Dnw\Game\Domain\Game\Collection\OrderCollection;
 use Dnw\Game\Domain\Game\Repository\Game\InMemoryGameRepository;
@@ -14,7 +13,7 @@ use Psr\Log\NullLogger;
 use Tests\LaravelTestCase;
 
 #[CoversClass(SubmitOrdersCommandHandler::class)]
-#[AllowLaravelTestCase]
+
 class SubmitOrdersCommandHandlerTest extends LaravelTestCase
 {
     public function test_handle(): void

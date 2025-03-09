@@ -3,14 +3,13 @@
 namespace App\Web\Game\CreateGame;
 
 use Dnw\Foundation\Identity\Id;
-use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
 use Dnw\Game\Application\Query\GetAllVariants\VariantDto;
 use Dnw\Game\Application\Query\GetAllVariants\VariantPowerDto;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Tests\LaravelTestCase;
 
 #[CoversClass(CreateGameFormViewModel::class)]
-#[AllowLaravelTestCase]
+
 class CreateGameFormViewModelTest extends LaravelTestCase
 {
     public function test_fromLaravel(): void

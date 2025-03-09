@@ -5,7 +5,6 @@ namespace App\Web\Game\CreateGame;
 use Dnw\Foundation\Bus\BusInterface;
 use Dnw\Foundation\Bus\FakeBus;
 use Dnw\Foundation\Identity\Id;
-use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
 use Dnw\Game\Application\Command\CreateGame\CreateGameCommand;
 use Dnw\Game\Application\Command\CreateGame\CreateGameCommandResult;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -14,7 +13,7 @@ use Tests\LaravelTestCase;
 use Wulfheart\Option\Option;
 
 #[CoversClass(CreateGameController::class)]
-#[AllowLaravelTestCase]
+
 class CreateGameControllerTest extends LaravelTestCase
 {
     use FakeIdGenerator;

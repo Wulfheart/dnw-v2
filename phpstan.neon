@@ -13,8 +13,3 @@ parameters:
         - app
         - database
         - tests
-services:
-    -
-        class: \Dnw\Foundation\PHPStan\AllowLaravelTestAttributeRule
-        tags:
-            - phpstan.rules.rule

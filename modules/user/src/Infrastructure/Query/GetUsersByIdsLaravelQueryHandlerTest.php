@@ -4,7 +4,6 @@ namespace Dnw\User\Infrastructure\Query;
 
 use Dnw\Foundation\Collection\ArrayCollection;
 use Dnw\Foundation\Identity\Id;
-use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
 use Dnw\User\Application\Query\GetUsersByIds\GetUsersByIdsQuery;
 use Dnw\User\Application\Query\GetUsersByIds\GetUsersByIdsQueryResult;
 use Dnw\User\Application\Query\GetUsersByIds\UserData;
@@ -13,7 +12,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use Tests\LaravelTestCase;
 
 #[CoversClass(GetUsersByIdsLaravelQueryHandler::class)]
-#[AllowLaravelTestCase]
+
 class GetUsersByIdsLaravelQueryHandlerTest extends LaravelTestCase
 {
     public function test_no_results_in_error(): void

@@ -6,7 +6,6 @@ use Dnw\Game\Domain\Variant\Repository\LoadVariantResult;
 use Dnw\Game\Domain\Variant\Repository\SaveVariantResult;
 use Dnw\Game\Domain\Variant\Repository\VariantRepositoryInterface;
 use Dnw\Game\Domain\Variant\Shared\VariantId;
-use Dnw\Game\Domain\Variant\ValueObject\VariantName;
 use Dnw\Game\Domain\Variant\Variant;
 
 class InMemoryVariantRepository implements VariantRepositoryInterface

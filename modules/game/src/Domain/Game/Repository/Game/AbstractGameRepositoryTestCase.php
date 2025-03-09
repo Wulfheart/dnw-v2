@@ -5,14 +5,12 @@ namespace Dnw\Game\Domain\Game\Repository\Game;
 use Dnw\Foundation\Differ\Differ;
 use Dnw\Foundation\Event\EventDispatcherInterface;
 use Dnw\Foundation\Event\FakeEventDispatcher;
-use Dnw\Foundation\PHPStan\AllowLaravelTestCase;
 use Dnw\Game\Domain\Game\Event\GameCreatedEvent;
 use Dnw\Game\Domain\Game\Test\Factory\GameBuilder;
 use Dnw\Game\Domain\Game\ValueObject\Game\GameId;
 use Dnw\Game\Domain\Player\ValueObject\PlayerId;
 use Tests\LaravelTestCase;
 
-#[AllowLaravelTestCase]
 abstract class AbstractGameRepositoryTestCase extends LaravelTestCase
 {
     abstract public function buildRepository(EventDispatcherInterface $eventDispatcher): GameRepositoryInterface;
