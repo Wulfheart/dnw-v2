@@ -47,7 +47,8 @@
             "Tests\\": "tests/",
             "Dnw\\Foundation\\Test\\": "modules/foundation/tests/",
             "Dnw\\Game\\Test\\": "modules/game/tests/",
-            "Dnw\\User\\Test\\": "modules/user/tests/"
+            "Dnw\\User\\Test\\": "modules/user/tests/",
+            "Dnw\\Legacy\\": "legacy/"
         }
     },
     "scripts": {
