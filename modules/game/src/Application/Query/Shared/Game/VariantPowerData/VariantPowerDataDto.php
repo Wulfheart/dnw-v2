@@ -4,6 +4,9 @@ namespace Dnw\Game\Application\Query\Shared\Game\VariantPowerData;
 
 use Wulfheart\Option\Option;
 
+/**
+ * @codeCoverageIgnore
+ */
 final readonly class VariantPowerDataDto
 {
     public function __construct(

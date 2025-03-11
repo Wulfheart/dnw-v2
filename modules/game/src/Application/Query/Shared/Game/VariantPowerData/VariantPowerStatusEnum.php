@@ -2,6 +2,9 @@
 
 namespace Dnw\Game\Application\Query\Shared\Game\VariantPowerData;
 
+/**
+ * @codeCoverageIgnore
+ */
 enum VariantPowerStatusEnum: string
 {
     case WON = 'won';

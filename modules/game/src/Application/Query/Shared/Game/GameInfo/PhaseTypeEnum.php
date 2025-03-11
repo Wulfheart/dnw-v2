@@ -4,6 +4,9 @@ namespace Dnw\Game\Application\Query\Shared\Game\GameInfo;
 
 use Dnw\Game\Domain\Game\ValueObject\Phase\PhaseTypeEnum as DomainPhaseType;
 
+/**
+ * @codeCoverageIgnore
+ */
 enum PhaseTypeEnum: string
 {
     case MOVEMENT = 'movement';

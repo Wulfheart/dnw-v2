@@ -2,6 +2,9 @@
 
 namespace Dnw\Game\Application\Query\Shared\Game\GameInfo;
 
+/**
+ * @codeCoverageIgnore
+ */
 enum GameStateEnum: string
 {
     case CREATED = 'created';

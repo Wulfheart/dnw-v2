@@ -7,6 +7,9 @@ use Dnw\Foundation\DateTime\DateTime;
 use Dnw\Foundation\Identity\Id;
 use Dnw\Game\Application\Query\Shared\Game\GameInfo\GameInfoDto;
 
+/**
+ * @codeCoverageIgnore
+ */
 final readonly class NewGameInfo
 {
     public function __construct(

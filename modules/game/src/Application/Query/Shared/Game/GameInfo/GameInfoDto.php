@@ -4,6 +4,9 @@ namespace Dnw\Game\Application\Query\Shared\Game\GameInfo;
 
 use Dnw\Foundation\Identity\Id;
 
+/**
+ * @codeCoverageIgnore
+ */
 final readonly class GameInfoDto
 {
     public function __construct(

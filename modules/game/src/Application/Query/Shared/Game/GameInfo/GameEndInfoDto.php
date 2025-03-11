@@ -5,6 +5,9 @@ namespace Dnw\Game\Application\Query\Shared\Game\GameInfo;
 use Dnw\Foundation\Identity\Id;
 use Wulfheart\Option\Option;
 
+/**
+ * @codeCoverageIgnore
+ */
 final readonly class GameEndInfoDto
 {
     public function __construct(
