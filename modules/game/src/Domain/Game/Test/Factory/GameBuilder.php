@@ -42,6 +42,7 @@ class GameBuilder
         ?Variant $variant = null,
         ?PlayerId $playerId = null,
         ?GameId $gameId = null,
+        ?GameName $gameName = null,
     ): self {
         if ($variant === null) {
             $variantData = GameVariantDataFactory::fromVariant(VariantFactory::standard());
@@ -52,7 +53,7 @@ class GameBuilder
         $rng = new RandomNumberGenerator();
         $game = Game::create(
             $gameId ?? GameId::new(),
-            GameName::fromString('Test Game'),
+            $gameName ?? GameName::fromString('Test Game'),
             $adjudicationTiming ?? AdjudicationTimingFactory::build(),
             $gameStartTiming ?? GameStartTimingFactory::build(startWhenReady: $startWhenReady),
             $variantData,

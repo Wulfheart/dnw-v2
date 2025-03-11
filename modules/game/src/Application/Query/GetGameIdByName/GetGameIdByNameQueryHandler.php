@@ -18,6 +18,6 @@ readonly class GetGameIdByNameQueryHandler
             return GetGameIdByNameQueryResult::err(GetGameIdByNameQueryResult::E_GAME_NOT_FOUND);
         }
 
-        return GetGameIdByNameQueryResult::ok((string) $gameId->unwrap());
+        return GetGameIdByNameQueryResult::ok($gameId->unwrap()->toId());
     }
 }

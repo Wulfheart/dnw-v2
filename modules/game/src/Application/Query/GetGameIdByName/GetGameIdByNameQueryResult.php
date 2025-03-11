@@ -2,10 +2,11 @@
 
 namespace Dnw\Game\Application\Query\GetGameIdByName;
 
+use Dnw\Foundation\Identity\Id;
 use Wulfheart\Option\Result;
 
 /**
- * @extends Result<string, self::E_*>
+ * @extends Result<Id, self::E_*>
  */
 class GetGameIdByNameQueryResult extends Result
 {
