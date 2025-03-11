@@ -18,4 +18,9 @@ class FakeTimeProvider implements TimeProviderInterface
     {
         return $this->currentTime;
     }
+
+    public static function now(): self
+    {
+        return new self(new DateTime());
+    }
 }

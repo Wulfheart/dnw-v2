@@ -19,14 +19,14 @@ final class PlayerBuilder
 
     public function inTooManyGames(): self
     {
-        $this->numberOfGames = 4;
+        $this->numberOfGames = 3;
 
         return $this;
     }
 
     public function numberOfGamesIsOk(): self
     {
-        $this->numberOfGames = 3;
+        $this->numberOfGames = 2;
 
         return $this;
     }

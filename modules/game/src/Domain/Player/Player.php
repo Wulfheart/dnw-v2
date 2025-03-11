@@ -19,7 +19,7 @@ readonly class Player
         return new Ruleset(
             new Rule(
                 PlayerRules::CURRENTLY_IN_TOO_MANY_GAMES,
-                $this->numberOfCurrentlyPlayingGames > 3
+                $this->numberOfCurrentlyPlayingGames >= 3
             )
         );
     }

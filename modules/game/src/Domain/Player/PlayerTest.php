@@ -14,11 +14,11 @@ class PlayerTest extends TestCase
         $player = new Player(PlayerId::new(), 0);
         $this->assertTrue($player->canParticipateInAnotherGame()->passes());
 
-        $player = new Player(PlayerId::new(), 3);
+        $player = new Player(PlayerId::new(), 2);
         $this->assertTrue($player->canParticipateInAnotherGame()->passes());
     }
 
-    public function test_canParticipateInAnotherGame_fails_at_four_or_more_games(): void
+    public function test_canParticipateInAnotherGame_fails_at_three_or_more_games(): void
     {
         $player = new Player(PlayerId::new(), 4);
         $this->assertTrue($player->canParticipateInAnotherGame()->fails());
