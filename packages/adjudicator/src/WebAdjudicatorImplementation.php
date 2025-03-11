@@ -70,7 +70,7 @@ readonly class WebAdjudicatorImplementation implements AdjudicatorService
                 (string) $this->baseUrl->appendToPath('adjudicate')
             )->withBody(
                 $this->streamFactory->createStream($body)
-            )
+            )->withHeader('Content-Type', 'application/json')
         );
 
         if ($response->getStatusCode() !== 200) {

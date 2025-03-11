@@ -7,7 +7,7 @@ use JsonSerializable;
 final readonly class Turn implements JsonSerializable
 {
     public function __construct(
-        public int $index,
+        public string $index,
         /** @var array<Power> $powers */
         public array $powers
     ) {}

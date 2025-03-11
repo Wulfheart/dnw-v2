@@ -18,16 +18,27 @@ final readonly class MovesArchiveLine
 
     public ?int $fromTerrId;
 
+    public ?string $unitType;
+
     public function __construct(
         string $gameId,
         string $turn,
         string $countryId,
-        public ?string $unitType,
+        ?string $unitType,
         public string $type,
         string $terrId,
         ?string $fromTerrId,
         ?string $toTerrId,
     ) {
+        if ($unitType === 'Army') {
+            $this->unitType = 'A';
+        } elseif ($unitType === 'Fleet') {
+            $this->unitType = 'F';
+        } elseif ($unitType === 'NULL') {
+            $this->unitType = null;
+        } else {
+            throw new Exception("Cannot handle unit type $unitType");
+        }
         $this->gameId = (int) $gameId;
         $this->turn = (int) $turn;
         $this->countryId = (int) $countryId;

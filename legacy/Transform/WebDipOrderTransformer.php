@@ -20,13 +20,13 @@ final class WebDipOrderTransformer
     public static function build(): self
     {
         $powerLookup = [
-            1 => 'Austria',
-            2 => 'England',
-            3 => 'France',
+            1 => 'England',
+            2 => 'France',
+            3 => 'Italy',
             4 => 'Germany',
-            5 => 'Italy',
-            6 => 'Russia',
-            7 => 'Turkey',
+            5 => 'Austria',
+            6 => 'Turkey',
+            7 => 'Russia',
         ];
 
         /** @var resource $file */
@@ -63,7 +63,7 @@ final class WebDipOrderTransformer
     private function transformGame(int $gameId, array $lines): GameData
     {
         $collected = collect($lines)->groupBy(
-            fn (MovesArchiveLine $line) => $line->turn
+            fn (MovesArchiveLine $line) => str_pad($line->turn, 3, '0', STR_PAD_LEFT) . '_' . (str_starts_with($line->type, 'Build') ? '1_build' : '0_orders')
         )->map(
             fn (Collection $c) => $c->groupBy(
                 fn (MovesArchiveLine $line) => $line->countryId
@@ -94,7 +94,7 @@ final class WebDipOrderTransformer
         // 'Hold','Move','Support hold','Support move','Convoy','Retreat','Disband','Build Army','Build Fleet','Wait','Destroy'
         return match ($line->type) {
             'Hold' => "{$line->unitType} {$this->lookupTerritory($line->terrId)} H",
-            'Move' => "{$line->unitType} {$this->lookupTerritory($line->getFromTerrId())} - {$this->lookupTerritory($line->terrId)}",
+            'Move' => "{$line->unitType} {$this->lookupTerritory($line->terrId)} - {$this->lookupTerritory($line->getFromTerrId())}",
             'Support hold' => "{$line->unitType} {$this->lookupTerritory($line->getFromTerrId())} S {$this->lookupTerritory($line->terrId)}",
             'Support move' => "{$line->unitType} {$this->lookupTerritory($line->terrId)} S {$this->lookupTerritory($line->getFromTerrId())} - {$this->lookupTerritory($line->getToTerrId())}",
             'Convoy' => "{$line->unitType} {$this->lookupTerritory($line->terrId)} C {$this->lookupTerritory($line->getToTerrId())} - {$this->lookupTerritory($line->getFromTerrId())}",
