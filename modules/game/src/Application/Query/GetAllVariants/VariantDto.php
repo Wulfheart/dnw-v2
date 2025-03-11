@@ -2,6 +2,9 @@
 
 namespace Dnw\Game\Application\Query\GetAllVariants;
 
+/**
+ * @codeCoverageIgnore
+ */
 class VariantDto
 {
     public function __construct(

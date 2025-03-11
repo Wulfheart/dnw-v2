@@ -6,6 +6,8 @@ use Dnw\Foundation\Bus\Interface\Query;
 use Dnw\Foundation\Identity\Id;
 
 /**
+ * @codeCoverageIgnore
+ *
  * @implements Query<CanParticipateInAnotherGameQueryResult>
  */
 final class CanParticipateInAnotherGameQuery implements Query

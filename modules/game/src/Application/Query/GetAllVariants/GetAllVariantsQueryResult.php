@@ -2,6 +2,9 @@
 
 namespace Dnw\Game\Application\Query\GetAllVariants;
 
+/**
+ * @codeCoverageIgnore
+ */
 class GetAllVariantsQueryResult
 {
     public function __construct(
