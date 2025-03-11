@@ -6,6 +6,8 @@ use Dnw\Foundation\Bus\Interface\Command;
 use Dnw\Foundation\Identity\Id;
 
 /**
+ * @codeCoverageIgnore
+ *
  * @implements Command<AdjudicateGameCommandResult>
  */
 readonly class AdjudicateGameCommand implements Command

@@ -5,6 +5,7 @@ namespace Dnw\Game\Application\Command\AdjudicateGame;
 use Dnw\Adjudicator\Dto\AdjudicateGameResponse;
 use Dnw\Adjudicator\FakeAdjudicatorService;
 use Dnw\Foundation\Event\FakeEventDispatcher;
+use Dnw\Foundation\Identity\Id;
 use Dnw\Game\Domain\Adapter\TimeProvider\FakeTimeProvider;
 use Dnw\Game\Domain\Game\Repository\Game\Impl\InMemory\InMemoryGameRepository;
 use Dnw\Game\Domain\Game\Repository\Phase\Impl\InMemory\InMemoryPhaseRepository;
@@ -15,6 +16,7 @@ use Dnw\Game\Domain\Variant\Repository\Impl\InMemory\InMemoryVariantRepository;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
+use Wulfheart\Option\ResultAsserter;
 
 #[CoversClass(AdjudicateGameCommand::class)]
 #[CoversClass(AdjudicateGameCommandHandler::class)]
@@ -84,5 +86,48 @@ class AdjudicateGameCommandHandlerTest extends TestCase
 
         $this->assertEquals(self::SVG_WITH_ORDERS, $phaseRepository->loadSvgWithOrders($previousPhaseId)->unwrap());
         $this->assertEquals(self::SVG_ADJUDICATED, $phaseRepository->loadAdjudicatedSvg($currentPhaseId)->unwrap());
+    }
+
+    public function test_handle_fails_if_game_cannot_be_found(): void
+    {
+        $gameRepository = new InMemoryGameRepository(new FakeEventDispatcher());
+
+        $handler = new AdjudicateGameCommandHandler(
+            new FakeAdjudicatorService(),
+            $gameRepository,
+            new InMemoryVariantRepository(),
+            new InMemoryPhaseRepository(),
+            new FakeTimeProvider('now'),
+            new NullLogger()
+        );
+
+        $result = $handler->handle(new AdjudicateGameCommand(Id::generate()));
+
+        ResultAsserter::assertErrIs($result, AdjudicateGameCommandResult::E_GAME_NOT_FOUND);
+    }
+
+    public function test_handle_fails_if_variant_cannot_be_found(): void
+    {
+        $game = GameBuilder::initialize()->build();
+
+        $gameRepository = new InMemoryGameRepository(
+            new FakeEventDispatcher(),
+            [$game]
+        );
+
+        $variantRepository = new InMemoryVariantRepository();
+
+        $handler = new AdjudicateGameCommandHandler(
+            new FakeAdjudicatorService(),
+            $gameRepository,
+            $variantRepository,
+            new InMemoryPhaseRepository(),
+            new FakeTimeProvider('now'),
+            new NullLogger()
+        );
+
+        $result = $handler->handle(new AdjudicateGameCommand($game->gameId->toId()));
+
+        ResultAsserter::assertErrIs($result, AdjudicateGameCommandResult::E_VARIANT_NOT_FOUND);
     }
 }
