@@ -4,6 +4,9 @@ namespace Dnw\Game\Application\Query\GetGameById\Dto;
 
 use Wulfheart\Option\Option;
 
+/**
+ * @codeCoverageIgnore
+ */
 class PhasesInDescendingOrderDto
 {
     public function __construct(

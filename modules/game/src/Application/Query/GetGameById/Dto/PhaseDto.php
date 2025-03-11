@@ -5,6 +5,9 @@ namespace Dnw\Game\Application\Query\GetGameById\Dto;
 use Dnw\Foundation\DateTime\DateTime;
 use Wulfheart\Option\Option;
 
+/**
+ * @codeCoverageIgnore
+ */
 class PhaseDto
 {
     public function __construct(

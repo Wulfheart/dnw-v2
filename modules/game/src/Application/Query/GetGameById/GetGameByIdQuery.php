@@ -6,6 +6,8 @@ use Dnw\Foundation\Bus\Interface\Query;
 use Dnw\Foundation\Identity\Id;
 
 /**
+ * @codeCoverageIgnore
+ *
  * @implements Query<GetGameByIdQueryResult>
  */
 class GetGameByIdQuery implements Query
