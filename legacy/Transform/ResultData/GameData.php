@@ -2,7 +2,9 @@
 
 namespace Dnw\Legacy\Transform\ResultData;
 
-final readonly class GameData
+use JsonSerializable;
+
+final readonly class GameData implements JsonSerializable
 {
     /**
      * @var array<Turn>
@@ -18,5 +20,13 @@ final readonly class GameData
     ) {
         usort($turns, fn (Turn $a, Turn $b) => $a->index <=> $b->index);
         $this->turns = $turns;
+    }
+
+    public function jsonSerialize(): mixed
+    {
+        return [
+            'id' => $this->id,
+            'turns' => $this->turns,
+        ];
     }
 }

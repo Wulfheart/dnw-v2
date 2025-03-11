@@ -47,9 +47,19 @@ final readonly class MovesArchiveLine
             $data['countryID'] ?? throw new Exception(),
             $data['unitType'] ?? throw new Exception(),
             $data['type'] ?? throw new Exception(),
-            $data['terrID'],
+            $data['terrID'] ?? throw new Exception(),
             $data['toTerrID'],
             $data['fromTerrID'],
         );
+    }
+
+    public function getFromTerrId(): int
+    {
+        return $this->fromTerrId ?? throw new Exception();
+    }
+
+    public function getToTerrId(): int
+    {
+        return $this->toTerrId ?? throw new Exception();
     }
 }
