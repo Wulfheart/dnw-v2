@@ -56,6 +56,7 @@ class TransformLegacyCommand extends Command
             $debugData = [
                 'orders' => $request->orders,
                 'applied_orders' => $response->applied_orders,
+                'newPhase' => $response->phase_long,
             ];
             file_put_contents(__DIR__ . "/data/$id/{$combination}_debug_data.json", json_encode($debugData, JSON_PRETTY_PRINT));
             $this->info("Adjudicated {$turn->index} to {$response->phase_long}");

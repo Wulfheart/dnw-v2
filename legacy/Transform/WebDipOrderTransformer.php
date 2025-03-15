@@ -63,7 +63,7 @@ final class WebDipOrderTransformer
     private function transformGame(int $gameId, array $lines): GameData
     {
         $collected = collect($lines)->groupBy(
-            fn (MovesArchiveLine $line) => str_pad($line->turn, 3, '0', STR_PAD_LEFT) . '_' . (str_starts_with($line->type, 'Build') ? '1_build' : '0_orders')
+            fn (MovesArchiveLine $line) => str_pad((string) $line->turn, 3, '0', STR_PAD_LEFT) . '_' . (str_starts_with($line->type, 'Build') ? '1_build' : '0_orders')
         )->map(
             fn (Collection $c) => $c->groupBy(
                 fn (MovesArchiveLine $line) => $line->countryId
