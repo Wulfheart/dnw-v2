@@ -39,4 +39,20 @@ abstract class AbstractVariantRepositoryTestCase extends ModuleTestCase
         $this->assertFalse($repository->keyExists(VariantKey::fromString('::NON_EXISTENT::')));
 
     }
+
+    public function test_saving_two_variants_yields_enough_powers(): void
+    {
+        $repository = $this->buildRepository();
+        $standard = VariantFactory::standard();
+        $repository->save($standard);
+
+        $colonial = VariantFactory::colonial();
+        $repository->save($colonial);
+
+        $colonialPowerCount = $repository->load($colonial->key)->unwrap()->variantPowerCollection->count();
+        $standardPowerCount = $repository->load($standard->key)->unwrap()->variantPowerCollection->count();
+
+        $this->assertEquals(7, $standardPowerCount);
+        $this->assertEquals(7, $colonialPowerCount);
+    }
 }

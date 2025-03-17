@@ -78,14 +78,20 @@ class LaravelVariantRepository implements VariantRepositoryInterface
             );
 
             foreach ($variant->variantPowerCollection as $variantPower) {
-                VariantPowerModel::query()->updateOrCreate(
-                    ['key' => (string) $variantPower->key],
+                $result = VariantPowerModel::query()->updateOrCreate(
                     [
+                        'key' => (string) $variantPower->key,
                         'variant_key' => (string) $variant->key,
+                    ],
+                    [
                         'name' => $variantPower->name,
                         'color' => (string) $variantPower->color,
                     ]
                 );
+
+                $d = $result->toArray();
+
+                $x = 1;
             }
 
         });

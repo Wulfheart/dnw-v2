@@ -24,7 +24,7 @@ return new class() extends Migration {
             $table->timestamps();
 
             $table->foreign('variant_key')->references('key')->on('game_variants');
-            $table->primary(['key', 'variant_key']);
+            $table->unique(['key', 'variant_key']);
 
         });
     }
