@@ -27,7 +27,7 @@ final readonly class Pagination
         return $this->currentPage === $this->calculateLastPage();
     }
 
-    private function calculateLastPage(): int
+    public function calculateLastPage(): int
     {
         $lastPage = (int) ceil($this->totalCount / $this->perPage);
         if ($lastPage < 1) {

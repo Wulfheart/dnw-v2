@@ -68,32 +68,32 @@ class CreateGameFormViewModel
         ];
 
         $startWhenReadyOptions = [
-            new SelectOption('1', 'Das Spiel wird gestartet, sobald genug Spieler beigetreten sind.', true),
-            new SelectOption('0', 'Das Spiel startet erst, wenn das Start-Datum und die Start-Zeit erreicht ist.', false),
+            new SelectOption('1', __('game.new.start_when_ready_true_option'), true),
+            new SelectOption('0', __('game.new.start_when_ready_false_option'), false),
         ];
 
         $form = new Form(
             route('game.store'),
-            'Spiel erstellen',
+            __('game.new.action'),
             fields: [
-                new TextInput(StoreGameRequest::KEY_NAME, 'Name'),
+                new TextInput(StoreGameRequest::KEY_NAME, __('game.new.name')),
                 new Select(
                     StoreGameRequest::PHASE_LENGTH_IN_MINUTES,
-                    'Phasenlänge',
+                    __('game.new.phase_length'),
                     'Wie lange dauert jede Phase?',
                     $phaseLengthInMinutesOptions
                 ),
                 new Separator(),
-                new Heading('Erweiterte Einstellungen'),
+                new Heading(__('game.new.advanced_settings')),
                 new Select(
                     StoreGameRequest::KEY_VARIANT_ID,
-                    'Variante',
+                    __('game.new.variant'),
                     options: $variantInformationOptions
                 ),
-                new NumberInput(StoreGameRequest::KEY_JOIN_LENGTH_IN_DAYS, 'Länge der Beitrittsphase in Tagen', defaultValue: 10, min: 1, max: 365),
+                new NumberInput(StoreGameRequest::KEY_JOIN_LENGTH_IN_DAYS, __('game.new.join_length_in_days'), defaultValue: 10, min: 1, max: 365),
                 new Select(
                     StoreGameRequest::KEY_START_WHEN_READY,
-                    'Spielstart',
+                    __('game.new.start_mode'),
                     'Wann soll das Spiel beginnen?',
                     $startWhenReadyOptions
                 ),
@@ -101,8 +101,8 @@ class CreateGameFormViewModel
         );
 
         return new self(
-            'Neues Spiel erstellen',
-            ' Beginne ein neues Spiel; du entscheidest, wie es heißt, wie lange die Phasen dauern, und was es wert ist.',
+            __('game.new.title'),
+            __('game.new.description'),
             $canParticipateInAnotherGame,
             $form,
         );

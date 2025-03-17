@@ -3,6 +3,7 @@
 use App\Http\DevLogin\DevLoginController;
 use App\Web\Game\CreateGame\CreateGameController;
 use App\Web\Game\GamePanel\GamePanelController;
+use App\Web\Game\ListNewGames\ListNewGamesController;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -43,8 +44,13 @@ Route::post('/dev-login', [DevLoginController::class, 'login'])->name('dev-login
  */
 Route::prefix('games/')
     ->middleware(['web', 'auth:web'])
-    ->name('game.')->group(function () {
-        Route::get('create', [CreateGameController::class, 'show'])->name('create');
-        Route::post('create', [CreateGameController::class, 'store'])->name('store');
-        Route::get('{id}', [GamePanelController::class, 'show'])->name('show');
+    ->group(function () {
+        Route::name('game.')->group(function () {
+            Route::get('create', [CreateGameController::class, 'show'])->name('create');
+            Route::post('create', [CreateGameController::class, 'store'])->name('store');
+            Route::get('{id}', [GamePanelController::class, 'show'])->name('show');
+        });
+        Route::name('games.list.')->group(function () {
+            Route::get('new', [ListNewGamesController::class, 'show'])->name('new');
+        });
     });
