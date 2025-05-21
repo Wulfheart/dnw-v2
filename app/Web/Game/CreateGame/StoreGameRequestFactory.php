@@ -3,7 +3,6 @@
 namespace App\Web\Game\CreateGame;
 
 use App\Foundation\Request\RequestFactory;
-use Dnw\Foundation\Identity\Id;
 
 /**
  * @codeCoverageIgnore
@@ -17,7 +16,7 @@ class StoreGameRequestFactory extends RequestFactory
             StoreGameRequest::PHASE_LENGTH_IN_MINUTES => fake()->numberBetween(10, 1440),
             StoreGameRequest::KEY_JOIN_LENGTH_IN_DAYS => fake()->numberBetween(1, 365),
             StoreGameRequest::KEY_START_WHEN_READY => fake()->boolean,
-            StoreGameRequest::KEY_VARIANT_ID => (string) Id::generate(),
+            StoreGameRequest::KEY_VARIANT_ID => (string) 'Standard',
         ];
     }
 

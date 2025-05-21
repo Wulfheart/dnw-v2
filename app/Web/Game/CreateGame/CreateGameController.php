@@ -5,7 +5,6 @@ namespace App\Web\Game\CreateGame;
 use App\Foundation\Auth\AuthInterface;
 use App\Foundation\Id\IdGeneratorInterface;
 use Dnw\Foundation\Bus\BusInterface;
-use Dnw\Foundation\Identity\Id;
 use Dnw\Game\Application\Command\CreateGame\CreateGameCommand;
 use Dnw\Game\Application\Command\CreateGame\CreateGameCommandResult;
 use Dnw\Game\Application\Query\CanParticipateInAnotherGame\CanParticipateInAnotherGameQuery;
@@ -45,7 +44,7 @@ readonly class CreateGameController
             $request->integer(StoreGameRequest::PHASE_LENGTH_IN_MINUTES),
             $request->integer(StoreGameRequest::KEY_JOIN_LENGTH_IN_DAYS),
             $request->boolean(StoreGameRequest::KEY_START_WHEN_READY),
-            Id::fromString($request->string(StoreGameRequest::KEY_VARIANT_ID)),
+            $request->string(StoreGameRequest::KEY_VARIANT_ID),
             true,
             Option::none(),
             true,

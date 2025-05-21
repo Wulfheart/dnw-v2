@@ -7,5 +7,5 @@ use App\Web\Game\GamePanel\GamePanelCreatedViewModel;
 
 <x-layout>
     <x-game.game-header :info="$vm->gameInfo"></x-game.game-header>
-    {{ __('game.panel.created', ['name' => $vm->gameInfo->name] }}
+    {{ __('game.panel.created', ['name' => $vm->gameInfo->name]) }}
 </x-layout>
