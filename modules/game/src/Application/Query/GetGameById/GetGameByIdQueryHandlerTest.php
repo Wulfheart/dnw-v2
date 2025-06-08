@@ -40,6 +40,27 @@ class GetGameByIdQueryHandlerTest extends LaravelTestCase
 
         $result = $handler->handle(new GetGameByIdQuery($game->gameId->toId(), Id::generate()));
         ResultAsserter::assertOk($result);
+    }
 
+    public function test_handle_players_joining(): void
+    {
+        $variant = VariantFactory::standard();
+
+        $dateTime = new DateTime('2024-12-12 19:03');
+        $timeProvider = new FakeTimeProvider($dateTime);
+
+        $game = GameBuilder::initialize(
+            gameStartTiming: GameStartTimingFactory::build(startOfJoinPhase: $dateTime),
+            variant: $variant,
+            timeProvider: $timeProvider,
+        )->makeFull()->build();
+
+        $gameRepo = new InMemoryGameRepository(new FakeEventDispatcher(), [$game]);
+        $variantRepo = new InMemoryVariantRepository([$variant]);
+
+        $handler = new GetGameByIdQueryHandler($gameRepo, $variantRepo, $timeProvider, new NullLogger());
+
+        $result = $handler->handle(new GetGameByIdQuery($game->gameId->toId(), Id::generate()));
+        ResultAsserter::assertOk($result);
     }
 }

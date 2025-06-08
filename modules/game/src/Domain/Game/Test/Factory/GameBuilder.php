@@ -4,6 +4,9 @@ namespace Dnw\Game\Domain\Game\Test\Factory;
 
 use Dnw\Foundation\DateTime\DateTime;
 use Dnw\Game\Domain\Adapter\RandomNumberGenerator\RandomNumberGenerator;
+use Dnw\Game\Domain\Adapter\TimeProvider\FakeTimeProvider;
+use Dnw\Game\Domain\Adapter\TimeProvider\LaravelTimeProvider;
+use Dnw\Game\Domain\Adapter\TimeProvider\TimeProviderInterface;
 use Dnw\Game\Domain\Game\Collection\OrderCollection;
 use Dnw\Game\Domain\Game\Dto\AdjudicationPowerDataDto;
 use Dnw\Game\Domain\Game\Dto\InitialAdjudicationPowerDataDto;
@@ -31,6 +34,7 @@ class GameBuilder
 {
     private function __construct(
         private Game $game,
+        private TimeProviderInterface $timeProvider,
         private bool $releaseEventsBeforeBuild = true,
     ) {}
 
@@ -43,6 +47,7 @@ class GameBuilder
         ?PlayerId $playerId = null,
         ?GameId $gameId = null,
         ?GameName $gameName = null,
+        ?TimeProviderInterface $timeProvider = null,
     ): self {
         if ($variant === null) {
             $variantData = GameVariantDataFactory::fromVariant(VariantFactory::standard());
@@ -63,8 +68,11 @@ class GameBuilder
             ($rng)->generate(...),
         );
 
+        $timeProvider ??= new FakeTimeProvider(new DateTime());
+
         return new self(
             $game,
+            $timeProvider
         );
 
     }
@@ -85,7 +93,7 @@ class GameBuilder
             PhaseTypeEnum::MOVEMENT,
             PhaseName::fromString('Spring 1901'),
             $c,
-            new DateTime(),
+            $this->timeProvider->getCurrentTime(),
         );
 
         return $this;
@@ -101,8 +109,8 @@ class GameBuilder
         $this->game->join(
             $playerId ?? PlayerId::new(),
             Option::some($powerToJoin->variantPowerId),
-            new DateTime(),
-            (new RandomNumberGenerator())->generate(...)
+            $this->timeProvider->getCurrentTime(),
+            new RandomNumberGenerator()->generate(...)
         );
 
         return $this;

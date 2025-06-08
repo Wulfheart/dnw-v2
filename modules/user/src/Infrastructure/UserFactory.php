@@ -27,6 +27,7 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
+            'id' => Id::generate(),
             'name' => fake()->userName(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),

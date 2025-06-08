@@ -11,6 +11,7 @@ use Dnw\Foundation\Collection\ArrayCollection;
 use Dnw\Foundation\Identity\Id;
 use Dnw\Game\Application\Query\GetGameById\Dto\VariantPowerDataDto;
 use Dnw\Game\Application\Query\GetGameById\GetGameByIdQuery;
+use Dnw\Game\Application\Query\GetGameById\GetGameByIdQueryResult;
 use Dnw\Game\Application\Query\Shared\Game\GameInfo\GameStateEnum;
 use Dnw\User\Application\Query\GetUsersByIds\GetUsersByIdsQuery;
 use Dnw\User\Application\Query\GetUsersByIds\UserData;
@@ -18,6 +19,7 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use PhpOption\Option;
 use Psr\Log\LoggerInterface;
 
 final readonly class GamePanelController
@@ -31,6 +33,7 @@ final readonly class GamePanelController
 
     public function show(Request $request, string $id): Application|Response|ResponseFactory
     {
+        /** @var GetGameByIdQueryResult $result */
         $result = $this->bus->handle(
             new GetGameByIdQuery(Id::fromString($id), $this->auth->getUserId())
         );

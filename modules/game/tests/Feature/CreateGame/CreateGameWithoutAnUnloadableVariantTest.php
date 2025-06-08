@@ -20,7 +20,7 @@ class CreateGameWithoutAnUnloadableVariantTest extends HttpTestCase
     {
         $response = $this->actingAs($this->randomUser())->post(route('game.store'), [
             'name' => 'My Game',
-            'variantId' => Id::generate(),
+            'variantId' => 'Standard',
             'phaseLengthInMinutes' => 60,
             'joinLengthInDays' => 7,
             'startWhenReady' => true,

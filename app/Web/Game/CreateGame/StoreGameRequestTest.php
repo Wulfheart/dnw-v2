@@ -41,7 +41,6 @@ class StoreGameRequestTest extends HttpTestCase
             'startWhenReady required' => [$f->without('startWhenReady'), 'startWhenReady'],
             'startWhenReady boolean' => [$f->override('startWhenReady', 'abc'), 'startWhenReady'],
             'variantId required' => [$f->without('variantId'), 'variantId'],
-            'variantId uuid' => [$f->override('variantId', 'abc'), 'variantId'],
         ];
     }
 }
