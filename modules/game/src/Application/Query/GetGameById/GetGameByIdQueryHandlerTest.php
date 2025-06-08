@@ -6,19 +6,23 @@ use Dnw\Foundation\DateTime\DateTime;
 use Dnw\Foundation\Event\FakeEventDispatcher;
 use Dnw\Foundation\Identity\Id;
 use Dnw\Game\Domain\Adapter\TimeProvider\FakeTimeProvider;
+use Dnw\Game\Domain\Game\Repository\Game\GameRepositoryInterface;
 use Dnw\Game\Domain\Game\Repository\Game\Impl\InMemory\InMemoryGameRepository;
+use Dnw\Game\Domain\Game\Repository\Phase\PhaseRepositoryInterface;
 use Dnw\Game\Domain\Game\Test\Factory\GameBuilder;
 use Dnw\Game\Domain\Game\Test\Factory\GameStartTimingFactory;
 use Dnw\Game\Domain\Game\Test\Factory\VariantFactory;
 use Dnw\Game\Domain\Variant\Repository\Impl\InMemory\InMemoryVariantRepository;
+use Dnw\Game\Domain\Variant\Repository\VariantRepositoryInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Psr\Log\NullLogger;
-use Tests\LaravelTestCase;
+use Tests\ModuleTestCase;
+use Wulfheart\Option\OptionAsserter;
 use Wulfheart\Option\ResultAsserter;
 
 #[CoversClass(GetGameByIdQueryHandler::class)]
 
-class GetGameByIdQueryHandlerTest extends LaravelTestCase
+class GetGameByIdQueryHandlerTest extends ModuleTestCase
 {
     public function test_handle_game_created(): void
     {
@@ -55,12 +59,18 @@ class GetGameByIdQueryHandlerTest extends LaravelTestCase
             timeProvider: $timeProvider,
         )->makeFull()->build();
 
-        $gameRepo = new InMemoryGameRepository(new FakeEventDispatcher(), [$game]);
-        $variantRepo = new InMemoryVariantRepository([$variant]);
+        $gameRepo = $this->bootstrap(GameRepositoryInterface::class);
+        $variantRepo = $this->bootstrap(VariantRepositoryInterface::class);
+        $phaseRepo = $this->bootstrap(PhaseRepositoryInterface::class);
 
-        $handler = new GetGameByIdQueryHandler($gameRepo, $variantRepo, $timeProvider, new NullLogger());
+        $variantRepo->save($variant);
+        $gameRepo->save($game);
+
+        $handler = new GetGameByIdQueryHandler($gameRepo, $variantRepo, $timeProvider, $phaseRepo, new NullLogger());
 
         $result = $handler->handle(new GetGameByIdQuery($game->gameId->toId(), Id::generate()));
         ResultAsserter::assertOk($result);
+
+        OptionAsserter::assertSome($result->unwrap()->phases->getCurrentPhase());
     }
 }
