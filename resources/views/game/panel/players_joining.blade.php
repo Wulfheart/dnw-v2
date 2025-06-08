@@ -6,7 +6,7 @@ use App\Web\Game\GamePanel\GamePanelPlayersJoiningViewModel;
 ?>
 
 <x-layout>
-    <x-game::game-header :info="$vm->gameInfo"></x-game::game-header>
+    <x-game.game-header :info="$vm->gameInfo"/>
     <div class="content content-follow-on">
         <div id="mapstore">
             <img src="{{ $vm->mapLink }}">

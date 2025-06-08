@@ -8,6 +8,7 @@ use Dnw\Foundation\Identity\Id;
 use Dnw\Game\Domain\Adapter\TimeProvider\FakeTimeProvider;
 use Dnw\Game\Domain\Game\Repository\Game\GameRepositoryInterface;
 use Dnw\Game\Domain\Game\Repository\Game\Impl\InMemory\InMemoryGameRepository;
+use Dnw\Game\Domain\Game\Repository\Phase\Impl\InMemory\InMemoryPhaseRepository;
 use Dnw\Game\Domain\Game\Repository\Phase\PhaseRepositoryInterface;
 use Dnw\Game\Domain\Game\Test\Factory\GameBuilder;
 use Dnw\Game\Domain\Game\Test\Factory\GameStartTimingFactory;
@@ -37,10 +38,11 @@ class GetGameByIdQueryHandlerTest extends ModuleTestCase
 
         $gameRepo = new InMemoryGameRepository(new FakeEventDispatcher(), [$game]);
         $variantRepo = new InMemoryVariantRepository([$variant]);
+        $phaseRepo = new InMemoryPhaseRepository();
 
         $timeProvider = new FakeTimeProvider($dateTime);
 
-        $handler = new GetGameByIdQueryHandler($gameRepo, $variantRepo, $timeProvider, new NullLogger());
+        $handler = new GetGameByIdQueryHandler($gameRepo, $variantRepo, $timeProvider, $phaseRepo, new NullLogger());
 
         $result = $handler->handle(new GetGameByIdQuery($game->gameId->toId(), Id::generate()));
         ResultAsserter::assertOk($result);

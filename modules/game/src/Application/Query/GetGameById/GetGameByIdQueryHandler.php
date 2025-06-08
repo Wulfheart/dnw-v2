@@ -97,7 +97,7 @@ readonly class GetGameByIdQueryHandler
                 new PhaseDto(
                     $phase->name,
                     $phase->type->value,
-                    new DateTime($phase->adjudication_time ?? throw new Exception("Adjudication time not set for phase {$phase->id}")),
+                    new DateTime($phase->adjudication_time),
                     $this->phaseRepository->loadLinkToSvgWithOrders($phaseId)->toOption(),
                     $this->phaseRepository->loadLinkToAdjudicatedSvg($phaseId)->toOption()
                 )

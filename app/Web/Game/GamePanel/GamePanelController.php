@@ -19,8 +19,8 @@ use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use PhpOption\Option;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 final readonly class GamePanelController
 {
@@ -38,7 +38,7 @@ final readonly class GamePanelController
             new GetGameByIdQuery(Id::fromString($id), $this->auth->getUserId())
         );
         if ($result->isErr()) {
-            return abort(404);
+            throw new NotFoundHttpException();
         }
         $data = $result->unwrap();
 
@@ -74,7 +74,7 @@ final readonly class GamePanelController
         if ($userDataResult->isErr()) {
             $this->logger->error('Failed to get user data', ['error' => $userDataResult->unwrapErr()]);
 
-            return abort(404);
+            throw new NotFoundHttpException();
         }
         /** @var ArrayCollection<UserData> $userData */
         $userData = $userDataResult->unwrap();

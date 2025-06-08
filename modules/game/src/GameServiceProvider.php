@@ -27,6 +27,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
+use Storage;
 
 /**
  * @codeCoverageIgnore
@@ -38,7 +39,6 @@ class GameServiceProvider extends ServiceProvider
         VariantRepositoryInterface::class => LaravelVariantRepository::class,
         GameRepositoryInterface::class => LaravelGameRepository::class,
         PlayerRepositoryInterface::class => LaravelPlayerRepository::class,
-        PhaseRepositoryInterface::class => LaravelPhaseRepository::class,
         TimeProviderInterface::class => LaravelTimeProvider::class,
         RandomNumberGeneratorInterface::class => RandomNumberGenerator::class,
         GetAllVariantsQueryHandlerInterface::class => LaravelGetAllVariantsQueryHandler::class,
@@ -61,6 +61,12 @@ class GameServiceProvider extends ServiceProvider
 
         $this->app->bind(PhaseLengthFormatter::class, function (Application $app) {
             return new PhaseLengthFormatter($app->getLocale());
+        });
+
+        $this->app->bind(PhaseRepositoryInterface::class, function (Application $app) {
+            return new LaravelPhaseRepository(
+                Storage::disk('public'),
+            );
         });
 
     }

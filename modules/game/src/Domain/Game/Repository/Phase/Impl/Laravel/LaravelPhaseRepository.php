@@ -10,14 +10,16 @@ use Illuminate\Contracts\Filesystem\Filesystem;
 
 class LaravelPhaseRepository implements PhaseRepositoryInterface
 {
-    private const string ENCODED_STATE_PATTERN = '%s/encoded_state.json';
+    private const string ENCODED_STATE_PATTERN = 'phases/%s/encoded_state.json';
 
-    private const string SVG_WITH_ORDERS_PATTERN = '%s/svg_with_orders.svg';
+    private const string SVG_WITH_ORDERS_PATTERN = 'phases/%s/svg_with_orders.svg';
 
-    private const string ADJUDICATED_SVG_PATTERN = '%s/adjudicated_svg.svg';
+    private const string ADJUDICATED_SVG_PATTERN = 'phases/%s/adjudicated_svg.svg';
+
+    private const string PUBLIC_URL_PATTERN = '/storage/%s';
 
     public function __construct(
-        private Filesystem $filesystem,
+        private readonly Filesystem $filesystem,
     ) {}
 
     public function loadEncodedState(PhaseId $phaseId): PhaseRepositoryLoadResult
@@ -80,8 +82,7 @@ class LaravelPhaseRepository implements PhaseRepositoryInterface
             return PhaseRepositoryLoadResult::err(PhaseRepositoryLoadResult::E_NOT_FOUND);
         }
 
-        // $url = $this->filesystem->url(sprintf(self::SVG_WITH_ORDERS_PATTERN, (string) $phaseId));
-        $url = sprintf(self::SVG_WITH_ORDERS_PATTERN, (string) $phaseId);
+        $url = $this->toUrl(sprintf(self::SVG_WITH_ORDERS_PATTERN, (string) $phaseId));
 
         return PhaseRepositoryLoadResult::ok($url);
     }
@@ -120,9 +121,16 @@ class LaravelPhaseRepository implements PhaseRepositoryInterface
             return PhaseRepositoryLoadResult::err(PhaseRepositoryLoadResult::E_NOT_FOUND);
         }
 
-        // $url = $this->filesystem->url(sprintf(self::ADJUDICATED_SVG_PATTERN, (string) $phaseId));
-        $url = sprintf(self::ADJUDICATED_SVG_PATTERN, (string) $phaseId);
+        $url = $this->toUrl(sprintf(self::ADJUDICATED_SVG_PATTERN, (string) $phaseId));
 
         return PhaseRepositoryLoadResult::ok($url);
+    }
+
+    private function toUrl(string $path): string
+    {
+        return sprintf(
+            self::PUBLIC_URL_PATTERN,
+            $path
+        );
     }
 }
