@@ -520,6 +520,11 @@ a.light {
 #mapstore {
     text-align:center;
     margin:0 auto;
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
 }
 
 #header {
